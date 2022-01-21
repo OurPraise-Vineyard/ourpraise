@@ -34,7 +34,7 @@
       ],
       "jsx-quotes": [
         "error",
-        "prefer-single"
+        "prefer-double"
       ],
       "quotes": [
         "error",

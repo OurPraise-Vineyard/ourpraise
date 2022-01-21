@@ -34,9 +34,9 @@ export default function Login () {
     <Container>
       <Logo />
       <Form onSubmit={handleSubmit}>
-        <TextField onChange={handleChange('email')} value={email} name='email' title='Email'></TextField>
-        <TextField onChange={handleChange('password')} value={password} name='password' password title='Password'></TextField>
-        <Button>Login</Button>
+        <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>
+        <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
+        <Button type="submit">Login</Button>
       </Form>
     </Container>
   )

@@ -46,7 +46,7 @@ export default function Nav () {
   return (
     <Container>
       <Wrapper>
-        <Link to='/home'>
+        <Link to="/home">
           <Logo />
         </Link>
         <Username onClick={handleLogout}>{user ? (user.displayName || user.email) : ''}</Username>

@@ -1,22 +1,29 @@
-import { streamSong } from 'api/songs'
+import { getSong, saveSong } from 'api/songs'
+import SongForm from 'EditSong/SongForm'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import Song from 'ViewSong/Song'
+import { useNavigate, useParams } from 'react-router-dom'
 
-export default function ViewSong () {
+export default function EditSong () {
   const { songId } = useParams()
   const [song, setSong] = useState({})
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const stream = streamSong(songId)
-      .subscribe(setSong)
-
-    return () => stream.unsubscribe()
+    getSong(songId).then(setSong)
   }, [songId])
+
+  const handleSubmit = async (options) => {
+    try {
+      await saveSong(songId, options)
+      navigate('/songs/' + songId)
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
     <div>
-      <Song song={song} />
+      <SongForm song={song} onSubmit={handleSubmit} />
     </div>
   )
 }

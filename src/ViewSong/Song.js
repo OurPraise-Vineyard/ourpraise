@@ -1,3 +1,4 @@
+import { transposeBody } from 'chords'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -12,7 +13,7 @@ const Title = styled.h1`
   margin: 0;
 `
 
-const Writer = styled.h2`
+const Authors = styled.h2`
   font-size: 20px;
   color: #aaaaaa;
   margin: 0;
@@ -20,26 +21,23 @@ const Writer = styled.h2`
 
 const SongBody = styled.div`
   font-family: 'Oxygen Mono', monospace;
+  margin: 16px 0;
+  white-space: pre;
 `
 
-export default function Song ({ song }) {
+export default function Song ({ song, transpose }) {
   const [formattedBody, setBody] = useState('')
   const songBody = song && song.body
   useEffect(() => {
     if (songBody) {
-      setBody(
-        songBody
-          .replace(/\/\//g, ' ')
-          .split('\n')
-          .map(part => <div>{part}</div>)
-        )
+      setBody(transposeBody(transpose, songBody))
     }
-  }, [songBody])
+  }, [songBody, transpose])
 
   return (
     <Container>
       <Title>{song.title}</Title>
-      <Writer>{song.writer}</Writer>
+      <Authors>{song.authors}</Authors>
       <SongBody>{formattedBody}</SongBody>
     </Container>
   )

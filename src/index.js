@@ -8,6 +8,7 @@ import Login from 'Login'
 import Layout from 'Shared/Layout'
 import ViewSong from 'ViewSong'
 import { observeAuthState } from 'api/auth'
+import EditSong from 'EditSong'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -18,8 +19,11 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
-  button, input {
+  * {
     box-sizing: border-box;
+  }
+
+  button, input, select {
     font-family: Abel, sans-serif;
     font-size: 16px;
   }
@@ -50,10 +54,11 @@ function App () {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path='/songs/:songId' element={<ViewSong />} />
-          <Route path='/home' element={<Home />} />
+          <Route path="/songs/:songId" element={<ViewSong />} />
+          <Route path="/songs/:songId/edit" element={<EditSong />} />
+          <Route path="/home" element={<Home />} />
         </Route>
-        <Route index element={<Navigate to='/home' replace />} />
+        <Route index element={<Navigate to="/home" replace />} />
       </Routes>
     </BrowserRouter>
   )
