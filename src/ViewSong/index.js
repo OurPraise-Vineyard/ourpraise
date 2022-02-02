@@ -12,18 +12,21 @@ const Layout = styled.div`
 `
 
 const Sidebar = styled.div`
-  flex: 2 0;
+  flex: 1 0 auto;
+  max-width: 300px;
   margin-right: 20px;
 `
 
 const Content = styled.div`
-  flex: 5 0;
+  flex: 1 0 auto;
+  max-width: calc(100% - 300px);
 `
 
 export default function ViewSong () {
   const { songId } = useParams()
   const [song, setSong] = useState({})
   const [transpose, setTranspose] = useState(0)
+  const [showChords, setShowChords] = useState(true)
 
   useEffect(() => {
     const stream = streamSong(songId)
@@ -39,10 +42,16 @@ export default function ViewSong () {
     <Layout>
       <Sidebar>
         <BackButton />
-        <Tools songKey={song.key} transpose={transpose} setTranspose={setTranspose} />
+        <Tools
+          songKey={song.key}
+          transpose={transpose}
+          setTranspose={setTranspose}
+          showChords={showChords}
+          setShowChords={setShowChords}
+        />
       </Sidebar>
       <Content>
-        <Song song={song} transpose={transpose} />
+        <Song song={song} transpose={transpose} showChords={showChords} />
       </Content>
     </Layout>
   )

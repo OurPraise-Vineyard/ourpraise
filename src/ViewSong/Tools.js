@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import ChordSwitcher from 'ViewSong/Tools/ChordSwitcher'
+import ToggleChords from 'ViewSong/Tools/ToggleChords'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -9,10 +10,11 @@ const Container = styled.div`
   margin: 16px 0;
 `
 
-export default function Tools ({ songKey, transpose, setTranspose }) {
+export default function Tools (props) {
   return (
     <Container>
-      <ChordSwitcher songKey={songKey} transpose={transpose} setTranspose={setTranspose} />
+      <ToggleChords {...props} />
+      <ChordSwitcher {...props} />
     </Container>
   )
 }

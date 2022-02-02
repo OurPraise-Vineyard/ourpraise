@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export default styled.div`
-  width: 960px;
+  width: ${props => props.wide ? 'auto' : '960px'};
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 20px;
 `

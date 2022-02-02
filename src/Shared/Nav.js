@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import logo from 'assets/logo.svg'
 import Page from 'Shared/Page'
 import { Link } from 'react-router-dom'
@@ -31,9 +31,13 @@ const Wrapper = styled(Page)`
   align-items: center;
   justify-content: space-between;
   height: 100%;
+
+  ${props => props.wide && css`
+    width: auto;
+  `}
 `
 
-export default function Nav () {
+export default function Nav ({ wide = false }) {
   const [user, setUser] = useState(null)
   observeAuthState(setUser)
 
@@ -45,7 +49,7 @@ export default function Nav () {
 
   return (
     <Container>
-      <Wrapper>
+      <Wrapper wide={wide}>
         <Link to="/home">
           <Logo />
         </Link>

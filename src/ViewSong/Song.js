@@ -6,6 +6,8 @@ const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
   background-color: white;
   padding: 20px;
+  overflow-x: auto;
+  max-width: 100%;
 `
 
 const Title = styled.h1`
@@ -25,14 +27,25 @@ const SongBody = styled.div`
   white-space: pre;
 `
 
-export default function Song ({ song, transpose }) {
+export default function Song ({ song, transpose, showChords }) {
   const [formattedBody, setBody] = useState('')
   const songBody = song && song.body
   useEffect(() => {
     if (songBody) {
-      setBody(transposeBody(transpose, songBody))
+      if (showChords) {
+        setBody(transposeBody(transpose, songBody))
+      } else {
+        setBody(
+          songBody
+            .split('\n')
+            .map(line => line.trim() === '//' ? '' : line)
+            .filter(line => line.substr(0, 2) !== '//' || line.trim() === '//')
+            .join('\n')
+            .replace(/^\n+/, '')
+        )
+      }
     }
-  }, [songBody, transpose])
+  }, [songBody, transpose, showChords])
 
   return (
     <Container>

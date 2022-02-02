@@ -1,4 +1,5 @@
 import Button from 'EditSong/Button'
+import SelectField from 'EditSong/SelectField'
 import TextField from 'EditSong/TextField'
 import React, { useEffect, useReducer } from 'react'
 import styled from 'styled-components'
@@ -28,8 +29,10 @@ function reducer (state, action) {
   }
 }
 
+const keys = ['A', 'Ab', 'A#', 'B', 'Bb', 'B#', 'C', 'Cb', 'C#', 'D', 'Db', 'D#', 'E', 'Eb', 'E#', 'F', 'Fb', 'F#', 'G', 'Gb', 'G#']
+
 export default function SongForm ({ song, onSubmit }) {
-  const [{title, authors, body}, dispatch] = useReducer(reducer, song || {})
+  const [{title, authors, body, key}, dispatch] = useReducer(reducer, song || {})
 
   useEffect(() => {
     dispatch({ type: 'INIT', state: song })
@@ -43,7 +46,7 @@ export default function SongForm ({ song, onSubmit }) {
 
   const handleSave = async (e) => {
     e.preventDefault()
-    onSubmit({ title, authors, body })
+    onSubmit({ title, authors, body, key })
   }
 
   return (
@@ -52,6 +55,7 @@ export default function SongForm ({ song, onSubmit }) {
       <form onSubmit={handleSave}>
         <TextField value={title} title="Title" onChange={handleChange('title')} />
         <TextField value={authors} title="Authors" onChange={handleChange('authors')} />
+        <SelectField value={key} title="Song Key" onChange={handleChange('key')} options={keys} />
         <TextField multiline value={body} title="Body" onChange={handleChange('body')} />
         <Button type="submit">Save</Button>
       </form>

@@ -54,9 +54,11 @@ function App () {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/songs/:songId" element={<ViewSong />} />
           <Route path="/songs/:songId/edit" element={<EditSong />} />
           <Route path="/home" element={<Home />} />
+        </Route>
+        <Route element={<Layout wide />}>
+          <Route path="/songs/:songId" element={<ViewSong />} />
         </Route>
         <Route index element={<Navigate to="/home" replace />} />
       </Routes>
