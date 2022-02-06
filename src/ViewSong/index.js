@@ -1,8 +1,8 @@
 import { streamSong } from 'api/songs'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import EmojiButton from 'Shared/EmojiButton'
 import styled from 'styled-components'
-import BackButton from 'ViewSong/Back'
 import Song from 'ViewSong/Song'
 import Tools from 'ViewSong/Tools'
 
@@ -27,6 +27,7 @@ export default function ViewSong () {
   const [song, setSong] = useState({})
   const [transpose, setTranspose] = useState(0)
   const [showChords, setShowChords] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const stream = streamSong(songId)
@@ -38,10 +39,25 @@ export default function ViewSong () {
     return () => stream.unsubscribe()
   }, [songId])
 
+  function handleEdit () {
+    navigate(`/songs/${songId}/edit`)
+  }
+
+  const handleBack = () => {
+    if (songId) {
+      navigate('/songs')
+    }
+  }
+
   return (
     <Layout>
       <Sidebar>
-        <BackButton />
+        <EmojiButton emoji="👈️" onClick={handleBack}>
+          Back
+        </EmojiButton>
+        <EmojiButton emoji="✏️" onClick={handleEdit}>
+          Edit
+        </EmojiButton>
         <Tools
           songKey={song.key}
           transpose={transpose}

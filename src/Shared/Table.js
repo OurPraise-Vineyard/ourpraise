@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import LinkBase from 'Shared/LinkBase'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -23,6 +24,12 @@ const Item = styled(Link)`
   justify-content: space-between;
   font-size: 20px;
   text-decoration: none;
+  margin-bottom: 8px;
+  transition: background-color .2s ease-in;
+
+  :hover {
+    background-color: #ebebeb;
+  }
 `
 
 const PrimaryText = styled.span`
@@ -33,7 +40,16 @@ const SecondaryText = styled.span`
   color: #AAAAAA;
 `
 
-export default function HomeTable ({ title, items, viewAllUrl }) {
+const ViewAllLink = styled(LinkBase).attrs({ color: 'black' })`
+  text-decoration: none;
+  font-size: 20px;
+`
+
+const Center = styled.div`
+  text-align: center;
+`
+
+export default function ContentTable ({ title, items, viewAllUrl }) {
   return (
     <Container>
       <Title>{title}</Title>
@@ -45,6 +61,13 @@ export default function HomeTable ({ title, items, viewAllUrl }) {
           </Item>
         ))}
       </Items>
+      {viewAllUrl && (
+        <Center>
+          <ViewAllLink to={viewAllUrl}>
+            View all &rarr;
+          </ViewAllLink>
+        </Center>
+      )}
     </Container>
   )
 }

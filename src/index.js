@@ -9,6 +9,8 @@ import Layout from 'Shared/Layout'
 import ViewSong from 'ViewSong'
 import { observeAuthState } from 'api/auth'
 import EditSong from 'EditSong'
+import Songs from 'Songs'
+import AddSong from 'AddSong'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -40,8 +42,6 @@ function App () {
     })
   }, [])
 
-  console.log(user)
-
   if (!ready) {
     return null
   }
@@ -54,7 +54,9 @@ function App () {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
+          <Route path="/songs/add" element={<AddSong />} />
           <Route path="/songs/:songId/edit" element={<EditSong />} />
+          <Route path="/songs" element={<Songs />} />
           <Route path="/home" element={<Home />} />
         </Route>
         <Route element={<Layout wide />}>

@@ -1,6 +1,7 @@
-import { getRecommendedSongs } from 'api/songs'
+import { getAllSongs } from 'api/songs'
 import React, { useEffect, useState } from 'react'
 import ContentTable from 'Shared/Table'
+import Toolbar from 'Songs/Toolbar'
 
 function mapSong (data) {
   return {
@@ -10,17 +11,18 @@ function mapSong (data) {
   }
 }
 
-export default function Home () {
+export default function Songs () {
   const [songs, setSongs] = useState([])
 
   useEffect(() => {
-    getRecommendedSongs()
+    getAllSongs()
       .then(songs => setSongs(songs.map(mapSong)))
   }, [])
 
   return (
     <div>
-      <ContentTable items={songs} title="Recently added songs" viewAllUrl="/songs" />
+      <Toolbar />
+      <ContentTable items={songs} title="All songs" />
     </div>
   )
 }

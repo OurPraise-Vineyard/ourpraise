@@ -1,7 +1,7 @@
 import { getSong, saveSong } from 'api/songs'
-import SongForm from 'EditSong/SongForm'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import SongForm from 'Shared/SongForm'
 
 export default function EditSong () {
   const { songId } = useParams()
@@ -23,7 +23,11 @@ export default function EditSong () {
 
   return (
     <div>
-      <SongForm song={song} onSubmit={handleSubmit} />
+      <SongForm
+        song={song}
+        onSubmit={handleSubmit}
+        heading="Edit song"
+      />
     </div>
   )
 }
