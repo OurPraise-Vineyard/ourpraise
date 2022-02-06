@@ -11,7 +11,7 @@ export function streamSong (songId) {
 
 export function getSong (songId) {
   return getDoc(doc(getFirestore(), `songs/${songId}`))
-    .then(doc => ({ ...doc.data(), id: doc.id }))
+    .then(doc => doc.exists ? ({ ...doc.data(), id: doc.id }) : null)
 }
 
 export function saveSong (songId, options) {
