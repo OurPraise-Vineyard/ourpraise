@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import ChordSwitcher from 'ViewSong/Tools/ChordSwitcher'
+import DownloadPdf from 'ViewSong/Tools/DownloadPdf'
 import ToggleChords from 'ViewSong/Tools/ToggleChords'
 
 const Container = styled.div`
@@ -15,6 +16,7 @@ export default function Tools (props) {
     <Container>
       <ToggleChords {...props} />
       <ChordSwitcher {...props} />
+      <DownloadPdf link={`/songs/${props.songId}/pdf`} label="Download PDF" />
     </Container>
   )
 }

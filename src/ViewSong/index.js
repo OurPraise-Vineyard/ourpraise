@@ -60,6 +60,7 @@ export default function ViewSong () {
         </EmojiButton>
         <Tools
           songKey={song.key}
+          songId={song.id}
           transpose={transpose}
           setTranspose={setTranspose}
           showChords={showChords}
