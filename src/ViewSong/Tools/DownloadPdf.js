@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-const Button = styled(Link)`
+const Button = styled.a`
   width: 100%;
   border-radius: 4px;
   border: 1px solid #aaa;
@@ -21,7 +20,8 @@ const Button = styled(Link)`
 export default function DownloadPdf ({ label = 'Download PDF', link }) {
   return (
     <Button
-      to={link}
+      href={link}
+      target="_blank"
     >
       {label}
     </Button>

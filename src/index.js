@@ -11,7 +11,6 @@ import { observeAuthState } from 'api/auth'
 import EditSong from 'EditSong'
 import Songs from 'Songs'
 import AddSong from 'AddSong'
-import PdfRenderer from 'Shared/PdfRenderer'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -57,8 +56,6 @@ function App () {
         <Route element={<Layout />}>
           <Route path="/songs/add" element={<AddSong />} />
           <Route path="/songs/:songId/edit" element={<EditSong />} />
-          <Route path="/songs/:songId/pdf" element={<PdfRenderer />} />
-          <Route path="/events/:eventId/pdf" element={<PdfRenderer />} />
           <Route path="/songs" element={<Songs />} />
           <Route path="/home" element={<Home />} />
         </Route>

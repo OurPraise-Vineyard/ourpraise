@@ -16,7 +16,7 @@ export default function Tools (props) {
     <Container>
       <ToggleChords {...props} />
       <ChordSwitcher {...props} />
-      <DownloadPdf link={`/songs/${props.songId}/pdf`} label="Download PDF" />
+      <DownloadPdf link={`http://localhost:5001/songdriver-firebase/us-central1/pdf?song=${props.songId}`} label="Download PDF" />
     </Container>
   )
 }
