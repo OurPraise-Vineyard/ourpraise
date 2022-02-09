@@ -20,7 +20,7 @@ const options = {
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-exports.pdf = functions.https.onRequest((request, response) => {
+exports.pdf = functions.region('europe-west1').https.onRequest((request, response) => {
   const { event, song, transpose = 0 } = request.query
 
   function getSongs () {
