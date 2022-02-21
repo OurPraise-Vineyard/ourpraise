@@ -98,7 +98,9 @@ export default function SongForm ({ song, onSubmit, heading }) {
         <TextField multiline value={body} title="Body" onChange={handleChange('body')} />
         <Buttons>
           <SaveButton type="submit">Save</SaveButton>
-          <DeleteButton type="button" onClick={handleDelete}>Delete</DeleteButton>
+          {!!(song && song.id) && (
+            <DeleteButton type="button" onClick={handleDelete}>Delete</DeleteButton>
+          )}
         </Buttons>
       </form>
     </Container>
