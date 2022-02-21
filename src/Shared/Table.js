@@ -7,6 +7,7 @@ const Container = styled.div`
   padding: 20px;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
+  position: relative;
 `
 
 const Title = styled.h2`
@@ -49,7 +50,27 @@ const Center = styled.div`
   text-align: center;
 `
 
-export default function ContentTable ({ title, items, viewAllUrl }) {
+const LoadingOverlay = styled.div`
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  font-size: 20px;
+  opacity: ${props => props.visible ? 1 : 0};
+  transition: opacity .2s linear;
+  pointer-events: ${props => props.visble ? 'all' : 'none'};
+
+  &::after {
+    content: "Loading..."
+  }
+`
+
+export default function ContentTable ({ title, items, viewAllUrl, loading }) {
   return (
     <Container>
       <Title>{title}</Title>
@@ -68,6 +89,7 @@ export default function ContentTable ({ title, items, viewAllUrl }) {
           </ViewAllLink>
         </Center>
       )}
+      <LoadingOverlay visible={loading} />
     </Container>
   )
 }
