@@ -1,10 +1,11 @@
-import SelectField from 'Shared/SongForm/SelectField'
-import TextField from 'Shared/SongForm/TextField'
+import TextField from 'Shared/TextField'
 import React, { useEffect, useReducer } from 'react'
 import styled from 'styled-components'
 import ButtonBase from 'Shared/ButtonBase'
 import { deleteSong } from 'api/songs'
 import { useNavigate } from 'react-router-dom'
+import dateFormat from 'dateformat'
+import { deleteEvents } from 'api/events'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -53,22 +54,26 @@ function reducer (state, action) {
   }
 }
 
-const defaultSong = {
+// const defaultSong = {
+//   transpose: 0,
+//   id: '',
+//   comment: ''
+// }
+
+const defaultEvent = {
   title: '',
-  key: 'A',
-  authors: '',
-  body: ''
+  comment: '',
+  date: dateFormat(new Date(), 'yyyy-mm-dd'),
+  songs: []
 }
 
-const keys = ['A', 'Ab', 'A#', 'B', 'Bb', 'B#', 'C', 'Cb', 'C#', 'D', 'Db', 'D#', 'E', 'Eb', 'E#', 'F', 'Fb', 'F#', 'G', 'Gb', 'G#']
-
-export default function SongForm ({ song, onSubmit, heading }) {
-  const [{title, authors, body, key}, dispatch] = useReducer(reducer, defaultSong)
+export default function EventForm ({ event, onSubmit, heading }) {
+  const [{title, date, songs, comment}, dispatch] = useReducer(reducer, defaultEvent)
   const navigate = useNavigate()
 
   useEffect(() => {
-    dispatch({ type: 'INIT', state: song || defaultSong })
-  }, [song])
+    dispatch({ type: 'INIT', state: event || defaultEvent })
+  }, [event])
 
   const handleChange = (name) => (e) => dispatch({
     type: 'SET',
@@ -78,13 +83,13 @@ export default function SongForm ({ song, onSubmit, heading }) {
 
   const handleSave = async (e) => {
     e.preventDefault()
-    onSubmit({ title, authors, body, key })
+    onSubmit({ title, date, songs, comment })
   }
 
   const handleDelete = async (e) => {
-    if (window.confirm('Delete this song?')) {
-      await deleteSong(song.id)
-      navigate('/songs')
+    if (window.confirm('Delete this event?')) {
+      await deleteEvents(event.id)
+      navigate('/events')
     }
   }
 
@@ -93,12 +98,11 @@ export default function SongForm ({ song, onSubmit, heading }) {
       <Heading>{heading}</Heading>
       <form onSubmit={handleSave}>
         <TextField value={title} title="Title" onChange={handleChange('title')} />
-        <TextField value={authors} title="Authors" onChange={handleChange('authors')} />
-        <SelectField value={key} title="Song Key" onChange={handleChange('key')} options={keys} />
-        <TextField multiline value={body} title="Body" onChange={handleChange('body')} />
+        <TextField value={date} type="date" title="Date" onChange={handleChange('date')} />
+        <TextField multiline value={comment} title="Set comments" onChange={handleChange('comment')} />
         <Buttons>
           <SaveButton type="submit">Save</SaveButton>
-          {!!(song && song.id) && (
+          {!!(event && event.id) && (
             <DeleteButton type="button" onClick={handleDelete}>Delete</DeleteButton>
           )}
         </Buttons>

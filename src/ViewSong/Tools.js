@@ -1,3 +1,4 @@
+import { getFunctionUrl } from 'api/functions'
 import React from 'react'
 import styled from 'styled-components'
 import ChordSwitcher from 'ViewSong/Tools/ChordSwitcher'
@@ -16,7 +17,7 @@ export default function Tools (props) {
     <Container>
       <ToggleChords {...props} />
       <ChordSwitcher {...props} />
-      <DownloadPdf link={`https://europe-west1-songdriver-firebase.cloudfunctions.net/pdf?song=${props.songId}`} label="Download PDF" />
+      <DownloadPdf link={getFunctionUrl('pdf', { song: props.songId })} label="Download PDF" />
     </Container>
   )
 }

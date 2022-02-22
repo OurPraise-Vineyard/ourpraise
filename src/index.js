@@ -11,6 +11,10 @@ import { observeAuthState } from 'api/auth'
 import EditSong from 'EditSong'
 import Songs from 'Songs'
 import AddSong from 'AddSong'
+import AddEvent from 'AddEvent'
+import Events from 'Events'
+import ViewEvent from 'ViewEvent'
+import EditEvent from 'EditEvent'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -57,6 +61,10 @@ function App () {
           <Route path="/songs/add" element={<AddSong />} />
           <Route path="/songs/:songId/edit" element={<EditSong />} />
           <Route path="/songs" element={<Songs />} />
+          <Route path="/events/:eventId/edit" element={<EditEvent />} />
+          <Route path="/events/:eventId" element={<ViewEvent />} />
+          <Route path="/events/add" element={<AddEvent />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/home" element={<Home />} />
         </Route>
         <Route element={<Layout wide />}>

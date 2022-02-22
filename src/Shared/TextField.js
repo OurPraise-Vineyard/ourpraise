@@ -46,7 +46,7 @@ const Textarea = styled.textarea`
   }
 `
 
-export default function TextField ({ title = '', name = '', password = false, onChange, value, multiline }) {
+export default function TextField ({ title = '', name = '', password = false, onChange, value, multiline, type = 'text' }) {
   return (
     <Container>
       <Label>{title}</Label>
@@ -61,7 +61,7 @@ export default function TextField ({ title = '', name = '', password = false, on
         : (
           <Input
             name={name}
-            type={password ? 'password' : 'text'}
+            type={password ? 'password' : type}
             onChange={onChange}
             value={value}
           />

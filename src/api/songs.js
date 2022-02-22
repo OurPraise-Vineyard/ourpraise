@@ -1,9 +1,6 @@
+import { mapDocsId } from 'api/utils'
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore'
 import { docData } from 'rxfire/firestore'
-
-function mapDocsRes (snap) {
-  return snap.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-}
 
 export function streamSong (songId) {
   return docData(doc(getFirestore(), `songs/${songId}`), { idField: 'id' })
@@ -26,13 +23,13 @@ export function addSong (options) {
 }
 
 export function getRecommendedSongs () {
-  return getDocs(query(collection(getFirestore(), 'songs'), orderBy('createdAt', 'desc')), { idField: 'id' })
-    .then(mapDocsRes)
-}
+  return getDocs(query(collection(getFirestore(), 'songs'), orderBy('createdAt', 'desc')))
+    .then(docs => mapDocsId(docs))
+  }
 
-export function getAllSongs () {
-  return getDocs(query(collection(getFirestore(), 'songs'), orderBy('title', 'asc')), { idField: 'id' })
-    .then(mapDocsRes)
+  export function getAllSongs () {
+    return getDocs(query(collection(getFirestore(), 'songs'), orderBy('title', 'asc')))
+    .then(docs => mapDocsId(docs))
 }
 
 export function deleteSong (songId) {

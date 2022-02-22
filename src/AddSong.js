@@ -17,11 +17,9 @@ export default function AddSong () {
   }
 
   return (
-    <div>
-      <SongForm
-        onSubmit={handleSubmit}
-        heading="Add song"
-      />
-    </div>
+    <SongForm
+      onSubmit={handleSubmit}
+      heading="Add song"
+    />
   )
 }

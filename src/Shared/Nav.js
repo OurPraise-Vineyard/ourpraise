@@ -81,6 +81,9 @@ export default function Nav ({ wide = false }) {
           <LinkBase color="white" to="/songs">
             Songs
           </LinkBase>
+          <LinkBase color="white" to="/events">
+            Events
+          </LinkBase>
         </Links>
       </Wrapper>
     </Container>

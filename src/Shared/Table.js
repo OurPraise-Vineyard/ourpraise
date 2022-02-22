@@ -70,10 +70,20 @@ const LoadingOverlay = styled.div`
   }
 `
 
+const NotFound = styled.p`
+  margin: 0;
+  font-size: 20px;
+`
+
 export default function ContentTable ({ title, items, viewAllUrl, loading }) {
   return (
     <Container>
       <Title>{title}</Title>
+      {items.length === 0 && (
+        <NotFound>
+          Nothing to show here...
+        </NotFound>
+      )}
       <Items>
         {items.map(({ primary, secondary, url }, index) => (
           <Item key={index} to={url}>

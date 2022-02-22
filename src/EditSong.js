@@ -22,12 +22,10 @@ export default function EditSong () {
   }
 
   return (
-    <div>
-      <SongForm
-        song={song}
-        onSubmit={handleSubmit}
-        heading="Edit song"
-      />
-    </div>
+    <SongForm
+      song={song}
+      onSubmit={handleSubmit}
+      heading="Edit song"
+    />
   )
 }
