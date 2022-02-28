@@ -8,10 +8,12 @@ const Container = styled.div`
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   position: relative;
+  margin: 16px 0;
 `
 
 const Title = styled.h2`
   font-size: 24px;
+  margin: 0 0 16px;
 `
 
 const Items = styled.div`
@@ -84,14 +86,16 @@ export default function ContentTable ({ title, items, viewAllUrl, loading }) {
           Nothing to show here...
         </NotFound>
       )}
-      <Items>
-        {items.map(({ primary, secondary, url }, index) => (
-          <Item key={index} to={url}>
-            <PrimaryText>{primary}</PrimaryText>
-            <SecondaryText>{secondary}</SecondaryText>
-          </Item>
-        ))}
-      </Items>
+      {items.length > 0 && (
+        <Items>
+          {items.map(({ primary, secondary, url }, index) => (
+            <Item key={index} to={url}>
+              <PrimaryText>{primary}</PrimaryText>
+              <SecondaryText>{secondary}</SecondaryText>
+            </Item>
+          ))}
+        </Items>
+      )}
       {viewAllUrl && (
         <Center>
           <ViewAllLink to={viewAllUrl}>

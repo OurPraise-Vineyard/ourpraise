@@ -2,15 +2,12 @@ import { getRecentEvents } from 'api/events'
 import React, { useEffect, useState } from 'react'
 import ContentTable from 'Shared/Table'
 import Toolbar from 'Events/Toolbar'
-
-function mapDate (date) {
-  return new Date(date).toString()
-}
+import dateFormat from 'dateformat'
 
 function mapEvent (data) {
   return {
     primary: data.title,
-    secondary: mapDate(data.date),
+    secondary: dateFormat(data.date, 'fullDate'),
     url: `/events/${data.id || data.objectID}`
   }
 }

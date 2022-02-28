@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import ContentTable from 'Shared/Table'
 import Toolbar from 'ViewEvent/Toolbar'
 import { useParams } from 'react-router-dom'
+import ContentBox from 'Shared/ContentBox'
 
 function mapSong (data) {
   return {
@@ -30,6 +31,11 @@ export default function ViewEvent () {
   return (
     <div>
       <Toolbar title={event.title} eventId={eventId} />
+      {!!event.comment && (
+        <ContentBox title="Comments">
+          {event.comment}
+        </ContentBox>
+      )}
       <ContentTable
         items={event.songs}
         title={'Set list'}
