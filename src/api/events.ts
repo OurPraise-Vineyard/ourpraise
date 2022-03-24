@@ -26,7 +26,7 @@ export function saveEvent (eventId, options) {
 }
 
 export async function getEvent (eventId) {
-  const event = await getDoc(doc(getFirestore(), `events/${eventId}`))
+  const event:any = await getDoc(doc(getFirestore(), `events/${eventId}`))
     .then(doc => ({
       ...doc.data(),
       id: doc.id

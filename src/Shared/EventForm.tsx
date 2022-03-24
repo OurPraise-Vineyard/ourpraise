@@ -67,7 +67,7 @@ const defaultEvent = {
   songs: []
 }
 
-export default function EventForm ({ event, onSubmit, heading }) {
+export default function EventForm ({ event = undefined, onSubmit, heading }) {
   const [{title, date, songs, comment}, dispatch] = useReducer(reducer, defaultEvent)
   const navigate = useNavigate()
 

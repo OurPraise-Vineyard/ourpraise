@@ -21,7 +21,7 @@ const Button = styled(Link)`
   text-decoration: none;
 `
 
-export default function Toolbar ({ onSearch }) {
+export default function Toolbar ({ onSearch = undefined }) {
   return (
     <Row>
       <Button to="/events/add">

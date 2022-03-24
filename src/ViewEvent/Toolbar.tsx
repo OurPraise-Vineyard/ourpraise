@@ -34,7 +34,7 @@ const ButtonLink = styled(Link)`
   text-decoration: none;
 `
 
-export default function Toolbar ({ title, onSearch, eventId }) {
+export default function Toolbar ({ title, onSearch = undefined, eventId }) {
   return (
     <Row>
       <Title>{title}</Title>

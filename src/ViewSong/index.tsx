@@ -24,7 +24,7 @@ const Content = styled.div`
 
 export default function ViewSong () {
   const { songId } = useParams()
-  const [song, setSong] = useState({})
+  const [song, setSong] = useState<any>({})
   const [transpose, setTranspose] = useState(0)
   const [showChords, setShowChords] = useState(true)
   const navigate = useNavigate()

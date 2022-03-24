@@ -62,7 +62,7 @@ const defaultSong = {
 
 const keys = ['A', 'Ab', 'A#', 'B', 'Bb', 'B#', 'C', 'Cb', 'C#', 'D', 'Db', 'D#', 'E', 'Eb', 'E#', 'F', 'Fb', 'F#', 'G', 'Gb', 'G#']
 
-export default function SongForm ({ song, onSubmit, heading }) {
+export default function SongForm ({ song = undefined, onSubmit, heading }) {
   const [{title, authors, body, key}, dispatch] = useReducer(reducer, defaultSong)
   const navigate = useNavigate()
 
