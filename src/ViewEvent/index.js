@@ -2,8 +2,11 @@ import { getEvent } from 'api/events'
 import React, { useEffect, useState } from 'react'
 import ContentTable from 'Shared/Table'
 import Toolbar from 'ViewEvent/Toolbar'
-import { useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import ContentBox from 'Shared/ContentBox'
+import { buttonBase } from 'Shared/ButtonBase'
+import styled from 'styled-components'
+import Modal from 'Shared/Modal'
 
 function mapSong (data) {
   return {
@@ -13,9 +16,16 @@ function mapSong (data) {
   }
 }
 
+const ButtonLink = styled(Link)`
+  ${buttonBase}
+  margin: 0;
+  text-decoration: none;
+`
+
 export default function ViewEvent () {
-  const { eventId } = useParams()
+  const { eventId, state } = useParams()
   const [event, setEvent] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     getEvent(eventId).then(event => setEvent({
@@ -39,6 +49,16 @@ export default function ViewEvent () {
       <ContentTable
         items={event.songs}
         title={'Set list'}
+        actions={[
+          <ButtonLink to={`/events/${eventId}/addsongs`}>
+            Add songs
+          </ButtonLink>
+        ]}
+      />
+      <Modal
+        onClose={() => navigate(`/events/${eventId}`)}
+        show={state === 'addsongs'}
+        title="Add songs"
       />
     </div>
   )

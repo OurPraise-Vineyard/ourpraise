@@ -11,9 +11,16 @@ const Container = styled.div`
   margin: 16px 0;
 `
 
+const Toolbar = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 0 0 16px;
+`
+
 const Title = styled.h2`
   font-size: 24px;
-  margin: 0 0 16px;
+  margin: 0;
+  flex: 1 0 auto;
 `
 
 const Items = styled.div`
@@ -77,10 +84,13 @@ const NotFound = styled.p`
   font-size: 20px;
 `
 
-export default function ContentTable ({ title, items, viewAllUrl, loading }) {
+export default function ContentTable ({ title, items, viewAllUrl, loading, actions }) {
   return (
     <Container>
-      <Title>{title}</Title>
+      <Toolbar>
+        <Title>{title}</Title>
+        {actions}
+      </Toolbar>
       {items.length === 0 && (
         <NotFound>
           Nothing to show here...
