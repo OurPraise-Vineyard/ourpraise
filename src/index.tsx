@@ -12,7 +12,7 @@ import EditSong from 'EditSong'
 import Songs from 'Songs'
 import AddSong from 'AddSong'
 import AddEvent from 'AddEvent'
-import Events from 'Events'
+import Events from './Events'
 import ViewEvent from 'ViewEvent'
 import EditEvent from 'EditEvent'
 
