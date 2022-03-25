@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import LinkBase from 'Shared/LinkBase'
+import LinkBase from '@Shared/LinkBase'
 import styled from 'styled-components'
 
 const Container = styled.div`

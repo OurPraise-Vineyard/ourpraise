@@ -1,7 +1,7 @@
-import { getEvent, saveEvent } from 'api/events'
+import { getEvent, saveEvent } from '@api/events'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import EventForm from 'Shared/EventForm'
+import EventForm from '@Shared/EventForm'
 
 export default function EditEvent () {
   const { eventId } = useParams()

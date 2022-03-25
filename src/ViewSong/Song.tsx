@@ -1,4 +1,4 @@
-import { transposeBody } from 'chords'
+import { transposeBody } from '@chords'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 

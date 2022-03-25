@@ -1,7 +1,7 @@
-import { getRecentEvents } from 'api/events'
+import { getRecentEvents } from '@api/events'
 import React, { useEffect, useState } from 'react'
-import ContentTable from 'Shared/Table'
-import Toolbar from 'Events/Toolbar'
+import ContentTable from '@Shared/Table'
+import Toolbar from '@Events/Toolbar'
 import dateFormat from 'dateformat'
 
 function mapEvent (data) {

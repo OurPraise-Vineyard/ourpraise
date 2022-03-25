@@ -1,7 +1,7 @@
 import React from 'react'
-import { addEvent } from 'api/events'
+import { addEvent } from '@api/events'
 import { useNavigate } from 'react-router-dom'
-import EventForm from 'Shared/EventForm'
+import EventForm from '@Shared/EventForm'
 
 export default function AddEvent () {
   const navigate = useNavigate()

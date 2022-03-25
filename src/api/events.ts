@@ -1,4 +1,4 @@
-import { mapDocsId, pruneObject } from 'api/utils'
+import { mapDocsId, pruneObject } from '@api/utils'
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore'
 
 export function getRecentEvents () {

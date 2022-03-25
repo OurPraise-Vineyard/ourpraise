@@ -1,9 +1,9 @@
-import { signIn } from 'api/auth'
-import Button from 'Login/Button'
-import Container from 'Login/Container'
-import Form from 'Login/Form'
-import Logo from 'Login/Logo'
-import TextField from 'Login/TextField'
+import { signIn } from '@api/auth'
+import Button from '@Login/Button'
+import Container from '@Login/Container'
+import Form from '@Login/Form'
+import Logo from '@Login/Logo'
+import TextField from '@Login/TextField'
 import React, { useState } from 'react'
 
 export default function Login () {

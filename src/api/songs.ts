@@ -1,4 +1,4 @@
-import { mapDocsId } from 'api/utils'
+import { mapDocsId } from '@api/utils'
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore'
 import { docData } from 'rxfire/firestore'
 

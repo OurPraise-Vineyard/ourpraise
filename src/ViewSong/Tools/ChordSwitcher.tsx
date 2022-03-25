@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import increase from 'assets/increase.svg'
 import decrease from 'assets/decrease.svg'
-import { generateRelativeChordList, getRelativeChord } from 'chords'
+import { generateRelativeChordList, getRelativeChord } from '@chords'
 
 const Wrapper = styled.div`
   width: 100%;

@@ -1,12 +1,12 @@
-import { getEvent } from 'api/events'
+import { getEvent } from '@api/events'
 import React, { useEffect, useState } from 'react'
-import ContentTable from 'Shared/Table'
-import Toolbar from 'ViewEvent/Toolbar'
+import ContentTable from '@Shared/Table'
+import Toolbar from '@ViewEvent/Toolbar'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import ContentBox from 'Shared/ContentBox'
-import { buttonBase } from 'Shared/ButtonBase'
+import ContentBox from '@Shared/ContentBox'
+import { buttonBase } from '@Shared/ButtonBase'
 import styled from 'styled-components'
-import Modal from 'Shared/Modal'
+import Modal from '@Shared/Modal'
 
 function mapSong (data) {
   return {

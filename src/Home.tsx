@@ -1,6 +1,6 @@
-import { getRecommendedSongs } from 'api/songs'
+import { getRecommendedSongs } from '@api/songs'
 import React, { useEffect, useState } from 'react'
-import ContentTable from 'Shared/Table'
+import ContentTable from '@Shared/Table'
 
 function mapSong (data) {
   return {
