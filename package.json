@@ -20,8 +20,9 @@
   },
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"firebase emulators:start\"",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "build": "npm run type-check && react-scripts build",
+		"type-check": "tsc --noEmit",
+    "test": "npm run type-check && react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "npm run build && firebase deploy"
   },

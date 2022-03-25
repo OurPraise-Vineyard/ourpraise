@@ -32,7 +32,7 @@ const switchTypes = {
   decrease
 }
 
-const Switcher = styled.div`
+const Switcher = styled.div<{type:string}>`
   background-image: url(${props => switchTypes[props.type]});
   background-size: contain;
   width: 20px;

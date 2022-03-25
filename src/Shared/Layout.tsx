@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import React, { Outlet } from 'react-router-dom'
 import Nav from 'Shared/Nav'
 import Page from 'Shared/Page'
 

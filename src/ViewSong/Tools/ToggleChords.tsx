@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   margin-bottom: 16px;
 `
 
-const Highlight = styled.div`
+const Highlight = styled.div<{right:boolean}>`
   position: absolute;
   left: ${props => props.right ? '50%' : 0};
   top: 0;
@@ -24,7 +24,7 @@ const Highlight = styled.div`
   background: linear-gradient(0deg, rgba(109,170,224,1) 0%, rgba(124,187,244,1) 35%, rgba(140,195,246,1) 100%);
 `
 
-const Button = styled.button`
+const Button = styled.button<{active:boolean}>`
   background: transparent;
   font-size: 20px;
   border: 0;

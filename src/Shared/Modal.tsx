@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { css } from 'styled-components'
 import xIcon from 'assets/x.svg'
 
-const Grid = styled.div`
+const Grid = styled.div<{show?:boolean}>`
   background-color: rgba(0, 0, 0, 0.2);
   display: grid;
   grid-template-columns: 1fr minmax(auto, 800px) 1fr;
@@ -25,7 +25,7 @@ const Grid = styled.div`
   `}
 `
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<{show?:boolean}>`
   grid-area: modal;
   min-height: 600px;
   background-color: white;

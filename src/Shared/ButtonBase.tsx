@@ -22,7 +22,7 @@ export const buttonBaseHover = css`
   filter: brightness(1.05);
 `
 
-export const buttonBase = css`
+export const buttonBase = css<{fullWidth?:boolean;color?:any}>`
   cursor: pointer;
   font-size: 20px;
   transition: all .2s ease-out;
