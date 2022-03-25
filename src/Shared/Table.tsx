@@ -59,7 +59,7 @@ const Center = styled.div`
   text-align: center;
 `
 
-const LoadingOverlay = styled.div`
+const LoadingOverlay = styled.div<{visible:boolean}>`
   background-color: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
@@ -72,7 +72,7 @@ const LoadingOverlay = styled.div`
   font-size: 20px;
   opacity: ${props => props.visible ? 1 : 0};
   transition: opacity .2s linear;
-  pointer-events: ${props => props.visble ? 'all' : 'none'};
+  pointer-events: ${props => props.visible ? 'all' : 'none'};
 
   &::after {
     content: "Loading..."

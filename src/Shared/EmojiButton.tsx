@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import ButtonBase, { buttonBaseHover } from 'Shared/ButtonBase'
 
-export default styled(ButtonBase)`
+export default styled(ButtonBase)<{emoji:any}>`
   width: 100%;
   overflow: hidden;
   position: relative;
