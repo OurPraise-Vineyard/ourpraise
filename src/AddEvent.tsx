@@ -1,3 +1,4 @@
+import React from 'react'
 import { addEvent } from 'api/events'
 import { useNavigate } from 'react-router-dom'
 import EventForm from 'Shared/EventForm'

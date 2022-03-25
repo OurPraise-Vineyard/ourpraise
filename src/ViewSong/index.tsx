@@ -1,5 +1,5 @@
 import { streamSong } from 'api/songs'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EmojiButton from 'Shared/EmojiButton'
 import styled from 'styled-components'
