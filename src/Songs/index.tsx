@@ -1,9 +1,9 @@
-import { getAllSongs } from 'api/songs'
+import { getAllSongs } from '@api/songs'
 import React, { useEffect, useState } from 'react'
-import ContentTable from 'Shared/Table'
-import Toolbar from 'Songs/Toolbar'
-import { searchSongs } from 'api/algolia'
-import { createDebouncer } from 'debouncer'
+import ContentTable from '@Shared/Table'
+import Toolbar from '@Songs/Toolbar'
+import { searchSongs } from '@api/algolia'
+import { createDebouncer } from '@debouncer'
 
 function mapSong (data) {
   return {

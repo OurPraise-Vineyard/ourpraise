@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
-import logo from 'assets/logo.svg'
-import Page from 'Shared/Page'
+import logo from '@assets/logo.svg'
+import Page from '@Shared/Page'
 import { Link } from 'react-router-dom'
-import { observeAuthState, signOut } from 'api/auth'
-import LinkBase from 'Shared/LinkBase'
+import { observeAuthState, signOut } from '@api/auth'
+import LinkBase from '@Shared/LinkBase'
 
 const Container = styled.nav`
   background-color: black;
@@ -13,7 +13,7 @@ const Container = styled.nav`
 
 const Logo = styled.img.attrs({
   src: logo,
-  alt: 'Songdriver logo'
+  alt: 'Songdriver logo',
 })`
   height: 40px;
 `
@@ -32,13 +32,15 @@ const Wrapper = styled(Page)`
   display: grid;
   grid-template-columns: 1fr min-content;
   grid-template-rows: min-content min-content;
-  grid-template-areas: "logo username" "links username";
+  grid-template-areas: 'logo username' 'links username';
   align-items: center;
   height: 100%;
 
-  ${props => props.wide && css`
-    width: auto;
-  `}
+  ${props =>
+    props.wide &&
+    css`
+      width: auto;
+    `}
 `
 
 const Links = styled.div`
@@ -57,7 +59,7 @@ const HomeLink = styled(Link)`
   grid-area: logo;
 `
 
-export default function Nav ({ wide = false }) {
+export default function Nav({ wide = false }) {
   const [user, setUser] = useState(null)
   observeAuthState(setUser)
 
@@ -73,7 +75,7 @@ export default function Nav ({ wide = false }) {
         <HomeLink to="/home">
           <Logo />
         </HomeLink>
-        <Username onClick={handleLogout}>{user ? (user.displayName || user.email) : ''}</Username>
+        <Username onClick={handleLogout}>{user ? user.displayName || user.email : ''}</Username>
         <Links>
           <LinkBase color="white" to="/home">
             Home

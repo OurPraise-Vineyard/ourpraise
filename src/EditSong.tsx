@@ -1,7 +1,7 @@
-import { getSong, saveSong } from 'api/songs'
+import { getSong, saveSong } from '@api/songs'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import SongForm from 'Shared/SongForm'
+import SongForm from '@Shared/SongForm'
 
 export default function EditSong () {
   const { songId } = useParams()

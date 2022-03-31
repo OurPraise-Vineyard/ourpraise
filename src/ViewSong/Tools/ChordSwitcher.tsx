@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import increase from 'assets/increase.svg'
-import decrease from 'assets/decrease.svg'
-import { generateRelativeChordList, getRelativeChord } from 'chords'
+import increase from '@assets/increase.svg'
+import decrease from '@assets/decrease.svg'
+import { generateRelativeChordList, getRelativeChord } from '@chords'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -29,10 +29,10 @@ const Chord = styled.select`
 
 const switchTypes = {
   increase,
-  decrease
+  decrease,
 }
 
-const Switcher = styled.div<{type:string}>`
+const Switcher = styled.div<{ type: string }>`
   background-image: url(${props => switchTypes[props.type]});
   background-size: contain;
   width: 20px;
@@ -40,16 +40,16 @@ const Switcher = styled.div<{type:string}>`
   flex: 0 1 auto;
 `
 
-export default function ChordSwitcher ({ songKey, transpose, setTranspose }) {
+export default function ChordSwitcher({ songKey, transpose, setTranspose }) {
   const [chordList, setKeyList] = useState([])
-  const handleSwitch = (movement) => () => {
+  const handleSwitch = movement => () => {
     if (movement > 0) {
       setTranspose((transpose + movement + 12) % 12)
     } else if (movement < 0) {
       setTranspose((transpose + movement - 12) % 12)
     }
   }
-  const handleSelect = (e) => {
+  const handleSelect = e => {
     handleSwitch(parseInt(e.target.value, 10))()
   }
 
@@ -63,7 +63,11 @@ export default function ChordSwitcher ({ songKey, transpose, setTranspose }) {
   return (
     <Wrapper>
       <Chord value={0} onChange={handleSelect}>
-        {chordList.map((chord, index) => <option key={index + chord} value={-(index - 11)}>{chord}</option>)}
+        {chordList.map((chord, index) => (
+          <option key={index + chord} value={-(index - 11)}>
+            {chord}
+          </option>
+        ))}
       </Chord>
       <Switcher type="increase" onClick={handleSwitch(1)} />
       <Switcher type="decrease" onClick={handleSwitch(-1)} />

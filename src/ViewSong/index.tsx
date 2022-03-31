@@ -1,10 +1,10 @@
-import { streamSong } from 'api/songs'
+import { streamSong } from '@api/songs'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import EmojiButton from 'Shared/EmojiButton'
+import EmojiButton from '@Shared/EmojiButton'
 import styled from 'styled-components'
-import Song from 'ViewSong/Song'
-import Tools from 'ViewSong/Tools'
+import Song from '@ViewSong/Song'
+import Tools from '@ViewSong/Tools'
 
 const Layout = styled.div`
   display: flex;

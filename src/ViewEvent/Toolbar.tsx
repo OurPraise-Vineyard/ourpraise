@@ -1,7 +1,7 @@
-import { getFunctionUrl } from 'api/functions'
+import { getFunctionUrl } from '@api/functions'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { buttonBase } from 'Shared/ButtonBase'
+import { buttonBase } from '@Shared/ButtonBase'
 import styled from 'styled-components'
 
 const Row = styled.div`

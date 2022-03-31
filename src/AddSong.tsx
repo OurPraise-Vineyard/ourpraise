@@ -1,7 +1,7 @@
 import React from 'react'
-import { addSong } from 'api/songs'
+import { addSong } from '@api/songs'
 import { useNavigate } from 'react-router-dom'
-import SongForm from 'Shared/SongForm'
+import SongForm from '@Shared/SongForm'
 
 export default function AddSong () {
   const navigate = useNavigate()

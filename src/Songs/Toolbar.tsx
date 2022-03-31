@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { buttonBase } from 'Shared/ButtonBase'
+import { buttonBase } from '@Shared/ButtonBase'
 import styled from 'styled-components'
-import searchIcon from 'assets/search.svg'
+import searchIcon from '@assets/search.svg'
 
 const Row = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ const SearchBarWrapper = styled.div`
   flex: 1 0 auto;
 
   &::before {
-    content: "";
+    content: '';
     background-image: url(${searchIcon});
     width: 20px;
     height: 20px;
@@ -58,19 +58,14 @@ const HorizontalLine = styled.div`
   margin: 8px 0;
 `
 
-export default function Toolbar ({ onSearch }) {
+export default function Toolbar({ onSearch }) {
   return (
     <Row>
       <SearchBarWrapper>
-        <SearchBar
-          placeholder="Search"
-          onChange={e => onSearch(e.target.value)}
-        />
+        <SearchBar placeholder="Search" onChange={e => onSearch(e.target.value)} />
       </SearchBarWrapper>
       <HorizontalLine />
-      <Button to="/songs/add">
-        Add new song
-      </Button>
+      <Button to="/songs/add">Add new song</Button>
     </Row>
   )
 }

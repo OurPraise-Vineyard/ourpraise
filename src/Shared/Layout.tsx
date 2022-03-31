@@ -1,6 +1,6 @@
 import React, { Outlet } from 'react-router-dom'
-import Nav from 'Shared/Nav'
-import Page from 'Shared/Page'
+import Nav from '@Shared/Nav'
+import Page from '@Shared/Page'
 
 export default function Layout ({ wide = false }) {
   return (

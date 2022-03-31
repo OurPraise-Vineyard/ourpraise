@@ -1,9 +1,9 @@
-import SelectField from 'Shared/SelectField'
-import TextField from 'Shared/TextField'
+import SelectField from '@Shared/SelectField'
+import TextField from '@Shared/TextField'
 import React, { useEffect, useReducer } from 'react'
 import styled from 'styled-components'
-import ButtonBase from 'Shared/ButtonBase'
-import { deleteSong } from 'api/songs'
+import ButtonBase from '@Shared/ButtonBase'
+import { deleteSong } from '@api/songs'
 import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
