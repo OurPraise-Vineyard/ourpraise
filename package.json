@@ -26,26 +26,6 @@
     "eject": "react-script eject",
     "deploy": "npm run build && firebase deploy"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "semi": [
-        "error",
-        "never"
-      ],
-      "jsx-quotes": [
-        "error",
-        "prefer-double"
-      ],
-      "quotes": [
-        "error",
-        "single"
-      ]
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -66,9 +46,12 @@
     "@types/react": "^17.0.42",
     "@types/react-dom": "^17.0.14",
     "@types/styled-components": "^5.1.24",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
     "concurrently": "^7.0.0",
+    "eslint": "^8.12.0",
     "react-app-rewired": "^2.2.1",
     "tsconfig-paths-webpack-plugin": "^3.5.2",
-    "typescript": "^4.6.2"
+    "typescript": "^4.6.3"
   }
 }

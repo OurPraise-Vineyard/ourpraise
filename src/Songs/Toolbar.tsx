@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { buttonBase } from '@Shared/ButtonBase'
 import styled from 'styled-components'
-import searchIcon from '@assets/search.svg'
+import SearchSongs from '@Shared/SearchSongs'
 
 const Row = styled.div`
   display: flex;
@@ -21,36 +21,6 @@ const Button = styled(Link)`
   text-decoration: none;
 `
 
-const SearchBar = styled.input`
-  font-size: 20px;
-  border: none;
-  flex: 1 0 auto;
-
-  &:focus {
-    outline: none;
-    border: none;
-  }
-`
-
-const SearchBarWrapper = styled.div`
-  padding: 10px 20px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex: 1 0 auto;
-
-  &::before {
-    content: '';
-    background-image: url(${searchIcon});
-    width: 20px;
-    height: 20px;
-    display: block;
-    margin-right: 10px;
-  }
-`
-
 const HorizontalLine = styled.div`
   background-color: #aaa;
   width: 1px;
@@ -58,12 +28,10 @@ const HorizontalLine = styled.div`
   margin: 8px 0;
 `
 
-export default function Toolbar({ onSearch }) {
+export default function Toolbar({ onLoadHits, onChangeLoading }) {
   return (
     <Row>
-      <SearchBarWrapper>
-        <SearchBar placeholder="Search" onChange={e => onSearch(e.target.value)} />
-      </SearchBarWrapper>
+      <SearchSongs onLoadHits={onLoadHits} onChangeLoading={onChangeLoading} />
       <HorizontalLine />
       <Button to="/songs/add">Add new song</Button>
     </Row>

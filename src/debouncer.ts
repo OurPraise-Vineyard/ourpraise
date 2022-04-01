@@ -1,13 +1,10 @@
 export function createDebouncer (interval:number, immediate = false) {
   let timeout: number
 
-  return function (this: void, cb:() => void) {
-    const context:void = this
-		const args = arguments
-
+  return function (this, cb: () => void, ...args) {
     const later = function () {
       timeout = null
-      if (!immediate) cb.apply(context, args)
+      if (!immediate) cb.apply(this, args)
     }
 
     const callNow = immediate && !timeout
@@ -15,6 +12,6 @@ export function createDebouncer (interval:number, immediate = false) {
     clearTimeout(timeout)
     timeout = setTimeout(later, interval)
 
-    if (callNow) cb.apply(context, args)
+    if (callNow) cb.apply(this, args)
   }
 }
