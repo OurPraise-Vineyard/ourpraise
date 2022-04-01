@@ -72,6 +72,7 @@ function App () {
         </Route>
         <Route element={<Layout wide />}>
           <Route path="/songs/:songId" element={<ViewSong />} />
+          <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
         </Route>
         <Route index element={<Navigate to="/home" replace />} />
       </Routes>

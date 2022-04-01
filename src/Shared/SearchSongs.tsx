@@ -36,12 +36,24 @@ const SearchBarWrapper = styled.div`
   }
 `
 
-export default function SearchSongs ({ onLoadHits, onChangeLoading }) {
+interface SearchBarProps {
+  onLoadHits: (hits: Array<unknown>, query: string) => void,
+  onChangeLoading: (val: boolean) => void
+}
+
+const defaultChangeFunc = () => undefined
+export default function SearchSongs ({ onLoadHits, onChangeLoading = defaultChangeFunc }: SearchBarProps) {
   const [query, setQuery] = useState('')
 
   useEffect(() => {
     if (query) {
-      searchSongs(query).then(hits => onLoadHits(hits, query))
+      searchSongs(query).then(hits => onLoadHits(
+        hits.map(hit => ({
+          ...hit,
+          id: hit.objectID
+        })),
+        query
+      ))
     } else {
       onLoadHits([], query)
     }

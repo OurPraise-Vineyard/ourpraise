@@ -84,7 +84,7 @@ const NotFound = styled.p`
   font-size: 20px;
 `
 
-export default function ContentTable ({ title, items, viewAllUrl = undefined, loading = false, actions = [] }) {
+export default function ContentTable ({ title, items, viewAllUrl = undefined, loading = false, actions = undefined }) {
   return (
     <Container>
       <Toolbar>

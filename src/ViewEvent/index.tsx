@@ -1,18 +1,19 @@
 import { getEvent } from '@api/events'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import ContentTable from '@Shared/Table'
 import Toolbar from '@ViewEvent/Toolbar'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ContentBox from '@Shared/ContentBox'
 import { buttonBase } from '@Shared/ButtonBase'
 import styled from 'styled-components'
-import Modal from '@Shared/Modal'
+import AddSongs from '@ViewEvent/AddSongs'
 
-function mapSong (data) {
+function mapSong (data, eventId) {
   return {
     primary: data.title,
     secondary: data.authors,
-    url: `/songs/${data.id || data.objectID}`
+    url: `/events/${eventId}/songs/${data.id}`,
+    id: data.id
   }
 }
 
@@ -23,16 +24,19 @@ const ButtonLink = styled(Link)`
 `
 
 export default function ViewEvent () {
-  const { eventId, state } = useParams()
+  const { eventId } = useParams()
   const [event, setEvent] = useState(null)
-  const navigate = useNavigate()
 
-  useEffect(() => {
+  const handleFetchEvent = useCallback(() => {
     getEvent(eventId).then(event => setEvent({
       ...event,
-      songs: event.songs.map(mapSong)
+      songs: event.songs.map(song => mapSong(song, eventId))
     }))
   }, [eventId])
+
+  useEffect(() => {
+    handleFetchEvent()
+  }, [handleFetchEvent])
 
   if (!event) {
     return null
@@ -49,17 +53,13 @@ export default function ViewEvent () {
       <ContentTable
         items={event.songs}
         title={'Set list'}
-        actions={[
+        actions={(
           <ButtonLink to={`/events/${eventId}/addsongs`}>
             Add songs
           </ButtonLink>
-        ]}
+        )}
       />
-      <Modal
-        onClose={() => navigate(`/events/${eventId}`)}
-        show={state === 'addsongs'}
-        title="Add songs"
-      />
+      <AddSongs addedSongs={event.songs} onRefreshEvent={handleFetchEvent} />
     </div>
   )
 }
