@@ -12,6 +12,7 @@ const Button = styled.a`
   text-align: center;
   display: block;
   color: black;
+  margin-top: 16px;
 
   :visited {
     color: black;

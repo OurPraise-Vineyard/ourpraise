@@ -1,4 +1,4 @@
-import { getEvent } from '@api/events'
+import { getFullEvent } from '@api/events'
 import React, { useCallback, useEffect, useState } from 'react'
 import ContentTable from '@Shared/Table'
 import Toolbar from '@ViewEvent/Toolbar'
@@ -28,7 +28,7 @@ export default function ViewEvent () {
   const [event, setEvent] = useState(null)
 
   const handleFetchEvent = useCallback(() => {
-    getEvent(eventId).then(event => setEvent({
+    getFullEvent(eventId).then(event => setEvent({
       ...event,
       songs: event.songs.map(song => mapSong(song, eventId))
     }))

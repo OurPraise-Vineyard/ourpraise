@@ -10,7 +10,6 @@ const Wrapper = styled.div`
   align-items: center;
   overflow: hidden;
   position: relative;
-  margin-bottom: 16px;
 `
 
 const Highlight = styled.div<{right:boolean}>`

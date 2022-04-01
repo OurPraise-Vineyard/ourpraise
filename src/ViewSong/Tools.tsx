@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import ChordSwitcher from '@ViewSong/Tools/ChordSwitcher'
 import DownloadPdf from '@ViewSong/Tools/DownloadPdf'
 import ToggleChords from '@ViewSong/Tools/ToggleChords'
+import { useParams } from 'react-router-dom'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -13,11 +14,17 @@ const Container = styled.div`
 `
 
 export default function Tools (props) {
+  const { eventId } = useParams()
+
   return (
     <Container>
       <ToggleChords {...props} />
-      <ChordSwitcher {...props} />
-      <DownloadPdf link={getFunctionUrl('pdf', { song: props.songId })} label="Download PDF" />
+      {!eventId && (
+        <>
+          <ChordSwitcher {...props} />
+          <DownloadPdf link={getFunctionUrl('pdf', { song: props.songId })} label="Download PDF" />
+        </>
+      )}
     </Container>
   )
 }

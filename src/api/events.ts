@@ -34,7 +34,22 @@ interface EventType {
   date: string
 }
 
-export async function getEvent (eventId) {
+export function getEvent (eventId) {
+  return getDoc(doc(getFirestore(), `events/${eventId}`))
+    .then(doc => {
+      const data = doc.data()
+      return {
+        title: data.title,
+        date: data.date,
+        comment: data.comment,
+        createdAt: data.createdAt,
+        songs: data.songs,
+        id: doc.id
+      }
+    })
+}
+
+export async function getFullEvent (eventId) {
   const event: EventType = await getDoc(doc(getFirestore(), `events/${eventId}`))
     .then(doc => {
       const data = doc.data()

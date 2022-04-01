@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   padding: 8px;
   align-items: center;
-  margin-bottom: 16px;
+  margin-top: 16px;
 `
 
 const Chord = styled.select`
