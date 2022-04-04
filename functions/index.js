@@ -25,11 +25,15 @@ exports.pdf = functions.region('europe-west1').https.onRequest((request, respons
 
   function getSongs () {
     if (event) {
-      return db.collection('songs').get()
-        .then((snap) => snap.docs.map(doc => ({
-          ...doc.data(),
-          transpose: 0
-        })))
+      return db.doc(`events/${event}`).get()
+        .then((doc) => Promise.all(doc.data().songs.map(song =>
+          db.doc(`songs/${song.id}`)
+            .get()
+            .then(doc => ({
+              ...doc.data(),
+              transpose: song.transpose
+            }))
+        )))
     } else if (song) {
       return db.doc(`songs/${song}`).get()
         .then((doc) => [{

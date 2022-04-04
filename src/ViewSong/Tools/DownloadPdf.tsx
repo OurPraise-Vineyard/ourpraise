@@ -19,11 +19,12 @@ const Button = styled.a`
   }
 `
 
-export default function DownloadPdf ({ label = 'Download PDF', link }) {
+export default function DownloadPdf ({ label = 'Download PDF', link, className = '' }) {
   return (
     <Button
       href={link}
       target="_blank"
+      className={className}
     >
       {label}
     </Button>

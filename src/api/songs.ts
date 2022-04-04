@@ -1,9 +1,10 @@
 import { mapDocsId } from '@api/utils'
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore'
 import { docData } from 'rxfire/firestore'
+import { Observable } from 'rxjs'
 
-export function streamSong (songId) {
-  return docData(doc(getFirestore(), `songs/${songId}`), { idField: 'id' })
+export function streamSong (songId: string): Observable<SongType> {
+  return docData(doc(getFirestore(), `songs/${songId}`), { idField: 'id' }) as unknown as Observable<SongType>
 }
 
 export function getSong (songId) {

@@ -6,6 +6,15 @@ import styled from 'styled-components'
 import Song from '@ViewSong/Song'
 import Tools from '@ViewSong/Tools'
 import MiniEvent from '@ViewSong/Event'
+import { getFullEvent } from '@api/events'
+import formatDate from '@date'
+
+function mapEvent (data) {
+  return {
+    ...data,
+    date: formatDate(data.date)
+  }
+}
 
 const Layout = styled.div`
   display: flex;
@@ -18,11 +27,6 @@ const Sidebar = styled.div`
   margin-right: 20px;
 `
 
-const Sticky = styled.div`
-  position: sticky;
-  top: 16px;
-`
-
 const Content = styled.div`
   flex: 1 0 auto;
   max-width: calc(100% - 300px);
@@ -30,20 +34,39 @@ const Content = styled.div`
 
 export default function ViewSong () {
   const { songId, eventId } = useParams()
-  const [song, setSong] = useState<any>({})
+  const [song, setSong] = useState<SongType>(null)
   const [transpose, setTranspose] = useState(0)
   const [showChords, setShowChords] = useState(true)
+  const [event, setEvent] = useState<EventType>(null)
   const navigate = useNavigate()
+
+  const songLoaded = song && song.id === songId
+
+  useEffect(() => {
+    if (eventId) {
+      getFullEvent(eventId).then(event => setEvent(mapEvent(event)))
+    } else {
+      setEvent(null)
+    }
+  }, [eventId])
+
+  useEffect(() => {
+    if (event && songLoaded) {
+      setTranspose(event.songs.find(song => song.id === songId).transpose)
+    }
+  }, [songId, event, songLoaded])
 
   useEffect(() => {
     const stream = streamSong(songId)
       .subscribe(song => {
         setSong(song)
-        setTranspose(0)
+        if (!eventId) {
+          setTranspose(0)
+        }
       })
 
     return () => stream.unsubscribe()
-  }, [songId])
+  }, [songId, eventId])
 
   function handleEdit () {
     navigate(`/songs/${songId}/edit`)
@@ -57,30 +80,32 @@ export default function ViewSong () {
     }
   }
 
+  if (!song) {
+    return null
+  }
+
   return (
     <Layout>
       <Sidebar>
-        <Sticky>
-          <EmojiButton emoji="👈️" onClick={handleBack}>
-            Back
+        <EmojiButton emoji="👈️" onClick={handleBack}>
+          Back
+        </EmojiButton>
+        {!eventId && (
+          <EmojiButton emoji="✏️" onClick={handleEdit}>
+            Edit
           </EmojiButton>
-          {!eventId && (
-            <EmojiButton emoji="✏️" onClick={handleEdit}>
-              Edit
-            </EmojiButton>
-          )}
-          <Tools
-            songKey={song.key}
-            songId={song.id}
-            transpose={transpose}
-            setTranspose={setTranspose}
-            showChords={showChords}
-            setShowChords={setShowChords}
-          />
-          {!!eventId && (
-            <MiniEvent />
-          )}
-        </Sticky>
+        )}
+        <Tools
+          songKey={song.key}
+          songId={song.id}
+          transpose={transpose}
+          setTranspose={setTranspose}
+          showChords={showChords}
+          setShowChords={setShowChords}
+        />
+        {!!eventId && (
+          <MiniEvent event={event} />
+        )}
       </Sidebar>
       <Content>
         <Song song={song} transpose={transpose} showChords={showChords} />
