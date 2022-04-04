@@ -42,12 +42,20 @@ const Item = styled(Link)`
   }
 `
 
-const PrimaryText = styled.span`
+const PrimaryText = styled.div`
   color: black;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 45%;
 `
 
-const SecondaryText = styled.span`
+const SecondaryText = styled.div`
   color: #AAAAAA;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 45%;
 `
 
 const ViewAllLink = styled(LinkBase).attrs({ color: 'black' })`
