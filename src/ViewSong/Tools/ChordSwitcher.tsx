@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import increase from '@assets/increase.svg'
 import decrease from '@assets/decrease.svg'
+import reset from '@assets/reset.svg'
 import { generateRelativeChordList, getRelativeChord } from '@chords'
 
 const Wrapper = styled.div`
@@ -30,6 +31,7 @@ const Chord = styled.select`
 const switchTypes = {
   increase,
   decrease,
+  reset
 }
 
 const Switcher = styled.div<{ type: string }>`
@@ -40,7 +42,7 @@ const Switcher = styled.div<{ type: string }>`
   flex: 0 1 auto;
 `
 
-export default function ChordSwitcher({ songKey, transpose, setTranspose }) {
+export default function ChordSwitcher({ songKey, transpose, setTranspose, onResetTranspose }) {
   const [chordList, setKeyList] = useState([])
   const handleSwitch = movement => () => {
     if (movement > 0) {
@@ -69,6 +71,7 @@ export default function ChordSwitcher({ songKey, transpose, setTranspose }) {
           </option>
         ))}
       </Chord>
+      <Switcher type="reset" onClick={onResetTranspose} />
       <Switcher type="increase" onClick={handleSwitch(1)} />
       <Switcher type="decrease" onClick={handleSwitch(-1)} />
     </Wrapper>

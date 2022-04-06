@@ -80,6 +80,14 @@ export default function ViewSong () {
     }
   }
 
+  const handleResetTranspose = () => {
+    if (event && songLoaded) {
+      setTranspose(event.songs.find(song => song.id === songId).transpose)
+    } else {
+      setTranspose(0)
+    }
+  }
+
   if (!song) {
     return null
   }
@@ -102,6 +110,7 @@ export default function ViewSong () {
           setTranspose={setTranspose}
           showChords={showChords}
           setShowChords={setShowChords}
+          onResetTranspose={handleResetTranspose}
         />
         {!!eventId && (
           <MiniEvent event={event} />

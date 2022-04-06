@@ -19,9 +19,9 @@ export default function Tools (props) {
   return (
     <Container>
       <ToggleChords {...props} />
+      <ChordSwitcher {...props} />
       {!eventId && (
         <>
-          <ChordSwitcher {...props} />
           <DownloadPdf link={getFunctionUrl('pdf', { song: props.songId })} label="Download PDF" />
         </>
       )}
