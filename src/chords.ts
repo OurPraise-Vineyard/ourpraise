@@ -1,5 +1,5 @@
 const notes = 'C.D.EF.G.A.B'.split('')
-const validKeys = /(A|Ab|A#|B|Bb|B#|C|Cb|C#|D|Db|D#|E|Eb|E#|F|Fb|F#|G|Gb|G#)/g
+const validKeys = /(Ab|A#|A|Bb|B#|B|Cb|C#|C|Db|D#|D|Eb|E#|E|Fb|F#|F|Gb|G#|G)/g
 
 
 function parseChord (chord) {
