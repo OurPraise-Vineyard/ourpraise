@@ -49,9 +49,13 @@ export default function AddSongs ({ addedSongs = defaultAddedSongs, onRefreshEve
     onRefreshEvent()
   }
 
+  const handleBack = () => {
+    navigate(`/events/${eventId}`, { replace: true })
+  }
+
   return (
     <Modal
-        onClose={() => navigate(`/events/${eventId}`)}
+        onClose={handleBack}
         show={state === 'addsongs'}
         title="Add songs"
       >

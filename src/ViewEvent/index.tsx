@@ -54,9 +54,14 @@ export default function ViewEvent () {
         items={event.songs}
         title={'Set list'}
         actions={(
-          <ButtonLink to={`/events/${eventId}/addsongs`}>
-            Add songs
-          </ButtonLink>
+          <>
+            <ButtonLink to={`/events/${eventId}/addsongs`} replace>
+              Add songs
+            </ButtonLink>
+            <ButtonLink to={`/events/${eventId}/editsongs`} replace>
+              Edit set
+            </ButtonLink>
+          </>
         )}
       />
       <AddSongs addedSongs={event.songs} onRefreshEvent={handleFetchEvent} />

@@ -15,6 +15,10 @@ const Toolbar = styled.div`
   display: flex;
   align-items: center;
   margin: 0 0 16px;
+
+  & > *:not(:last-child) {
+    margin-right: 16px;
+  }
 `
 
 const Title = styled.h2`
