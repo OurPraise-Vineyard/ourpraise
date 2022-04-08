@@ -1,16 +1,34 @@
-import ButtonBase from '@Shared/ButtonBase'
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
+import { getRelativeChord } from '@chords'
+import { Link, useParams } from 'react-router-dom'
 
-const Container = styled.div`
+const Container = styled(Link)`
   display: grid;
   grid-template-columns: 3fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas: 'title actions' 'authors actions';
-  padding: 10px 0;
+  grid-template-rows: repeat(4, min-content);
+  grid-template-areas: 'title key' 'authors key' 'comment comment' 'line line';
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  transition: background-color .2s ease-out;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
 
-  &:not(:last-child) {
+  &:visited {
+    color: black;
+  }
+
+  &:hover {
+    background-color: #efefef;
+  }
+
+  ::after {
+    content: '';
     border-bottom: 1px solid #aaa;
+    display: block;
+    grid-area: line;
+    margin-top: 10px;
   }
 `
 
@@ -28,28 +46,35 @@ const SongAuthors = styled.div`
   align-self: start;
 `
 
-const Action = styled(ButtonBase)`
-  margin: 0;
-  grid-area: actions;
+const PlayKey = styled.div`
+  grid-area: key;
   justify-self: end;
-  align-self: center;
+  align-self: start;
+  padding: 10px 30px;
+  border-radius: 22px;
+  background-color: #efefef;
+  position: relative;
+  border: 1px solid #ddd;
+  font-size: 16px;
 `
 
-const Added = styled.div`
-  font-size: 20px;
-  grid-area: actions;
-  justify-self: end;
-  align-self: center;
+const Comment = styled.div`
+  grid-area: comment;
+  margin-top: 5px;
 `
 
-export default function SongItem ({ song, onAdd }) {
+export default function SongItem ({ song }) {
+  const { eventId } = useParams()
+  const songKey = useMemo(() => {
+    return getRelativeChord(song.key, song.transpose)
+  }, [song.key, song.transpose])
+
   return (
-    <Container>
+    <Container to={`/events/${eventId}/songs/${song.id}`}>
       <SongTitle>{song.title}</SongTitle>
       <SongAuthors>{song.authors}</SongAuthors>
-      {song.added
-        ? <Added>Added to set</Added>
-        : <Action onClick={onAdd}>Add song</Action>}
+      <PlayKey>Key: {songKey}</PlayKey>
+      <Comment>{song.comment}</Comment>
     </Container>
   )
 }

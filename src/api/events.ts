@@ -1,5 +1,5 @@
 import { mapDocsId, pruneObject } from '@api/utils'
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, runTransaction, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore'
 
 export function getRecentEvents () {
   return getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc')))
@@ -58,7 +58,7 @@ export async function getFullEvent (eventId) {
         date: data.date,
         comment: data.comment,
         createdAt: data.createdAt,
-        songs: data.songs,
+        songs: data.songs || [],
         id: doc.id
       }
     })
@@ -81,25 +81,4 @@ export async function getFullEvent (eventId) {
 
 export function deleteEvents (eventId) {
   return deleteDoc(doc(getFirestore(), `events/${eventId}`))
-}
-
-export function addSongToEvent (eventId: string, songId: string) {
-  const eventRef = doc(getFirestore(), `events/${eventId}`)
-  return runTransaction(getFirestore(), async transaction => {
-    const eventDoc = await transaction.get(eventRef)
-
-    if (!eventDoc.exists) {
-      throw new Error('Event does not exist!')
-    }
-
-    const songs = eventDoc.data().songs.concat([
-      {
-        id: songId,
-        transpose: 0,
-        comment: ''
-      }
-    ])
-
-    transaction.update(eventRef, { songs })
-  })
 }

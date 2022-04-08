@@ -1,37 +1,16 @@
 import { getFullEvent } from '@api/events'
 import React, { useCallback, useEffect, useState } from 'react'
-import ContentTable from '@Shared/Table'
 import Toolbar from '@ViewEvent/Toolbar'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import ContentBox from '@Shared/ContentBox'
-import { buttonBase } from '@Shared/ButtonBase'
-import styled from 'styled-components'
-import AddSongs from '@ViewEvent/AddSongs'
-
-function mapSong (data, eventId) {
-  return {
-    primary: data.title,
-    secondary: data.authors,
-    url: `/events/${eventId}/songs/${data.id}`,
-    id: data.id
-  }
-}
-
-const ButtonLink = styled(Link)`
-  ${buttonBase}
-  margin: 0;
-  text-decoration: none;
-`
+import SongItem from '@ViewEvent/SongItem'
 
 export default function ViewEvent () {
   const { eventId } = useParams()
   const [event, setEvent] = useState(null)
 
   const handleFetchEvent = useCallback(() => {
-    getFullEvent(eventId).then(event => setEvent({
-      ...event,
-      songs: event.songs.map(song => mapSong(song, eventId))
-    }))
+    getFullEvent(eventId).then(setEvent)
   }, [eventId])
 
   useEffect(() => {
@@ -50,21 +29,11 @@ export default function ViewEvent () {
           {event.comment}
         </ContentBox>
       )}
-      <ContentTable
-        items={event.songs}
-        title={'Set list'}
-        actions={(
-          <>
-            <ButtonLink to={`/events/${eventId}/addsongs`} replace>
-              Add songs
-            </ButtonLink>
-            <ButtonLink to={`/events/${eventId}/editsongs`} replace>
-              Edit set
-            </ButtonLink>
-          </>
-        )}
-      />
-      <AddSongs addedSongs={event.songs} onRefreshEvent={handleFetchEvent} />
+      <ContentBox noPadding title="Set list">
+        {event.songs.map(song => (
+          <SongItem key={song.id} song={song} />
+        ))}
+      </ContentBox>
     </div>
   )
 }

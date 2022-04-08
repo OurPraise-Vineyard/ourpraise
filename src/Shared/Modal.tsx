@@ -9,7 +9,7 @@ const Grid = styled.div<{ show?: boolean }>`
   grid-template-columns: 1fr minmax(auto, 800px) 1fr;
   grid-template-rows: 1fr min-content 1fr;
   grid-template-areas: '. . .' '. modal .' '. . .';
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;

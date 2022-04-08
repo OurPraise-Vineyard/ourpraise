@@ -38,7 +38,7 @@ export default function SelectField ({ title = '', name = '', onChange, value, o
         name={name}
         onChange={onChange}
       >
-        {options.map(option => <option key={option}>{option}</option>)}
+        {options.map(option => <option key={option.key || option.value} value={option.value}>{option.label || option.value}</option>)}
       </Select>
     </Container>
   )

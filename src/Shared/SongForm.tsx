@@ -95,7 +95,7 @@ export default function SongForm ({ song = undefined, onSubmit, heading }) {
         <TextField value={title} title="Title" onChange={handleChange('title')} />
         <TextField value={authors} title="Authors" onChange={handleChange('authors')} />
         <SelectField value={key} title="Song Key" onChange={handleChange('key')} options={keys} />
-        <TextField multiline value={body} title="Body" onChange={handleChange('body')} />
+        <TextField multiline size="large" value={body} title="Body" onChange={handleChange('body')} />
         <Buttons>
           <SaveButton type="submit">Save</SaveButton>
           {!!(song && song.id) && (

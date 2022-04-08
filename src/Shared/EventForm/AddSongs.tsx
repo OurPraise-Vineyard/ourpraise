@@ -1,9 +1,7 @@
-import { addSongToEvent } from '@api/events'
+import AddSongItem from '@Shared/EventForm/AddSongItem'
 import Modal from '@Shared/Modal'
 import SearchSongs from '@Shared/SearchSongs'
-import SongItem from '@ViewEvent/SongItem'
 import React, { useCallback, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 interface Song {
@@ -14,6 +12,7 @@ function mapSong (data, addedSongs: Array<Song>) {
   return {
     title: data.title,
     authors: data.authors,
+    key: data.key,
     id: data.id,
     added: addedSongs.findIndex(song => song.id === data.id) > -1
   }
@@ -26,9 +25,7 @@ const Text = styled.div`
 `
 
 const defaultAddedSongs = []
-export default function AddSongs ({ addedSongs = defaultAddedSongs, onRefreshEvent }) {
-  const navigate = useNavigate()
-  const { eventId, state } = useParams()
+export default function AddSongs ({ show, onClose, addedSongs = defaultAddedSongs, onAddSong }) {
   const [loading, setLoading] = useState(false)
   const [hits, setHits] = useState([])
   const [query, setQuery] = useState('')
@@ -38,25 +35,20 @@ export default function AddSongs ({ addedSongs = defaultAddedSongs, onRefreshEve
     setQuery(query)
   }, [addedSongs])
 
-  const handleAddSong = async (songId) => {
-    setHits(hits.map(hit => hit.id === songId
+  const handleAddSong = async (song) => {
+    setHits(hits.map(hit => hit.id === song.id
       ? ({
         ...hit,
         added: true
       })
       : hit))
-    await addSongToEvent(eventId, songId)
-    onRefreshEvent()
-  }
-
-  const handleBack = () => {
-    navigate(`/events/${eventId}`, { replace: true })
+    onAddSong(song)
   }
 
   return (
     <Modal
-        onClose={handleBack}
-        show={state === 'addsongs'}
+        onClose={onClose}
+        show={show}
         title="Add songs"
       >
         <SearchSongs
@@ -70,7 +62,7 @@ export default function AddSongs ({ addedSongs = defaultAddedSongs, onRefreshEve
           <Text>Loading...</Text>
         )}
         {hits.map((song) => (
-          <SongItem key={song.id} song={song} onAdd={() => handleAddSong(song.id)} />
+          <AddSongItem key={song.id} song={song} onAdd={() => handleAddSong(song)} />
         ))}
       </Modal>
   )

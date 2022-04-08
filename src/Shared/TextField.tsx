@@ -28,7 +28,14 @@ const Input = styled.input`
     outline: none;
   }
 `
-const Textarea = styled.textarea`
+
+const sizes = {
+  small: '50px',
+  medium: '200px',
+  large: '400px'
+}
+
+const Textarea = styled.textarea<{size: string}>`
   background: transparent;
   width: 100%;
   display: block;
@@ -36,7 +43,7 @@ const Textarea = styled.textarea`
   font-size: 14px;
   padding: 8px 0 0;
   font-family: 'Oxygen Mono', monospace;
-  min-height: 400px;
+  min-height: ${props => sizes[props.size]};
   min-width: 100%;
   max-width: 100%;
 
@@ -46,7 +53,16 @@ const Textarea = styled.textarea`
   }
 `
 
-export default function TextField ({ title = '', name = '', password = false, onChange, value, multiline = false, type = 'text' }) {
+export default function TextField ({
+  title = '',
+  name = '',
+  password = false,
+  onChange,
+  value,
+  multiline = false,
+  type = 'text',
+  size = 'medium'
+}) {
   return (
     <Container>
       <Label>{title}</Label>
@@ -56,6 +72,7 @@ export default function TextField ({ title = '', name = '', password = false, on
             value={value}
             name={name}
             onChange={onChange}
+            size={size}
           />
         )
         : (

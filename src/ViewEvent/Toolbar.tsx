@@ -39,7 +39,7 @@ export default function Toolbar ({ title, onSearch = undefined, eventId }) {
     <Row>
       <Title>{title}</Title>
       <ButtonLink to={`/events/${eventId}/edit`}>
-        Edit details
+        Edit
       </ButtonLink>
       <ButtonExternal
         href={getFunctionUrl('pdf', { event: eventId })}

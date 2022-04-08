@@ -8,6 +8,7 @@ import Tools from '@ViewSong/Tools'
 import MiniEvent from '@ViewSong/Event'
 import { getFullEvent } from '@api/events'
 import formatDate from '@date'
+import SongComment from '@ViewSong/Comment'
 
 function mapEvent (data) {
   return {
@@ -57,16 +58,25 @@ export default function ViewSong () {
   }, [songId, event, songLoaded])
 
   useEffect(() => {
-    const stream = streamSong(songId)
-      .subscribe(song => {
-        setSong(song)
-        if (!eventId) {
-          setTranspose(0)
-        }
-      })
+    if (!eventId || event) {
+      const stream = streamSong(songId)
+        .subscribe(song => {
+          if (event) {
+            const songContext = event.songs.find(song => song.id === songId)
+            setSong({
+              ...song,
+              comment: songContext.comment
+            })
+            setTranspose(songContext.transpose)
+          } else {
+            setSong(song)
+            setTranspose(0)
+          }
+        })
 
-    return () => stream.unsubscribe()
-  }, [songId, eventId])
+      return () => stream.unsubscribe()
+    }
+  }, [songId, eventId, event])
 
   function handleEdit () {
     navigate(`/songs/${songId}/edit`)
@@ -74,7 +84,7 @@ export default function ViewSong () {
 
   const handleBack = () => {
     if (eventId) {
-      navigate( `/events/${eventId}`)
+      navigate(`/events/${eventId}`)
     } else if (songId) {
       navigate('/songs')
     }
@@ -117,6 +127,7 @@ export default function ViewSong () {
         )}
       </Sidebar>
       <Content>
+        {!!song.comment && <SongComment>{song.comment}</SongComment>}
         <Song song={song} transpose={transpose} showChords={showChords} />
       </Content>
     </Layout>

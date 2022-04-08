@@ -8,7 +8,7 @@ const colorSchemes = {
   `,
   primary: css`
     background: rgb(87,144,196);
-    background: linear-gradient(90deg, rgba(87,144,196,1) 0%, rgba(124,187,244,1) 35%, rgba(161,205,245,1) 100%);
+    background: linear-gradient(90deg, #69a0d5 0%, rgba(124,187,244,1) 35%, #91c1ee 100%);
     color: white;
   `,
   danger: css`
