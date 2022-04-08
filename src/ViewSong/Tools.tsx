@@ -15,6 +15,7 @@ const Container = styled.div`
 
 export default function Tools (props) {
   const { eventId } = useParams()
+  console.log(props.transpose)
 
   return (
     <Container>
@@ -22,7 +23,7 @@ export default function Tools (props) {
       <ChordSwitcher {...props} />
       {!eventId && (
         <>
-          <DownloadPdf link={getFunctionUrl('pdf', { song: props.songId })} label="Download PDF" />
+          <DownloadPdf link={getFunctionUrl('pdf', { song: props.songId, transpose: props.transpose })} label="Download PDF" />
         </>
       )}
     </Container>
