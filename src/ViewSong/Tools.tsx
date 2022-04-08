@@ -15,7 +15,6 @@ const Container = styled.div`
 
 export default function Tools (props) {
   const { eventId } = useParams()
-  console.log(props.transpose)
 
   return (
     <Container>
