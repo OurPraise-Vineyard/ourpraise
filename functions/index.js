@@ -17,9 +17,6 @@ const options = {
   }
 }
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
 exports.pdf = functions.region('europe-west1').https.onRequest((request, response) => {
   const { event, song, transpose = 0 } = request.query
 
@@ -54,5 +51,46 @@ exports.pdf = functions.region('europe-west1').https.onRequest((request, respons
         response.setHeader('content-type', 'application/pdf')
         response.send(buffer)
       })
+    })
+})
+
+exports.slides = functions.region('europe-west1').https.onRequest((request, response) => {
+  const { event, song } = request.query
+
+  function getSongs () {
+    if (event) {
+      return db.doc(`events/${event}`).get()
+        .then((doc) => Promise.all(doc.data().songs.map(song =>
+          db.doc(`songs/${song.id}`)
+            .get()
+            .then(doc => ({
+              title: doc.data().title,
+              authors: doc.data().authors,
+              body: doc.data().body
+            }))
+        )))
+    } else if (song) {
+      return db.doc(`songs/${song}`).get()
+        .then((doc) => [{
+          title: doc.data().title,
+          authors: doc.data().authors,
+          body: doc.data().body
+        }])
+    }
+  }
+
+  getSongs()
+    .then(songs => {
+      return songs.map(({ body, ...song }) => ({
+        ...song,
+        slides: body
+          .replace(/\n\s+\n/g, '\n\n')
+          .split('\n\n')
+          .map(part => part.replace(/\/\/.*\n/g, ''))
+      }))
+    })
+    .then(songs => {
+      response.setHeader('content-type', 'application/json')
+      response.send(songs)
     })
 })
