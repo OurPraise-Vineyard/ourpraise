@@ -1,4 +1,4 @@
-import { getRecommendedSongs } from '@api/songs'
+import { getRecentSongs, getRecommendedSongs } from '@api/songs'
 import React, { useEffect, useState } from 'react'
 import ContentTable from '@Shared/Table'
 
@@ -11,16 +11,20 @@ function mapSong (data) {
 }
 
 export default function Home () {
-  const [songs, setSongs] = useState([])
+  const [recentSongs, setRecentSongs] = useState([])
+  const [popularSongs, setPopularSongs] = useState([])
 
   useEffect(() => {
     getRecommendedSongs()
-      .then(songs => setSongs(songs.map(mapSong)))
+      .then(songs => setPopularSongs(songs.map(mapSong)))
+    getRecentSongs()
+      .then(songs => setRecentSongs(songs.map(mapSong)))
   }, [])
 
   return (
     <div>
-      <ContentTable items={songs} title="Recently added songs" viewAllUrl="/songs" />
+      <ContentTable items={popularSongs} title="Most popular songs" />
+      <ContentTable items={recentSongs} title="Recently added songs" />
     </div>
   )
 }

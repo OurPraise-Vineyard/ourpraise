@@ -1,5 +1,5 @@
 import { mapDocsId } from '@api/utils'
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, updateDoc } from 'firebase/firestore'
 import { docData } from 'rxfire/firestore'
 import { Observable } from 'rxjs'
 
@@ -23,14 +23,19 @@ export function addSong (options) {
   })
 }
 
-export function getRecommendedSongs () {
-  return getDocs(query(collection(getFirestore(), 'songs'), orderBy('createdAt', 'desc')))
+export function getRecentSongs () {
+  return getDocs(query(collection(getFirestore(), 'songs'), orderBy('createdAt', 'desc'), limit(5)))
     .then(docs => mapDocsId(docs))
   }
 
-  export function getAllSongs () {
-    return getDocs(query(collection(getFirestore(), 'songs'), orderBy('title', 'asc')))
+export function getRecommendedSongs () {
+  return getDocs(query(collection(getFirestore(), 'songs'), orderBy('popularity', 'desc'), limit(5)))
     .then(docs => mapDocsId(docs))
+  }
+
+export function getAllSongs () {
+  return getDocs(query(collection(getFirestore(), 'songs'), orderBy('title', 'asc')))
+  .then(docs => mapDocsId(docs))
 }
 
 export function deleteSong (songId) {

@@ -6,6 +6,8 @@ This repo contains the source code for Besyng, an online worship platform that h
 
 `npm i && cd functions && npm i && cd ..`
 
+`./mirror-firestore.sh`
+
 `npm start`
 
 # Integration API

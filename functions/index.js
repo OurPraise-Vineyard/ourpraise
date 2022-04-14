@@ -94,3 +94,48 @@ exports.slides = functions.region('europe-west1').https.onRequest((request, resp
       response.send(songs)
     })
 })
+
+exports.onWriteEvent = functions.region('europe-west1').firestore
+  .document('events/{eventId}')
+  .onWrite(async (change) => {
+    if (change.after.exists) {
+      if (change.before.exists) { // Update
+        const prevSongs = change.before.data().songs
+        const nextSongs = change.after.data().songs
+
+        const added = nextSongs.filter(({ id: idA }) => prevSongs.findIndex(({ id: idB }) => idA === idB) === -1)
+        const removed = prevSongs.filter(({ id: idA }) => nextSongs.findIndex(({ id: idB }) => idA === idB) === -1)
+
+        console.log(added)
+        console.log(removed)
+
+        await Promise.all(added.map(song =>
+          db.doc(`songs/${song.id}`).update({
+            popularity: admin.firestore.FieldValue.increment(1)
+          })
+        ))
+
+        await Promise.all(removed.map(song =>
+          db.doc(`songs/${song.id}`).update({
+            popularity: admin.firestore.FieldValue.increment(-1)
+          })
+        ))
+      } else { // Create
+        const songs = change.after.data().songs
+
+        await Promise.all(songs.map(song =>
+          db.doc(`songs/${song.id}`).update({
+            popularity: admin.firestore.FieldValue.increment(1)
+          })
+        ))
+      }
+    } else { // Delete
+      const prevSongs = change.before.data().songs
+
+      await Promise.all(prevSongs.map(song =>
+        db.doc(`songs/${song.id}`).update({
+          popularity: admin.firestore.FieldValue.increment(-1)
+        })
+      ))
+    }
+  })

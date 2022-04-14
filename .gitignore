@@ -27,3 +27,5 @@ firebase-debug.log
 .vscode
 
 ui-debug.log
+
+/firestore-import
