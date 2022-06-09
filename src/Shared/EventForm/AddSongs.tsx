@@ -51,10 +51,10 @@ export default function AddSongs ({ show, onClose, addedSongs = defaultAddedSong
         show={show}
         title="Add songs"
       >
-        <SearchSongs
+        {/* <SearchSongs
           onChangeLoading={setLoading}
           onLoadHits={handleLoadHits}
-        />
+        /> */}
         {query.length > 0 && !loading && (
           <Text>Found {hits.length} songs:</Text>
         )}

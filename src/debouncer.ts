@@ -1,17 +1,17 @@
-export function createDebouncer (interval:number, immediate = false) {
+export function createDebouncer (interval:number) {
   let timeout: number
 
-  return function (this, cb: () => void, ...args) {
+  return function (this, cb: () => void, immediate = false) {
     const later = function () {
       timeout = null
-      if (!immediate) cb.apply(this, args)
+      if (!immediate) cb.apply(this)
     }
 
-    const callNow = immediate && !timeout
+    const callNow = immediate
 
     clearTimeout(timeout)
     timeout = setTimeout(later, interval)
 
-    if (callNow) cb.apply(this, args)
+    if (callNow) cb.apply(this)
   }
 }

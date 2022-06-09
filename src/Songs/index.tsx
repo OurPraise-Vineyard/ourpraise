@@ -1,7 +1,9 @@
-import { getAllSongs } from '@api/songs'
 import React, { useCallback, useEffect, useState } from 'react'
 import ContentTable from '@Shared/Table'
 import Toolbar from '@Songs/Toolbar'
+import { useAppDispatch, useAppSelector } from '@hooks'
+import { fetchAllSongs, fetchSearchQuery, setSearchStatus } from '@slices/songs'
+import { FetchStatus } from '@slices/utils'
 
 function mapSong (data) {
   return {
@@ -12,25 +14,43 @@ function mapSong (data) {
 }
 
 export default function Songs () {
-  const [songs, setSongs] = useState([])
-  const [hits, setHits] = useState([])
   const [query, setQuery] = useState('')
-  const [loading, setLoading] = useState(false)
+  const statusAllSongs = useAppSelector(state => state.songs.statusAllSongs)
+  const statusSearch = useAppSelector(state => state.songs.statusSearch)
+  const songs = useAppSelector(state => state.songs.allSongs)
+  const hits = useAppSelector(state => state.songs.searchResults)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    getAllSongs()
-      .then(songs => setSongs(songs.map(mapSong)))
-  }, [])
+    if (statusAllSongs !== FetchStatus.loading && statusAllSongs !== FetchStatus.succeeded) {
+      dispatch(fetchAllSongs())
+    }
+  }, [dispatch, statusAllSongs])
 
-  const handleLoadHits = useCallback((hits, query) => {
-    setHits(hits.map(mapSong))
+  const handleSearch = useCallback((query) => {
+    if (!query) {
+      dispatch(setSearchStatus(FetchStatus.idle))
+    } else {
+      dispatch(fetchSearchQuery(query))
+    }
     setQuery(query)
-  }, [])
+  }, [dispatch])
+
+  const handleSetSearchLoading = useCallback((value) => {
+    if (value && statusSearch !== FetchStatus.loading) {
+      dispatch(setSearchStatus(FetchStatus.loading))
+    } else if (!value && statusSearch !== FetchStatus.idle) {
+      dispatch(setSearchStatus(FetchStatus.idle))
+    }
+  }, [dispatch, statusSearch])
+
+  const loading = statusSearch === FetchStatus.loading || statusAllSongs === FetchStatus.loading
 
   return (
     <div>
-      <Toolbar onLoadHits={handleLoadHits} onChangeLoading={setLoading} />
+      <Toolbar onSearch={handleSearch} onChangeLoading={handleSetSearchLoading} />
       <ContentTable
+        mapper={mapSong}
         items={query ? hits : songs}
         title={query ? `Search results for "${query}"` : 'All songs'}
         loading={loading}

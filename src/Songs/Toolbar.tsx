@@ -28,10 +28,10 @@ const HorizontalLine = styled.div`
   margin: 8px 0;
 `
 
-export default function Toolbar({ onLoadHits, onChangeLoading }) {
+export default function Toolbar({ onSearch, onChangeLoading }) {
   return (
     <Row>
-      <SearchSongs onLoadHits={onLoadHits} onChangeLoading={onChangeLoading} />
+      <SearchSongs onSearch={onSearch} onChangeLoading={onChangeLoading} />
       <HorizontalLine />
       <Button to="/songs/add">Add new song</Button>
     </Row>

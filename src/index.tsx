@@ -15,6 +15,8 @@ import AddEvent from '@AddEvent'
 import Events from '@Events'
 import ViewEvent from '@ViewEvent'
 import EditEvent from '@EditEvent'
+import { Provider } from 'react-redux'
+import store from '@store'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -55,28 +57,30 @@ function App () {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/songs/add" element={<AddSong />} />
-          <Route path="/songs/:songId/edit" element={<EditSong />} />
-          <Route path="/songs" element={<Songs />} />
-          <Route path="/events/:eventId/edit" element={<EditEvent />} />
-          <Route path="/events/:eventId">
-            <Route path=":state" element={<ViewEvent />} />
-            <Route path="" element={<ViewEvent />} />
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/songs/add" element={<AddSong />} />
+            <Route path="/songs/:songId/edit" element={<EditSong />} />
+            <Route path="/songs" element={<Songs />} />
+            <Route path="/events/:eventId/edit" element={<EditEvent />} />
+            <Route path="/events/:eventId">
+              <Route path=":state" element={<ViewEvent />} />
+              <Route path="" element={<ViewEvent />} />
+            </Route>
+            <Route path="/events/add" element={<AddEvent />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/home" element={<Home />} />
           </Route>
-          <Route path="/events/add" element={<AddEvent />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/home" element={<Home />} />
-        </Route>
-        <Route element={<Layout wide />}>
-          <Route path="/songs/:songId" element={<ViewSong />} />
-          <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
-        </Route>
-        <Route index element={<Navigate to="/home" replace />} />
-      </Routes>
-    </BrowserRouter>
+          <Route element={<Layout wide />}>
+            <Route path="/songs/:songId" element={<ViewSong />} />
+            <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
+          </Route>
+          <Route index element={<Navigate to="/home" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   )
 }
 
