@@ -1,6 +1,6 @@
 export enum FetchStatus {
-  'idle',
-  'loading',
-  'failed',
-  'succeeded'
+  idle = 'idle',
+  loading = 'loading',
+  failed = 'failed',
+  succeeded = 'succeeded'
 }

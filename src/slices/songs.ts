@@ -5,20 +5,21 @@ import { FetchStatus } from '@slices/utils'
 import { RootState } from '@store'
 import { collection, getDocs, getFirestore, orderBy, query } from 'firebase/firestore'
 
-interface CacheIndex {
-  [index: string]: unknown[]
-}
-
 export interface SongsState {
-  cache: CacheIndex,
+  searchCache: Record<string, unknown[]>,
   searchResults: unknown[],
   allSongs: SongType[],
   statusAllSongs: FetchStatus,
   statusSearch: FetchStatus
 }
 
+interface SearchResult {
+  hits: unknown[],
+  query: string
+}
+
 const initialState: SongsState = {
-  cache: {},
+  searchCache: {},
   searchResults: [],
   allSongs: [],
   statusAllSongs: FetchStatus.idle,
@@ -30,11 +31,6 @@ export const fetchAllSongs = createAsyncThunk<SongType[]>('songs/fetchAll', func
     .then(docs => mapDocsId(docs))
 })
 
-interface SearchResult {
-  hits: unknown[],
-  query: string
-}
-
 export const fetchSearchQuery = createAsyncThunk<
   SearchResult,
   string,
@@ -42,10 +38,10 @@ export const fetchSearchQuery = createAsyncThunk<
     state: RootState
   }
 >('songs/fetchSearchQuery', async function (query, { getState }) {
-  if (getState().songs.cache[query]) {
+  if (getState().songs.searchCache[query]) {
     return {
       query,
-      hits: getState().songs.cache[query]
+      hits: getState().songs.searchCache[query]
     }
   } else {
     const result = await searchSongs(query)
@@ -89,7 +85,7 @@ const songsSlice = createSlice({
       .addCase(fetchSearchQuery.fulfilled, (state, action) => {
         state.statusSearch = FetchStatus.succeeded
         state.searchResults = action.payload.hits
-        state.cache[action.payload.query] = action.payload.hits
+        state.searchCache[action.payload.query] = action.payload.hits
       })
   }
 })

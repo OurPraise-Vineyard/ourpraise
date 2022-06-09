@@ -1,23 +1,27 @@
-import { getFullEvent } from '@api/events'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Toolbar from '@ViewEvent/Toolbar'
 import { useParams } from 'react-router-dom'
 import ContentBox from '@Shared/ContentBox'
 import SongItem from '@ViewEvent/SongItem'
+import { useAppDispatch, useAppSelector } from '@hooks'
+import { FetchStatus } from '@slices/utils'
+import { fetchEvent } from '@slices/events'
 
 export default function ViewEvent () {
   const { eventId } = useParams()
-  const [event, setEvent] = useState(null)
+  const dispatch = useAppDispatch()
+  const event = useAppSelector(state => state.events.fullEvents[eventId])
+  const statusEvent = useAppSelector(state => state.events.statusEvent)
 
   const handleFetchEvent = useCallback(() => {
-    getFullEvent(eventId).then(setEvent)
-  }, [eventId])
+    dispatch(fetchEvent(eventId))
+  }, [eventId, dispatch])
 
   useEffect(() => {
     handleFetchEvent()
   }, [handleFetchEvent])
 
-  if (!event) {
+  if (!event || statusEvent === FetchStatus.loading) {
     return null
   }
 
