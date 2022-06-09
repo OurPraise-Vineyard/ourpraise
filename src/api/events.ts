@@ -1,10 +1,5 @@
-import { mapDocsId, pruneObject } from '@api/utils'
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore'
-
-export function getRecentEvents () {
-  return getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc')))
-    .then(docs => mapDocsId(docs))
-}
+import { pruneObject } from '@api/utils'
+import { addDoc, collection, deleteDoc, doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore'
 
 export function addEvent (options) {
   return addDoc(collection(getFirestore(), 'events'), {
@@ -23,30 +18,6 @@ export function saveEvent (eventId, options) {
       comment: song.comment
     }))
   }))
-}
-
-interface EventType {
-  songs: Array<Record<string, unknown>>,
-  id: string,
-  title: string,
-  comment: string,
-  createdAt: string,
-  date: string
-}
-
-export function getEvent (eventId) {
-  return getDoc(doc(getFirestore(), `events/${eventId}`))
-    .then(doc => {
-      const data = doc.data()
-      return {
-        title: data.title,
-        date: data.date,
-        comment: data.comment,
-        createdAt: data.createdAt,
-        songs: data.songs,
-        id: doc.id
-      }
-    })
 }
 
 export async function getFullEvent (eventId) {
