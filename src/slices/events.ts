@@ -7,15 +7,13 @@ import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query } from '
 export interface EventsState {
   allEvents: EventType[],
   statusAllEvents: FetchStatus,
-  fullEvents: Record<string, EventType>,
-  statusEvent: FetchStatus
+  index: Record<string, EventType>
 }
 
 const initialState: EventsState = {
   allEvents: [],
   statusAllEvents: FetchStatus.idle,
-  fullEvents: {},
-  statusEvent: FetchStatus.idle
+  index: {}
 }
 
 export const fetchRecentEvents = createAsyncThunk<EventType[]>('events/fetchRecent', function () {
@@ -30,42 +28,16 @@ export const fetchEvent = createAsyncThunk<
     state: RootState
   }
 >('events/fetchOne', async function (eventId, { getState }) {
-  let event: EventType = getState().events.allEvents.find(({ id }) => id === eventId)
-  if (!event) {
-    event = await getDoc(doc(getFirestore(), `events/${eventId}`))
+  let cached: EventType = getState().events.index[eventId]
+  if (!cached) {
+    cached = await getDoc(doc(getFirestore(), `events/${eventId}`))
       .then(doc => ({
         ...doc.data(),
         id: doc.id
       } as EventType))
   }
 
-  const songs = await Promise.all(
-    event.songs.map(
-      async song => {
-        let cached: SongType = getState().songs.allSongs.find(({ id }) => id === song.id)
-
-        if (!cached) {
-          cached = await getDoc(doc(getFirestore(), `songs/${song.id}`))
-            .then(doc => ({
-              ...doc.data(),
-              ...song
-            } as SongType))
-        } else {
-          cached = {
-            ...cached,
-            ...song
-          }
-        }
-
-        return cached
-      }
-    )
-  )
-
-  return {
-    ...event,
-    songs
-  }
+  return cached
 })
 
 const eventsSlice = createSlice({
@@ -83,16 +55,12 @@ const eventsSlice = createSlice({
       .addCase(fetchRecentEvents.fulfilled, (state, action) => {
         state.statusAllEvents = FetchStatus.succeeded
         state.allEvents = action.payload
-      })
-      .addCase(fetchEvent.pending, state => {
-        state.statusEvent = FetchStatus.loading
-      })
-      .addCase(fetchEvent.rejected, state => {
-        state.statusEvent = FetchStatus.failed
+        action.payload.forEach(event => {
+          state.index[event.id] = event
+        })
       })
       .addCase(fetchEvent.fulfilled, (state, action) => {
-        state.statusEvent = FetchStatus.succeeded
-        state.fullEvents[action.payload.id] = action.payload
+        state.index[action.payload.id] = action.payload
       })
   }
 })

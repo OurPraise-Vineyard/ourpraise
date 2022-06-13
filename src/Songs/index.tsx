@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import ContentTable from '@Shared/Table'
 import Toolbar from '@Songs/Toolbar'
 import { useAppDispatch, useAppSelector } from '@hooks'
-import { fetchAllSongs, fetchSearchQuery, setSearchStatus } from '@slices/songs'
+import { fetchAllSongs, fetchSearchQuery } from '@slices/songs'
 import { FetchStatus } from '@slices/utils'
 
 function mapSong (data) {
@@ -15,11 +15,12 @@ function mapSong (data) {
 
 export default function Songs () {
   const [query, setQuery] = useState('')
-  const statusAllSongs = useAppSelector(state => state.songs.statusAllSongs)
-  const statusSearch = useAppSelector(state => state.songs.statusSearch)
-  const songs = useAppSelector(state => state.songs.allSongs)
+  const statusAllSongs = useAppSelector(state => state.songs.status.all)
+  const songs = useAppSelector(state => state.songs.views.all)
   const hits = useAppSelector(state => state.songs.searchResults)
   const dispatch = useAppDispatch()
+
+  const [searchStatus, setSearchStatus] = useState(FetchStatus.idle)
 
   useEffect(() => {
     if (statusAllSongs !== FetchStatus.loading && statusAllSongs !== FetchStatus.succeeded) {
@@ -27,24 +28,30 @@ export default function Songs () {
     }
   }, [dispatch, statusAllSongs])
 
-  const handleSearch = useCallback((query) => {
-    if (!query) {
-      dispatch(setSearchStatus(FetchStatus.idle))
-    } else {
-      dispatch(fetchSearchQuery(query))
-    }
+  const handleSearch = useCallback(async (query) => {
     setQuery(query)
+    if (!query) {
+      setSearchStatus(FetchStatus.idle)
+    } else {
+      try {
+        setSearchStatus(FetchStatus.loading)
+        await dispatch(fetchSearchQuery(query))
+        setSearchStatus(FetchStatus.succeeded)
+      } catch (err) {
+        setSearchStatus(FetchStatus.failed)
+      }
+    }
   }, [dispatch])
 
   const handleSetSearchLoading = useCallback((value) => {
-    if (value && statusSearch !== FetchStatus.loading) {
-      dispatch(setSearchStatus(FetchStatus.loading))
-    } else if (!value && statusSearch !== FetchStatus.idle) {
-      dispatch(setSearchStatus(FetchStatus.idle))
+    if (value && searchStatus !== FetchStatus.loading) {
+      setSearchStatus(FetchStatus.loading)
+    } else if (!value && searchStatus !== FetchStatus.idle) {
+      setSearchStatus(FetchStatus.idle)
     }
-  }, [dispatch, statusSearch])
+  }, [searchStatus])
 
-  const loading = statusSearch === FetchStatus.loading || statusAllSongs === FetchStatus.loading
+  const loading = searchStatus === FetchStatus.loading || statusAllSongs === FetchStatus.loading
 
   return (
     <div>

@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import home from '@slices/home'
 import songs from '@slices/songs'
 import events from '@slices/events'
 
 const store = configureStore({
   reducer: {
-    home,
     songs,
     events
   }

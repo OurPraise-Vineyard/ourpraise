@@ -1,16 +1,26 @@
 import { searchSongs } from '@api/algolia'
 import { mapDocsId } from '@api/utils'
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AsyncThunk, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { fetchEvent } from '@slices/events'
 import { FetchStatus } from '@slices/utils'
-import { RootState } from '@store'
-import { collection, getDocs, getFirestore, orderBy, query } from 'firebase/firestore'
+import { AppDispatch, RootState } from '@store'
+import { collection, doc, getDoc, getDocs, getFirestore, limit, orderBy, query } from 'firebase/firestore'
 
 export interface SongsState {
   searchCache: Record<string, unknown[]>,
   searchResults: unknown[],
-  allSongs: SongType[],
-  statusAllSongs: FetchStatus,
-  statusSearch: FetchStatus
+  index: Record<string, SongType>,
+  views: {
+    [key: string]: SongType[],
+    all: SongType[],
+    recent: SongType[],
+    popular: SongType[]
+  },
+  status: {
+    all: FetchStatus,
+    recent: FetchStatus,
+    popular: FetchStatus
+  }
 }
 
 interface SearchResult {
@@ -19,11 +29,19 @@ interface SearchResult {
 }
 
 const initialState: SongsState = {
+  index: {},
   searchCache: {},
   searchResults: [],
-  allSongs: [],
-  statusAllSongs: FetchStatus.idle,
-  statusSearch: FetchStatus.idle
+  views: {
+    all: [],
+    recent: [],
+    popular: []
+  },
+  status: {
+    all: FetchStatus.idle,
+    recent: FetchStatus.idle,
+    popular: FetchStatus.idle
+  }
 }
 
 export const fetchAllSongs = createAsyncThunk<SongType[]>('songs/fetchAll', function () {
@@ -55,41 +73,106 @@ export const fetchSearchQuery = createAsyncThunk<
   }
 })
 
-const songsSlice = createSlice({
-  name: 'songs',
-  initialState,
-  reducers: {
-    setSearchStatus(state, action: PayloadAction<FetchStatus>) {
-      state.statusSearch = action.payload
-    }
+export const fetchRecentSongs = createAsyncThunk<SongType[]>('home/fetchRecent', () => {
+  return getDocs(query(collection(getFirestore(), 'songs'), orderBy('createdAt', 'desc'), limit(5)))
+    .then(docs => mapDocsId(docs))
+})
+
+export const fetchPopularSongs = createAsyncThunk<SongType[]>('home/fetchPopular', async () => {
+  return getDocs(query(collection(getFirestore(), 'songs'), orderBy('popularity', 'desc'), limit(5)))
+    .then(docs => mapDocsId(docs))
+})
+
+export const fetchEventSongs = createAsyncThunk<
+  {
+    eventId: string,
+    songs: SongType[]
   },
-  extraReducers(builder) {
-    builder
-      .addCase(fetchAllSongs.pending, state => {
-        state.statusAllSongs = FetchStatus.loading
-      })
-      .addCase(fetchAllSongs.rejected, state => {
-        state.statusAllSongs = FetchStatus.failed
-      })
-      .addCase(fetchAllSongs.fulfilled, (state, action) => {
-        state.statusAllSongs = FetchStatus.succeeded
-        state.allSongs = action.payload
-      })
-      .addCase(fetchSearchQuery.pending, state => {
-        state.statusSearch = FetchStatus.loading
-      })
-      .addCase(fetchSearchQuery.rejected, state => {
-        state.statusSearch = FetchStatus.failed
-        state.searchResults = []
-      })
-      .addCase(fetchSearchQuery.fulfilled, (state, action) => {
-        state.statusSearch = FetchStatus.succeeded
-        state.searchResults = action.payload.hits
-        state.searchCache[action.payload.query] = action.payload.hits
-      })
+  string,
+  {
+    state: RootState,
+    dispatch: AppDispatch
+  }
+>('home/fetchEventSongs', async (eventId, { getState, dispatch }) => {
+  const cached = getState().songs.views[`event_${eventId}`]
+  if (cached) {
+    return {
+      songs: cached,
+      eventId
+    }
+  }
+
+  const event: EventType = (await dispatch(fetchEvent(eventId))).payload as EventType
+
+  const songs =  await Promise.all(
+    event.songs.map(
+      async song => {
+        let cached: SongType = getState().songs.index[song.id]
+
+        if (!cached) {
+          cached = await getDoc(doc(getFirestore(), `songs/${song.id}`))
+            .then(doc => ({
+              ...(doc.data() as SongType),
+              ...song
+            }))
+        } else {
+          cached = {
+            ...cached,
+            ...song
+          }
+        }
+
+        return cached
+      }
+    )
+  )
+
+  return {
+    eventId,
+    songs
   }
 })
 
-export const { setSearchStatus } = songsSlice.actions
+function buildViewReducer (builder, name: string, asyncThunk: AsyncThunk<SongType[], void, unknown>) {
+  builder
+    .addCase(asyncThunk.pending, state => {
+      state.status[name] = FetchStatus.loading
+    })
+    .addCase(asyncThunk.rejected, state => {
+      state.status[name] = FetchStatus.failed
+    })
+    .addCase(asyncThunk.fulfilled, (state, action) => {
+      state.status[name] = FetchStatus.succeeded
+      state.views[name] = action.payload
+      action.payload.forEach(song => {
+        state.index[song.id] = song
+      })
+    })
+}
+
+const songsSlice = createSlice({
+  name: 'songs',
+  initialState,
+  reducers: {},
+  extraReducers(builder) {
+    buildViewReducer(builder, 'all', fetchAllSongs)
+    buildViewReducer(builder, 'recent', fetchRecentSongs)
+    buildViewReducer(builder, 'popular', fetchPopularSongs)
+    builder
+      .addCase(fetchSearchQuery.rejected, state => {
+        state.searchResults = []
+      })
+      .addCase(fetchSearchQuery.fulfilled, (state, action) => {
+        state.searchResults = action.payload.hits
+        state.searchCache[action.payload.query] = action.payload.hits
+      })
+      .addCase(fetchEventSongs.fulfilled, (state, action) => {
+        state.views[`event_${action.payload.eventId}`] = action.payload.songs
+        action.payload.songs.forEach(song => {
+          state.index[song.id] = song
+        })
+      })
+  }
+})
 
 export default songsSlice.reducer

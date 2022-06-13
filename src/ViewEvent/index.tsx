@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Toolbar from '@ViewEvent/Toolbar'
 import { useParams } from 'react-router-dom'
 import ContentBox from '@Shared/ContentBox'
@@ -6,22 +6,40 @@ import SongItem from '@ViewEvent/SongItem'
 import { useAppDispatch, useAppSelector } from '@hooks'
 import { FetchStatus } from '@slices/utils'
 import { fetchEvent } from '@slices/events'
+import { fetchEventSongs } from '@slices/songs'
 
 export default function ViewEvent () {
   const { eventId } = useParams()
   const dispatch = useAppDispatch()
-  const event = useAppSelector(state => state.events.fullEvents[eventId])
-  const statusEvent = useAppSelector(state => state.events.statusEvent)
+  const event = useAppSelector(state => {
+    if (!state.songs.views[`event_${eventId}`]) {
+      return null
+    }
 
-  const handleFetchEvent = useCallback(() => {
-    dispatch(fetchEvent(eventId))
+    return {
+      ...state.events.index[eventId],
+      songs: state.songs.views[`event_${eventId}`]
+    }
+  })
+  const [status, setStatus] = useState(FetchStatus.idle)
+
+  const handleFetchEvent = useCallback(async () => {
+    try {
+      setStatus(FetchStatus.loading)
+      await dispatch(fetchEvent(eventId))
+      await dispatch(fetchEventSongs(eventId))
+      setStatus(FetchStatus.succeeded)
+    } catch (err) {
+      console.log(err)
+      setStatus(FetchStatus.failed)
+    }
   }, [eventId, dispatch])
 
   useEffect(() => {
     handleFetchEvent()
   }, [handleFetchEvent])
 
-  if (!event || statusEvent === FetchStatus.loading) {
+  if (!event || status === FetchStatus.loading) {
     return null
   }
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import ContentTable from '@Shared/Table'
 import { useAppDispatch, useAppSelector } from '@hooks'
-import { fetchPopularSongs, fetchRecentSongs } from '@slices/home'
+import { fetchPopularSongs, fetchRecentSongs } from '@slices/songs'
 
 function mapSong (data) {
   return {
@@ -13,10 +13,10 @@ function mapSong (data) {
 
 export default function Home () {
   const dispatch = useAppDispatch()
-  const recentSongs = useAppSelector(state => state.home.recentSongs)
-  const popularSongs = useAppSelector(state => state.home.popularSongs)
-  const statusRecent = useAppSelector(state => state.home.statusRecent)
-  const statusPopular = useAppSelector(state => state.home.statusPopular)
+  const recentSongs = useAppSelector(state => state.songs.views.recent)
+  const popularSongs = useAppSelector(state => state.songs.views.popular)
+  const statusRecent = useAppSelector(state => state.songs.status.recent)
+  const statusPopular = useAppSelector(state => state.songs.status.popular)
 
   useEffect(() => {
     if (statusRecent === 'idle' || statusRecent === 'failed') {
