@@ -133,6 +133,23 @@ export const fetchEventSongs = createAsyncThunk<
   }
 })
 
+export const fetchSong = createAsyncThunk<
+SongType,
+string,
+{
+  state: RootState
+}
+>('home/fetchSong', async (songId, { getState }) => {
+  const cached = getState().songs.index[songId]
+
+  if (!cached) {
+    return await getDoc(doc(getFirestore(), `songs/${songId}`))
+      .then(doc => doc.exists ? ({ ...doc.data(), id: doc.id } as SongType) : null)
+  }
+
+  return cached
+})
+
 function buildViewReducer (builder, name: string, asyncThunk: AsyncThunk<SongType[], void, unknown>) {
   builder
     .addCase(asyncThunk.pending, state => {
@@ -171,6 +188,9 @@ const songsSlice = createSlice({
         action.payload.songs.forEach(song => {
           state.index[song.id] = song
         })
+      })
+      .addCase(fetchSong.fulfilled, (state, action) => {
+        state.index[action.payload.id] = action.payload
       })
   }
 })

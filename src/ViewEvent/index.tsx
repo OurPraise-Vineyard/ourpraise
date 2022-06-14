@@ -22,18 +22,21 @@ export default function ViewEvent () {
     }
   })
   const [status, setStatus] = useState(FetchStatus.idle)
+  const shouldFetch = eventId && !event
 
   const handleFetchEvent = useCallback(async () => {
-    try {
-      setStatus(FetchStatus.loading)
-      await dispatch(fetchEvent(eventId))
-      await dispatch(fetchEventSongs(eventId))
-      setStatus(FetchStatus.succeeded)
-    } catch (err) {
-      console.log(err)
-      setStatus(FetchStatus.failed)
+    if (shouldFetch) {
+      try {
+        setStatus(FetchStatus.loading)
+        await dispatch(fetchEvent(eventId))
+        await dispatch(fetchEventSongs(eventId))
+        setStatus(FetchStatus.succeeded)
+      } catch (err) {
+        console.log(err)
+        setStatus(FetchStatus.failed)
+      }
     }
-  }, [eventId, dispatch])
+  }, [eventId, dispatch, shouldFetch])
 
   useEffect(() => {
     handleFetchEvent()

@@ -3,6 +3,7 @@ import { NavLink, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import _DownloadPdf from '@ViewSong/Tools/DownloadPdf'
 import { getFunctionUrl } from '@api/functions'
+import { useAppSelector } from '@hooks'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -89,10 +90,12 @@ const DownloadPdf = styled(_DownloadPdf)`
   margin-top: 0;
 `
 
-export default function MiniEvent ({ event }: { event: EventType }) {
+export default function MiniEvent () {
   const { eventId } = useParams()
+  const event = useAppSelector(state => state.events.index[eventId])
+  const songs = useAppSelector(state => state.songs.views[`event_${eventId}`])
 
-  if (!event) {
+  if (!event || !songs) {
     return null
   }
 
@@ -102,7 +105,7 @@ export default function MiniEvent ({ event }: { event: EventType }) {
         <Title>{event.title}</Title>
         <EventDate>{event.date}</EventDate>
       </Header>
-      {event.songs.map(song => (
+      {songs.map(song => (
         <Item key={song.id} to={`/events/${eventId}/songs/${song.id}`}>
           <ItemTitle>{song.title}</ItemTitle>
           <ItemAuthors>{song.authors}</ItemAuthors>

@@ -22,7 +22,7 @@ function parseChord (chord) {
   return [initialIndex, mod]
 }
 
-export function getRelativeChord (chord: string, movement: number) {
+export function getRelativeChord (chord: string, movement = 0) {
   if (movement === 0) {
     return chord
   }
