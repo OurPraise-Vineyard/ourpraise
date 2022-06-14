@@ -1,8 +1,7 @@
 import { searchSongs } from '@api/algolia'
-import { mapDocsId, pruneObject } from '@api/utils'
 import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { fetchEvent } from '@slices/events'
-import { FetchStatus } from '@slices/utils'
+import { FetchStatus, mapDocsId, pruneObject } from '@slices/utils'
 import { AppDispatch, RootState } from '@store'
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, updateDoc } from 'firebase/firestore'
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import '@api/firebase'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
@@ -7,7 +7,6 @@ import Home from '@Home'
 import Login from '@Login'
 import Layout from '@Shared/Layout'
 import ViewSong from '@ViewSong'
-import { observeAuthState } from '@api/auth'
 import EditSong from '@EditSong'
 import Songs from '@Songs'
 import AddSong from '@AddSong'
@@ -17,6 +16,8 @@ import ViewEvent from '@ViewEvent'
 import EditEvent from '@EditEvent'
 import { Provider } from 'react-redux'
 import store from '@store'
+import { useAppDispatch, useAppSelector } from '@hooks'
+import { initializeUser, LoginStatus } from '@slices/user'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -38,15 +39,13 @@ const GlobalStyle = createGlobalStyle`
 `
 
 function App () {
-  const [ready, setReady] = useState(false)
-  const [user, setUser] = useState(null)
+  const user = useAppSelector(state => state.user.current)
+  const ready = useAppSelector(state => state.user.status !== LoginStatus.undetermined)
+  const dispatch = useAppDispatch()
 
   useEffect(function () {
-    observeAuthState(function (nextUser) {
-      setReady(true)
-      setUser(nextUser)
-    })
-  }, [])
+    dispatch(initializeUser())
+  }, [dispatch])
 
   if (!ready) {
     return null
@@ -57,30 +56,28 @@ function App () {
   }
 
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/songs/add" element={<AddSong />} />
-            <Route path="/songs/:songId/edit" element={<EditSong />} />
-            <Route path="/songs" element={<Songs />} />
-            <Route path="/events/:eventId/edit" element={<EditEvent />} />
-            <Route path="/events/:eventId">
-              <Route path=":state" element={<ViewEvent />} />
-              <Route path="" element={<ViewEvent />} />
-            </Route>
-            <Route path="/events/add" element={<AddEvent />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/home" element={<Home />} />
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/songs/add" element={<AddSong />} />
+          <Route path="/songs/:songId/edit" element={<EditSong />} />
+          <Route path="/songs" element={<Songs />} />
+          <Route path="/events/:eventId/edit" element={<EditEvent />} />
+          <Route path="/events/:eventId">
+            <Route path=":state" element={<ViewEvent />} />
+            <Route path="" element={<ViewEvent />} />
           </Route>
-          <Route element={<Layout wide />}>
-            <Route path="/songs/:songId" element={<ViewSong />} />
-            <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
-          </Route>
-          <Route index element={<Navigate to="/home" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+          <Route path="/events/add" element={<AddEvent />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/home" element={<Home />} />
+        </Route>
+        <Route element={<Layout wide />}>
+          <Route path="/songs/:songId" element={<ViewSong />} />
+          <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
+        </Route>
+        <Route index element={<Navigate to="/home" replace />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
@@ -88,7 +85,9 @@ ReactDOM.render(
   <React.StrictMode>
     <div>
       <GlobalStyle />
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </div>
   </React.StrictMode>,
   document.getElementById('root')

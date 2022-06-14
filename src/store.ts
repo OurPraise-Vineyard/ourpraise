@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import songs from '@slices/songs'
 import events from '@slices/events'
+import user from '@slices/user'
 
 const store = configureStore({
   reducer: {
     songs,
-    events
+    events,
+    user
   }
 })
 

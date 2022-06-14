@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled, { css } from 'styled-components'
 import logo from '@assets/logo.svg'
 import Page from '@Shared/Page'
 import { Link } from 'react-router-dom'
-import { observeAuthState, signOut } from '@api/auth'
 import LinkBase from '@Shared/LinkBase'
+import { useAppDispatch, useAppSelector } from '@hooks'
+import { signOut } from '@slices/user'
 
 const Container = styled.nav`
   background-color: black;
@@ -60,12 +61,12 @@ const HomeLink = styled(Link)`
 `
 
 export default function Nav({ wide = false }) {
-  const [user, setUser] = useState(null)
-  observeAuthState(setUser)
+  const user = useAppSelector(state => state.user.current)
+  const dispatch = useAppDispatch()
 
   const handleLogout = () => {
     if (window.confirm('Logout?')) {
-      signOut()
+      dispatch(signOut())
     }
   }
 

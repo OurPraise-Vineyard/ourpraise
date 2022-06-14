@@ -1,7 +1,6 @@
-import { mapDocsId, pruneObject } from '@api/utils'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { removeEventSongs } from '@slices/songs'
-import { FetchStatus } from '@slices/utils'
+import { FetchStatus, mapDocsId, pruneObject } from '@slices/utils'
 import { AppDispatch, RootState } from '@store'
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore'
 

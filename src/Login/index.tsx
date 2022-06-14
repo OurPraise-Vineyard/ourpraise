@@ -1,14 +1,16 @@
-import { signIn } from '@api/auth'
+import { useAppDispatch } from '@hooks'
 import Button from '@Login/Button'
 import Container from '@Login/Container'
 import Form from '@Login/Form'
 import Logo from '@Login/Logo'
 import TextField from '@Login/TextField'
+import { signIn } from '@slices/user'
 import React, { useState } from 'react'
 
 export default function Login () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useAppDispatch()
 
   const handleChange = name => e => {
     switch (name) {
@@ -24,7 +26,7 @@ export default function Login () {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await signIn(email, password)
+      await dispatch(signIn({ email, password }))
     } catch (err) {
       console.log(err)
     }
