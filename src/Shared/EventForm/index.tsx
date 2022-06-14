@@ -4,9 +4,10 @@ import styled from 'styled-components'
 import ButtonBase from '@Shared/ButtonBase'
 import { useNavigate } from 'react-router-dom'
 import dateFormat from 'dateformat'
-import { deleteEvents } from '@api/events'
+import { deleteEvent } from '@slices/events'
 import AddSongs from '@Shared/EventForm/AddSongs'
 import FormSongItem from '@Shared/EventForm/FormSongItem'
+import { useAppDispatch } from '@hooks'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -108,10 +109,11 @@ const defaultEvent = {
   songs: []
 }
 
-export default function EventForm ({ event = undefined, onSubmit, heading }) {
+export default function EventForm ({ event = undefined, onSubmit, heading }: { event?: EventType, onSubmit: (options: EventType) => void, heading: string}) {
   const [{title, date, songs, comment}, dispatch] = useReducer(reducer, defaultEvent)
   const navigate = useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(false)
+  const appDispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch({ type: 'INIT', state: event || defaultEvent })
@@ -125,12 +127,12 @@ export default function EventForm ({ event = undefined, onSubmit, heading }) {
 
   const handleSave = async (e) => {
     e.preventDefault()
-    onSubmit({ title, date, songs, comment })
+    onSubmit({ title, date, songs, comment, id: undefined })
   }
 
   const handleDelete = async (e) => {
     if (window.confirm('Delete this event?')) {
-      await deleteEvents(event.id)
+      await appDispatch(deleteEvent(event))
       navigate('/events')
     }
   }

@@ -1,3 +1,4 @@
+import { searchSongs } from '@api/algolia'
 import AddSongItem from '@Shared/EventForm/AddSongItem'
 import Modal from '@Shared/Modal'
 import SearchSongs from '@Shared/SearchSongs'
@@ -13,8 +14,8 @@ function mapSong (data, addedSongs: Array<Song>) {
     title: data.title,
     authors: data.authors,
     key: data.key,
-    id: data.id,
-    added: addedSongs.findIndex(song => song.id === data.id) > -1
+    id: data.objectID,
+    added: addedSongs.findIndex(song => song.id === data.objectID) > -1
   }
 }
 
@@ -30,9 +31,15 @@ export default function AddSongs ({ show, onClose, addedSongs = defaultAddedSong
   const [hits, setHits] = useState([])
   const [query, setQuery] = useState('')
 
-  const handleLoadHits = useCallback((hits, query) => {
-    setHits(hits.map(hit => mapSong(hit, addedSongs)))
+  const handleSearch = useCallback(async (query) => {
+    if (query) {
+      const hits = await searchSongs(query)
+      setHits(hits.map(hit => mapSong(hit, addedSongs)))
+    } else {
+      setHits([])
+    }
     setQuery(query)
+    setLoading(false)
   }, [addedSongs])
 
   const handleAddSong = async (song) => {
@@ -51,10 +58,10 @@ export default function AddSongs ({ show, onClose, addedSongs = defaultAddedSong
         show={show}
         title="Add songs"
       >
-        {/* <SearchSongs
+        <SearchSongs
           onChangeLoading={setLoading}
-          onLoadHits={handleLoadHits}
-        /> */}
+          onSearch={handleSearch}
+        />
         {query.length > 0 && !loading && (
           <Text>Found {hits.length} songs:</Text>
         )}

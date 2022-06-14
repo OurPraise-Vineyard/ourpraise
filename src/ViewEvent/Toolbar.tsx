@@ -1,4 +1,4 @@
-import { getFunctionUrl } from '@api/functions'
+import { getFunctionUrl } from '@api/utils'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { buttonBase } from '@Shared/ButtonBase'

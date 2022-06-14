@@ -4,5 +4,6 @@ interface SongType {
   title: string,
   authors: string,
   transpose?: number,
-  comment?: string
+  comment?: string,
+  body: string
 }

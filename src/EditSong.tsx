@@ -1,24 +1,37 @@
-import { getSong, saveSong } from '@api/songs'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import SongForm from '@Shared/SongForm'
+import { useAppDispatch, useAppSelector } from '@hooks'
+import { fetchSong, saveSong } from '@slices/songs'
 
 export default function EditSong () {
   const { songId } = useParams()
-  const [song, setSong] = useState({})
   const navigate = useNavigate()
+  const song = useAppSelector(state => state.songs.index[songId])
+  const dispatch = useAppDispatch()
+
+  const shouldFetch = songId && !song
 
   useEffect(() => {
-    getSong(songId).then(setSong)
-  }, [songId])
+    if (shouldFetch) {
+      dispatch(fetchSong(songId))
+    }
+  }, [shouldFetch, songId, dispatch])
 
   const handleSubmit = async (options) => {
     try {
-      await saveSong(songId, options)
+      await dispatch(saveSong({
+        ...options,
+        id: songId
+      }))
       navigate('/songs/' + songId)
     } catch (err) {
       console.error(err)
     }
+  }
+
+  if (!song) {
+    return null
   }
 
   return (

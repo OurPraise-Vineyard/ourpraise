@@ -1,10 +1,10 @@
 import { searchSongs } from '@api/algolia'
-import { mapDocsId } from '@api/utils'
-import { AsyncThunk, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { mapDocsId, pruneObject } from '@api/utils'
+import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { fetchEvent } from '@slices/events'
 import { FetchStatus } from '@slices/utils'
 import { AppDispatch, RootState } from '@store'
-import { collection, doc, getDoc, getDocs, getFirestore, limit, orderBy, query } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, updateDoc } from 'firebase/firestore'
 
 export interface SongsState {
   searchCache: Record<string, unknown[]>,
@@ -93,7 +93,7 @@ export const fetchEventSongs = createAsyncThunk<
     state: RootState,
     dispatch: AppDispatch
   }
->('home/fetchEventSongs', async (eventId, { getState, dispatch }) => {
+>('songs/fetchEventSongs', async (eventId, { getState, dispatch }) => {
   const cached = getState().songs.views[`event_${eventId}`]
   if (cached) {
     return {
@@ -140,14 +140,40 @@ string,
   state: RootState
 }
 >('home/fetchSong', async (songId, { getState }) => {
-  const cached = getState().songs.index[songId]
+  let cached = getState().songs.index[songId]
 
   if (!cached) {
-    return await getDoc(doc(getFirestore(), `songs/${songId}`))
-      .then(doc => doc.exists ? ({ ...doc.data(), id: doc.id } as SongType) : null)
+    cached = await getDoc(doc(getFirestore(), `songs/${songId}`))
+      .then(doc => doc.exists() ? ({ ...doc.data(), id: doc.id } as SongType) : null)
   }
 
   return cached
+})
+
+export const saveSong = createAsyncThunk<SongType, SongType>('songs/save', async (song) => {
+  await updateDoc(doc(getFirestore(), `songs/${song.id}`), pruneObject({ ...song, id: undefined }))
+
+  return song
+})
+
+export const addSong = createAsyncThunk<SongType, SongType>('songs/add', async (song) => {
+  const options = pruneObject({
+    ...song,
+    createdAt: new Date().toISOString(),
+    id: undefined
+  })
+  const doc = await addDoc(collection(getFirestore(), 'songs'), options)
+
+  return {
+    ...options,
+    id: doc.id
+  }
+})
+
+export const deleteSong = createAsyncThunk<string, SongType>('songs/delete', async (song) => {
+  await deleteDoc(doc(getFirestore(), `songs/${song.id}`))
+
+  return song.id
 })
 
 function buildViewReducer (builder, name: string, asyncThunk: AsyncThunk<SongType[], void, unknown>) {
@@ -170,7 +196,11 @@ function buildViewReducer (builder, name: string, asyncThunk: AsyncThunk<SongTyp
 const songsSlice = createSlice({
   name: 'songs',
   initialState,
-  reducers: {},
+  reducers: {
+    removeEventSongs(state, action: PayloadAction<string>) {
+      delete state.views[`event_${action.payload}`]
+    }
+  },
   extraReducers(builder) {
     buildViewReducer(builder, 'all', fetchAllSongs)
     buildViewReducer(builder, 'recent', fetchRecentSongs)
@@ -190,9 +220,36 @@ const songsSlice = createSlice({
         })
       })
       .addCase(fetchSong.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.index[action.payload.id] = action.payload
+        }
+      })
+      .addCase(saveSong.fulfilled, (state, action) => {
         state.index[action.payload.id] = action.payload
+        Object.values(state.views).forEach((songs) => {
+          const index = songs.findIndex(({ id }) => id === action.payload.id)
+          if (index > -1) {
+            songs[index] = action.payload
+          }
+        })
+      })
+      .addCase(deleteSong.fulfilled, (state, action) => {
+        delete state.index[action.payload]
+        state.views = Object.entries(state.views).reduce((acc, [key, songs]) => ({
+          ...acc,
+          [key]: songs.filter(({ id }) => id !== action.payload)
+        }), state.views)
+      })
+      .addCase(addSong.fulfilled, (state, action) => {
+        state.index[action.payload.id] = action.payload
+        Object.keys(state.status).forEach(key => {
+          state.status[key] = FetchStatus.idle
+          state.views[key] = []
+        })
       })
   }
 })
+
+export const { removeEventSongs } = songsSlice.actions
 
 export default songsSlice.reducer

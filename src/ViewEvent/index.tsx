@@ -28,8 +28,10 @@ export default function ViewEvent () {
     if (shouldFetch) {
       try {
         setStatus(FetchStatus.loading)
-        await dispatch(fetchEvent(eventId))
-        await dispatch(fetchEventSongs(eventId))
+        const event = (await dispatch(fetchEvent(eventId))).payload
+        if (event) {
+          await dispatch(fetchEventSongs(eventId))
+        }
         setStatus(FetchStatus.succeeded)
       } catch (err) {
         console.log(err)

@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import _DownloadPdf from '@ViewSong/Tools/DownloadPdf'
-import { getFunctionUrl } from '@api/functions'
+import { getFunctionUrl } from '@api/utils'
 import { useAppSelector } from '@hooks'
 
 const Container = styled.div`

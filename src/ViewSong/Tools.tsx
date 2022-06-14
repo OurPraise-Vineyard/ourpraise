@@ -1,4 +1,4 @@
-import { getFunctionUrl } from '@api/functions'
+import { getFunctionUrl } from '@api/utils'
 import React from 'react'
 import styled from 'styled-components'
 import ChordSwitcher from '@ViewSong/Tools/ChordSwitcher'
