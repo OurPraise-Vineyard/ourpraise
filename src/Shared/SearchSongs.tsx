@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { searchSongs } from '@api/algolia'
 import { createDebouncer } from '@debouncer'
 import searchIcon from '@assets/search.svg'
 
@@ -37,28 +36,17 @@ const SearchBarWrapper = styled.div`
 `
 
 interface SearchBarProps {
-  onLoadHits: (hits: Array<unknown>, query: string) => void,
+  onSearch: (query: string) => void,
   onChangeLoading: (val: boolean) => void
 }
 
 const defaultChangeFunc = () => undefined
-export default function SearchSongs ({ onLoadHits, onChangeLoading = defaultChangeFunc }: SearchBarProps) {
+export default function SearchSongs ({ onSearch, onChangeLoading = defaultChangeFunc }: SearchBarProps) {
   const [query, setQuery] = useState('')
 
   useEffect(() => {
-    if (query) {
-      searchSongs(query).then(hits => onLoadHits(
-        hits.map(hit => ({
-          ...hit,
-          id: hit.objectID
-        })),
-        query
-      ))
-    } else {
-      onLoadHits([], query)
-    }
-    onChangeLoading(false)
-  }, [query, onLoadHits, onChangeLoading])
+    onSearch(query)
+  }, [query, onSearch])
 
   function debounceSearch (q) {
     if (q === query) {
@@ -67,7 +55,7 @@ export default function SearchSongs ({ onLoadHits, onChangeLoading = defaultChan
       onChangeLoading(true)
     }
 
-    debounce(() => setQuery(q))
+    debounce(() => setQuery(q), !q)
   }
 
   return (

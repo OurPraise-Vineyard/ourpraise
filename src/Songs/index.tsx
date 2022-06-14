@@ -1,7 +1,9 @@
-import { getAllSongs } from '@api/songs'
 import React, { useCallback, useEffect, useState } from 'react'
 import ContentTable from '@Shared/Table'
 import Toolbar from '@Songs/Toolbar'
+import { useAppDispatch, useAppSelector } from '@hooks'
+import { fetchAllSongs, fetchSearchQuery } from '@slices/songs'
+import { FetchStatus } from '@slices/utils'
 
 function mapSong (data) {
   return {
@@ -12,25 +14,50 @@ function mapSong (data) {
 }
 
 export default function Songs () {
-  const [songs, setSongs] = useState([])
-  const [hits, setHits] = useState([])
   const [query, setQuery] = useState('')
-  const [loading, setLoading] = useState(false)
+  const statusAllSongs = useAppSelector(state => state.songs.status.all)
+  const songs = useAppSelector(state => state.songs.views.all)
+  const hits = useAppSelector(state => state.songs.searchResults)
+  const dispatch = useAppDispatch()
+
+  const [searchStatus, setSearchStatus] = useState(FetchStatus.idle)
 
   useEffect(() => {
-    getAllSongs()
-      .then(songs => setSongs(songs.map(mapSong)))
-  }, [])
+    if (statusAllSongs !== FetchStatus.loading && statusAllSongs !== FetchStatus.succeeded) {
+      dispatch(fetchAllSongs())
+    }
+  }, [dispatch, statusAllSongs])
 
-  const handleLoadHits = useCallback((hits, query) => {
-    setHits(hits.map(mapSong))
+  const handleSearch = useCallback(async (query) => {
     setQuery(query)
-  }, [])
+    if (!query) {
+      setSearchStatus(FetchStatus.idle)
+    } else {
+      try {
+        setSearchStatus(FetchStatus.loading)
+        await dispatch(fetchSearchQuery(query))
+        setSearchStatus(FetchStatus.succeeded)
+      } catch (err) {
+        setSearchStatus(FetchStatus.failed)
+      }
+    }
+  }, [dispatch])
+
+  const handleSetSearchLoading = useCallback((value) => {
+    if (value && searchStatus !== FetchStatus.loading) {
+      setSearchStatus(FetchStatus.loading)
+    } else if (!value && searchStatus !== FetchStatus.idle) {
+      setSearchStatus(FetchStatus.idle)
+    }
+  }, [searchStatus])
+
+  const loading = searchStatus === FetchStatus.loading || statusAllSongs === FetchStatus.loading
 
   return (
     <div>
-      <Toolbar onLoadHits={handleLoadHits} onChangeLoading={setLoading} />
+      <Toolbar onSearch={handleSearch} onChangeLoading={handleSetSearchLoading} />
       <ContentTable
+        mapper={mapSong}
         items={query ? hits : songs}
         title={query ? `Search results for "${query}"` : 'All songs'}
         loading={loading}

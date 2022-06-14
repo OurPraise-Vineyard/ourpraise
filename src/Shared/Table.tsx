@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import LinkBase from '@Shared/LinkBase'
 import styled from 'styled-components'
@@ -96,21 +96,33 @@ const NotFound = styled.p`
   font-size: 20px;
 `
 
-export default function ContentTable ({ title, items, viewAllUrl = undefined, loading = false, actions = undefined }) {
+export default function ContentTable ({
+  title,
+  items,
+  viewAllUrl = undefined,
+  loading = false,
+  actions = undefined,
+  mapper = item => item
+}) {
+  const mappedItems = useMemo(
+    () => items.map(mapper),
+    [items, mapper]
+  )
+
   return (
     <Container>
       <Toolbar>
         <Title>{title}</Title>
         {actions}
       </Toolbar>
-      {items.length === 0 && (
+      {mappedItems.length === 0 && (
         <NotFound>
           Nothing to show here...
         </NotFound>
       )}
-      {items.length > 0 && (
+      {mappedItems.length > 0 && (
         <Items>
-          {items.map(({ primary, secondary, url }, index) => (
+          {mappedItems.map(({ primary, secondary, url }, index) => (
             <Item key={index} to={url}>
               <PrimaryText>{primary}</PrimaryText>
               <SecondaryText>{secondary}</SecondaryText>

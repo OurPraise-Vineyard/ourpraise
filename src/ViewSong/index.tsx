@@ -1,21 +1,14 @@
-import { streamSong } from '@api/songs'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EmojiButton from '@Shared/EmojiButton'
 import styled from 'styled-components'
 import Song from '@ViewSong/Song'
 import Tools from '@ViewSong/Tools'
 import MiniEvent from '@ViewSong/Event'
-import { getFullEvent } from '@api/events'
-import formatDate from '@date'
 import SongComment from '@ViewSong/Comment'
-
-function mapEvent (data) {
-  return {
-    ...data,
-    date: formatDate(data.date)
-  }
-}
+import { useAppDispatch, useAppSelector } from '@hooks'
+import { fetchEvent } from '@slices/events'
+import { fetchEventSongs, fetchSong } from '@slices/songs'
 
 const Layout = styled.div`
   display: flex;
@@ -35,48 +28,38 @@ const Content = styled.div`
 
 export default function ViewSong () {
   const { songId, eventId } = useParams()
-  const [song, setSong] = useState<SongType>(null)
   const [transpose, setTranspose] = useState(0)
   const [showChords, setShowChords] = useState(true)
-  const [event, setEvent] = useState<EventType>(null)
   const navigate = useNavigate()
+  const event = useAppSelector(state => state.events.index[eventId])
+  const song = useAppSelector(state => state.songs.index[songId])
+  const dispatch = useAppDispatch()
 
   const songLoaded = song && song.id === songId
 
-  useEffect(() => {
-    if (eventId) {
-      getFullEvent(eventId).then(event => setEvent(mapEvent(event)))
-    } else {
-      setEvent(null)
-    }
-  }, [eventId])
+  const shouldFetchEvent = !event
+  const shouldFetchSong = !song
+
+  const fetchFullEvent = useCallback(async () => {
+    await dispatch(fetchEvent(eventId))
+    await dispatch(fetchEventSongs(eventId))
+  }, [dispatch, eventId])
 
   useEffect(() => {
-    if (event && songLoaded) {
-      setTranspose(event.songs.find(song => song.id === songId).transpose)
+    if (eventId && shouldFetchEvent) {
+      fetchFullEvent()
+    } else if (!eventId && shouldFetchSong) {
+      dispatch(fetchSong(songId))
     }
-  }, [songId, event, songLoaded])
+  }, [shouldFetchEvent, fetchFullEvent, songId, dispatch, shouldFetchSong, eventId])
 
   useEffect(() => {
-    if (!eventId || event) {
-      const stream = streamSong(songId)
-        .subscribe(song => {
-          if (event) {
-            const songContext = event.songs.find(song => song.id === songId)
-            setSong({
-              ...song,
-              comment: songContext.comment
-            })
-            setTranspose(songContext.transpose)
-          } else {
-            setSong(song)
-            setTranspose(0)
-          }
-        })
-
-      return () => stream.unsubscribe()
+    if (song && song.transpose && transpose !== song.transpose) {
+      setTranspose(song.transpose)
+    } else if (!song && transpose !== 0) {
+      setTranspose(0)
     }
-  }, [songId, eventId, event])
+  }, [song, transpose])
 
   function handleEdit () {
     navigate(`/songs/${songId}/edit`)
@@ -123,7 +106,7 @@ export default function ViewSong () {
           onResetTranspose={handleResetTranspose}
         />
         {!!eventId && (
-          <MiniEvent event={event} />
+          <MiniEvent />
         )}
       </Sidebar>
       <Content>

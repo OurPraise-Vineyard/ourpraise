@@ -1,6 +1,7 @@
-import { getRecentSongs, getRecommendedSongs } from '@api/songs'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import ContentTable from '@Shared/Table'
+import { useAppDispatch, useAppSelector } from '@hooks'
+import { fetchPopularSongs, fetchRecentSongs } from '@slices/songs'
 
 function mapSong (data) {
   return {
@@ -11,20 +12,25 @@ function mapSong (data) {
 }
 
 export default function Home () {
-  const [recentSongs, setRecentSongs] = useState([])
-  const [popularSongs, setPopularSongs] = useState([])
+  const dispatch = useAppDispatch()
+  const recentSongs = useAppSelector(state => state.songs.views.recent)
+  const popularSongs = useAppSelector(state => state.songs.views.popular)
+  const statusRecent = useAppSelector(state => state.songs.status.recent)
+  const statusPopular = useAppSelector(state => state.songs.status.popular)
 
   useEffect(() => {
-    getRecommendedSongs()
-      .then(songs => setPopularSongs(songs.map(mapSong)))
-    getRecentSongs()
-      .then(songs => setRecentSongs(songs.map(mapSong)))
-  }, [])
+    if (statusRecent === 'idle' || statusRecent === 'failed') {
+      dispatch(fetchRecentSongs())
+    }
+    if (statusPopular === 'idle' || statusPopular === 'failed') {
+      dispatch(fetchPopularSongs())
+    }
+  }, [dispatch, statusPopular, statusRecent])
 
   return (
     <div>
-      <ContentTable items={popularSongs} title="Most popular songs" />
-      <ContentTable items={recentSongs} title="Recently added songs" />
+      <ContentTable mapper={mapSong} items={popularSongs} title="Most popular songs" />
+      <ContentTable mapper={mapSong} items={recentSongs} title="Recently added songs" />
     </div>
   )
 }

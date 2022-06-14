@@ -3,8 +3,9 @@ import TextField from '@Shared/TextField'
 import React, { useEffect, useReducer } from 'react'
 import styled from 'styled-components'
 import ButtonBase from '@Shared/ButtonBase'
-import { deleteSong } from '@api/songs'
+import { deleteSong } from '@slices/songs'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '@hooks'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -53,18 +54,24 @@ function reducer (state, action) {
   }
 }
 
-const defaultSong = {
+const defaultSong: SongType = {
   title: '',
   key: 'A',
   authors: '',
-  body: ''
+  body: '',
+  id: null
 }
 
 const keys = ['A', 'Ab', 'A#', 'B', 'Bb', 'B#', 'C', 'Cb', 'C#', 'D', 'Db', 'D#', 'E', 'Eb', 'E#', 'F', 'Fb', 'F#', 'G', 'Gb', 'G#']
+  .map(key => ({
+    key,
+    value: key
+  }))
 
-export default function SongForm ({ song = undefined, onSubmit, heading }) {
+export default function SongForm ({ song = undefined, onSubmit, heading }: { song?: SongType, onSubmit: (options: SongType) => void, heading: string}) {
   const [{title, authors, body, key}, dispatch] = useReducer(reducer, defaultSong)
   const navigate = useNavigate()
+  const appDispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch({ type: 'INIT', state: song || defaultSong })
@@ -78,12 +85,12 @@ export default function SongForm ({ song = undefined, onSubmit, heading }) {
 
   const handleSave = async (e) => {
     e.preventDefault()
-    onSubmit({ title, authors, body, key })
+    onSubmit({ title, authors, body, key, id: undefined })
   }
 
   const handleDelete = async (e) => {
     if (window.confirm('Delete this song?')) {
-      await deleteSong(song.id)
+      await appDispatch(deleteSong(song))
       navigate('/songs')
     }
   }
