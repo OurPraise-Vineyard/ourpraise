@@ -3,21 +3,21 @@ import ReactDOM from 'react-dom'
 import '@api/firebase'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { createGlobalStyle } from 'styled-components'
-import Home from '@Home'
-import Login from '@Login'
-import Layout from '@Shared/Layout'
-import ViewSong from '@ViewSong'
-import EditSong from '@EditSong'
-import Songs from '@Songs'
-import AddSong from '@AddSong'
-import AddEvent from '@AddEvent'
-import Events from '@Events'
-import ViewEvent from '@ViewEvent'
-import EditEvent from '@EditEvent'
+import Home from '@features/Home'
+import Login from '@features/Auth/Login'
+import Layout from '@features/Shared/Layout'
+import ViewSong from '@features/Songs/Song'
+import EditSong from '@features/Songs/EditSong'
+import Songs from '@features/Songs/Overview'
+import AddSong from '@features/Songs/AddSong'
+import AddEvent from '@features/Events/AddEvent'
+import Events from '@features/Events/Overview'
+import ViewEvent from '@features/Events/Event'
+import EditEvent from '@features/Events/EditEvent'
 import { Provider } from 'react-redux'
 import store from '@store'
 import { useAppDispatch, useAppSelector } from '@hooks'
-import { initializeUser, LoginStatus } from '@slices/user'
+import { initializeUser, LoginStatus } from '@features/Auth/authSlice'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -39,8 +39,8 @@ const GlobalStyle = createGlobalStyle`
 `
 
 function App () {
-  const user = useAppSelector(state => state.user.current)
-  const ready = useAppSelector(state => state.user.status !== LoginStatus.undetermined)
+  const user = useAppSelector(state => state.auth.user)
+  const ready = useAppSelector(state => state.auth.status !== LoginStatus.undetermined)
   const dispatch = useAppDispatch()
 
   useEffect(function () {
