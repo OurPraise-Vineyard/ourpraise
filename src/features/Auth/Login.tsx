@@ -6,6 +6,7 @@ import Logo from '@features/Auth/Blocks/Logo'
 import TextField from '@features/Auth/Blocks/TextField'
 import { signIn } from '@features/Auth/authSlice'
 import React, { useState } from 'react'
+import RegisterLink from '@features/Auth/Blocks/RegisterLink'
 
 export default function Login () {
   const [email, setEmail] = useState('')
@@ -39,6 +40,7 @@ export default function Login () {
         <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>
         <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
         <Button type="submit">Login</Button>
+        <RegisterLink>Not a member yet? Sign up today!</RegisterLink>
       </Form>
     </Container>
   )

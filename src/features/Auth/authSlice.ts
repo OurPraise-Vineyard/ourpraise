@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut as _signOut, User } from 'firebase/auth'
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut as _signOut, updateProfile, User } from 'firebase/auth'
 
 export enum LoginStatus {
   loggedIn = 'loggedIn',
@@ -23,6 +23,19 @@ export const signIn = createAsyncThunk<
 >('user/signIn', async ({ email, password }) => {
   const userCred = await signInWithEmailAndPassword(getAuth(), email, password)
   const { displayName } = userCred.user
+
+  return {
+    email,
+    displayName
+  }
+})
+
+export const createAccount = createAsyncThunk<
+  { email: string, displayName: string },
+  { email: string, password: string, displayName: string}
+>('auth/createAccount', async ({ email, password, displayName }) => {
+  const userCred = await createUserWithEmailAndPassword(getAuth(), email, password)
+  await updateProfile(userCred.user, { displayName })
 
   return {
     email,
@@ -61,6 +74,10 @@ const authSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(signIn.fulfilled, (state, action) => {
+        state.user = action.payload
+        state.status = LoginStatus.loggedIn
+      })
+      .addCase(createAccount.fulfilled, (state, action) => {
         state.user = action.payload
         state.status = LoginStatus.loggedIn
       })

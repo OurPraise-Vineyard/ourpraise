@@ -18,6 +18,7 @@ import { Provider } from 'react-redux'
 import store from '@store'
 import { useAppDispatch, useAppSelector } from '@hooks'
 import { initializeUser, LoginStatus } from '@features/Auth/authSlice'
+import Register from '@features/Auth/Register'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -52,32 +53,35 @@ function App () {
   }
 
   if (!user) {
-    return <Login />
+    return (
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Login />} />
+      </Routes>
+    )
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/songs/add" element={<AddSong />} />
-          <Route path="/songs/:songId/edit" element={<EditSong />} />
-          <Route path="/songs" element={<Songs />} />
-          <Route path="/events/:eventId/edit" element={<EditEvent />} />
-          <Route path="/events/:eventId">
-            <Route path=":state" element={<ViewEvent />} />
-            <Route path="" element={<ViewEvent />} />
-          </Route>
-          <Route path="/events/add" element={<AddEvent />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/home" element={<Home />} />
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/songs/add" element={<AddSong />} />
+        <Route path="/songs/:songId/edit" element={<EditSong />} />
+        <Route path="/songs" element={<Songs />} />
+        <Route path="/events/:eventId/edit" element={<EditEvent />} />
+        <Route path="/events/:eventId">
+          <Route path=":state" element={<ViewEvent />} />
+          <Route path="" element={<ViewEvent />} />
         </Route>
-        <Route element={<Layout wide />}>
-          <Route path="/songs/:songId" element={<ViewSong />} />
-          <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
-        </Route>
-        <Route index element={<Navigate to="/home" replace />} />
-      </Routes>
-    </BrowserRouter>
+        <Route path="/events/add" element={<AddEvent />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/home" element={<Home />} />
+      </Route>
+      <Route element={<Layout wide />}>
+        <Route path="/songs/:songId" element={<ViewSong />} />
+        <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
+      </Route>
+      <Route index element={<Navigate to="/home" replace />} />
+    </Routes>
   )
 }
 
@@ -86,7 +90,9 @@ ReactDOM.render(
     <div>
       <GlobalStyle />
       <Provider store={store}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </Provider>
     </div>
   </React.StrictMode>,

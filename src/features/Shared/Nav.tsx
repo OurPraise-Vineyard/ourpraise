@@ -27,6 +27,7 @@ const Username = styled.p`
   grid-area: username;
   justify-self: end;
   margin: 0;
+  white-space: nowrap;
 `
 
 const Wrapper = styled(Page)`
