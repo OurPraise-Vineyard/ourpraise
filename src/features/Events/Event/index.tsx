@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Toolbar from '@features/Events/Event/Toolbar'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ContentBox from '@features/Shared/ContentBox'
 import SongItem from '@features/Events/Event/SongItem'
 import { useAppDispatch, useAppSelector } from '@hooks'
@@ -16,6 +16,10 @@ export default function ViewEvent () {
       return null
     }
 
+    if (!state.events.index[eventId]) {
+      return null
+    }
+
     return {
       ...state.events.index[eventId],
       songs: state.songs.views[`event_${eventId}`]
@@ -23,12 +27,16 @@ export default function ViewEvent () {
   })
   const [status, setStatus] = useState(FetchStatus.idle)
   const shouldFetch = eventId && !event
+  const navigate = useNavigate()
 
   const handleFetchEvent = useCallback(async () => {
     if (shouldFetch) {
       try {
         setStatus(FetchStatus.loading)
         const event = (await dispatch(fetchEvent(eventId))).payload
+        if (event === null) {
+          return navigate('/events')
+        }
         if (event) {
           await dispatch(fetchEventSongs(eventId))
         }
@@ -38,7 +46,7 @@ export default function ViewEvent () {
         setStatus(FetchStatus.failed)
       }
     }
-  }, [eventId, dispatch, shouldFetch])
+  }, [eventId, dispatch, shouldFetch, navigate])
 
   useEffect(() => {
     handleFetchEvent()
@@ -50,7 +58,7 @@ export default function ViewEvent () {
 
   return (
     <div>
-      <Toolbar title={event.title} eventId={eventId} />
+      <Toolbar organisation={event.organisation} title={event.title} eventId={eventId} />
       {!!event.comment && (
         <ContentBox title="Comments">
           {event.comment}

@@ -198,7 +198,8 @@ const songsSlice = createSlice({
   reducers: {
     removeEventSongs(state, action: PayloadAction<string>) {
       delete state.views[`event_${action.payload}`]
-    }
+    },
+    reset: () => initialState
   },
   extraReducers(builder) {
     buildViewReducer(builder, 'all', fetchAllSongs)
@@ -249,6 +250,6 @@ const songsSlice = createSlice({
   }
 })
 
-export const { removeEventSongs } = songsSlice.actions
+export const { removeEventSongs, reset } = songsSlice.actions
 
 export default songsSlice.reducer

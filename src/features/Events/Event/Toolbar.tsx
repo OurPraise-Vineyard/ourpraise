@@ -3,6 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { buttonBase } from '@features/Shared/ButtonBase'
 import styled from 'styled-components'
+import { useAppSelector } from '@hooks'
 
 const Row = styled.div`
   display: flex;
@@ -18,7 +19,6 @@ const Row = styled.div`
 
 const Title = styled.h1`
   font-size: 24px;
-  flex: 1 0 auto;
   margin: 0;
 `
 
@@ -34,10 +34,32 @@ const ButtonLink = styled(Link)`
   text-decoration: none;
 `
 
-export default function Toolbar ({ title, onSearch = undefined, eventId }) {
+const Chip = styled.span`
+  padding: 4px 8px;
+  background-color: #ccc;
+  color: black;
+  border-radius: 4px;
+  font-size: 16px;
+`
+
+const Spacer = styled.span`
+  flex: 1 0 auto;
+`
+
+export default function Toolbar ({ title, organisation, onSearch = undefined, eventId }) {
+  const orgName = useAppSelector(state => {
+    const org = state.auth.organisations.find(({ id }) => id === organisation)
+    if (org) {
+      return org.name
+    }
+    return 'No organisation'
+  })
+
   return (
     <Row>
       <Title>{title}</Title>
+      <Chip>{orgName}</Chip>
+      <Spacer />
       <ButtonLink to={`/events/${eventId}/edit`}>
         Edit
       </ButtonLink>

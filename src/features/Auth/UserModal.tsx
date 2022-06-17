@@ -5,17 +5,19 @@ import { useAppDispatch, useAppSelector } from '@hooks'
 import React from 'react'
 import styled, { css } from 'styled-components'
 import checkIcon from '@assets/check.svg'
+import { resetState } from '@store'
+import { useNavigate } from 'react-router-dom'
 
 const Username = styled.p`
   font-size: 24px;
-  margin: 20px 0 5px;
+  margin: 20px 0 0;
   text-align: center;
 `
 
 const Email = styled.p`
   font-size: 18px;
   color: #aaa;
-  margin: 5px 0 25px;
+  margin: 0 0 25px;
   text-align: center;
 `
 
@@ -76,9 +78,12 @@ export default function UserModal ({ show, onClose }) {
   const user = useAppSelector(state => state.auth.user)
   const dispatch = useAppDispatch()
   const organisations = useAppSelector(state => state.auth.organisations)
+  const navigate = useNavigate()
 
   const handleSelectOrg = (id) => {
+    navigate('/')
     dispatch(selectOrganisation(id))
+    resetState()
     onClose()
   }
 

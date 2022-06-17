@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { removeEventSongs } from '@features/Songs/songsSlice'
 import { FetchStatus, mapDocsId, pruneObject } from '@utils/api'
 import { AppDispatch, RootState } from '@store'
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc, where } from 'firebase/firestore'
 
 export interface EventsState {
   allEvents: EventType[],
@@ -16,8 +16,15 @@ const initialState: EventsState = {
   index: {}
 }
 
-export const fetchRecentEvents = createAsyncThunk<EventType[]>('events/fetchRecent', function () {
-  return getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc')))
+export const fetchRecentEvents = createAsyncThunk<
+  EventType[],
+  void,
+  {
+    state: RootState
+  }
+>('events/fetchRecent', function (_, { getState }) {
+  const orgId = getState().auth.organisation ? getState().auth.organisation.id : null
+  return getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc'), where('organisation', '==', orgId)))
     .then(docs => mapDocsId(docs))
 })
 
@@ -99,7 +106,9 @@ export const deleteEvent = createAsyncThunk<
 const eventsSlice = createSlice({
   name: 'events',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchRecentEvents.pending, state => {
@@ -138,5 +147,7 @@ const eventsSlice = createSlice({
       })
   }
 })
+
+export const { reset } = eventsSlice.actions
 
 export default eventsSlice.reducer

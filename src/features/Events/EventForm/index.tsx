@@ -7,7 +7,8 @@ import dateFormat from 'dateformat'
 import { deleteEvent } from '@features/Events/eventsSlice'
 import AddSongs from '@features/Events/EventForm/AddSongs'
 import FormSongItem from '@features/Events/EventForm/FormSongItem'
-import { useAppDispatch } from '@hooks'
+import { useAppDispatch, useAppSelector } from '@hooks'
+import SelectField, { SelectItem } from '@features/Shared/SelectField'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -96,7 +97,11 @@ function reducer (state, action) {
         songs: state.songs.filter(song => song.id !== action.songId)
       }
     case 'INIT':
-      return action.state
+      return {
+        ...state,
+        ...action.state,
+        organisation: state.organisation
+      }
     default:
       return state
   }
@@ -106,18 +111,44 @@ const defaultEvent = {
   title: '',
   comment: '',
   date: dateFormat(new Date(), 'yyyy-mm-dd'),
-  songs: []
+  songs: [],
+  organisation: ''
 }
 
 export default function EventForm ({ event = undefined, onSubmit, heading }: { event?: EventType, onSubmit: (options: EventType) => void, heading: string}) {
-  const [{title, date, songs, comment}, dispatch] = useReducer(reducer, defaultEvent)
+  const [{title, date, songs, comment, organisation}, dispatch] = useReducer(reducer, defaultEvent)
   const navigate = useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(false)
   const appDispatch = useAppDispatch()
+  const organisations: SelectItem[] = useAppSelector<SelectItem[]>(state => [{ value: '', key: 'empty', label: 'No organisation', disabled: true }].concat(state.auth.organisations.map(org => ({
+    label: org.name,
+    value: org.id,
+    key: org.id,
+    disabled: false
+  }))))
+  const userOrg = useAppSelector(state => state.auth.organisation ? state.auth.organisation.id : '')
+  const eventLoaded = !!event
+  const eventOrg = event ? event.organisation : ''
 
   useEffect(() => {
     dispatch({ type: 'INIT', state: event || defaultEvent })
   }, [event])
+
+  useEffect(() => {
+    if (eventLoaded) {
+      dispatch({
+        type: 'SET',
+        value: eventOrg || '',
+        name: 'organisation'
+      })
+    } else {
+      dispatch({
+        type: 'SET',
+        value: userOrg,
+        name: 'organisation'
+      })
+    }
+  }, [userOrg, eventLoaded, eventOrg])
 
   const handleChange = (name) => (e) => dispatch({
     type: 'SET',
@@ -127,7 +158,7 @@ export default function EventForm ({ event = undefined, onSubmit, heading }: { e
 
   const handleSave = async (e) => {
     e.preventDefault()
-    onSubmit({ title, date, songs, comment, id: undefined })
+    onSubmit({ title, date, songs, comment, id: undefined, organisation })
   }
 
   const handleDelete = async (e) => {
@@ -157,6 +188,7 @@ export default function EventForm ({ event = undefined, onSubmit, heading }: { e
     <Container>
       <Heading>{heading}</Heading>
       <form onSubmit={handleSave}>
+        <SelectField value={organisation} title="Organisation" onChange={handleChange('organisation')} options={organisations} />
         <TextField value={title} title="Title" onChange={handleChange('title')} />
         <TextField value={date} type="date" title="Date" onChange={handleChange('date')} />
         <TextField multiline value={comment} title="Set comments" onChange={handleChange('comment')} />

@@ -13,5 +13,7 @@ interface EventType {
   songs: Array<EventSongType>,
   id: string,
   comment?: string,
-  createdAt?: string
+  createdAt?: string,
+  organisation: string
+  organisationName?: string
 }

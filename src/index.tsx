@@ -44,6 +44,7 @@ function App () {
   const user = useAppSelector(state => state.auth.user)
   const ready = useAppSelector(state => state.auth.status !== LoginStatus.undetermined)
   const dispatch = useAppDispatch()
+  const hasOrg = useAppSelector(state => !!state.auth.organisation)
 
   useEffect(function () {
     dispatch(initializeUser())
@@ -68,18 +69,22 @@ function App () {
         <Route path="/songs/add" element={<AddSong />} />
         <Route path="/songs/:songId/edit" element={<EditSong />} />
         <Route path="/songs" element={<Songs />} />
-        <Route path="/events/:eventId/edit" element={<EditEvent />} />
-        <Route path="/events/:eventId">
-          <Route path=":state" element={<ViewEvent />} />
-          <Route path="" element={<ViewEvent />} />
-        </Route>
-        <Route path="/events/add" element={<AddEvent />} />
-        <Route path="/events" element={<Events />} />
+        {hasOrg && (
+          <>
+            <Route path="/events/:eventId/edit" element={<EditEvent />} />
+            <Route path="/events/:eventId">
+              <Route path=":state" element={<ViewEvent />} />
+              <Route path="" element={<ViewEvent />} />
+            </Route>
+            <Route path="/events/add" element={<AddEvent />} />
+            <Route path="/events" element={<Events />} />
+          </>
+        )}
         <Route path="/home" element={<Home />} />
       </Route>
       <Route element={<Layout wide />}>
         <Route path="/songs/:songId" element={<ViewSong />} />
-        <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
+        {hasOrg && <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />}
       </Route>
       <Route index element={<Navigate to="/home" replace />} />
     </Routes>

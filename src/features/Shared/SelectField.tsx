@@ -29,7 +29,22 @@ const Select = styled.select`
   }
 `
 
-export default function SelectField ({ title = '', name = '', onChange, value, options = [] }) {
+export interface SelectItem {
+  label?: string,
+  value: string | number,
+  key?: string | number,
+  disabled?: boolean
+}
+
+interface SelectFieldProps {
+  title: string,
+  name?: string,
+  onChange: React.ChangeEventHandler<HTMLSelectElement>,
+  value: string,
+  options: SelectItem[]
+}
+
+export default function SelectField ({ title = '', name = '', onChange, value, options = [] }: SelectFieldProps) {
   return (
     <Container>
       <Label>{title}</Label>
@@ -38,7 +53,7 @@ export default function SelectField ({ title = '', name = '', onChange, value, o
         name={name}
         onChange={onChange}
       >
-        {options.map(option => <option key={option.key || option.value} value={option.value}>{option.label || option.value}</option>)}
+        {options.map(option => <option disabled={option.disabled} key={option.key || option.value} value={option.value}>{option.label || option.value}</option>)}
       </Select>
     </Container>
   )

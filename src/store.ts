@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import songs from '@features/Songs/songsSlice'
-import events from '@features/Events/eventsSlice'
+import songs, { reset as resetSongs } from '@features/Songs/songsSlice'
+import events, { reset as resetEvents } from '@features/Events/eventsSlice'
 import auth from '@features/Auth/authSlice'
 import errors from '@utils/errorSlice'
 
@@ -21,5 +21,10 @@ declare global {
 }
 
 window.store = store
+
+export const resetState = () => {
+  store.dispatch(resetEvents())
+  store.dispatch(resetSongs())
+}
 
 export default store
