@@ -1,5 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppDispatch, RootState } from '@store'
+import { mapDocsId } from '@utils/api'
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut as _signOut, updateProfile, User } from 'firebase/auth'
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
 
 export enum LoginStatus {
   loggedIn = 'loggedIn',
@@ -9,20 +12,29 @@ export enum LoginStatus {
 
 export interface AuthState {
   user: UserType,
-  status: LoginStatus
+  status: LoginStatus,
+  organisations: OrganisationType[],
+  organisation: OrganisationType
 }
 
 const initialState: AuthState = {
   user: null,
-  status: LoginStatus.undetermined
+  status: LoginStatus.undetermined,
+  organisation: null,
+  organisations: []
 }
 
 export const signIn = createAsyncThunk<
   { email: string, displayName: string },
-  { email: string, password: string }
->('user/signIn', async ({ email, password }) => {
+  { email: string, password: string },
+  {
+    dispatch: AppDispatch
+  }
+>('user/signIn', async ({ email, password }, { dispatch }) => {
   const userCred = await signInWithEmailAndPassword(getAuth(), email, password)
   const { displayName } = userCred.user
+
+  dispatch(fetchUserOrganisations(email))
 
   return {
     email,
@@ -32,10 +44,15 @@ export const signIn = createAsyncThunk<
 
 export const createAccount = createAsyncThunk<
   { email: string, displayName: string },
-  { email: string, password: string, displayName: string}
->('auth/createAccount', async ({ email, password, displayName }) => {
+  { email: string, password: string, displayName: string},
+  {
+    dispatch: AppDispatch
+  }
+>('auth/createAccount', async ({ email, password, displayName }, { dispatch }) => {
   const userCred = await createUserWithEmailAndPassword(getAuth(), email, password)
   await updateProfile(userCred.user, { displayName })
+
+  dispatch(fetchUserOrganisations(email))
 
   return {
     email,
@@ -46,8 +63,12 @@ export const createAccount = createAsyncThunk<
 export const signOut = createAsyncThunk('user/signOut', () => _signOut(getAuth()))
 
 export const initializeUser = createAsyncThunk<
-  { email: string, displayName: string }
->('user/init', async () => {
+  { email: string, displayName: string },
+  void,
+  {
+    dispatch: AppDispatch
+  }
+>('user/init', async (_, { dispatch }) => {
   const user: User = await new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(getAuth(), user => {
       unsubscribe()
@@ -58,6 +79,8 @@ export const initializeUser = createAsyncThunk<
   if (user) {
     const { displayName, email } = user
 
+    dispatch(fetchUserOrganisations(email))
+
     return {
       email,
       displayName
@@ -67,10 +90,29 @@ export const initializeUser = createAsyncThunk<
   return null
 })
 
+export const fetchUserOrganisations = createAsyncThunk<
+  OrganisationType[],
+  string,
+  {
+    state: RootState
+  }
+>('user/fetchOrganisations', async (email = '', { getState }) => {
+  const organisations = await getDocs(query(collection(getFirestore(), 'organisations'), where('members', 'array-contains', email || getState().auth.user.email)))
+    .then(docs => mapDocsId(docs))
+
+  return organisations
+})
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    selectOrganisation(state, action: PayloadAction<string>) {
+      state.organisations.find(({ id }) => id === state.organisation.id).selected = false
+      state.organisations.find(({ id }) => id === action.payload).selected = true
+      state.organisation = state.organisations.find(({ id }) => id === action.payload)
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(signIn.fulfilled, (state, action) => {
@@ -84,6 +126,8 @@ const authSlice = createSlice({
       .addCase(signOut.fulfilled, (state) => {
         state.user = null
         state.status = LoginStatus.loggedOut
+        state.organisation = null
+        state.organisations = []
       })
       .addCase(initializeUser.fulfilled, (state, action) => {
         if (action.payload) {
@@ -91,10 +135,19 @@ const authSlice = createSlice({
           state.status = LoginStatus.loggedIn
         } else {
           state.user = null
+          state.organisation = null
+          state.organisations = []
           state.status = LoginStatus.loggedOut
         }
       })
+      .addCase(fetchUserOrganisations.fulfilled, (state, action) => {
+        state.organisations = action.payload
+        state.organisations[0].selected = true
+        state.organisation = action.payload[0]
+      })
   }
 })
+
+export const { selectOrganisation } = authSlice.actions
 
 export default authSlice.reducer

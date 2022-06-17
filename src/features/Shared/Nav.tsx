@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import logo from '@assets/logo_light.png'
 import Page from '@features/Shared/Page'
 import { Link } from 'react-router-dom'
 import LinkBase from '@features/Shared/LinkBase'
-import { useAppDispatch, useAppSelector } from '@hooks'
-import { signOut } from '@features/Auth/authSlice'
+import { useAppSelector } from '@hooks'
+import UserModal from '@features/Auth/UserModal'
 
 const Container = styled.nav`
   background-color: black;
@@ -19,7 +19,7 @@ const Logo = styled.img.attrs({
   height: 40px;
 `
 
-const Username = styled.p`
+const Username = styled.p<{ org: string }>`
   padding: 0;
   font-size: 20px;
   color: white;
@@ -28,6 +28,14 @@ const Username = styled.p`
   justify-self: end;
   margin: 0;
   white-space: nowrap;
+  text-align: right;
+
+  &::after {
+    content: "${props => props.org}";
+    display: block;
+    font-size: 0.88em;
+    color: #bbb;
+  }
 `
 
 const Wrapper = styled(Page)`
@@ -63,21 +71,18 @@ const HomeLink = styled(Link)`
 
 export default function Nav({ wide = false }) {
   const user = useAppSelector(state => state.auth.user)
-  const dispatch = useAppDispatch()
-
-  const handleLogout = () => {
-    if (window.confirm('Logout?')) {
-      dispatch(signOut())
-    }
-  }
+  const org = useAppSelector(state => state.auth.organisation)
+  const orgName = org ? org.name : ''
+  const [showUser, setShowUser] = useState(false)
 
   return (
     <Container>
+      <UserModal show={showUser} onClose={() => setShowUser(false)} />
       <Wrapper wide={wide}>
         <HomeLink to="/home">
           <Logo />
         </HomeLink>
-        <Username onClick={handleLogout}>{user ? user.displayName || user.email : ''}</Username>
+        <Username onClick={() => setShowUser(true)} org={orgName}>{user ? user.displayName || user.email : ''}</Username>
         <Links>
           <LinkBase color="white" to="/home">
             Home

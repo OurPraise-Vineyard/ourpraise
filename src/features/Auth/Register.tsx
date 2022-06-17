@@ -8,6 +8,7 @@ import { createAccount } from '@features/Auth/authSlice'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { pushError } from '@utils/errorSlice'
+import ModeLink from '@features/Auth/Blocks/ModeLink'
 
 function safeMatchSearch (key) {
   const reg = new RegExp(`\\?.*${key}=([\\w\\d.@]*).*$`)
@@ -87,6 +88,7 @@ export default function Register () {
         <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
         <TextField onChange={handleChange('repeatPassword')} value={repeatPassword} name="repeatPassword" password title="Repeat password"></TextField>
         <Button type="submit">Register</Button>
+        <ModeLink to="/">Already a member? Login instead</ModeLink>
       </Form>
     </Container>
   )

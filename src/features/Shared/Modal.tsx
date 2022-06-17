@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { css } from 'styled-components'
 import xIcon from '@assets/x.svg'
 
-const Grid = styled.div<{ show?: boolean }>`
+const Grid = styled.div<{ show: boolean, narrow: boolean }>`
   background-color: rgba(0, 0, 0, 0.2);
   display: grid;
-  grid-template-columns: 1fr minmax(auto, 800px) 1fr;
+  grid-template-columns: 1fr minmax(auto, ${props => props.narrow ? '400px' : '800px'}) 1fr;
   grid-template-rows: 1fr min-content 1fr;
   grid-template-areas: '. . .' '. modal .' '. . .';
   position: fixed;
@@ -27,7 +27,7 @@ const Grid = styled.div<{ show?: boolean }>`
     `}
 `
 
-const ModalContainer = styled.div<{ show?: boolean }>`
+const ModalContainer = styled.div<{ show: boolean }>`
   grid-area: modal;
   min-height: 600px;
   background-color: white;
@@ -36,6 +36,8 @@ const ModalContainer = styled.div<{ show?: boolean }>`
   transition: top 0.2s ease-out;
   top: 0;
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   ${props =>
     !props.show &&
@@ -44,14 +46,16 @@ const ModalContainer = styled.div<{ show?: boolean }>`
     `}
 `
 
-const ModalContent = styled.div`
-  padding: 20px;
+const ModalContent = styled.div<{ blank: boolean }>`
+  padding: ${props => props.blank ? 0 : '20px'};
+  flex: 1 0 auto;
 `
 
 const Toolbar = styled.div`
   display: flex;
   align-items: flex-start;
   padding: 20px 20px 0;
+  flex: 0 1 auto;
 `
 
 const Title = styled.div`
@@ -67,12 +71,13 @@ const CloseButton = styled.button`
   cursor: pointer;
 `
 
-export default function Modal({
+export default function Modal ({
   onClose = () => null,
   show = false,
   children = undefined,
   title = undefined,
-  hideX = false,
+  narrow = false,
+  blank = false
 }) {
   useEffect(
     function () {
@@ -90,13 +95,15 @@ export default function Modal({
   }
 
   return (
-    <Grid show={show} onClick={onClose}>
+    <Grid show={show} narrow={narrow} onClick={onClose}>
       <ModalContainer show={show} onClick={handleStopPropagate}>
-        <Toolbar>
-          {!!title && <Title>{title}</Title>}
-          {!hideX && <CloseButton onClick={onClose} />}
-        </Toolbar>
-        <ModalContent>{children}</ModalContent>
+        {(!blank && !!title) && (
+          <Toolbar>
+            {!!title && <Title>{title}</Title>}
+            {!blank && <CloseButton onClick={onClose} />}
+          </Toolbar>
+        )}
+        <ModalContent blank={blank}>{children}</ModalContent>
       </ModalContainer>
     </Grid>
   )

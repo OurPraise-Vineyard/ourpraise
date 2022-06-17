@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-export default styled(Link).attrs({
-  to: '/register'
-})`
+export default styled(Link)`
   font-size: 20px;
   color: white;
   display: block;
