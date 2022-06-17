@@ -3,15 +3,30 @@ import React, { useState } from 'react'
 import UserView from '@features/Auth/UserOrg/UserView'
 import OrgView from '@features/Auth/UserOrg/OrgView'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '@hooks'
+import { useAppDispatch, useAppSelector } from '@hooks'
 import { selectOrganisation } from '@features/Auth/authSlice'
 import { resetState } from '@store'
+import styled from 'styled-components'
 
-export default function UserModal ({ show, onClose }) {
+const TransitionContainer = styled.div<{ width: string, hide: boolean }>`
+  width: ${props => props.width};
+  margin: 0 auto;
+  opacity: ${props => props.hide ? 0 : 1};
+  transition: opacity .3s ease-out;
+  transition-delay: ${props => props.hide ? '0' : '.2s'};
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: calc(50% - ${props => props.width} / 2);
+  pointer-events: ${props => props.hide ? 'none' : 'all'};
+`
+
+export default function UserOrg ({ show, onClose }) {
   const [view, setView] = useState<'user' | 'org'>('user')
   const [selectedOrg, setSelectedOrg] = useState<string>(null)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const hasOrg = useAppSelector(state => !!state.auth.organisation)
 
   const handleClose = () => {
     setTimeout(() => setView('user'), 200)
@@ -37,8 +52,8 @@ export default function UserModal ({ show, onClose }) {
       blank
       narrow={view === 'user'}
     >
-      {view === 'user' && <UserView onEditOrg={handleEditOrg} onSelectOrg={handleSelectOrg} />}
-      {view === 'org' && <OrgView selectedOrg={selectedOrg} />}
+      <TransitionContainer hide={view !== 'user'} width="400px"><UserView onEditOrg={handleEditOrg} onSelectOrg={handleSelectOrg} /></TransitionContainer>
+      {hasOrg && <TransitionContainer hide={view !== 'org'} width="800px"><OrgView onBack={() => setView('user')} selectedOrg={selectedOrg} /></TransitionContainer>}
     </Modal>
   )
 }

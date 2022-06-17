@@ -50,6 +50,7 @@ const ModalContainer = styled.div<{ show: boolean, narrow: boolean }>`
 const ModalContent = styled.div<{ blank: boolean }>`
   padding: ${props => props.blank ? 0 : '20px'};
   flex: 1 0 auto;
+  position: relative;
 `
 
 const Toolbar = styled.div`
