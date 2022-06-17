@@ -1,7 +1,9 @@
 interface OrganisationType {
   name: string,
   selected: boolean,
-  id: string
+  id: string,
+  members: string[],
+  roles: Record<string, 'user' | 'admin'>
 }
 
 interface UserType {

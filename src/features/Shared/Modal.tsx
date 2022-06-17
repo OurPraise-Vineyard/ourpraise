@@ -5,10 +5,6 @@ import xIcon from '@assets/x.svg'
 
 const Grid = styled.div<{ show: boolean, narrow: boolean }>`
   background-color: rgba(0, 0, 0, 0.2);
-  display: grid;
-  grid-template-columns: 1fr minmax(auto, ${props => props.narrow ? '400px' : '800px'}) 1fr;
-  grid-template-rows: 1fr min-content 1fr;
-  grid-template-areas: '. . .' '. modal .' '. . .';
   position: fixed;
   top: 0;
   left: 0;
@@ -16,7 +12,7 @@ const Grid = styled.div<{ show: boolean, narrow: boolean }>`
   height: 100%;
   z-index: 10000;
   overflow-y: auto;
-  transition: opacity 0.2s ease-out;
+  transition: opacity 0.2s ease-out, grid-template-columns 0.5s ease-out;
   padding: 60px;
 
   ${props =>
@@ -27,22 +23,27 @@ const Grid = styled.div<{ show: boolean, narrow: boolean }>`
     `}
 `
 
-const ModalContainer = styled.div<{ show: boolean }>`
-  grid-area: modal;
-  min-height: 600px;
+const ModalContainer = styled.div<{ show: boolean, narrow: boolean }>`
+  position: fixed;
+  z-index: 10001;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: ${props => props.narrow ? '400px' : '800px'};
+  max-width: 90vw;
+  height: 600px;
   background-color: white;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
-  transition: top 0.2s ease-out;
-  top: 0;
-  position: relative;
+  transition: top 0.2s ease-out, width .2s ease-out;
   display: flex;
   flex-direction: column;
 
   ${props =>
     !props.show &&
     css`
-      top: 20px;
+      top: calc(50% + 20px);
+      transition: top 0.2s ease-out;
     `}
 `
 
@@ -96,7 +97,7 @@ export default function Modal ({
 
   return (
     <Grid show={show} narrow={narrow} onClick={onClose}>
-      <ModalContainer show={show} onClick={handleStopPropagate}>
+      <ModalContainer show={show} narrow={narrow} onClick={handleStopPropagate}>
         {(!blank && !!title) && (
           <Toolbar>
             {!!title && <Title>{title}</Title>}

@@ -5,7 +5,7 @@ import Page from '@features/Shared/Page'
 import { Link } from 'react-router-dom'
 import LinkBase from '@features/Shared/LinkBase'
 import { useAppSelector } from '@hooks'
-import UserModal from '@features/Auth/UserModal'
+import UserOrg from '@features/Auth/UserOrg'
 
 const Container = styled.nav`
   background-color: black;
@@ -77,7 +77,7 @@ export default function Nav({ wide = false }) {
 
   return (
     <Container>
-      <UserModal show={showUser} onClose={() => setShowUser(false)} />
+      <UserOrg show={showUser} onClose={() => setShowUser(false)} />
       <Wrapper wide={wide}>
         <HomeLink to="/home">
           <Logo />

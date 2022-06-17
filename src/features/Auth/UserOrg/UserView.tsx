@@ -1,12 +1,10 @@
-import { selectOrganisation, signOut } from '@features/Auth/authSlice'
+import { signOut } from '@features/Auth/authSlice'
 import ButtonBase from '@features/Shared/ButtonBase'
-import Modal from '@features/Shared/Modal'
 import { useAppDispatch, useAppSelector } from '@hooks'
 import React from 'react'
 import styled, { css } from 'styled-components'
 import checkIcon from '@assets/check.svg'
-import { resetState } from '@store'
-import { useNavigate } from 'react-router-dom'
+import gearIcon from '@assets/gear.svg'
 
 const Username = styled.p`
   font-size: 24px;
@@ -74,17 +72,41 @@ const LogoutButton = styled(ButtonBase)`
   margin: 0;
 `
 
-export default function UserModal ({ show, onClose }) {
+const OrganisationBody = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1 0 auto;
+`
+
+const SettingsButton = styled.button`
+  background-color: transparent;
+  background-image: url(${gearIcon});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+  border: 0;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  transition: background-color .2s ease-out;
+  cursor: pointer;
+  margin: -8px 8px;
+
+  &:hover {
+    background-color: #ddd;
+  }
+`
+
+export default function UserView ({ onEditOrg, onSelectOrg }) {
   const user = useAppSelector(state => state.auth.user)
   const dispatch = useAppDispatch()
   const organisations = useAppSelector(state => state.auth.organisations)
-  const navigate = useNavigate()
 
-  const handleSelectOrg = (id) => {
-    navigate('/')
-    dispatch(selectOrganisation(id))
-    resetState()
-    onClose()
+  const handleEdit = id => (e) => {
+    e.stopPropagation()
+
+    onEditOrg(id)
   }
 
   const handleLogout = () => {
@@ -92,26 +114,26 @@ export default function UserModal ({ show, onClose }) {
   }
 
   return (
-    <Modal
-      onClose={onClose}
-      show={show}
-      blank
-      narrow
-    >
-      <Column>
-        <Username>{user.displayName}</Username>
-        <Email>{user.email}</Email>
-        <Line />
-        <Organisations>
-          {organisations.map(org => (
-            <Organisation key={org.id} selected={org.selected} onClick={() => handleSelectOrg(org.id)}>{org.name}</Organisation>
-          ))}
-        </Organisations>
-        <Line />
-        <LogoutWrapper>
-          <LogoutButton fullWidth onClick={handleLogout}>Sign out</LogoutButton>
-        </LogoutWrapper>
-      </Column>
-    </Modal>
+    <Column>
+      <Username>{user.displayName}</Username>
+      <Email>{user.email}</Email>
+      <Line />
+      <Organisations>
+        {organisations.map(org => (
+          <Organisation key={org.id} selected={org.selected} onClick={() => onSelectOrg(org.id)}>
+            <OrganisationBody>
+              {org.name}
+              {org.roles[user.email] === 'admin' && (
+                <SettingsButton onClick={handleEdit(org.id)} />
+              )}
+            </OrganisationBody>
+          </Organisation>
+        ))}
+      </Organisations>
+      <Line />
+      <LogoutWrapper>
+        <LogoutButton fullWidth onClick={handleLogout}>Sign out</LogoutButton>
+      </LogoutWrapper>
+    </Column>
   )
 }
