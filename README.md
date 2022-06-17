@@ -1,6 +1,6 @@
-# Besyng
+# OurPraise
 
-This repo contains the source code for Besyng, an online worship platform that helps band leaders and musicians share chords and set lists.
+This repo contains the source code for OurPraise, an online worship platform that helps band leaders and musicians share chords and set lists.
 
 # Develop
 

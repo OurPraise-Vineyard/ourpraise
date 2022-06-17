@@ -14,7 +14,7 @@ const Container = styled.nav`
 
 const Logo = styled.img.attrs({
   src: logo,
-  alt: 'Besyng logo',
+  alt: 'OurPraise logo',
 })`
   height: 40px;
 `
