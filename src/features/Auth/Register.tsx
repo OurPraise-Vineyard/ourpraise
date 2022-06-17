@@ -7,6 +7,7 @@ import TextField from '@features/Auth/Blocks/TextField'
 import { createAccount } from '@features/Auth/authSlice'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { pushError } from '@utils/errorSlice'
 
 function safeMatchSearch (key) {
   const reg = new RegExp(`\\?.*${key}=([\\w\\d.@]*).*$`)
@@ -63,6 +64,7 @@ export default function Register () {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (password !== repeatPassword) {
+      dispatch(pushError('Passwords must match'))
       return
     }
 

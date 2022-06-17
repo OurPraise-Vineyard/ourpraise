@@ -19,6 +19,7 @@ import store from '@store'
 import { useAppDispatch, useAppSelector } from '@hooks'
 import { initializeUser, LoginStatus } from '@features/Auth/authSlice'
 import Register from '@features/Auth/Register'
+import DisplayErrors from '@features/Shared/DisplayErrors'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -92,6 +93,7 @@ ReactDOM.render(
       <Provider store={store}>
         <BrowserRouter>
           <App />
+          <DisplayErrors />
         </BrowserRouter>
       </Provider>
     </div>

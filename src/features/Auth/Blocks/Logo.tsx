@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import logo from '@assets/logo.svg'
+import logo from '@assets/logo_light.png'
 
 export default styled.img.attrs({
   src: logo,

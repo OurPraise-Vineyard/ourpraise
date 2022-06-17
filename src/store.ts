@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import songs from '@features/Songs/songsSlice'
 import events from '@features/Events/eventsSlice'
 import auth from '@features/Auth/authSlice'
+import errors from '@utils/errorSlice'
 
 const store = configureStore({
   reducer: {
     songs,
     events,
-    auth
+    auth,
+    errors
   }
 })
 
