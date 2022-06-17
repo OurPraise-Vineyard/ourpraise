@@ -26,6 +26,15 @@ const Content = styled.div`
   max-width: calc(100% - 300px);
 `
 
+function useLoadEffect (state, cb) {
+  const [cached, setCached] = useState(null)
+
+  if (state !== null && cached === null) {
+    setCached(state)
+    cb()
+  }
+}
+
 export default function ViewSong () {
   const { songId, eventId } = useParams()
   const [transpose, setTranspose] = useState(0)
@@ -40,6 +49,8 @@ export default function ViewSong () {
   const shouldFetchEvent = !event
   const shouldFetchSong = !song
 
+  const songTranspose = song ? song.transpose : null
+
   const fetchFullEvent = useCallback(async () => {
     await dispatch(fetchEvent(eventId))
     await dispatch(fetchEventSongs(eventId))
@@ -53,13 +64,7 @@ export default function ViewSong () {
     }
   }, [shouldFetchEvent, fetchFullEvent, songId, dispatch, shouldFetchSong, eventId])
 
-  useEffect(() => {
-    if (song && song.transpose && transpose !== song.transpose) {
-      setTranspose(song.transpose)
-    } else if (!song && transpose !== 0) {
-      setTranspose(0)
-    }
-  }, [song, transpose])
+  useLoadEffect(songTranspose, () => setTranspose(songTranspose || 0))
 
   function handleEdit () {
     navigate(`/songs/${songId}/edit`)
