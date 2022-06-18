@@ -14,7 +14,7 @@ This repo contains the source code for OurPraise, an online worship platform tha
 
 Get events and songs for presentation:
 
-`https://europe-west1-songdriver-firebase.cloudfunctions.net/slides?event=EVENT_ID&song=SONG_ID`
+`https://europe-west1-ourpraise-fb.cloudfunctions.net/slides?event=EVENT_ID&song=SONG_ID`
 
 Provide *either* a song id or an event id. If both are present, the song id will be ignored.
 

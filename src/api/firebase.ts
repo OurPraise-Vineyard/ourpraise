@@ -6,12 +6,12 @@ import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyCT7xqW3aLcpu7Ekwq7EOmqUAOjVkMMNq8',
-  authDomain: 'songdriver-firebase.firebaseapp.com',
-  projectId: 'songdriver-firebase',
-  storageBucket: 'songdriver-firebase.appspot.com',
-  messagingSenderId: '499412488326',
-  appId: '1:499412488326:web:3f11b7f18d91f89207c107'
+  apiKey: 'AIzaSyCBfNSkzwlXjavTRNq-TmVo7QpcHrZYvgE',
+  authDomain: 'ourpraise-fb.firebaseapp.com',
+  projectId: 'ourpraise-fb',
+  storageBucket: 'ourpraise-fb.appspot.com',
+  messagingSenderId: '485823144275',
+  appId: '1:485823144275:web:a6eae91b382d7ebefc41a6'
 }
 
 // Initialize Firebase

@@ -20,6 +20,7 @@
   },
   "scripts": {
     "start": "concurrently \"react-app-rewired start\" \"firebase emulators:start --import ./firestore-import\"",
+    "start:prod": "react-app-rewired start",
     "build": "npm run type-check && react-app-rewired build",
     "type-check": "tsc --noEmit",
     "test": "npm run type-check && react-app-rewired test",

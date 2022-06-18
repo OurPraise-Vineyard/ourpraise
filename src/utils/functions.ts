@@ -1,9 +1,9 @@
 export function getFunctionUrl (name, options) {
   let base
   if (window.location.origin.startsWith('http://localhost:')) {
-    base = 'http://localhost:5001/songdriver-firebase/europe-west1/'
+    base = 'http://localhost:5001/ourpraise-fb/europe-west1/'
   } else {
-    base = 'https://europe-west1-songdriver-firebase.cloudfunctions.net/'
+    base = 'https://europe-west1-ourpraise-fb.cloudfunctions.net/'
   }
 
   const optionsUrl = encodeURI(Object.entries(options)

@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 const admin = require('firebase-admin')
-const token = require('/home/gustav/Downloads/songdriver-firebase-firebase-adminsdk-899w5-c4862e22d5.json')
+const token = require('/home/gustav/Downloads/ourpraise-fb-firebase-adminsdk-blj5j-81bcbe8819.json')
 const fs = require('fs-extra')
 const path = require('path')
 
