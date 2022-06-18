@@ -35,9 +35,10 @@ interface TextFieldProps {
   onChange?: React.ChangeEventHandler<HTMLInputElement>,
   value: string,
   disabled?: boolean,
-  required?: boolean
+  required?: boolean,
+  autoFocus?: boolean
 }
-export default function TextField ({ required = false, disabled = false, title = '', name = '', password = false, onChange, value }: TextFieldProps) {
+export default function TextField ({ required = false, disabled = false, title = '', name = '', password = false, onChange, value, autoFocus = false }: TextFieldProps) {
   return (
     <Container>
       <Label>{title}</Label>
@@ -48,6 +49,7 @@ export default function TextField ({ required = false, disabled = false, title =
         value={value}
         disabled={disabled}
         required={required}
+        autoFocus={autoFocus}
       />
     </Container>
   )

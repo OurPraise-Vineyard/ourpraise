@@ -77,7 +77,7 @@ export default function RegisterForm () {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <TextField onChange={handleChange('name')} value={name} name="name" title="Name"></TextField>
+      <TextField autoFocus onChange={handleChange('name')} value={name} name="name" title="Name"></TextField>
       {isInvite
         ? <TextField disabled value={email} name="email" title="Email"></TextField>
         : <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>}

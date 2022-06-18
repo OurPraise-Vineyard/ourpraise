@@ -33,7 +33,7 @@ export default function LoginForm () {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>
+      <TextField autoFocus onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>
       <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
       <Button type="submit">Login</Button>
       <ModeLink to="/register">Not a member yet? Sign up today!</ModeLink>
