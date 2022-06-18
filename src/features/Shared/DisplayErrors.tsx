@@ -26,9 +26,11 @@ const DisplayError = styled.div<{unmounted: boolean}>`
   align-items: center;
   opacity: ${props => props.unmounted ? 0 : 1};
   height: ${props => props.unmounted ? '0px' : '40px'};
-  transition: all .5s ease-out;
+  transition: all .2s ease-out;
 
-  animation: ${fadeIn} .5s ease-out;
+  animation: ${fadeIn} .2s ease-out;
+
+  z-index: 20000;
 `
 
 export default function DisplayErrors () {

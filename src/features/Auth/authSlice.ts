@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { mapDocsId } from '@utils/api'
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut as _signOut, updateProfile, User } from 'firebase/auth'
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
+import { collection, deleteField, doc, FieldPath, getDocs, getFirestore, query, runTransaction, updateDoc, where } from 'firebase/firestore'
 
 export enum LoginStatus {
   loggedIn = 'loggedIn',
@@ -33,7 +33,7 @@ async function fetchUserOrganisations (email) {
 export const signIn = createAsyncThunk<
   { email: string, displayName: string, organisations: OrganisationType[] },
   { email: string, password: string }
->('user/signIn', async ({ email, password }) => {
+>('auth/signIn', async ({ email, password }) => {
   const userCred = await signInWithEmailAndPassword(getAuth(), email, password)
   const { displayName } = userCred.user
 
@@ -62,11 +62,11 @@ export const createAccount = createAsyncThunk<
   }
 })
 
-export const signOut = createAsyncThunk('user/signOut', () => _signOut(getAuth()))
+export const signOut = createAsyncThunk('auth/signOut', () => _signOut(getAuth()))
 
 export const initializeUser = createAsyncThunk<
   { email: string, displayName: string, organisations: OrganisationType[] }
->('user/init', async () => {
+>('auth/init', async () => {
   const user: User = await new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(getAuth(), user => {
       unsubscribe()
@@ -87,6 +87,73 @@ export const initializeUser = createAsyncThunk<
   }
 
   return null
+})
+
+export const changeMemberRole = createAsyncThunk<
+  { member: string, organisationId: string, role: 'user' | 'admin' },
+  { member: string, organisationId: string, role: 'user' | 'admin' }
+>('auth/changeMemberRole', ({ member, organisationId, role }) => {
+  return updateDoc(
+    doc(getFirestore(), `organisations/${organisationId}`),
+    new FieldPath('roles', member),
+    role
+  ).then(() => ({
+    member,
+    organisationId,
+    role
+  }))
+})
+
+export const removeOrganisationMember = createAsyncThunk<
+  { member: string, organisationId: string },
+  { member: string, organisationId: string }
+>('auth/removeMember', ({ organisationId, member }) => {
+  const orgDocRef = doc(getFirestore(), `organisations/${organisationId}`)
+  return runTransaction(getFirestore(), async transaction => {
+    const org = await transaction.get(orgDocRef)
+
+    if (org.exists) {
+      const members = org.data().members
+
+      transaction.update(
+        orgDocRef,
+        new FieldPath('roles', member),
+        deleteField(),
+        'members',
+        members.filter(id => id !== member)
+      )
+    }
+  })
+    .then(() => ({
+      member,
+      organisationId
+    }))
+})
+
+export const addOrganisationMember = createAsyncThunk<
+  { member: string, organisationId: string },
+  { email: string, organisationId: string }
+>('auth/addMember', ({ organisationId, email }) => {
+  const orgDocRef = doc(getFirestore(), `organisations/${organisationId}`)
+  return runTransaction(getFirestore(), async transaction => {
+    const org = await transaction.get(orgDocRef)
+
+    if (org.exists) {
+      const members = org.data().members
+
+      transaction.update(
+        orgDocRef,
+        new FieldPath('roles', email),
+        'user',
+        'members',
+        members.concat([email])
+      )
+    }
+  })
+    .then(() => ({
+      member: email,
+      organisationId
+    }))
 })
 
 const authSlice = createSlice({
@@ -148,6 +215,36 @@ const authSlice = createSlice({
           state.organisation = null
           state.organisations = []
           state.status = LoginStatus.loggedOut
+        }
+      })
+      .addCase(changeMemberRole.fulfilled, (state, action) => {
+        const { member, organisationId, role } = action.payload
+        state.organisations.find(({ id }) => id === organisationId).roles[member] = role
+
+        if (state.organisation.id === organisationId) {
+          state.organisation.roles[member] = role
+        }
+      })
+      .addCase(removeOrganisationMember.fulfilled, (state, action) => {
+        const { member, organisationId } = action.payload
+
+        const org = state.organisations.find(({ id }) => id === organisationId)
+        org.members = org.members.filter(id => id !== member)
+        delete org.roles[member]
+
+        if (state.organisation.id === organisationId) {
+          state.organisation = org
+        }
+      })
+      .addCase(addOrganisationMember.fulfilled, (state, action) => {
+        const { member, organisationId } = action.payload
+
+        const org = state.organisations.find(({ id }) => id === organisationId)
+        org.members = org.members.concat([member])
+        org.roles[member] = 'user'
+
+        if (state.organisation.id === organisationId) {
+          state.organisation = org
         }
       })
   }

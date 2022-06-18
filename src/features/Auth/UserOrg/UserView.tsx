@@ -5,6 +5,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import checkIcon from '@assets/check.svg'
 import gearIcon from '@assets/gear.svg'
+import IconButton from '@features/Shared/IconButton'
 
 const Username = styled.p`
   font-size: 24px;
@@ -55,7 +56,7 @@ const Organisation = styled.div<{ selected: boolean }>`
 `
 
 const Organisations = styled.div`
-  flex: 1 0 auto;
+  overflow-y: auto;
 `
 
 const LogoutWrapper = styled.div`
@@ -79,24 +80,13 @@ const OrganisationBody = styled.div`
   flex: 1 0 auto;
 `
 
-const SettingsButton = styled.button`
-  background-color: transparent;
-  background-image: url(${gearIcon});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 20px 20px;
-  border: 0;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  transition: background-color .2s ease-out;
-  cursor: pointer;
+const SettingsButton = styled(IconButton).attrs({
+  icon: gearIcon
+})`
   margin: -8px 8px;
-
-  &:hover {
-    background-color: #ddd;
-  }
 `
+
+const Spacer = styled.div`flex: 1 0 auto;`
 
 export default function UserView ({ onEditOrg, onSelectOrg }) {
   const user = useAppSelector(state => state.auth.user)
@@ -130,6 +120,7 @@ export default function UserView ({ onEditOrg, onSelectOrg }) {
           </Organisation>
         ))}
       </Organisations>
+      <Spacer />
       <Line />
       <LogoutWrapper>
         <LogoutButton fullWidth onClick={handleLogout}>Sign out</LogoutButton>

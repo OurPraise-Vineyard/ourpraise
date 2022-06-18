@@ -53,6 +53,18 @@ const Textarea = styled.textarea<{size: string}>`
   }
 `
 
+interface TextFieldProps {
+  title?: string,
+  name?: string,
+  password?: boolean,
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
+  value: string,
+  multiline?: boolean,
+  type?: 'text' | 'password' | 'date',
+  size?: 'small' | 'medium' | 'large',
+  className?: string
+}
+
 export default function TextField ({
   title = '',
   name = '',
@@ -61,10 +73,11 @@ export default function TextField ({
   value,
   multiline = false,
   type = 'text',
-  size = 'medium'
-}) {
+  size = 'medium',
+  className
+}: TextFieldProps) {
   return (
-    <Container>
+    <Container className={className}>
       <Label>{title}</Label>
       {multiline
         ? (

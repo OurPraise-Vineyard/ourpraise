@@ -46,7 +46,7 @@ export const removeErrorDelayed = createAsyncThunk<
 >('errors/removeErrorDelayed', (id, { dispatch }) => {
   setTimeout(() => {
     dispatch(removeError(id))
-  }, 500)
+  }, 200)
 
   return id
 })

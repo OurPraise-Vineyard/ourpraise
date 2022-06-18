@@ -14,13 +14,13 @@ const Label = styled.span`
   display: block;
 `
 
-const Select = styled.select`
+const Select = styled.select<{ noTitle: boolean }>`
   background: transparent;
   width: 100%;
   display: block;
   border: none;
   font-size: 14px;
-  padding: 8px 0 0;
+  padding: ${props => props.noTitle ? 0 : '8px'} 0 0;
   font-family: 'Oxygen Mono', monospace;
 
   &:focus {
@@ -37,21 +37,23 @@ export interface SelectItem {
 }
 
 interface SelectFieldProps {
-  title: string,
+  title?: string,
   name?: string,
   onChange: React.ChangeEventHandler<HTMLSelectElement>,
   value: string,
-  options: SelectItem[]
+  options: SelectItem[],
+  className?: string
 }
 
-export default function SelectField ({ title = '', name = '', onChange, value, options = [] }: SelectFieldProps) {
+export default function SelectField ({ className, title = '', name = '', onChange, value, options = [] }: SelectFieldProps) {
   return (
-    <Container>
-      <Label>{title}</Label>
+    <Container className={className}>
+      {!!title && <Label>{title}</Label>}
       <Select
         value={value}
         name={name}
         onChange={onChange}
+        noTitle={!title}
       >
         {options.map(option => <option disabled={option.disabled} key={option.key || option.value} value={option.value}>{option.label || option.value}</option>)}
       </Select>

@@ -7,6 +7,7 @@ import TextField from '@features/Auth/Blocks/TextField'
 import { signIn } from '@features/Auth/authSlice'
 import React, { useState } from 'react'
 import ModeLink from '@features/Auth/Blocks/ModeLink'
+import FadeContainer from '@features/Auth/Blocks/FadeContainer'
 
 export default function Login () {
   const [email, setEmail] = useState('')
@@ -35,13 +36,15 @@ export default function Login () {
 
   return (
     <Container>
-      <Logo />
-      <Form onSubmit={handleSubmit}>
-        <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>
-        <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
-        <Button type="submit">Login</Button>
-        <ModeLink to="/register">Not a member yet? Sign up today!</ModeLink>
-      </Form>
+      <FadeContainer>
+        <Logo />
+        <Form onSubmit={handleSubmit}>
+          <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>
+          <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
+          <Button type="submit">Login</Button>
+          <ModeLink to="/register">Not a member yet? Sign up today!</ModeLink>
+        </Form>
+      </FadeContainer>
     </Container>
   )
 }
