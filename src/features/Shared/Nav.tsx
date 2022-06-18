@@ -76,25 +76,27 @@ export default function Nav({ wide = false }) {
   const [showUser, setShowUser] = useState(false)
 
   return (
-    <Container>
+    <>
       <UserOrg show={showUser} onClose={() => setShowUser(false)} />
-      <Wrapper wide={wide}>
-        <HomeLink to="/home">
-          <Logo />
-        </HomeLink>
-        <Username onClick={() => setShowUser(true)} org={orgName}>{user ? user.displayName || user.email : ''}</Username>
-        <Links>
-          <LinkBase color="white" to="/home">
-            Home
-          </LinkBase>
-          <LinkBase color="white" to="/songs">
-            Songs
-          </LinkBase>
-          {!!org && (<LinkBase color="white" to="/events">
-            Events
-          </LinkBase>)}
-        </Links>
-      </Wrapper>
-    </Container>
+      <Container>
+        <Wrapper wide={wide}>
+          <HomeLink to="/home">
+            <Logo />
+          </HomeLink>
+          <Username onClick={() => setShowUser(true)} org={orgName}>{user ? user.displayName || user.email : ''}</Username>
+          <Links>
+            <LinkBase color="white" to="/home">
+              Home
+            </LinkBase>
+            <LinkBase color="white" to="/songs">
+              Songs
+            </LinkBase>
+            {!!org && (<LinkBase color="white" to="/events">
+              Events
+            </LinkBase>)}
+          </Links>
+        </Wrapper>
+      </Container>
+    </>
   )
 }

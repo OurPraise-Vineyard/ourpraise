@@ -58,7 +58,7 @@ export default function ViewEvent () {
 
   return (
     <div>
-      <Toolbar organisation={event.organisation} title={event.title} eventId={eventId} />
+      <Toolbar />
       {!!event.comment && (
         <ContentBox title="Comments">
           {event.comment}

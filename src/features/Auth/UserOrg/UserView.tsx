@@ -88,6 +88,13 @@ const SettingsButton = styled(IconButton).attrs({
 
 const Spacer = styled.div`flex: 1 0 auto;`
 
+const NoOrganisations = styled.p`
+  font-size: 18px;
+  color: #aaa;
+  text-align: center;
+  margin: 15px 0;
+`
+
 export default function UserView ({ onEditOrg, onSelectOrg }) {
   const user = useAppSelector(state => state.auth.user)
   const dispatch = useAppDispatch()
@@ -119,6 +126,11 @@ export default function UserView ({ onEditOrg, onSelectOrg }) {
             </OrganisationBody>
           </Organisation>
         ))}
+        {organisations.length === 0 && (
+          <NoOrganisations>
+            You are not a member of any organisation.
+          </NoOrganisations>
+        )}
       </Organisations>
       <Spacer />
       <Line />

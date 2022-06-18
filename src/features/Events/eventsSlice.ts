@@ -76,11 +76,15 @@ export const saveEvent = createAsyncThunk<
 
 export const addEvent = createAsyncThunk<
   EventType,
-  EventType
->('events/add', async (event) => {
+  EventType,
+  {
+    state: RootState
+  }
+>('events/add', async (event, { getState }) => {
   const options = pruneObject({
     ...event,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    owner: getState().auth.user.email
   })
   const doc = await addDoc(collection(getFirestore(), 'events'), options)
 

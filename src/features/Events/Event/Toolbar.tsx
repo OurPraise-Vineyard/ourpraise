@@ -1,6 +1,6 @@
 import { getFunctionUrl } from '@utils/functions'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { buttonBase } from '@features/Shared/ButtonBase'
 import styled from 'styled-components'
 import { useAppSelector } from '@hooks'
@@ -46,23 +46,30 @@ const Spacer = styled.span`
   flex: 1 0 auto;
 `
 
-export default function Toolbar ({ title, organisation, onSearch = undefined, eventId }) {
+export default function Toolbar () {
+  const { eventId } = useParams()
+  const event = useAppSelector(state => state.events.index[eventId])
   const orgName = useAppSelector(state => {
-    const org = state.auth.organisations.find(({ id }) => id === organisation)
+    const org = state.auth.organisations.find(({ id }) => id === event.organisation)
     if (org) {
       return org.name
     }
     return 'No organisation'
   })
+  const userEmail = useAppSelector(state => state.auth.user.email)
+  const userRole = useAppSelector(state => state.auth.organisation.roles[state.auth.user.email])
+  const canEdit = userEmail === event.owner || userRole === 'admin'
 
   return (
     <Row>
-      <Title>{title}</Title>
+      <Title>{event.title}</Title>
       <Chip>{orgName}</Chip>
       <Spacer />
-      <ButtonLink to={`/events/${eventId}/edit`}>
-        Edit
-      </ButtonLink>
+      {canEdit && (
+        <ButtonLink to={`/events/${eventId}/edit`}>
+          Edit
+        </ButtonLink>
+      )}
       <ButtonExternal
         href={getFunctionUrl('pdf', { event: eventId })}
         target="_blank"

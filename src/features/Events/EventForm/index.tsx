@@ -115,7 +115,7 @@ const defaultEvent = {
   organisation: ''
 }
 
-export default function EventForm ({ event = undefined, onSubmit, heading }: { event?: EventType, onSubmit: (options: EventType) => void, heading: string}) {
+export default function EventForm ({ event = undefined, onSubmit, heading }: { event?: EventType, onSubmit: (options: EventFormType) => void, heading: string}) {
   const [{title, date, songs, comment, organisation}, dispatch] = useReducer(reducer, defaultEvent)
   const navigate = useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(false)

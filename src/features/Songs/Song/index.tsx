@@ -42,6 +42,7 @@ export default function ViewSong () {
   const navigate = useNavigate()
   const event = useAppSelector(state => state.events.index[eventId])
   const song = useAppSelector(state => state.songs.index[songId])
+  const hasOrg = useAppSelector(state => !!state.auth.organisation)
   const dispatch = useAppDispatch()
 
   const songLoaded = song && song.id === songId
@@ -50,6 +51,8 @@ export default function ViewSong () {
   const shouldFetchSong = !song
 
   const songTranspose = song ? song.transpose : null
+
+  const canEdit = hasOrg && !eventId
 
   const fetchFullEvent = useCallback(async () => {
     await dispatch(fetchEvent(eventId))
@@ -96,7 +99,7 @@ export default function ViewSong () {
         <EmojiButton emoji="👈️" onClick={handleBack}>
           Back
         </EmojiButton>
-        {!eventId && (
+        {canEdit && (
           <EmojiButton emoji="✏️" onClick={handleEdit}>
             Edit
           </EmojiButton>

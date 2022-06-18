@@ -15,5 +15,15 @@ interface EventType {
   comment?: string,
   createdAt?: string,
   organisation: string
-  organisationName?: string
+  organisationName?: string,
+  owner: string
+}
+
+interface EventFormType {
+  title: string,
+  date: string,
+  songs: Array<EventSongType>,
+  id?: string,
+  comment: string,
+  organisation: string
 }

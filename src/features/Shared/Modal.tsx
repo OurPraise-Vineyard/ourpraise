@@ -44,6 +44,7 @@ const ModalContainer = styled.div<{ show: boolean, narrow: boolean }>`
     css`
       top: calc(50% + 20px);
       transition: top 0.2s ease-out;
+      pointer-events: none;
     `}
 `
 
