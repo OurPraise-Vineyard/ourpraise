@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
-import logo from '@assets/logo_light.png'
+import logo from '@assets/logo_light.svg'
 import Page from '@features/Shared/Page'
 import { Link } from 'react-router-dom'
 import LinkBase from '@features/Shared/LinkBase'
