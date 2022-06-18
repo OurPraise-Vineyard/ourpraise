@@ -14,5 +14,5 @@ export default styled.div<{wide:boolean}>`
   width: ${props => props.wide ? 'auto' : '960px'};
   margin: 0 auto;
   padding: 20px;
-  animation: ${fadeIn} .2s ease-out;
+  animation: ${fadeIn} .2s ease-out .2s both;
 `

@@ -4,7 +4,6 @@ import '@api/firebase'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { createGlobalStyle } from 'styled-components'
 import Home from '@features/Home'
-import Login from '@features/Auth/Login'
 import Layout from '@features/Shared/Layout'
 import ViewSong from '@features/Songs/Song'
 import EditSong from '@features/Songs/EditSong'
@@ -18,8 +17,8 @@ import { Provider } from 'react-redux'
 import store from '@store'
 import { useAppDispatch, useAppSelector } from '@hooks'
 import { initializeUser, LoginStatus } from '@features/Auth/authSlice'
-import Register from '@features/Auth/Register'
 import DisplayErrors from '@features/Shared/DisplayErrors'
+import Auth from '@features/Auth'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -55,12 +54,7 @@ function App () {
   }
 
   if (!user) {
-    return (
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<Login />} />
-      </Routes>
-    )
+    return <Auth />
   }
 
   return (

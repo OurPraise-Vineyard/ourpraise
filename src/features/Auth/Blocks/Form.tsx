@@ -1,8 +1,24 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const transitionIn = keyframes`
+  0% {
+    top: 20px;
+    opacity: 0;
+    transform: scaleX(0.97);
+  }
+
+  100% {
+    top: 0;
+    opacity: 1;
+    transform: scaleX(1);
+  }
+`
 
 export default styled.form`
   width: 440px;
   max-width: 100vw;
   padding: 20px;
   margin: 20vh auto 0;
+  position: relative;
+  animation: ${transitionIn} .2s ease-out .2s both;
 `

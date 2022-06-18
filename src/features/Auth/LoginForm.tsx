@@ -1,15 +1,12 @@
 import { useAppDispatch } from '@hooks'
 import Button from '@features/Auth/Blocks/Button'
-import Container from '@features/Auth/Blocks/Container'
 import Form from '@features/Auth/Blocks/Form'
-import Logo from '@features/Auth/Blocks/Logo'
 import TextField from '@features/Auth/Blocks/TextField'
 import { signIn } from '@features/Auth/authSlice'
 import React, { useState } from 'react'
 import ModeLink from '@features/Auth/Blocks/ModeLink'
-import FadeContainer from '@features/Auth/Blocks/FadeContainer'
 
-export default function Login () {
+export default function LoginForm () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useAppDispatch()
@@ -35,16 +32,11 @@ export default function Login () {
   }
 
   return (
-    <Container>
-      <FadeContainer>
-        <Logo />
-        <Form onSubmit={handleSubmit}>
-          <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>
-          <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
-          <Button type="submit">Login</Button>
-          <ModeLink to="/register">Not a member yet? Sign up today!</ModeLink>
-        </Form>
-      </FadeContainer>
-    </Container>
+    <Form onSubmit={handleSubmit}>
+      <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>
+      <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
+      <Button type="submit">Login</Button>
+      <ModeLink to="/register">Not a member yet? Sign up today!</ModeLink>
+    </Form>
   )
 }

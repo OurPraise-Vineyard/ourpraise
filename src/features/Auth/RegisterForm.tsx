@@ -1,15 +1,12 @@
 import { useAppDispatch } from '@hooks'
 import Button from '@features/Auth/Blocks/Button'
-import Container from '@features/Auth/Blocks/Container'
 import Form from '@features/Auth/Blocks/Form'
-import Logo from '@features/Auth/Blocks/Logo'
 import TextField from '@features/Auth/Blocks/TextField'
 import { createAccount } from '@features/Auth/authSlice'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { pushError } from '@utils/errorSlice'
 import ModeLink from '@features/Auth/Blocks/ModeLink'
-import FadeContainer from '@features/Auth/Blocks/FadeContainer'
 
 function safeMatchSearch (key) {
   const reg = new RegExp(`\\?.*${key}=([\\w\\d.@]*).*$`)
@@ -24,7 +21,7 @@ function safeMatchSearch (key) {
   return ''
 }
 
-export default function Register () {
+export default function RegisterForm () {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
@@ -79,20 +76,15 @@ export default function Register () {
   }
 
   return (
-    <Container>
-      <FadeContainer>
-        <Logo />
-        <Form onSubmit={handleSubmit}>
-          <TextField onChange={handleChange('name')} value={name} name="name" title="Name"></TextField>
-          {isInvite
-            ? <TextField disabled value={email} name="email" title="Email"></TextField>
-            : <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>}
-          <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
-          <TextField onChange={handleChange('repeatPassword')} value={repeatPassword} name="repeatPassword" password title="Repeat password"></TextField>
-          <Button type="submit">Register</Button>
-          <ModeLink to="/">Already a member? Login instead</ModeLink>
-        </Form>
-      </FadeContainer>
-    </Container>
+    <Form onSubmit={handleSubmit}>
+      <TextField onChange={handleChange('name')} value={name} name="name" title="Name"></TextField>
+      {isInvite
+        ? <TextField disabled value={email} name="email" title="Email"></TextField>
+        : <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>}
+      <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
+      <TextField onChange={handleChange('repeatPassword')} value={repeatPassword} name="repeatPassword" password title="Repeat password"></TextField>
+      <Button type="submit">Register</Button>
+      <ModeLink to="/">Already a member? Login instead</ModeLink>
+    </Form>
   )
 }
