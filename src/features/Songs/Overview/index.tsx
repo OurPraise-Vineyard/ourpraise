@@ -23,7 +23,7 @@ export default function SongsOverview () {
   const [searchStatus, setSearchStatus] = useState(FetchStatus.idle)
 
   useEffect(() => {
-    if (statusAllSongs !== FetchStatus.loading && statusAllSongs !== FetchStatus.succeeded) {
+    if (statusAllSongs === FetchStatus.idle) {
       dispatch(fetchAllSongs())
     }
   }, [dispatch, statusAllSongs])

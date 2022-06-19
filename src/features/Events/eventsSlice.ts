@@ -118,8 +118,9 @@ const eventsSlice = createSlice({
       .addCase(fetchRecentEvents.pending, state => {
         state.statusAllEvents = FetchStatus.loading
       })
-      .addCase(fetchRecentEvents.rejected, state => {
+      .addCase(fetchRecentEvents.rejected, (state, action) => {
         state.statusAllEvents = FetchStatus.failed
+        console.log(action.error.stack)
       })
       .addCase(fetchRecentEvents.fulfilled, (state, action) => {
         state.statusAllEvents = FetchStatus.succeeded

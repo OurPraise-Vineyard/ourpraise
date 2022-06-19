@@ -20,7 +20,7 @@ export default function EventOverview () {
   const statusAllEvents = useAppSelector(state => state.events.statusAllEvents)
 
   useEffect(() => {
-    if (statusAllEvents !== FetchStatus.loading && statusAllEvents !== FetchStatus.succeeded) {
+    if (statusAllEvents === FetchStatus.idle) {
       dispatch(fetchRecentEvents())
     }
   }, [dispatch, statusAllEvents])
