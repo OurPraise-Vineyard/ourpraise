@@ -7,7 +7,7 @@ import dateFormat from 'dateformat'
 import { deleteEvent } from '@features/Events/eventsSlice'
 import AddSongs from '@features/Events/EventForm/AddSongs'
 import FormSongItem from '@features/Events/EventForm/FormSongItem'
-import { useAppDispatch, useAppSelector } from '@hooks'
+import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import SelectField, { SelectItem } from '@features/Shared/SelectField'
 
 const Container = styled.div`

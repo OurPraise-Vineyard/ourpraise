@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@hooks'
+import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import backIcon from '@assets/arrow-left.svg'

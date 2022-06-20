@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import ButtonBase from '@features/Shared/ButtonBase'
 import { deleteSong } from '@features/Songs/songsSlice'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '@hooks'
+import { useAppDispatch } from '@utils/hooks'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);

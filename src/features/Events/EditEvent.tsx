@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EventForm from '@features/Events/EventForm'
-import { useAppDispatch, useAppSelector } from '@hooks'
+import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchEvent, saveEvent } from '@features/Events/eventsSlice'
 import { fetchEventSongs } from '@features/Songs/songsSlice'
 
@@ -19,6 +19,7 @@ export default function EditEvent () {
       songs: state.songs.views[`event_${eventId}`]
     } as EventType
   })
+  useDocumentTitle(event ? `Edit event: "${event.title}"` : 'Edit event')
   const shouldFetch = eventId && !event
 
   const fetchFullEvent = useCallback(async () => {

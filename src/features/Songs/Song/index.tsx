@@ -6,7 +6,7 @@ import Song from '@features/Songs/Song/Song'
 import Tools from '@features/Songs/Song/Tools'
 import MiniEvent from '@features/Songs/Song/Event'
 import SongComment from '@features/Songs/Song/Comment'
-import { useAppDispatch, useAppSelector } from '@hooks'
+import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchEvent } from '@features/Events/eventsSlice'
 import { fetchEventSongs, fetchSong } from '@features/Songs/songsSlice'
 
@@ -44,6 +44,7 @@ export default function ViewSong () {
   const song = useAppSelector(state => state.songs.index[songId])
   const hasOrg = useAppSelector(state => !!state.auth.organisation)
   const dispatch = useAppDispatch()
+  useDocumentTitle(song ? song.title : '')
 
   const songLoaded = song && song.id === songId
 

@@ -3,7 +3,7 @@ import ContentTable from '@features/Shared/Table'
 import Toolbar from '@features/Events/Overview/Toolbar'
 import formatDate from '@utils/date'
 import { FetchStatus } from '@utils/api'
-import { useAppDispatch, useAppSelector } from '@hooks'
+import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchRecentEvents } from '@features/Events/eventsSlice'
 
 function mapEvent (data) {
@@ -15,6 +15,7 @@ function mapEvent (data) {
 }
 
 export default function EventOverview () {
+  useDocumentTitle('Events')
   const dispatch = useAppDispatch()
   const events = useAppSelector(state => state.events.allEvents)
   const statusAllEvents = useAppSelector(state => state.events.statusAllEvents)

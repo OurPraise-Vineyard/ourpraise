@@ -1,6 +1,6 @@
 import { signOut } from '@features/Auth/authSlice'
 import ButtonBase from '@features/Shared/ButtonBase'
-import { useAppDispatch, useAppSelector } from '@hooks'
+import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import React from 'react'
 import styled, { css } from 'styled-components'
 import checkIcon from '@assets/check.svg'

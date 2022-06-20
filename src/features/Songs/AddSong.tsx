@@ -2,9 +2,10 @@ import React from 'react'
 import { addSong } from '@features/Songs/songsSlice'
 import { useNavigate } from 'react-router-dom'
 import SongForm from '@features/Songs/SongForm'
-import { useAppDispatch } from '@hooks'
+import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
 
 export default function AddSong () {
+  useDocumentTitle('Add song')
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 

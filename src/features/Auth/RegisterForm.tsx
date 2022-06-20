@@ -1,4 +1,4 @@
-import { useAppDispatch } from '@hooks'
+import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
 import Button from '@features/Auth/Blocks/Button'
 import Form from '@features/Auth/Blocks/Form'
 import TextField from '@features/Auth/Blocks/TextField'
@@ -29,6 +29,7 @@ export default function RegisterForm () {
   const [isInvite, setIsInvite] = useState(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  useDocumentTitle('Register')
 
   useEffect(() => {
     if (window.location.search) {

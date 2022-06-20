@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import ContentTable from '@features/Shared/Table'
 import Toolbar from '@features/Songs/Overview/Toolbar'
-import { useAppDispatch, useAppSelector } from '@hooks'
+import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchAllSongs, fetchSearchQuery } from '@features/Songs/songsSlice'
 import { FetchStatus } from '@utils/api'
 
@@ -14,6 +14,7 @@ function mapSong (data) {
 }
 
 export default function SongsOverview () {
+  useDocumentTitle('Songs')
   const [query, setQuery] = useState('')
   const statusAllSongs = useAppSelector(state => state.songs.status.all)
   const songs = useAppSelector(state => state.songs.views.all)

@@ -3,7 +3,7 @@ import Toolbar from '@features/Events/Event/Toolbar'
 import { useNavigate, useParams } from 'react-router-dom'
 import ContentBox from '@features/Shared/ContentBox'
 import SongItem from '@features/Events/Event/SongItem'
-import { useAppDispatch, useAppSelector } from '@hooks'
+import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { FetchStatus } from '@utils/api'
 import { fetchEvent } from '@features/Events/eventsSlice'
 import { fetchEventSongs } from '@features/Songs/songsSlice'
@@ -28,6 +28,7 @@ export default function ViewEvent () {
   const [status, setStatus] = useState(FetchStatus.idle)
   const shouldFetch = eventId && !event
   const navigate = useNavigate()
+  useDocumentTitle(event ? event.title : '')
 
   const handleFetchEvent = useCallback(async () => {
     if (shouldFetch) {

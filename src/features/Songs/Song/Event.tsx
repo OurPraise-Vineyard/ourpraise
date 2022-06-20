@@ -3,7 +3,7 @@ import { NavLink, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import _DownloadPdf from '@features/Songs/Song/Tools/DownloadPdf'
 import { getFunctionUrl } from '@utils/functions'
-import { useAppSelector } from '@hooks'
+import { useAppSelector } from '@utils/hooks'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);

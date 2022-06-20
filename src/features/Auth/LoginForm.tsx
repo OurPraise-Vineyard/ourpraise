@@ -1,4 +1,4 @@
-import { useAppDispatch } from '@hooks'
+import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
 import Button from '@features/Auth/Blocks/Button'
 import Form from '@features/Auth/Blocks/Form'
 import TextField from '@features/Auth/Blocks/TextField'
@@ -10,6 +10,7 @@ export default function LoginForm () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useAppDispatch()
+  useDocumentTitle('Login')
 
   const handleChange = name => e => {
     switch (name) {

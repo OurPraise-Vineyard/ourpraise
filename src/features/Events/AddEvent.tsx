@@ -2,11 +2,12 @@ import React from 'react'
 import { addEvent } from '@features/Events/eventsSlice'
 import { useNavigate } from 'react-router-dom'
 import EventForm from '@features/Events/EventForm'
-import { useAppDispatch } from '@hooks'
+import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
 
 export default function AddEvent () {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  useDocumentTitle('Add event')
 
   const handleSubmit = async (options) => {
     try {

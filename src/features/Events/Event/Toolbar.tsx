@@ -3,7 +3,7 @@ import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { buttonBase } from '@features/Shared/ButtonBase'
 import styled from 'styled-components'
-import { useAppSelector } from '@hooks'
+import { useAppSelector } from '@utils/hooks'
 
 const Row = styled.div`
   display: flex;

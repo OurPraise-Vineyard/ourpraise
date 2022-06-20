@@ -1,4 +1,4 @@
-import { useAppSelector } from '@hooks'
+import { useAppSelector } from '@utils/hooks'
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 

@@ -4,7 +4,7 @@ import logo from '@assets/logo_light.svg'
 import Page from '@features/Shared/Page'
 import { Link } from 'react-router-dom'
 import LinkBase from '@features/Shared/LinkBase'
-import { useAppSelector } from '@hooks'
+import { useAppSelector } from '@utils/hooks'
 import UserOrg from '@features/Auth/UserOrg'
 
 const Container = styled.nav`
