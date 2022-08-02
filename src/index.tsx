@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import { initializeUser, LoginStatus } from '@features/Auth/authSlice'
 import DisplayErrors from '@features/Shared/DisplayErrors'
 import Auth from '@features/Auth'
+import { pushError } from '@utils/errorSlice'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -46,7 +47,11 @@ function App () {
   const hasOrg = useAppSelector(state => !!state.auth.organisation)
 
   useEffect(function () {
-    dispatch(initializeUser())
+    try {
+      dispatch(initializeUser()).unwrap()
+    } catch (err) {
+      dispatch(pushError(err))
+    }
   }, [dispatch])
 
   if (!ready) {

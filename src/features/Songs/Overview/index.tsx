@@ -4,6 +4,7 @@ import Toolbar from '@features/Songs/Overview/Toolbar'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchAllSongs, fetchSearchQuery } from '@features/Songs/songsSlice'
 import { FetchStatus } from '@utils/api'
+import { pushError } from '@utils/errorSlice'
 
 function mapSong (data) {
   return {
@@ -25,7 +26,11 @@ export default function SongsOverview () {
 
   useEffect(() => {
     if (statusAllSongs === FetchStatus.idle) {
-      dispatch(fetchAllSongs())
+      try {
+        dispatch(fetchAllSongs()).unwrap()
+      } catch (err) {
+        dispatch(pushError(err))
+      }
     }
   }, [dispatch, statusAllSongs])
 
@@ -36,9 +41,10 @@ export default function SongsOverview () {
     } else {
       try {
         setSearchStatus(FetchStatus.loading)
-        await dispatch(fetchSearchQuery(query))
+        await dispatch(fetchSearchQuery(query)).unwrap()
         setSearchStatus(FetchStatus.succeeded)
       } catch (err) {
+        dispatch(pushError(err))
         setSearchStatus(FetchStatus.failed)
       }
     }

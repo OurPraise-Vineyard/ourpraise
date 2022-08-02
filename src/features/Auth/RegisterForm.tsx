@@ -10,7 +10,6 @@ import ModeLink from '@features/Auth/Blocks/ModeLink'
 
 function safeMatchSearch (key) {
   const reg = new RegExp(`\\?.*${key}=([\\w\\d.@]*).*$`)
-  console.log(reg)
   const match = window.location.search
     .match(reg)
 
@@ -33,15 +32,13 @@ export default function RegisterForm () {
 
   useEffect(() => {
     if (window.location.search) {
-      try {
-        const email = safeMatchSearch('email')
-        const name = safeMatchSearch('name')
+      const email = safeMatchSearch('email')
+      const name = safeMatchSearch('name')
 
+      if (email) {
         setEmail(email)
         setName(name)
         setIsInvite(true)
-      } catch (err) {
-        console.log('No email provided')
       }
     }
   }, [])
@@ -69,10 +66,10 @@ export default function RegisterForm () {
     }
 
     try {
-      await dispatch(createAccount({ email, password, displayName: name }))
+      await dispatch(createAccount({ email, password, displayName: name })).unwrap()
       navigate('/')
     } catch (err) {
-      console.log(err)
+      dispatch(pushError(err))
     }
   }
 

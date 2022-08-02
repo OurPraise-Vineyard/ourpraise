@@ -17,9 +17,34 @@ const initialState: ErrorState = {
   counter: 0
 }
 
+const errors = {
+  'auth/invalid-email': 'Please provide a valid email.',
+  'auth/email-already-in-use': 'Email already in use.',
+  'auth/weak-password': 'Password should be at least six characters long.',
+  'auth/wrong-password': 'Wrong password.',
+  'auth/user-not-found': 'User does not exist'
+}
+
+function humanizeError (err): string {
+  if (typeof err === 'string') {
+    return err
+  } else if ('code' in err) {
+    if (errors[err.code]) {
+      return errors[err.code]
+    } else {
+      console.log('Could not map error: ' + err.code)
+      return 'Something went wrong. Check that you provided correct information.'
+    }
+  } else if ('message' in err) {
+    return err.message as string
+  } else {
+    return 'Something went wrong. Check that you provided correct information.'
+  }
+}
+
 export const pushError = createAsyncThunk<
   string,
-  string,
+  (string | { code?: string, message?: string }),
   {
     state: RootState,
     dispatch: AppDispatch
@@ -34,7 +59,7 @@ export const pushError = createAsyncThunk<
     getState().errors.stack.slice(2).forEach(({ id }) => dispatch(removeErrorDelayed(id)))
   }
 
-  return message
+  return humanizeError(message)
 })
 
 export const removeErrorDelayed = createAsyncThunk<

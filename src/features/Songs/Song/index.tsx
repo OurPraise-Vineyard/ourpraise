@@ -9,6 +9,7 @@ import SongComment from '@features/Songs/Song/Comment'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchEvent } from '@features/Events/eventsSlice'
 import { fetchEventSongs, fetchSong } from '@features/Songs/songsSlice'
+import { pushError } from '@utils/errorSlice'
 
 const Layout = styled.div`
   display: flex;
@@ -56,8 +57,12 @@ export default function ViewSong () {
   const canEdit = hasOrg && !eventId
 
   const fetchFullEvent = useCallback(async () => {
-    await dispatch(fetchEvent(eventId))
-    await dispatch(fetchEventSongs(eventId))
+    try {
+      await dispatch(fetchEvent(eventId)).unwrap()
+      await dispatch(fetchEventSongs(eventId)).unwrap()
+    } catch (err) {
+      dispatch(pushError(err))
+    }
   }, [dispatch, eventId])
 
   useEffect(() => {

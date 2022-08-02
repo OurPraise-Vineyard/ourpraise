@@ -50,6 +50,10 @@ export const createAccount = createAsyncThunk<
   { email: string, displayName: string, organisations: OrganisationType[] },
   { email: string, password: string, displayName: string}
 >('auth/createAccount', async ({ email, password, displayName }) => {
+  if (!displayName) {
+    throw new Error('Please provide a name for this account.')
+  }
+
   const userCred = await createUserWithEmailAndPassword(getAuth(), email, password)
   await updateProfile(userCred.user, { displayName })
 

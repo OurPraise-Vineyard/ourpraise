@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import ContentTable from '@features/Shared/Table'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchPopularSongs, fetchRecentSongs } from '@features/Songs/songsSlice'
+import { pushError } from '@utils/errorSlice'
 
 function mapSong (data) {
   return {
@@ -20,11 +21,15 @@ export default function Home () {
   const statusPopular = useAppSelector(state => state.songs.status.popular)
 
   useEffect(() => {
-    if (statusRecent === 'idle' || statusRecent === 'failed') {
-      dispatch(fetchRecentSongs())
-    }
-    if (statusPopular === 'idle' || statusPopular === 'failed') {
-      dispatch(fetchPopularSongs())
+    try {
+      if (statusRecent === 'idle' || statusRecent === 'failed') {
+        dispatch(fetchRecentSongs()).unwrap()
+      }
+      if (statusPopular === 'idle' || statusPopular === 'failed') {
+        dispatch(fetchPopularSongs()).unwrap()
+      }
+    } catch (err) {
+      dispatch(pushError(err))
     }
   }, [dispatch, statusPopular, statusRecent])
 

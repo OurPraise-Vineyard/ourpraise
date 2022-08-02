@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { FetchStatus } from '@utils/api'
 import { fetchEvent } from '@features/Events/eventsSlice'
 import { fetchEventSongs } from '@features/Songs/songsSlice'
+import { pushError } from '@utils/errorSlice'
 
 export default function ViewEvent () {
   const { eventId } = useParams()
@@ -34,16 +35,16 @@ export default function ViewEvent () {
     if (shouldFetch) {
       try {
         setStatus(FetchStatus.loading)
-        const event = (await dispatch(fetchEvent(eventId))).payload
+        const event = await dispatch(fetchEvent(eventId)).unwrap()
         if (event === null) {
           return navigate('/events')
         }
         if (event) {
-          await dispatch(fetchEventSongs(eventId))
+          await dispatch(fetchEventSongs(eventId)).unwrap()
         }
         setStatus(FetchStatus.succeeded)
       } catch (err) {
-        console.log(err)
+        dispatch(pushError(err))
         setStatus(FetchStatus.failed)
       }
     }

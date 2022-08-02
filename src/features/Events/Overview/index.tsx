@@ -5,6 +5,7 @@ import formatDate from '@utils/date'
 import { FetchStatus } from '@utils/api'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchRecentEvents } from '@features/Events/eventsSlice'
+import { pushError } from '@utils/errorSlice'
 
 function mapEvent (data) {
   return {
@@ -22,7 +23,9 @@ export default function EventOverview () {
 
   useEffect(() => {
     if (statusAllEvents === FetchStatus.idle) {
-      dispatch(fetchRecentEvents())
+      dispatch(fetchRecentEvents()).unwrap().catch(err => {
+        dispatch(pushError(err))
+      })
     }
   }, [dispatch, statusAllEvents])
 

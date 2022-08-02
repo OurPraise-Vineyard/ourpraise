@@ -101,7 +101,7 @@ export const fetchEventSongs = createAsyncThunk<
     }
   }
 
-  const event: EventType = (await dispatch(fetchEvent(eventId))).payload as EventType
+  const event: EventType = (await dispatch(fetchEvent(eventId)).unwrap()) as EventType
 
   const songs =  await Promise.all(
     event.songs.map(

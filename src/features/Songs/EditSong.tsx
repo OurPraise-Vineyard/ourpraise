@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import SongForm from '@features/Songs/SongForm'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchSong, saveSong } from '@features/Songs/songsSlice'
+import { pushError } from '@utils/errorSlice'
 
 export default function EditSong () {
   const { songId } = useParams()
@@ -27,7 +28,7 @@ export default function EditSong () {
       }))
       navigate('/songs/' + songId)
     } catch (err) {
-      console.error(err)
+      dispatch(pushError(err))
     }
   }
 

@@ -5,6 +5,7 @@ import TextField from '@features/Auth/Blocks/TextField'
 import { signIn } from '@features/Auth/authSlice'
 import React, { useState } from 'react'
 import ModeLink from '@features/Auth/Blocks/ModeLink'
+import { pushError } from '@utils/errorSlice'
 
 export default function LoginForm () {
   const [email, setEmail] = useState('')
@@ -26,9 +27,9 @@ export default function LoginForm () {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await dispatch(signIn({ email, password }))
+      await dispatch(signIn({ email, password })).unwrap()
     } catch (err) {
-      console.log(err)
+      dispatch(pushError(err))
     }
   }
 

@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components'
 import checkIcon from '@assets/check.svg'
 import gearIcon from '@assets/gear.svg'
 import IconButton from '@features/Shared/IconButton'
+import { pushError } from '@utils/errorSlice'
 
 const Username = styled.p`
   font-size: 24px;
@@ -107,7 +108,11 @@ export default function UserView ({ onEditOrg, onSelectOrg }) {
   }
 
   const handleLogout = () => {
-    dispatch(signOut())
+    try {
+      dispatch(signOut()).unwrap()
+    } catch (err) {
+      dispatch(pushError(err))
+    }
   }
 
   return (

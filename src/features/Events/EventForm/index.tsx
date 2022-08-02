@@ -9,6 +9,7 @@ import AddSongs from '@features/Events/EventForm/AddSongs'
 import FormSongItem from '@features/Events/EventForm/FormSongItem'
 import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import SelectField, { SelectItem } from '@features/Shared/SelectField'
+import { pushError } from '@utils/errorSlice'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -163,8 +164,12 @@ export default function EventForm ({ event = undefined, onSubmit, heading }: { e
 
   const handleDelete = async (e) => {
     if (window.confirm('Delete this event?')) {
-      await appDispatch(deleteEvent(event))
-      navigate('/events')
+      try {
+        await appDispatch(deleteEvent(event)).unwrap()
+        navigate('/events')
+      } catch (err) {
+        dispatch(pushError(err))
+      }
     }
   }
 

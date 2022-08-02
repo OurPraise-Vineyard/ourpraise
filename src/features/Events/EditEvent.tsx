@@ -4,6 +4,7 @@ import EventForm from '@features/Events/EventForm'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchEvent, saveEvent } from '@features/Events/eventsSlice'
 import { fetchEventSongs } from '@features/Songs/songsSlice'
+import { pushError } from '@utils/errorSlice'
 
 export default function EditEvent () {
   const { eventId } = useParams()
@@ -23,11 +24,15 @@ export default function EditEvent () {
   const shouldFetch = eventId && !event
 
   const fetchFullEvent = useCallback(async () => {
-    if (shouldFetch) {
-      const event = (await dispatch(fetchEvent(eventId))).payload
-      if (event) {
-        await dispatch(fetchEventSongs(eventId))
+    try {
+      if (shouldFetch) {
+        const event = await dispatch(fetchEvent(eventId)).unwrap()
+        if (event) {
+          await dispatch(fetchEventSongs(eventId)).unwrap()
+        }
       }
+    } catch (err) {
+      dispatch(pushError(err))
     }
   }, [shouldFetch, dispatch, eventId])
 
@@ -37,10 +42,10 @@ export default function EditEvent () {
 
   const handleSubmit = async (options) => {
     try {
-      await dispatch(saveEvent({ ...options, id: eventId }))
+      await dispatch(saveEvent({ ...options, id: eventId })).unwrap()
       navigate('/events/' + eventId)
     } catch (err) {
-      console.error(err)
+      dispatch(pushError(err))
     }
   }
 

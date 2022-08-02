@@ -3,6 +3,7 @@ import { addSong } from '@features/Songs/songsSlice'
 import { useNavigate } from 'react-router-dom'
 import SongForm from '@features/Songs/SongForm'
 import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
+import { pushError } from '@utils/errorSlice'
 
 export default function AddSong () {
   useDocumentTitle('Add song')
@@ -16,7 +17,7 @@ export default function AddSong () {
         navigate('/songs/' + song.id)
       }
     } catch (err) {
-      console.error(err)
+      dispatch(pushError(err))
     }
   }
 

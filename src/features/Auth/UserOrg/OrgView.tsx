@@ -117,7 +117,7 @@ export default function OrgView ({ selectedOrg, onBack }) {
 
   const [email, setEmail] = useState('')
 
-  const handleChangeRole = (member, value) => {
+  const handleChangeRole = async (member, value) => {
     if (Object.values(organisation.roles).filter(role => role === 'admin').length === 1 && value !== 'admin') {
       return dispatch(pushError('This organisation must have at least one administrator.'))
     }
@@ -130,32 +130,44 @@ export default function OrgView ({ selectedOrg, onBack }) {
       }
     }
 
-    dispatch(changeMemberRole({
-      member,
-      organisationId: organisation.id,
-      role: value
-    }))
+    try {
+      await dispatch(changeMemberRole({
+        member,
+        organisationId: organisation.id,
+        role: value
+      })).unwrap()
+    } catch (err) {
+      dispatch(pushError(err))
+    }
   }
 
-  const handleRemoveMember = (member) => {
+  const handleRemoveMember = async (member) => {
     if (organisation.roles[member] === 'admin') {
       return dispatch(pushError('You cannot remove an administrator account.'))
     }
 
     if (window.confirm(`Are you sure you want to remove ${member} from this organisation?`)) {
-      dispatch(removeOrganisationMember({
-        organisationId: organisation.id,
-        member
-      }))
+      try {
+        await dispatch(removeOrganisationMember({
+          organisationId: organisation.id,
+          member
+        })).unwrap()
+      } catch (err) {
+        dispatch(pushError(err))
+      }
     }
   }
 
-  const handleAddMember = (e) => {
+  const handleAddMember = async (e) => {
     e.preventDefault()
-    dispatch(addOrganisationMember({
-      organisationId: organisation.id,
-      email
-    }))
+    try {
+      await dispatch(addOrganisationMember({
+        organisationId: organisation.id,
+        email
+      })).unwrap()
+    } catch (err) {
+      dispatch(pushError(err))
+    }
 
     setEmail('')
   }
