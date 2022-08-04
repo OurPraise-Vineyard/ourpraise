@@ -139,3 +139,24 @@ exports.onWriteEvent = functions.region('europe-west1').firestore
       ))
     }
   })
+
+exports.onWriteOrganisation = functions.region('europe-west1').firestore
+  .document('organisations/{id}')
+  .onUpdate(async change => {
+    const addedMembers = change.after.data().members.filter(member => change.before.data().members.indexOf(member) === -1)
+    if (addedMembers.length > 0) {
+      const orgName = change.after.data().name
+      await Promise.all(addedMembers.map(async member => {
+        if (!(await admin.auth().getUserByEmail(member).then(() => true).catch(() => false))) {
+          await db.collection('mail').add({
+            to: member,
+            message: {
+              subject: `Invitation to join ${orgName} on OurPraise`,
+              html: `Hi 👋<br><br>You've been invited to join ${orgName} on OurPraise. Sign up today by using the link below:<br><a href="https://ourpraise.dk/register?email=${member}">Click here to register.</a><br><br>Best regards,<br>The OurPraise Team.`
+            }
+          })
+        }
+      }))
+    }
+  })
+
