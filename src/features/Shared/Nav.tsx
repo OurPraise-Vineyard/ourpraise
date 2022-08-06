@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import logo from '@assets/logo_light.svg'
 import Page from '@features/Shared/Page'
 import { Link } from 'react-router-dom'
@@ -45,12 +45,6 @@ const Wrapper = styled(Page)`
   grid-template-areas: 'logo username' 'links username';
   align-items: center;
   height: 100%;
-
-  ${props =>
-    props.wide &&
-    css`
-      width: auto;
-    `}
 `
 
 const Links = styled.div`
@@ -79,7 +73,7 @@ export default function Nav({ wide = false }) {
     <>
       <UserOrg show={showUser} onClose={() => setShowUser(false)} />
       <Container>
-        <Wrapper wide={wide}>
+        <Wrapper>
           <HomeLink to="/home">
             <Logo />
           </HomeLink>

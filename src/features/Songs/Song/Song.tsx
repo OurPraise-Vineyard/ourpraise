@@ -1,3 +1,4 @@
+import ChordSwitcher from '@features/Songs/Song/ChordSwitcher'
 import { transposeBody } from '@utils/chords'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -13,12 +14,14 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 36px;
   margin: 0;
+  grid-area: title;
 `
 
 const Authors = styled.h2`
   font-size: 20px;
   color: #aaaaaa;
   margin: 0;
+  grid-area: authors;
 `
 
 const SongBody = styled.div`
@@ -27,7 +30,15 @@ const SongBody = styled.div`
   white-space: pre;
 `
 
-export default function Song ({ song, transpose, showChords }) {
+const Header = styled.div`
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "title chords" "authors chords";
+`
+
+export default function Song ({ song, transpose, onChangeTranspose, onResetTranspose }) {
+  const [showChords, setShowChords] = useState(true)
   const [formattedBody, setBody] = useState('')
   const songBody = song && song.body
   useEffect(() => {
@@ -47,10 +58,24 @@ export default function Song ({ song, transpose, showChords }) {
     }
   }, [songBody, transpose, showChords])
 
+  function handleToggleChords () {
+    setShowChords(!showChords)
+  }
+
   return (
     <Container>
-      <Title>{song.title}</Title>
-      <Authors>{song.authors}</Authors>
+      <Header>
+        <Title>{song.title}</Title>
+        <ChordSwitcher
+          songKey={song.key}
+          transpose={transpose}
+          setTranspose={onChangeTranspose}
+          onResetTranspose={onResetTranspose}
+          onToggleChords={handleToggleChords}
+          showChords={showChords}
+        />
+        <Authors>{song.authors}</Authors>
+      </Header>
       <SongBody>{formattedBody}</SongBody>
     </Container>
   )

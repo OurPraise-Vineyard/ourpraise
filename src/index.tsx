@@ -81,9 +81,9 @@ function App () {
         )}
         <Route path="/home" element={<Home />} />
       </Route>
-      <Route element={<Layout wide />}>
+      <Route element={<Layout noFadeIn />}>
+        <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
         <Route path="/songs/:songId" element={<ViewSong />} />
-        {hasOrg && <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />}
       </Route>
       <Route index element={<Navigate to="/home" replace />} />
     </Routes>

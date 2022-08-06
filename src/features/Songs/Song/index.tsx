@@ -1,45 +1,49 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import EmojiButton from '@features/Shared/EmojiButton'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import Song from '@features/Songs/Song/Song'
-import Tools from '@features/Songs/Song/Tools'
-import MiniEvent from '@features/Songs/Song/Event'
 import SongComment from '@features/Songs/Song/Comment'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchEvent } from '@features/Events/eventsSlice'
 import { fetchEventSongs, fetchSong } from '@features/Songs/songsSlice'
 import { pushError } from '@utils/errorSlice'
+import IconButton from '@features/Shared/IconButton'
+import backIcon from '@assets/arrow-left.svg'
+import editIcon from '@assets/edit.svg'
+import downloadIcon from '@assets/download.svg'
+import { getFunctionUrl } from '@utils/functions'
+import FlexSpacer from '@features/Shared/FlexSpacer'
+import MiniEvent from '@features/Songs/Song/MiniEvent'
 
-const Layout = styled.div`
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+`
+
+const FadeIn = styled.div`
+  animation: ${fadeIn} .2s ease-out .2s both;
+`
+
+const Content = styled(FadeIn)`
+  flex: 1 0 auto;
+  max-width: calc(100%);
+`
+
+const TopRow = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin-bottom: 16px;
 `
-
-const Sidebar = styled.div`
-  flex: 1 0 auto;
-  max-width: 300px;
-  margin-right: 20px;
-`
-
-const Content = styled.div`
-  flex: 1 0 auto;
-  max-width: calc(100% - 300px);
-`
-
-function useLoadEffect (state, cb) {
-  const [cached, setCached] = useState(null)
-
-  if (state !== null && cached === null) {
-    setCached(state)
-    cb()
-  }
-}
 
 export default function ViewSong () {
   const { songId, eventId } = useParams()
   const [transpose, setTranspose] = useState(0)
-  const [showChords, setShowChords] = useState(true)
   const navigate = useNavigate()
   const event = useAppSelector(state => state.events.index[eventId])
   const song = useAppSelector(state => state.songs.index[songId])
@@ -48,9 +52,6 @@ export default function ViewSong () {
   useDocumentTitle(song ? song.title : '')
 
   const songLoaded = song && song.id === songId
-
-  const shouldFetchEvent = !event
-  const shouldFetchSong = !song
 
   const songTranspose = song ? song.transpose : null
 
@@ -66,14 +67,14 @@ export default function ViewSong () {
   }, [dispatch, eventId])
 
   useEffect(() => {
-    if (eventId && shouldFetchEvent) {
+    if (eventId) {
       fetchFullEvent()
-    } else if (!eventId && shouldFetchSong) {
+    } else if (!eventId) {
       dispatch(fetchSong(songId))
     }
-  }, [shouldFetchEvent, fetchFullEvent, songId, dispatch, shouldFetchSong, eventId])
+  }, [fetchFullEvent, songId, dispatch, eventId])
 
-  useLoadEffect(songTranspose, () => setTranspose(songTranspose || 0))
+  useEffect(() => setTranspose(songTranspose || 0), [songTranspose])
 
   function handleEdit () {
     navigate(`/songs/${songId}/edit`)
@@ -95,38 +96,35 @@ export default function ViewSong () {
     }
   }
 
+  const handleDownload = () => {
+    window.open(
+      getFunctionUrl('pdf', { song: song.id, transpose }),
+      '_blank'
+    )
+  }
+
   if (!song) {
     return null
   }
 
   return (
-    <Layout>
-      <Sidebar>
-        <EmojiButton emoji="👈️" onClick={handleBack}>
-          Back
-        </EmojiButton>
-        {canEdit && (
-          <EmojiButton emoji="✏️" onClick={handleEdit}>
-            Edit
-          </EmojiButton>
-        )}
-        <Tools
-          songKey={song.key}
-          songId={song.id}
+    <FadeIn>
+      <TopRow>
+        <IconButton icon={backIcon} onClick={handleBack} />
+        <FlexSpacer />
+        {!event && <IconButton icon={downloadIcon} onClick={handleDownload} />}
+        {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}
+        {!!event && <MiniEvent />}
+      </TopRow>
+      <Content key={songId}>
+        {!!song.comment && <SongComment>{song.comment}</SongComment>}
+        <Song
+          song={song}
           transpose={transpose}
-          setTranspose={setTranspose}
-          showChords={showChords}
-          setShowChords={setShowChords}
+          onChangeTranspose={setTranspose}
           onResetTranspose={handleResetTranspose}
         />
-        {!!eventId && (
-          <MiniEvent />
-        )}
-      </Sidebar>
-      <Content>
-        {!!song.comment && <SongComment>{song.comment}</SongComment>}
-        <Song song={song} transpose={transpose} showChords={showChords} />
       </Content>
-    </Layout>
+    </FadeIn>
   )
 }

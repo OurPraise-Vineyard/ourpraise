@@ -86,7 +86,8 @@ exports.slides = functions.region('europe-west1').https.onRequest((request, resp
         slides: body
           .replace(/\n\s+\n/g, '\n\n')
           .split('\n\n')
-          .map(part => part.replace(/\/\/.*\n/g, ''))
+          .map(part => part.replace(/\/\/.*(\n|$)/g, ''))
+          .filter(Boolean)
       }))
     })
     .then(songs => {

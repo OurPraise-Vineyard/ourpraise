@@ -1,9 +1,12 @@
 import { getFunctionUrl } from '@utils/functions'
-import React from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { buttonBase } from '@features/Shared/ButtonBase'
+import React, { useMemo } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAppSelector } from '@utils/hooks'
+import IconButton from '@features/Shared/IconButton'
+import editIcon from '@assets/edit.svg'
+import downloadIcon from '@assets/download.svg'
+import formatDate from '@utils/date'
 
 const Row = styled.div`
   display: flex;
@@ -11,10 +14,6 @@ const Row = styled.div`
   align-items: center;
   margin: 0 0 16px;
   justify-content: flex-end;
-
-  & > *:not(:last-child) {
-    margin-right: 16px;
-  }
 `
 
 const Title = styled.h1`
@@ -22,24 +21,13 @@ const Title = styled.h1`
   margin: 0;
 `
 
-const ButtonExternal = styled.a`
-  ${buttonBase}
-  margin: 0;
-  text-decoration: none;
-`
-
-const ButtonLink = styled(Link)`
-  ${buttonBase}
-  margin: 0;
-  text-decoration: none;
-`
-
 const Chip = styled.span`
   padding: 4px 8px;
-  background-color: #ccc;
+  background-color: #e0e0e0;
   color: black;
   border-radius: 4px;
   font-size: 16px;
+  margin-left: 16px;
 `
 
 const Spacer = styled.span`
@@ -48,6 +36,7 @@ const Spacer = styled.span`
 
 export default function Toolbar () {
   const { eventId } = useParams()
+  const navigate = useNavigate()
   const event = useAppSelector(state => state.events.index[eventId])
   const orgName = useAppSelector(state => {
     const org = state.auth.organisations.find(({ id }) => id === event.organisation)
@@ -59,23 +48,27 @@ export default function Toolbar () {
   const userEmail = useAppSelector(state => state.auth.user.email)
   const userRole = useAppSelector(state => state.auth.organisation.roles[state.auth.user.email])
   const canEdit = userEmail === event.owner || userRole === 'admin'
+  const eventDate = useMemo(() => formatDate(event.date), [event.date])
+
+  const handleDownload = () => {
+    window.open(
+      getFunctionUrl('pdf', { event: eventId }),
+      '_blank'
+    )
+  }
+
+  function handleEdit () {
+    navigate(`/events/${eventId}/edit`)
+  }
 
   return (
     <Row>
       <Title>{event.title}</Title>
+      <Chip>{eventDate}</Chip>
       <Chip>{orgName}</Chip>
       <Spacer />
-      {canEdit && (
-        <ButtonLink to={`/events/${eventId}/edit`}>
-          Edit
-        </ButtonLink>
-      )}
-      <ButtonExternal
-        href={getFunctionUrl('pdf', { event: eventId })}
-        target="_blank"
-      >
-        Download PDF
-      </ButtonExternal>
+      <IconButton icon={downloadIcon} onClick={handleDownload} />
+      {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}
     </Row>
   )
 }

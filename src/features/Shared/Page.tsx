@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 const fadeIn = keyframes`
   0% {
@@ -10,9 +10,9 @@ const fadeIn = keyframes`
   }
 `
 
-export default styled.div<{wide:boolean}>`
-  width: ${props => props.wide ? 'auto' : '960px'};
+export default styled.div<{noFadeIn?:boolean}>`
+  width: 960px;
   margin: 0 auto;
   padding: 20px;
-  animation: ${fadeIn} .2s ease-out .2s both;
+  ${props => !props.noFadeIn && css`animation: ${fadeIn} .2s ease-out .2s both`};
 `
