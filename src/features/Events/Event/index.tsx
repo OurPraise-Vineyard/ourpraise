@@ -6,26 +6,12 @@ import SongItem from '@features/Events/Event/SongItem'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { FetchStatus } from '@utils/api'
 import { fetchEvent } from '@features/Events/eventsSlice'
-import { fetchEventSongs } from '@features/Songs/songsSlice'
 import { pushError } from '@utils/errorSlice'
 
 export default function ViewEvent () {
   const { eventId } = useParams()
   const dispatch = useAppDispatch()
-  const event = useAppSelector(state => {
-    if (!state.songs.views[`event_${eventId}`]) {
-      return null
-    }
-
-    if (!state.events.index[eventId]) {
-      return null
-    }
-
-    return {
-      ...state.events.index[eventId],
-      songs: state.songs.views[`event_${eventId}`]
-    }
-  })
+  const event = useAppSelector(state => state.events.index[eventId])
   const [status, setStatus] = useState(FetchStatus.idle)
   const shouldFetch = eventId && !event
   const navigate = useNavigate()
@@ -38,9 +24,6 @@ export default function ViewEvent () {
         const event = await dispatch(fetchEvent(eventId)).unwrap()
         if (event === null) {
           return navigate('/events')
-        }
-        if (event) {
-          await dispatch(fetchEventSongs(eventId)).unwrap()
         }
         setStatus(FetchStatus.succeeded)
       } catch (err) {

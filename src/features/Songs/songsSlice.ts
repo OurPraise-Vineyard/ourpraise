@@ -1,9 +1,9 @@
 import { searchSongs } from '@api/algolia'
-import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { fetchEvent } from '@features/Events/eventsSlice'
+import { AsyncThunk, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { FetchStatus, mapDocsId, pruneObject } from '@utils/api'
 import { AppDispatch, RootState } from '@store'
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, updateDoc } from 'firebase/firestore'
+import { resetEventIndex } from '@features/Events/eventsSlice'
 
 export interface SongsState {
   searchCache: Record<string, unknown[]>,
@@ -82,56 +82,6 @@ export const fetchPopularSongs = createAsyncThunk<SongType[]>('home/fetchPopular
     .then(docs => mapDocsId(docs))
 })
 
-export const fetchEventSongs = createAsyncThunk<
-  {
-    eventId: string,
-    songs: SongType[]
-  },
-  string,
-  {
-    state: RootState,
-    dispatch: AppDispatch
-  }
->('songs/fetchEventSongs', async (eventId, { getState, dispatch }) => {
-  const cached = getState().songs.views[`event_${eventId}`]
-  if (cached) {
-    return {
-      songs: cached,
-      eventId
-    }
-  }
-
-  const event: EventType = (await dispatch(fetchEvent(eventId)).unwrap()) as EventType
-
-  const songs =  await Promise.all(
-    event.songs.map(
-      async song => {
-        let cached: SongType = getState().songs.index[song.id]
-
-        if (!cached) {
-          cached = await getDoc(doc(getFirestore(), `songs/${song.id}`))
-            .then(doc => ({
-              ...(doc.data() as SongType),
-              ...song
-            }))
-        } else {
-          cached = {
-            ...cached,
-            ...song
-          }
-        }
-
-        return cached
-      }
-    )
-  )
-
-  return {
-    eventId,
-    songs
-  }
-})
-
 export const fetchSong = createAsyncThunk<
 SongType,
 string,
@@ -149,8 +99,9 @@ string,
   return cached
 })
 
-export const saveSong = createAsyncThunk<SongType, SongType>('songs/save', async (song) => {
+export const saveSong = createAsyncThunk<SongType, SongType, { dispatch: AppDispatch }>('songs/save', async (song, { dispatch }) => {
   await updateDoc(doc(getFirestore(), `songs/${song.id}`), pruneObject({ ...song, id: undefined }))
+  await dispatch(resetEventIndex())
 
   return song
 })
@@ -169,8 +120,9 @@ export const addSong = createAsyncThunk<SongType, SongType>('songs/add', async (
   }
 })
 
-export const deleteSong = createAsyncThunk<string, SongType>('songs/delete', async (song) => {
+export const deleteSong = createAsyncThunk<string, SongType, { dispatch: AppDispatch }>('songs/delete', async (song, { dispatch }) => {
   await deleteDoc(doc(getFirestore(), `songs/${song.id}`))
+  await dispatch(resetEventIndex())
 
   return song.id
 })
@@ -196,9 +148,6 @@ const songsSlice = createSlice({
   name: 'songs',
   initialState,
   reducers: {
-    removeEventSongs(state, action: PayloadAction<string>) {
-      delete state.views[`event_${action.payload}`]
-    },
     reset: () => initialState
   },
   extraReducers(builder) {
@@ -212,12 +161,6 @@ const songsSlice = createSlice({
       .addCase(fetchSearchQuery.fulfilled, (state, action) => {
         state.searchResults = action.payload.hits
         state.searchCache[action.payload.query] = action.payload.hits
-      })
-      .addCase(fetchEventSongs.fulfilled, (state, action) => {
-        state.views[`event_${action.payload.eventId}`] = action.payload.songs
-        action.payload.songs.forEach(song => {
-          state.index[song.id] = song
-        })
       })
       .addCase(fetchSong.fulfilled, (state, action) => {
         if (action.payload) {
@@ -250,6 +193,6 @@ const songsSlice = createSlice({
   }
 })
 
-export const { removeEventSongs, reset } = songsSlice.actions
+export const { reset } = songsSlice.actions
 
 export default songsSlice.reducer

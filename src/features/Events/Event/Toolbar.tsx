@@ -38,13 +38,6 @@ export default function Toolbar () {
   const { eventId } = useParams()
   const navigate = useNavigate()
   const event = useAppSelector(state => state.events.index[eventId])
-  const orgName = useAppSelector(state => {
-    const org = state.auth.organisations.find(({ id }) => id === event.organisation)
-    if (org) {
-      return org.name
-    }
-    return 'No organisation'
-  })
   const userEmail = useAppSelector(state => state.auth.user.email)
   const userRole = useAppSelector(state => state.auth.organisation.roles[state.auth.user.email])
   const canEdit = userEmail === event.owner || userRole === 'admin'
@@ -65,7 +58,7 @@ export default function Toolbar () {
     <Row>
       <Title>{event.title}</Title>
       <Chip>{eventDate}</Chip>
-      <Chip>{orgName}</Chip>
+      <Chip>{event.organisationName}</Chip>
       <Spacer />
       <IconButton icon={downloadIcon} onClick={handleDownload} />
       {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}

@@ -3,38 +3,22 @@ import { useNavigate, useParams } from 'react-router-dom'
 import EventForm from '@features/Events/EventForm'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchEvent, saveEvent } from '@features/Events/eventsSlice'
-import { fetchEventSongs } from '@features/Songs/songsSlice'
 import { pushError } from '@utils/errorSlice'
 
 export default function EditEvent () {
   const { eventId } = useParams()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const event = useAppSelector(state => {
-    if (!state.songs.views[`event_${eventId}`]) {
-      return null
-    }
-
-    return {
-      ...state.events.index[eventId],
-      songs: state.songs.views[`event_${eventId}`]
-    } as EventType
-  })
+  const event = useAppSelector(state => state.events.index[eventId])
   useDocumentTitle(event ? `Edit event: "${event.title}"` : 'Edit event')
-  const shouldFetch = eventId && !event
 
   const fetchFullEvent = useCallback(async () => {
     try {
-      if (shouldFetch) {
-        const event = await dispatch(fetchEvent(eventId)).unwrap()
-        if (event) {
-          await dispatch(fetchEventSongs(eventId)).unwrap()
-        }
-      }
+      await dispatch(fetchEvent(eventId)).unwrap()
     } catch (err) {
       dispatch(pushError(err))
     }
-  }, [shouldFetch, dispatch, eventId])
+  }, [dispatch, eventId])
 
   useEffect(() => {
     fetchFullEvent()

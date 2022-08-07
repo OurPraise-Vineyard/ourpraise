@@ -74,10 +74,9 @@ const Button = styled(ButtonBase)`
 export default function MiniEvent () {
   const { eventId } = useParams()
   const event = useAppSelector(state => state.events.index[eventId])
-  const songs = useAppSelector(state => state.songs.views[`event_${eventId}`])
   const [position, setPosition] = useState({ left: 0, top: 0 })
   const [show, setShow] = useState(false)
-  const isLoading = !event || !songs
+  const isLoading = !event
 
   function handleOpen (e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation()
@@ -90,7 +89,7 @@ export default function MiniEvent () {
     setShow(true)
   }
 
-  if (!event || !songs) {
+  if (!event) {
     return null
   }
 
@@ -101,7 +100,7 @@ export default function MiniEvent () {
       <Container style={position} show={show}>
         {isLoading
           ? 'Loading...'
-          : songs.map(song => (
+          : event.songs.map(song => (
               <Item key={song.id} to={`/events/${eventId}/songs/${song.id}`} onClick={() => setShow(false)}>
                 <ItemTitle>{song.title}</ItemTitle>
                 <ItemAuthors>{song.authors}</ItemAuthors>

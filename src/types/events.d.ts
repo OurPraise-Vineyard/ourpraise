@@ -1,21 +1,28 @@
-interface EventSongType {
-  id: string,
-  key?: string,
-  title?: string,
-  authors?: string,
-  transpose: number,
-  comment: string
-}
-
-interface EventType {
+interface PartialEvent {
   title: string,
   date: string,
-  songs: Array<EventSongType>,
+  songs: Array<{
+    id: string,
+    transpose: number,
+    comment: string
+  }>,
   id: string,
-  comment?: string,
-  createdAt?: string,
+  comment: string,
+  createdAt: string,
   organisation: string
-  organisationName?: string,
+  owner: string
+}
+
+interface FullEvent {
+  title: string,
+  date: string,
+  songs: Array<SongType>,
+  songsIndex: Record<string, SongType>,
+  id: string,
+  comment: string,
+  createdAt: string,
+  organisation: string
+  organisationName: string,
   owner: string
 }
 

@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 import Song from '@features/Songs/Song/Song'
 import SongComment from '@features/Songs/Song/Comment'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchEvent } from '@features/Events/eventsSlice'
-import { fetchEventSongs, fetchSong } from '@features/Songs/songsSlice'
+import { fetchSong } from '@features/Songs/songsSlice'
 import { pushError } from '@utils/errorSlice'
 import IconButton from '@features/Shared/IconButton'
 import backIcon from '@assets/arrow-left.svg'
@@ -46,7 +46,14 @@ export default function ViewSong () {
   const [transpose, setTranspose] = useState(0)
   const navigate = useNavigate()
   const event = useAppSelector(state => state.events.index[eventId])
-  const song = useAppSelector(state => state.songs.index[songId])
+  const song = useAppSelector(state => {
+    if (eventId && state.events.index[eventId]) {
+      return state.events.index[eventId].songsIndex[songId]
+    } else if (!eventId) {
+      return state.songs.index[songId]
+    }
+    return null
+  })
   const hasOrg = useAppSelector(state => !!state.auth.organisation)
   const dispatch = useAppDispatch()
   useDocumentTitle(song ? song.title : '')
@@ -57,22 +64,19 @@ export default function ViewSong () {
 
   const canEdit = hasOrg && !eventId
 
-  const fetchFullEvent = useCallback(async () => {
-    try {
-      await dispatch(fetchEvent(eventId)).unwrap()
-      await dispatch(fetchEventSongs(eventId)).unwrap()
-    } catch (err) {
-      dispatch(pushError(err))
-    }
-  }, [dispatch, eventId])
-
   useEffect(() => {
-    if (eventId) {
-      fetchFullEvent()
-    } else if (!eventId) {
-      dispatch(fetchSong(songId))
-    }
-  }, [fetchFullEvent, songId, dispatch, eventId])
+    (async () => {
+      try {
+        if (eventId) {
+          await dispatch(fetchEvent(eventId)).unwrap()
+        } else if (!eventId) {
+          await dispatch(fetchSong(songId)).unwrap()
+        }
+      } catch (err) {
+        dispatch(pushError(err))
+      }
+    })()
+  }, [songId, dispatch, eventId])
 
   useEffect(() => setTranspose(songTranspose || 0), [songTranspose])
 

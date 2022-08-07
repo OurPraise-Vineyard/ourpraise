@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { removeEventSongs } from '@features/Songs/songsSlice'
 import { FetchStatus, mapDocsId, pruneObject } from '@utils/api'
 import { AppDispatch, RootState } from '@store'
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, updateDoc, where } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, orderBy, query, setDoc, where } from 'firebase/firestore'
 
 export interface EventsState {
-  allEvents: EventType[],
+  allEvents: PartialEvent[],
   statusAllEvents: FetchStatus,
-  index: Record<string, EventType>
+  index: Record<string, FullEvent>
 }
 
 const initialState: EventsState = {
@@ -17,7 +16,7 @@ const initialState: EventsState = {
 }
 
 export const fetchRecentEvents = createAsyncThunk<
-  EventType[],
+  PartialEvent[],
   void,
   {
     state: RootState
@@ -29,27 +28,83 @@ export const fetchRecentEvents = createAsyncThunk<
 })
 
 export const fetchEvent = createAsyncThunk<
-  EventType,
+  FullEvent,
   string,
   {
     state: RootState
   }
 >('events/fetchOne', async function (eventId, { getState }) {
-  let cached: EventType = getState().events.index[eventId]
-  if (!cached) {
-    cached = await getDoc(doc(getFirestore(), `events/${eventId}`))
-      .then(doc => doc.exists() ? ({
-        ...doc.data(),
-        id: doc.id
-      } as EventType) : null)
-  }
+  if (getState().events.index[eventId]) {
+    return getState().events.index[eventId]
+  } else {
+    // Find cached partial event from all events list
+    const cached = getState().events.allEvents.find(({ id }) => id === eventId)
+    let event: FullEvent
+    if (cached) {
+      event = {
+        ...cached
+      } as FullEvent
+    }
 
-  return cached
+    // Fetch partial event. Used when deep linking to event
+    if (!event) {
+      event = await getDoc(doc(getFirestore(), `events/${eventId}`))
+        .then(doc => doc.exists() ? ({
+          ...doc.data(),
+          id: doc.id
+        } as FullEvent) : null)
+    }
+
+    // Fill organisation name
+    const org = getState().auth.organisations.find(({ id }) => id === event.organisation)
+    if (org) {
+      event.organisationName = org.name
+    } else {
+      event.organisationName = 'No organisation'
+    }
+
+    // Fetch full songs and fill into event
+    event.songs =  (await Promise.all(
+      event.songs.map(
+        async songOptions => {
+          let song = getState().songs.index[songOptions.id]
+
+          if (!song) {
+            song = await getDoc(doc(getFirestore(), `songs/${songOptions.id}`))
+              .then(doc => {
+                if (doc.exists()) {
+                  return {
+                    ...doc.data(),
+                    ...songOptions
+                  }
+                }
+
+                return null
+              })
+          } else {
+            song = {
+              ...song,
+              ...songOptions
+            }
+          }
+
+          return song
+        }
+      )
+    )).filter(Boolean)
+
+    event.songsIndex = event.songs.reduce((acc, song) => ({
+      ...acc,
+      [song.id]: song
+    }), {})
+
+    return event
+  }
 })
 
 export const saveEvent = createAsyncThunk<
-  EventType,
-  EventType,
+  PartialEvent,
+  EventFormType,
   {
     dispatch: AppDispatch
   }
@@ -64,9 +119,7 @@ export const saveEvent = createAsyncThunk<
     }))
   })
 
-  await updateDoc(doc(getFirestore(), `events/${event.id}`), options)
-
-  await dispatch(removeEventSongs(event.id))
+  await setDoc(doc(getFirestore(), `events/${event.id}`), options)
 
   return {
     ...options,
@@ -75,8 +128,8 @@ export const saveEvent = createAsyncThunk<
 })
 
 export const addEvent = createAsyncThunk<
-  EventType,
-  EventType,
+  PartialEvent,
+  EventFormType,
   {
     state: RootState
   }
@@ -96,13 +149,12 @@ export const addEvent = createAsyncThunk<
 
 export const deleteEvent = createAsyncThunk<
   string,
-  EventType,
+  EventFormType,
   {
     dispatch: AppDispatch
   }
 >('events/delete', async (event, { dispatch }) => {
   await deleteDoc(doc(getFirestore(), `events/${event.id}`))
-  await dispatch(removeEventSongs(event.id))
 
   return event.id
 })
@@ -111,6 +163,9 @@ const eventsSlice = createSlice({
   name: 'events',
   initialState,
   reducers: {
+    resetEventIndex: (state) => {
+      state.index = {}
+    },
     reset: () => initialState
   },
   extraReducers(builder) {
@@ -125,9 +180,6 @@ const eventsSlice = createSlice({
       .addCase(fetchRecentEvents.fulfilled, (state, action) => {
         state.statusAllEvents = FetchStatus.succeeded
         state.allEvents = action.payload
-        action.payload.forEach(event => {
-          state.index[event.id] = event
-        })
       })
       .addCase(fetchEvent.fulfilled, (state, action) => {
         if (action.payload) {
@@ -135,15 +187,21 @@ const eventsSlice = createSlice({
         }
       })
       .addCase(saveEvent.fulfilled, (state, action) => {
-        state.index[action.payload.id] = action.payload
+        delete state.index[action.payload.id]
         const index = state.allEvents.findIndex(({ id }) => id === action.payload.id)
         if (index > -1) {
           state.allEvents[index] = action.payload
         }
       })
       .addCase(addEvent.fulfilled, (state, action) => {
-        state.index[action.payload.id] = action.payload
-        state.allEvents = []
+        state.allEvents = [...state.allEvents, action.payload].sort((a, b) => {
+          if (a.date < b.date) {
+            return -1
+          } else if (a.date > b.date) {
+            return 1
+          }
+          return 0
+        })
         state.statusAllEvents = FetchStatus.idle
       })
       .addCase(deleteEvent.fulfilled, (state, action) => {
@@ -153,6 +211,6 @@ const eventsSlice = createSlice({
   }
 })
 
-export const { reset } = eventsSlice.actions
+export const { reset, resetEventIndex } = eventsSlice.actions
 
 export default eventsSlice.reducer
