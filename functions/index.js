@@ -26,11 +26,11 @@ exports.pdf = functions.region('europe-west1').https.onRequest((request, respons
         .then((doc) => Promise.all(doc.data().songs.map(song =>
           db.doc(`songs/${song.id}`)
             .get()
-            .then(doc => ({
+            .then(doc => doc.exists ? ({
               ...doc.data(),
               transpose: song.transpose
-            }))
-        )))
+            }) : null)
+        )).then(songs => songs.filter(Boolean)))
     } else if (song) {
       return db.doc(`songs/${song}`).get()
         .then((doc) => [{
@@ -63,12 +63,12 @@ exports.slides = functions.region('europe-west1').https.onRequest((request, resp
         .then((doc) => Promise.all(doc.data().songs.map(song =>
           db.doc(`songs/${song.id}`)
             .get()
-            .then(doc => ({
+            .then(doc => doc.exists ? ({
               title: doc.data().title,
               authors: doc.data().authors,
               body: doc.data().body
-            }))
-        )))
+            }) : null)
+        )).then(songs => songs.filter(Boolean)))
     } else if (song) {
       return db.doc(`songs/${song}`).get()
         .then((doc) => [{
@@ -106,9 +106,6 @@ exports.onWriteEvent = functions.region('europe-west1').firestore
 
         const added = nextSongs.filter(({ id: idA }) => prevSongs.findIndex(({ id: idB }) => idA === idB) === -1)
         const removed = prevSongs.filter(({ id: idA }) => nextSongs.findIndex(({ id: idB }) => idA === idB) === -1)
-
-        console.log(added)
-        console.log(removed)
 
         await Promise.all(added.map(song =>
           db.doc(`songs/${song.id}`).update({
