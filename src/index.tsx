@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import '@api/firebase'
+import '@utils/firebase'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { createGlobalStyle } from 'styled-components'
 import Home from '@features/Home'
@@ -14,12 +14,13 @@ import Events from '@features/Events/Overview'
 import ViewEvent from '@features/Events/Event'
 import EditEvent from '@features/Events/EditEvent'
 import { Provider } from 'react-redux'
-import store from '@store'
+import store from '@state/store'
 import { useAppDispatch, useAppSelector } from '@utils/hooks'
-import { initializeUser, LoginStatus } from '@features/Auth/authSlice'
+import { initializeUser } from '@state/auth/api'
+import { LoginStatus } from '@state/auth/slice'
 import DisplayErrors from '@features/Shared/DisplayErrors'
 import Auth from '@features/Auth'
-import { pushError } from '@utils/errorSlice'
+import { pushError } from '@state/errorSlice'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -40,19 +41,22 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-function App () {
+function App() {
   const user = useAppSelector(state => state.auth.user)
   const ready = useAppSelector(state => state.auth.status !== LoginStatus.undetermined)
   const dispatch = useAppDispatch()
   const hasOrg = useAppSelector(state => !!state.auth.organisation)
 
-  useEffect(function () {
-    try {
-      dispatch(initializeUser()).unwrap()
-    } catch (err) {
-      dispatch(pushError(err))
-    }
-  }, [dispatch])
+  useEffect(
+    function () {
+      try {
+        dispatch(initializeUser()).unwrap()
+      } catch (err) {
+        dispatch(pushError(err))
+      }
+    },
+    [dispatch]
+  )
 
   if (!ready) {
     return null

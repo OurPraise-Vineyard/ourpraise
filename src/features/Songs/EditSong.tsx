@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import SongForm from '@features/Songs/SongForm'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { fetchSong, saveSong } from '@features/Songs/songsSlice'
-import { pushError } from '@utils/errorSlice'
+import { fetchSong, saveSong } from '@state/songs/api'
+import { pushError } from '@state/errorSlice'
 
-export default function EditSong () {
+export default function EditSong() {
   const { songId } = useParams()
   const navigate = useNavigate()
   const song = useAppSelector(state => state.songs.index[songId])
@@ -20,12 +20,14 @@ export default function EditSong () {
     }
   }, [shouldFetch, songId, dispatch])
 
-  const handleSubmit = async (options) => {
+  const handleSubmit = async options => {
     try {
-      await dispatch(saveSong({
-        ...options,
-        id: songId
-      }))
+      await dispatch(
+        saveSong({
+          ...options,
+          id: songId
+        })
+      )
       navigate('/songs/' + songId)
     } catch (err) {
       dispatch(pushError(err))
@@ -36,11 +38,5 @@ export default function EditSong () {
     return null
   }
 
-  return (
-    <SongForm
-      song={song}
-      onSubmit={handleSubmit}
-      heading="Edit song"
-    />
-  )
+  return <SongForm song={song} onSubmit={handleSubmit} heading="Edit song" />
 }

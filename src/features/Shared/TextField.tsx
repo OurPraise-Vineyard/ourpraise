@@ -35,7 +35,7 @@ const sizes = {
   large: '400px'
 }
 
-const Textarea = styled.textarea<{size: string}>`
+const Textarea = styled.textarea<{ size: string }>`
   background: transparent;
   width: 100%;
   display: block;
@@ -54,18 +54,18 @@ const Textarea = styled.textarea<{size: string}>`
 `
 
 interface TextFieldProps {
-  title?: string,
-  name?: string,
-  password?: boolean,
-  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
-  value: string,
-  multiline?: boolean,
-  type?: 'text' | 'password' | 'date',
-  size?: 'small' | 'medium' | 'large',
+  title?: string
+  name?: string
+  password?: boolean
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  value: string
+  multiline?: boolean
+  type?: 'text' | 'password' | 'date'
+  size?: 'small' | 'medium' | 'large'
   className?: string
 }
 
-export default function TextField ({
+export default function TextField({
   title = '',
   name = '',
   password = false,
@@ -79,23 +79,11 @@ export default function TextField ({
   return (
     <Container className={className}>
       <Label>{title}</Label>
-      {multiline
-        ? (
-          <Textarea
-            value={value}
-            name={name}
-            onChange={onChange}
-            size={size}
-          />
-        )
-        : (
-          <Input
-            name={name}
-            type={password ? 'password' : type}
-            onChange={onChange}
-            value={value}
-          />
-        )}
+      {multiline ? (
+        <Textarea value={value} name={name} onChange={onChange} size={size} />
+      ) : (
+        <Input name={name} type={password ? 'password' : type} onChange={onChange} value={value} />
+      )}
     </Container>
   )
 }

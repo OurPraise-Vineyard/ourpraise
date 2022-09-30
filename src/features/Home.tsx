@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import ContentTable from '@features/Shared/Table'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { fetchPopularSongs, fetchRecentSongs } from '@features/Songs/songsSlice'
-import { pushError } from '@utils/errorSlice'
+import { fetchPopularSongs, fetchRecentSongs } from '@state/songs/api'
+import { pushError } from '@state/errorSlice'
 
-function mapSong (data) {
+function mapSong(data) {
   return {
     primary: data.title,
     secondary: data.authors,
@@ -12,7 +12,7 @@ function mapSong (data) {
   }
 }
 
-export default function Home () {
+export default function Home() {
   useDocumentTitle('Home')
   const dispatch = useAppDispatch()
   const recentSongs = useAppSelector(state => state.songs.views.recent)

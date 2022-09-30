@@ -2,10 +2,10 @@ import React, { useCallback, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EventForm from '@features/Events/EventForm'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { fetchEvent, saveEvent } from '@features/Events/eventsSlice'
-import { pushError } from '@utils/errorSlice'
+import { fetchEvent, saveEvent } from '@state/events/api'
+import { pushError } from '@state/errorSlice'
 
-export default function EditEvent () {
+export default function EditEvent() {
   const { eventId } = useParams()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -24,7 +24,7 @@ export default function EditEvent () {
     fetchFullEvent()
   }, [fetchFullEvent])
 
-  const handleSubmit = async (options) => {
+  const handleSubmit = async options => {
     try {
       await dispatch(saveEvent({ ...options, id: eventId })).unwrap()
       navigate('/events/' + eventId)
@@ -33,11 +33,5 @@ export default function EditEvent () {
     }
   }
 
-  return (
-    <EventForm
-      event={event}
-      onSubmit={handleSubmit}
-      heading="Edit event"
-    />
-  )
+  return <EventForm event={event} onSubmit={handleSubmit} heading="Edit event" />
 }

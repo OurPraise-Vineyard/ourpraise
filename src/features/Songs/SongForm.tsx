@@ -3,7 +3,7 @@ import TextField from '@features/Shared/TextField'
 import React, { useEffect, useReducer } from 'react'
 import styled from 'styled-components'
 import ButtonBase from '@features/Shared/ButtonBase'
-import { deleteSong } from '@features/Songs/songsSlice'
+import { deleteSong } from '@state/songs/api'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '@utils/hooks'
 
@@ -40,7 +40,41 @@ const DeleteButton = styled(ButtonBase).attrs({
   margin: 8px 0;
 `
 
-function reducer (state, action) {
+const keys = [
+  'A',
+  'Ab',
+  'A#',
+  'B',
+  'Bb',
+  'B#',
+  'C',
+  'Cb',
+  'C#',
+  'D',
+  'Db',
+  'D#',
+  'E',
+  'Eb',
+  'E#',
+  'F',
+  'Fb',
+  'F#',
+  'G',
+  'Gb',
+  'G#'
+].map(key => ({
+  key,
+  value: key
+}))
+
+interface ReducerType {
+  body: string
+  title: string
+  key: Chord
+  authors: string
+}
+
+function reducer(state: ReducerType, action): ReducerType {
   switch (action.type) {
     case 'SET':
       return {
@@ -62,14 +96,16 @@ const defaultSong: SongType = {
   id: null
 }
 
-const keys = ['A', 'Ab', 'A#', 'B', 'Bb', 'B#', 'C', 'Cb', 'C#', 'D', 'Db', 'D#', 'E', 'Eb', 'E#', 'F', 'Fb', 'F#', 'G', 'Gb', 'G#']
-  .map(key => ({
-    key,
-    value: key
-  }))
-
-export default function SongForm ({ song = undefined, onSubmit, heading }: { song?: SongType, onSubmit: (options: SongType) => void, heading: string}) {
-  const [{title, authors, body, key}, dispatch] = useReducer(reducer, defaultSong)
+export default function SongForm({
+  song = undefined,
+  onSubmit,
+  heading
+}: {
+  song?: SongType
+  onSubmit: (options: SongType) => void
+  heading: string
+}) {
+  const [{ title, authors, body, key }, dispatch] = useReducer(reducer, defaultSong)
   const navigate = useNavigate()
   const appDispatch = useAppDispatch()
 
@@ -77,18 +113,19 @@ export default function SongForm ({ song = undefined, onSubmit, heading }: { son
     dispatch({ type: 'INIT', state: song || defaultSong })
   }, [song])
 
-  const handleChange = (name) => (e) => dispatch({
-    type: 'SET',
-    value: e.target.value,
-    name
-  })
+  const handleChange = name => e =>
+    dispatch({
+      type: 'SET',
+      value: e.target.value,
+      name
+    })
 
-  const handleSave = async (e) => {
+  const handleSave = async e => {
     e.preventDefault()
     onSubmit({ title, authors, body, key, id: undefined })
   }
 
-  const handleDelete = async (e) => {
+  const handleDelete = async e => {
     if (window.confirm('Delete this song?')) {
       await appDispatch(deleteSong(song))
       navigate('/songs')
@@ -102,11 +139,19 @@ export default function SongForm ({ song = undefined, onSubmit, heading }: { son
         <TextField value={title} title="Title" onChange={handleChange('title')} />
         <TextField value={authors} title="Authors" onChange={handleChange('authors')} />
         <SelectField value={key} title="Song Key" onChange={handleChange('key')} options={keys} />
-        <TextField multiline size="large" value={body} title="Body" onChange={handleChange('body')} />
+        <TextField
+          multiline
+          size="large"
+          value={body}
+          title="Body"
+          onChange={handleChange('body')}
+        />
         <Buttons>
           <SaveButton type="submit">Save</SaveButton>
           {!!(song && song.id) && (
-            <DeleteButton type="button" onClick={handleDelete}>Delete</DeleteButton>
+            <DeleteButton type="button" onClick={handleDelete}>
+              Delete
+            </DeleteButton>
           )}
         </Buttons>
       </form>

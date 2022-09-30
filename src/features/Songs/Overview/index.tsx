@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import ContentTable from '@features/Shared/Table'
 import Toolbar from '@features/Songs/Overview/Toolbar'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { fetchAllSongs, fetchSearchQuery } from '@features/Songs/songsSlice'
+import { fetchAllSongs, fetchSearchQuery } from '@state/songs/api'
 import { FetchStatus } from '@utils/api'
-import { pushError } from '@utils/errorSlice'
+import { pushError } from '@state/errorSlice'
 
-function mapSong (data) {
+function mapSong(data) {
   return {
     primary: data.title,
     secondary: data.authors,
@@ -14,7 +14,7 @@ function mapSong (data) {
   }
 }
 
-export default function SongsOverview () {
+export default function SongsOverview() {
   useDocumentTitle('Songs')
   const [query, setQuery] = useState('')
   const statusAllSongs = useAppSelector(state => state.songs.status.all)
@@ -34,29 +34,35 @@ export default function SongsOverview () {
     }
   }, [dispatch, statusAllSongs])
 
-  const handleSearch = useCallback(async (query) => {
-    setQuery(query)
-    if (!query) {
-      setSearchStatus(FetchStatus.idle)
-    } else {
-      try {
-        setSearchStatus(FetchStatus.loading)
-        await dispatch(fetchSearchQuery(query)).unwrap()
-        setSearchStatus(FetchStatus.succeeded)
-      } catch (err) {
-        dispatch(pushError(err))
-        setSearchStatus(FetchStatus.failed)
+  const handleSearch = useCallback(
+    async query => {
+      setQuery(query)
+      if (!query) {
+        setSearchStatus(FetchStatus.idle)
+      } else {
+        try {
+          setSearchStatus(FetchStatus.loading)
+          await dispatch(fetchSearchQuery(query)).unwrap()
+          setSearchStatus(FetchStatus.succeeded)
+        } catch (err) {
+          dispatch(pushError(err))
+          setSearchStatus(FetchStatus.failed)
+        }
       }
-    }
-  }, [dispatch])
+    },
+    [dispatch]
+  )
 
-  const handleSetSearchLoading = useCallback((value) => {
-    if (value && searchStatus !== FetchStatus.loading) {
-      setSearchStatus(FetchStatus.loading)
-    } else if (!value && searchStatus !== FetchStatus.idle) {
-      setSearchStatus(FetchStatus.idle)
-    }
-  }, [searchStatus])
+  const handleSetSearchLoading = useCallback(
+    value => {
+      if (value && searchStatus !== FetchStatus.loading) {
+        setSearchStatus(FetchStatus.loading)
+      } else if (!value && searchStatus !== FetchStatus.idle) {
+        setSearchStatus(FetchStatus.idle)
+      }
+    },
+    [searchStatus]
+  )
 
   const loading = searchStatus === FetchStatus.loading || statusAllSongs === FetchStatus.loading
 

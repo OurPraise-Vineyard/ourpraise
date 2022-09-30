@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import songs, { reset as resetSongs } from '@features/Songs/songsSlice'
-import events, { reset as resetEvents } from '@features/Events/eventsSlice'
-import auth from '@features/Auth/authSlice'
-import errors from '@utils/errorSlice'
+import songs, { reset as resetSongs } from '@state/songs/slice'
+import events, { reset as resetEvents } from '@state/events/slice'
+import auth from '@state/auth/slice'
+import errors from '@state/errorSlice'
 
 const store = configureStore({
   reducer: {
@@ -17,7 +17,9 @@ export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 declare global {
-  interface Window { store }
+  interface Window {
+    store
+  }
 }
 
 window.store = store

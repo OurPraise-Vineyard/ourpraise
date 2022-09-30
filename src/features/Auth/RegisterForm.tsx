@@ -2,16 +2,15 @@ import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
 import Button from '@features/Auth/Blocks/Button'
 import Form from '@features/Auth/Blocks/Form'
 import TextField from '@features/Auth/Blocks/TextField'
-import { createAccount } from '@features/Auth/authSlice'
+import { createAccount } from '@state/auth/api'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { pushError } from '@utils/errorSlice'
+import { pushError } from '@state/errorSlice'
 import ModeLink from '@features/Auth/Blocks/ModeLink'
 
-function safeMatchSearch (key) {
+function safeMatchSearch(key) {
   const reg = new RegExp(`\\?.*${key}=([\\w\\d.@]*).*$`)
-  const match = window.location.search
-    .match(reg)
+  const match = window.location.search.match(reg)
 
   if (match) {
     return match[1]
@@ -20,7 +19,7 @@ function safeMatchSearch (key) {
   return ''
 }
 
-export default function RegisterForm () {
+export default function RegisterForm() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
@@ -58,7 +57,7 @@ export default function RegisterForm () {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     if (password !== repeatPassword) {
       dispatch(pushError('Passwords must match'))
@@ -75,12 +74,37 @@ export default function RegisterForm () {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <TextField autoFocus onChange={handleChange('name')} value={name} name="name" title="Name"></TextField>
-      {isInvite
-        ? <TextField disabled value={email} name="email" title="Email"></TextField>
-        : <TextField onChange={handleChange('email')} value={email} name="email" title="Email"></TextField>}
-      <TextField onChange={handleChange('password')} value={password} name="password" password title="Password"></TextField>
-      <TextField onChange={handleChange('repeatPassword')} value={repeatPassword} name="repeatPassword" password title="Repeat password"></TextField>
+      <TextField
+        autoFocus
+        onChange={handleChange('name')}
+        value={name}
+        name="name"
+        title="Name"
+      ></TextField>
+      {isInvite ? (
+        <TextField disabled value={email} name="email" title="Email"></TextField>
+      ) : (
+        <TextField
+          onChange={handleChange('email')}
+          value={email}
+          name="email"
+          title="Email"
+        ></TextField>
+      )}
+      <TextField
+        onChange={handleChange('password')}
+        value={password}
+        name="password"
+        password
+        title="Password"
+      ></TextField>
+      <TextField
+        onChange={handleChange('repeatPassword')}
+        value={repeatPassword}
+        name="repeatPassword"
+        password
+        title="Repeat password"
+      ></TextField>
       <Button type="submit">Register</Button>
       <ModeLink to="/">Already a member? Login instead</ModeLink>
     </Form>

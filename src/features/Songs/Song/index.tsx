@@ -4,9 +4,9 @@ import styled, { keyframes } from 'styled-components'
 import Song from '@features/Songs/Song/Song'
 import SongComment from '@features/Songs/Song/Comment'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { fetchEvent } from '@features/Events/eventsSlice'
-import { fetchSong } from '@features/Songs/songsSlice'
-import { pushError } from '@utils/errorSlice'
+import { fetchEvent } from '@state/events/api'
+import { fetchSong } from '@state/songs/api'
+import { pushError } from '@state/errorSlice'
 import IconButton from '@features/Shared/IconButton'
 import backIcon from '@assets/arrow-left.svg'
 import editIcon from '@assets/edit.svg'
@@ -26,7 +26,7 @@ const fadeIn = keyframes`
 `
 
 const FadeIn = styled.div`
-  animation: ${fadeIn} .2s ease-out .2s both;
+  animation: ${fadeIn} 0.2s ease-out 0.2s both;
 `
 
 const Content = styled(FadeIn)`
@@ -41,7 +41,7 @@ const TopRow = styled.div`
   margin-bottom: 16px;
 `
 
-export default function ViewSong () {
+export default function ViewSong() {
   const { songId, eventId } = useParams()
   const [transpose, setTranspose] = useState(0)
   const navigate = useNavigate()
@@ -65,7 +65,7 @@ export default function ViewSong () {
   const canEdit = hasOrg && !eventId
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
         if (eventId) {
           await dispatch(fetchEvent(eventId)).unwrap()
@@ -80,7 +80,7 @@ export default function ViewSong () {
 
   useEffect(() => setTranspose(songTranspose || 0), [songTranspose])
 
-  function handleEdit () {
+  function handleEdit() {
     navigate(`/songs/${songId}/edit`)
   }
 
@@ -101,10 +101,7 @@ export default function ViewSong () {
   }
 
   const handleDownload = () => {
-    window.open(
-      getFunctionUrl('pdf', { song: song.id, transpose }),
-      '_blank'
-    )
+    window.open(getFunctionUrl('pdf', { song: song.id, transpose }), '_blank')
   }
 
   if (!song) {

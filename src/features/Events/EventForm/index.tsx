@@ -4,12 +4,12 @@ import styled from 'styled-components'
 import ButtonBase from '@features/Shared/ButtonBase'
 import { useNavigate } from 'react-router-dom'
 import dateFormat from 'dateformat'
-import { deleteEvent } from '@features/Events/eventsSlice'
+import { deleteEvent } from '@state/events/api'
 import AddSongs from '@features/Events/EventForm/AddSongs'
 import FormSongItem from '@features/Events/EventForm/FormSongItem'
 import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import SelectField, { SelectItem } from '@features/Shared/SelectField'
-import { pushError } from '@utils/errorSlice'
+import { pushError } from '@state/errorSlice'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -50,7 +50,7 @@ const DeleteButton = styled(ButtonBase).attrs({
   width: 250px;
 `
 
-function reducer (state, action) {
+function reducer(state, action) {
   switch (action.type) {
     case 'SET':
       return {
@@ -75,22 +75,26 @@ function reducer (state, action) {
     case 'SET_TRANSPOSE':
       return {
         ...state,
-        songs: state.songs.map(song => song.id === action.songId
-          ? ({
-            ...song,
-            transpose: action.transpose
-          })
-          : song)
+        songs: state.songs.map(song =>
+          song.id === action.songId
+            ? {
+                ...song,
+                transpose: action.transpose
+              }
+            : song
+        )
       }
     case 'SET_COMMENT':
       return {
         ...state,
-        songs: state.songs.map(song => song.id === action.songId
-          ? ({
-            ...song,
-            comment: action.comment
-          })
-          : song)
+        songs: state.songs.map(song =>
+          song.id === action.songId
+            ? {
+                ...song,
+                comment: action.comment
+              }
+            : song
+        )
       }
     case 'REMOVE_SONG':
       return {
@@ -116,18 +120,35 @@ const defaultEvent = {
   organisation: ''
 }
 
-export default function EventForm ({ event = undefined, onSubmit, heading }: { event?: FullEvent, onSubmit: (options: EventFormType) => void, heading: string}) {
-  const [{title, date, songs, comment, organisation}, dispatch] = useReducer(reducer, defaultEvent)
+export default function EventForm({
+  event = undefined,
+  onSubmit,
+  heading
+}: {
+  event?: FullEvent
+  onSubmit: (options: EventFormType) => void
+  heading: string
+}) {
+  const [{ title, date, songs, comment, organisation }, dispatch] = useReducer(
+    reducer,
+    defaultEvent
+  )
   const navigate = useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(false)
   const appDispatch = useAppDispatch()
-  const organisations: SelectItem[] = useAppSelector<SelectItem[]>(state => [{ value: '', key: 'empty', label: 'No organisation', disabled: true }].concat(state.auth.organisations.map(org => ({
-    label: org.name,
-    value: org.id,
-    key: org.id,
-    disabled: false
-  }))))
-  const userOrg = useAppSelector(state => state.auth.organisation ? state.auth.organisation.id : '')
+  const organisations: SelectItem[] = useAppSelector<SelectItem[]>(state =>
+    [{ value: '', key: 'empty', label: 'No organisation', disabled: true }].concat(
+      state.auth.organisations.map(org => ({
+        label: org.name,
+        value: org.id,
+        key: org.id,
+        disabled: false
+      }))
+    )
+  )
+  const userOrg = useAppSelector(state =>
+    state.auth.organisation ? state.auth.organisation.id : ''
+  )
   const eventLoaded = !!event
   const eventOrg = event ? event.organisation : ''
 
@@ -151,18 +172,19 @@ export default function EventForm ({ event = undefined, onSubmit, heading }: { e
     }
   }, [userOrg, eventLoaded, eventOrg])
 
-  const handleChange = (name) => (e) => dispatch({
-    type: 'SET',
-    value: e.target.value,
-    name
-  })
+  const handleChange = name => e =>
+    dispatch({
+      type: 'SET',
+      value: e.target.value,
+      name
+    })
 
-  const handleSave = async (e) => {
+  const handleSave = async e => {
     e.preventDefault()
     onSubmit({ title, date, songs, comment, id: undefined, organisation })
   }
 
-  const handleDelete = async (e) => {
+  const handleDelete = async e => {
     if (window.confirm('Delete this event?')) {
       try {
         await appDispatch(deleteEvent(event)).unwrap()
@@ -173,7 +195,7 @@ export default function EventForm ({ event = undefined, onSubmit, heading }: { e
     }
   }
 
-  const handleAddSong = (song) => {
+  const handleAddSong = song => {
     dispatch({ type: 'ADD_SONG', song })
   }
 
@@ -185,7 +207,7 @@ export default function EventForm ({ event = undefined, onSubmit, heading }: { e
     dispatch({ type: 'SET_COMMENT', songId, comment })
   }
 
-  const handleRemoveSong = (songId) => {
+  const handleRemoveSong = songId => {
     dispatch({ type: 'REMOVE_SONG', songId })
   }
 
@@ -193,10 +215,20 @@ export default function EventForm ({ event = undefined, onSubmit, heading }: { e
     <Container>
       <Heading>{heading}</Heading>
       <form onSubmit={handleSave}>
-        <SelectField value={organisation} title="Organisation" onChange={handleChange('organisation')} options={organisations} />
+        <SelectField
+          value={organisation}
+          title="Organisation"
+          onChange={handleChange('organisation')}
+          options={organisations}
+        />
         <TextField value={title} title="Title" onChange={handleChange('title')} />
         <TextField value={date} type="date" title="Date" onChange={handleChange('date')} />
-        <TextField multiline value={comment} title="Set comments" onChange={handleChange('comment')} />
+        <TextField
+          multiline
+          value={comment}
+          title="Set comments"
+          onChange={handleChange('comment')}
+        />
         <SubHeading>Set list</SubHeading>
         {songs.map(song => (
           <FormSongItem
@@ -214,11 +246,18 @@ export default function EventForm ({ event = undefined, onSubmit, heading }: { e
         <Buttons>
           <SaveButton type="submit">Save</SaveButton>
           {!!(event && event.id) && (
-            <DeleteButton type="button" onClick={handleDelete}>Delete event</DeleteButton>
+            <DeleteButton type="button" onClick={handleDelete}>
+              Delete event
+            </DeleteButton>
           )}
         </Buttons>
       </form>
-      <AddSongs show={showAddDialog} onClose={() => setShowAddDialog(false)} onAddSong={handleAddSong} addedSongs={songs} />
+      <AddSongs
+        show={showAddDialog}
+        onClose={() => setShowAddDialog(false)}
+        onAddSong={handleAddSong}
+        addedSongs={songs}
+      />
     </Container>
   )
 }

@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppDispatch, RootState } from '@store'
+import { AppDispatch, RootState } from '@state/store'
 
 export interface DisplayError {
-  message: string,
-  id: number,
+  message: string
+  id: number
   removed: boolean
 }
 
 export interface ErrorState {
-  stack: DisplayError[],
+  stack: DisplayError[]
   counter: number
 }
 
@@ -25,7 +25,7 @@ const errors = {
   'auth/user-not-found': 'User does not exist'
 }
 
-function humanizeError (err): string {
+function humanizeError(err): string {
   if (typeof err === 'string') {
     return err
   } else if ('code' in err) {
@@ -44,9 +44,9 @@ function humanizeError (err): string {
 
 export const pushError = createAsyncThunk<
   string,
-  (string | { code?: string, message?: string }),
+  string | { code?: string; message?: string },
   {
-    state: RootState,
+    state: RootState
     dispatch: AppDispatch
   }
 >('errors/pushError', (message, { getState, dispatch }) => {
@@ -56,7 +56,9 @@ export const pushError = createAsyncThunk<
   }, 5000)
 
   if (getState().errors.stack.length >= 3) {
-    getState().errors.stack.slice(2).forEach(({ id }) => dispatch(removeErrorDelayed(id)))
+    getState()
+      .errors.stack.slice(2)
+      .forEach(({ id }) => dispatch(removeErrorDelayed(id)))
   }
 
   return humanizeError(message)

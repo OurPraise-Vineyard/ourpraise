@@ -5,10 +5,10 @@ import ContentBox from '@features/Shared/ContentBox'
 import SongItem from '@features/Events/Event/SongItem'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { FetchStatus } from '@utils/api'
-import { fetchEvent } from '@features/Events/eventsSlice'
-import { pushError } from '@utils/errorSlice'
+import { fetchEvent } from '@state/events/api'
+import { pushError } from '@state/errorSlice'
 
-export default function ViewEvent () {
+export default function ViewEvent() {
   const { eventId } = useParams()
   const dispatch = useAppDispatch()
   const event = useAppSelector(state => state.events.index[eventId])
@@ -44,11 +44,7 @@ export default function ViewEvent () {
   return (
     <div>
       <Toolbar />
-      {!!event.comment && (
-        <ContentBox title="Comments">
-          {event.comment}
-        </ContentBox>
-      )}
+      {!!event.comment && <ContentBox title="Comments">{event.comment}</ContentBox>}
       <ContentBox noPadding title="Set list">
         {event.songs.map(song => (
           <SongItem key={song.id} song={song} />

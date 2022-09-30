@@ -5,8 +5,11 @@ import backIcon from '@assets/arrow-left.svg'
 import removeIcon from '@assets/x.svg'
 // import SelectField from '@features/Shared/SelectField'
 import IconButton from '@features/Shared/IconButton'
-import { addOrganisationMember, /* changeMemberRole, */ removeOrganisationMember } from '@features/Auth/authSlice'
-import { pushError } from '@utils/errorSlice'
+import {
+  addOrganisationMember,
+  /* changeMemberRole, */ removeOrganisationMember
+} from '@state/auth/api'
+import { pushError } from '@state/errorSlice'
 import TextField from '@features/Shared/TextField'
 import ButtonBase from '@features/Shared/ButtonBase'
 
@@ -110,8 +113,10 @@ const Members = styled.div`
 //   }
 // ]
 
-export default function OrgView ({ selectedOrg, onBack }) {
-  const organisation = useAppSelector(state => state.auth.organisations.find(({ id }) => id === selectedOrg))
+export default function OrgView({ selectedOrg, onBack }) {
+  const organisation = useAppSelector(state =>
+    state.auth.organisations.find(({ id }) => id === selectedOrg)
+  )
   // const userEmail = useAppSelector(state => state.auth.user.email)
   const dispatch = useAppDispatch()
 
@@ -141,30 +146,34 @@ export default function OrgView ({ selectedOrg, onBack }) {
   //   }
   // }
 
-  const handleRemoveMember = async (member) => {
+  const handleRemoveMember = async member => {
     if (organisation.roles[member] === 'admin') {
       return dispatch(pushError('You cannot remove an administrator account.'))
     }
 
     if (window.confirm(`Are you sure you want to remove ${member} from this organisation?`)) {
       try {
-        await dispatch(removeOrganisationMember({
-          organisationId: organisation.id,
-          member
-        })).unwrap()
+        await dispatch(
+          removeOrganisationMember({
+            organisationId: organisation.id,
+            member
+          })
+        ).unwrap()
       } catch (err) {
         dispatch(pushError(err))
       }
     }
   }
 
-  const handleAddMember = async (e) => {
+  const handleAddMember = async e => {
     e.preventDefault()
     try {
-      await dispatch(addOrganisationMember({
-        organisationId: organisation.id,
-        email
-      })).unwrap()
+      await dispatch(
+        addOrganisationMember({
+          organisationId: organisation.id,
+          email
+        })
+      ).unwrap()
     } catch (err) {
       dispatch(pushError(err))
     }
@@ -189,14 +198,10 @@ export default function OrgView ({ selectedOrg, onBack }) {
           onChange={e => setEmail(e.target.value)}
           value={email}
         />
-        <AddMemberButton type="submit">
-          Add member
-        </AddMemberButton>
+        <AddMemberButton type="submit">Add member</AddMemberButton>
       </AddMemberRow>
       <Line />
-      <MembersHeader>
-        Members
-      </MembersHeader>
+      <MembersHeader>Members</MembersHeader>
       <Members>
         {organisation.members.map(member => (
           <MemberRow key={member}>
