@@ -3,9 +3,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import backIcon from '@assets/arrow-left.svg'
 import removeIcon from '@assets/x.svg'
-import SelectField from '@features/Shared/SelectField'
+// import SelectField from '@features/Shared/SelectField'
 import IconButton from '@features/Shared/IconButton'
-import { addOrganisationMember, changeMemberRole, removeOrganisationMember } from '@features/Auth/authSlice'
+import { addOrganisationMember, /* changeMemberRole, */ removeOrganisationMember } from '@features/Auth/authSlice'
 import { pushError } from '@utils/errorSlice'
 import TextField from '@features/Shared/TextField'
 import ButtonBase from '@features/Shared/ButtonBase'
@@ -59,10 +59,10 @@ const MemberInfo = styled.p`
   white-space: nowrap;
 `
 
-const StyledSelectField = styled(SelectField)`
-  margin-bottom: 0;
-  min-width: 150px;
-`
+// const StyledSelectField = styled(SelectField)`
+//   margin-bottom: 0;
+//   min-width: 150px;
+// `
 
 const RemoveButton = styled(IconButton).attrs({
   icon: removeIcon
@@ -99,47 +99,47 @@ const Members = styled.div`
   overflow-y: auto;
 `
 
-const roles = [
-  {
-    value: 'admin',
-    label: 'Admin'
-  },
-  {
-    value: 'user',
-    label: 'User'
-  }
-]
+// const roles = [
+//   {
+//     value: 'admin',
+//     label: 'Admin'
+//   },
+//   {
+//     value: 'user',
+//     label: 'User'
+//   }
+// ]
 
 export default function OrgView ({ selectedOrg, onBack }) {
   const organisation = useAppSelector(state => state.auth.organisations.find(({ id }) => id === selectedOrg))
-  const userEmail = useAppSelector(state => state.auth.user.email)
+  // const userEmail = useAppSelector(state => state.auth.user.email)
   const dispatch = useAppDispatch()
 
   const [email, setEmail] = useState('')
 
-  const handleChangeRole = async (member, value) => {
-    if (Object.values(organisation.roles).filter(role => role === 'admin').length === 1 && value !== 'admin') {
-      return dispatch(pushError('This organisation must have at least one administrator.'))
-    }
+  // const handleChangeRole = async (member, value) => {
+  //   if (Object.values(organisation.roles).filter(role => role === 'admin').length === 1 && value !== 'admin') {
+  //     return dispatch(pushError('This organisation must have at least one administrator.'))
+  //   }
 
-    if (userEmail === member && value !== 'admin') {
-      if (!window.confirm('Are you sure you want to remove your own admin privileges? Another admin will need to reassign you if you change your mind.')) {
-        return
-      } else {
-        onBack()
-      }
-    }
+  //   if (userEmail === member && value !== 'admin') {
+  //     if (!window.confirm('Are you sure you want to remove your own admin privileges? Another admin will need to reassign you if you change your mind.')) {
+  //       return
+  //     } else {
+  //       onBack()
+  //     }
+  //   }
 
-    try {
-      await dispatch(changeMemberRole({
-        member,
-        organisationId: organisation.id,
-        role: value
-      })).unwrap()
-    } catch (err) {
-      dispatch(pushError(err))
-    }
-  }
+  //   try {
+  //     await dispatch(changeMemberRole({
+  //       member,
+  //       organisationId: organisation.id,
+  //       role: value
+  //     })).unwrap()
+  //   } catch (err) {
+  //     dispatch(pushError(err))
+  //   }
+  // }
 
   const handleRemoveMember = async (member) => {
     if (organisation.roles[member] === 'admin') {
@@ -201,11 +201,11 @@ export default function OrgView ({ selectedOrg, onBack }) {
         {organisation.members.map(member => (
           <MemberRow key={member}>
             <MemberInfo>{member}</MemberInfo>
-            <StyledSelectField
+            {/* <StyledSelectField
               value={organisation.roles[member] || 'user'}
               onChange={e => handleChangeRole(member, e.target.value)}
               options={roles}
-            />
+            /> */}
             <RemoveButton onClick={() => handleRemoveMember(member)} />
           </MemberRow>
         ))}

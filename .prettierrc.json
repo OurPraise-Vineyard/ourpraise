@@ -11,7 +11,7 @@
   "requirePragma": false,
   "semi": false,
   "singleQuote": true,
-  "trailingComma": "es5",
+  "trailingComma": "none",
   "useTabs": false,
   "vueIndentScriptAndStyle": false,
   "printWidth": 120,

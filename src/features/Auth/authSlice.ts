@@ -1,7 +1,26 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { mapDocsId } from '@utils/api'
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut as _signOut, updateProfile, User } from 'firebase/auth'
-import { collection, deleteField, doc, FieldPath, getDocs, getFirestore, query, runTransaction, updateDoc, where } from 'firebase/firestore'
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut as _signOut,
+  updateProfile,
+  User
+} from 'firebase/auth'
+import {
+  collection,
+  deleteField,
+  doc,
+  FieldPath,
+  getDocs,
+  getFirestore,
+  query,
+  runTransaction,
+  updateDoc,
+  where
+} from 'firebase/firestore'
 
 export enum LoginStatus {
   loggedIn = 'loggedIn',
@@ -10,9 +29,9 @@ export enum LoginStatus {
 }
 
 export interface AuthState {
-  user: UserType,
-  status: LoginStatus,
-  organisations: OrganisationType[],
+  user: UserType
+  status: LoginStatus
+  organisations: OrganisationType[]
   organisation: OrganisationType
 }
 
@@ -23,16 +42,17 @@ const initialState: AuthState = {
   organisations: []
 }
 
-async function fetchUserOrganisations (email) {
-  const organisations = await getDocs(query(collection(getFirestore(), 'organisations'), where('members', 'array-contains', email)))
-  .then(docs => mapDocsId(docs))
+async function fetchUserOrganisations(email) {
+  const organisations = await getDocs(
+    query(collection(getFirestore(), 'organisations'), where('members', 'array-contains', email))
+  ).then(docs => mapDocsId(docs))
 
   return organisations
 }
 
 export const signIn = createAsyncThunk<
-  { email: string, displayName: string, organisations: OrganisationType[] },
-  { email: string, password: string }
+  { email: string; displayName: string; organisations: OrganisationType[] },
+  { email: string; password: string }
 >('auth/signIn', async ({ email, password }) => {
   const userCred = await signInWithEmailAndPassword(getAuth(), email, password)
   const { displayName } = userCred.user
@@ -47,8 +67,8 @@ export const signIn = createAsyncThunk<
 })
 
 export const createAccount = createAsyncThunk<
-  { email: string, displayName: string, organisations: OrganisationType[] },
-  { email: string, password: string, displayName: string}
+  { email: string; displayName: string; organisations: OrganisationType[] },
+  { email: string; password: string; displayName: string }
 >('auth/createAccount', async ({ email, password, displayName }) => {
   if (!displayName) {
     throw new Error('Please provide a name for this account.')
@@ -68,14 +88,20 @@ export const createAccount = createAsyncThunk<
 
 export const signOut = createAsyncThunk('auth/signOut', () => _signOut(getAuth()))
 
-export const initializeUser = createAsyncThunk<
-  { email: string, displayName: string, organisations: OrganisationType[] }
->('auth/init', async () => {
+export const initializeUser = createAsyncThunk<{
+  email: string
+  displayName: string
+  organisations: OrganisationType[]
+}>('auth/init', async () => {
   const user: User = await new Promise((resolve, reject) => {
-    const unsubscribe = onAuthStateChanged(getAuth(), user => {
-      unsubscribe()
-      resolve(user)
-    }, reject)
+    const unsubscribe = onAuthStateChanged(
+      getAuth(),
+      user => {
+        unsubscribe()
+        resolve(user)
+      },
+      reject
+    )
   })
 
   if (user) {
@@ -94,23 +120,21 @@ export const initializeUser = createAsyncThunk<
 })
 
 export const changeMemberRole = createAsyncThunk<
-  { member: string, organisationId: string, role: 'user' | 'admin' },
-  { member: string, organisationId: string, role: 'user' | 'admin' }
+  { member: string; organisationId: string; role: 'user' | 'admin' },
+  { member: string; organisationId: string; role: 'user' | 'admin' }
 >('auth/changeMemberRole', ({ member, organisationId, role }) => {
-  return updateDoc(
-    doc(getFirestore(), `organisations/${organisationId}`),
-    new FieldPath('roles', member),
-    role
-  ).then(() => ({
-    member,
-    organisationId,
-    role
-  }))
+  return updateDoc(doc(getFirestore(), `organisations/${organisationId}`), new FieldPath('roles', member), role).then(
+    () => ({
+      member,
+      organisationId,
+      role
+    })
+  )
 })
 
 export const removeOrganisationMember = createAsyncThunk<
-  { member: string, organisationId: string },
-  { member: string, organisationId: string }
+  { member: string; organisationId: string },
+  { member: string; organisationId: string }
 >('auth/removeMember', ({ organisationId, member }) => {
   const orgDocRef = doc(getFirestore(), `organisations/${organisationId}`)
   return runTransaction(getFirestore(), async transaction => {
@@ -127,16 +151,15 @@ export const removeOrganisationMember = createAsyncThunk<
         members.filter(id => id !== member)
       )
     }
-  })
-    .then(() => ({
-      member,
-      organisationId
-    }))
+  }).then(() => ({
+    member,
+    organisationId
+  }))
 })
 
 export const addOrganisationMember = createAsyncThunk<
-  { member: string, organisationId: string },
-  { email: string, organisationId: string }
+  { member: string; organisationId: string },
+  { email: string; organisationId: string }
 >('auth/addMember', ({ organisationId, email }) => {
   const orgDocRef = doc(getFirestore(), `organisations/${organisationId}`)
   return runTransaction(getFirestore(), async transaction => {
@@ -145,19 +168,12 @@ export const addOrganisationMember = createAsyncThunk<
     if (org.exists) {
       const members = org.data().members
 
-      transaction.update(
-        orgDocRef,
-        new FieldPath('roles', email),
-        'user',
-        'members',
-        members.concat([email])
-      )
+      transaction.update(orgDocRef, new FieldPath('roles', email), 'admin', 'members', members.concat([email]))
     }
-  })
-    .then(() => ({
-      member: email,
-      organisationId
-    }))
+  }).then(() => ({
+    member: email,
+    organisationId
+  }))
 })
 
 const authSlice = createSlice({
@@ -196,7 +212,7 @@ const authSlice = createSlice({
           state.organisations = []
         }
       })
-      .addCase(signOut.fulfilled, (state) => {
+      .addCase(signOut.fulfilled, state => {
         state.user = null
         state.status = LoginStatus.loggedOut
         state.organisation = null
