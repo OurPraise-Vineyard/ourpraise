@@ -24,10 +24,9 @@ i18n.monthNames = [
   'september',
   'oktober',
   'november',
-  'december',
+  'december'
 ]
 
-
-export default function formatDate (date: string | Date): string {
+export default function formatDate(date: string | Date): string {
   return dateFormat(date, 'd. mmmm yyyy')
 }
