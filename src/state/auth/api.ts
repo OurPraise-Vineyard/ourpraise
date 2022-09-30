@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { mapDocsId } from '@utils/api'
+import { mapDocId } from '@utils/api'
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -10,22 +10,23 @@ import {
   User
 } from 'firebase/auth'
 import {
-  collection,
   deleteField,
   doc,
   FieldPath,
-  getDocs,
+  getDoc,
   getFirestore,
-  query,
   runTransaction,
-  updateDoc,
-  where
+  updateDoc
 } from 'firebase/firestore'
 
 async function fetchUserOrganisations(email) {
-  const organisations = await getDocs(
-    query(collection(getFirestore(), 'organisations'), where('members', 'array-contains', email))
-  ).then(docs => mapDocsId(docs))
+  const userOrgs = await getDoc(doc(getFirestore(), `users/${email}`)).then(doc =>
+    doc.exists ? doc.data().organisations : []
+  )
+
+  const organisations = Promise.all(
+    userOrgs.map(org => getDoc(doc(getFirestore(), `organisations/${org}`)).then(mapDocId))
+  )
 
   return organisations
 }

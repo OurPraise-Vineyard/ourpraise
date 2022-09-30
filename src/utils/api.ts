@@ -5,32 +5,36 @@ export enum FetchStatus {
   succeeded = 'succeeded'
 }
 
-export function mapDocsId (snap, idField = 'id') {
-  return snap.docs.map(doc => ({ ...doc.data(), [idField]: doc.id }))
+export function mapDocsId(snap) {
+  return snap.docs.map(doc => ({ ...doc.data(), id: doc.id }))
 }
 
-const isObject = (obj) => {
+export function mapDocId(doc) {
+  return {
+    ...doc.data(),
+    id: doc.id
+  }
+}
+
+const isObject = obj => {
   return Object.prototype.toString.call(obj) === '[object Object]'
 }
 
-export function pruneObject (obj) {
-  return Object.entries(obj).reduce(
-    (acc, [key, value]) => {
-      if (value !== undefined) {
-        if (isObject(value)) {
-          return {
-            ...acc,
-            [key]: pruneObject(value)
-          }
-        }
-
+export function pruneObject(obj) {
+  return Object.entries(obj).reduce((acc, [key, value]) => {
+    if (value !== undefined) {
+      if (isObject(value)) {
         return {
           ...acc,
-          [key]: value
+          [key]: pruneObject(value)
         }
       }
-      return acc
-    },
-    {}
-  )
+
+      return {
+        ...acc,
+        [key]: value
+      }
+    }
+    return acc
+  }, {})
 }

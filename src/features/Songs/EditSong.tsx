@@ -27,7 +27,7 @@ export default function EditSong() {
           ...options,
           id: songId
         })
-      )
+      ).unwrap()
       navigate('/songs/' + songId)
     } catch (err) {
       dispatch(pushError(err))

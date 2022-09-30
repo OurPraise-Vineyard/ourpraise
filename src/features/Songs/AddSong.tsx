@@ -12,7 +12,7 @@ export default function AddSong() {
 
   const handleSubmit = async options => {
     try {
-      const song: SongType = (await dispatch(addSong(options))).payload as SongType
+      const song: SongType = (await dispatch(addSong(options)).unwrap()) as SongType
       if (song.id) {
         navigate('/songs/' + song.id)
       }
