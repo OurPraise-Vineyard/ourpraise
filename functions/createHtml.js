@@ -1,6 +1,38 @@
 const { transposeBody } = require('./chords')
+const dateFormat = require('dateformat')
 
-function createSongHtml (song, transpose) {
+dateFormat.i18n.monthNames = [
+  'jan',
+  'feb',
+  'mar',
+  'apr',
+  'may',
+  'jun',
+  'jul',
+  'aug',
+  'sep',
+  'okt',
+  'nov',
+  'dec',
+  'januar',
+  'februar',
+  'marts',
+  'april',
+  'maj',
+  'juni',
+  'juli',
+  'august',
+  'september',
+  'oktober',
+  'november',
+  'december'
+]
+
+function formatDate(date) {
+  return dateFormat(date, 'd. mmmm yyyy')
+}
+
+function createSongHtml(song, transpose) {
   const body = transposeBody(transpose, song.body)
   const width = Math.max(...body.split('\n').map(line => line.length))
   const columns = width > 34 ? 1 : 2
@@ -8,45 +40,82 @@ function createSongHtml (song, transpose) {
   let finalBody = body
 
   if (columns === 2) {
-    const bodyColumns = [{
-      count: 0,
-      parts: []
-    }]
+    const commentLines = song.comment ? song.comment.split('\n').length : 0
+    let commentHeight = Math.ceil((24 + 12 * commentLines) / 11)
+
+    const bodyColumns = [
+      {
+        count: 0,
+        parts: []
+      }
+    ]
     body.split('\n\n').forEach(part => {
       let current = bodyColumns[bodyColumns.length - 1]
       const linesInPart = part.split('\n').length + 1
-      if (linesInPart + current.count > 45) {
+      if (linesInPart + current.count > 45 - commentHeight) {
         bodyColumns.push({
           count: 0,
           parts: []
         })
         current = bodyColumns[bodyColumns.length - 1]
+
+        if (bodyColumns.length > 2) {
+          commentHeight = 0
+        }
       }
 
       current.parts.push(part)
       current.count += linesInPart
     })
 
-    finalBody = `<div class="columns">${bodyColumns.map(({ parts }, index) => `${(index % 2) === 0 && index > 0 ? '<div class="break"></div>' : ''}<p class="body column">${parts.join('\n\n')}</p>`).join('\n\n')}</div>`
-
-    console.log(finalBody)
+    finalBody = `<div class="columns">${bodyColumns
+      .map(
+        ({ parts }, index) =>
+          `${
+            index % 2 === 0 && index > 0 ? '<div class="break"></div>' : ''
+          }<p class="body column">${parts.join('\n\n')}</p>`
+      )
+      .join('\n\n')}</div>`
   }
 
   return `
     <div class="song">
       <h1 class="heading">${song.title}</h1>
       <h2 class="subheading">${song.authors}</h2>
-    ${columns === 1
-      ? `<p class="body">${body
-        .split('\n\n')
-        .map(part => `<span class="body-part">${part}</span>`)
-        .join('\n')}</p>`
-    : finalBody}
+      ${!!song.comment ? `<p class="comment">${song.comment}</p>` : ''}
+    ${
+      columns === 1
+        ? `<p class="body">${body
+            .split('\n\n')
+            .map(part => `<span class="body-part">${part}</span>`)
+            .join('\n')}</p>`
+        : finalBody
+    }
     </div>
   `
 }
 
-module.exports = function createHtml(songs) {
+function renderFrontPage(event, songs) {
+  if (!event) {
+    return ''
+  }
+
+  return `
+    <div class="frontpage">
+      <h1 class="heading">${event.title}</h1>
+      <h2 class="subheading">
+        ${event.organisation.name}
+        <span class="align-right">${formatDate(event.date)}</span>
+      </h2>
+      <ul>
+        ${songs.map(song => `<li>${song.title}, ${song.authors}</li>`).join('')}
+      </ul>
+      ${event.comment ? `<p class="comment">${event.comment}</p>` : ''}
+    </div>
+  `
+}
+
+module.exports = function createHtml(songs, event) {
   return `
     <html>
     <head>
@@ -84,8 +153,14 @@ module.exports = function createHtml(songs) {
   color: #aaa;
   line-height: 1.5;
   border-bottom: 1px solid #ddd;
-  margin: 0 0 20px;
+  margin: 0 0 16px;
 }
+.subheading::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .columns::after {
   content: "";
   display: table;
@@ -95,14 +170,50 @@ module.exports = function createHtml(songs) {
 .column {
   width: 50%;
   float: left;
+  margin: 0;
 }
 
 .break {
   page-break-before: always;
 }
+
+.frontpage {
+  page-break-after: always;
+}
+
+.align-right {
+  float: right;
+}
+
+ul {
+  font-size: 12px;
+  line-height: 1.5;
+  font-family: 'Roboto';
+  font-weight: normal;
+  margin: 24px 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+.comment {
+  border-radius: 10px;
+  padding: 8px;
+  border: 1px solid #aaa;
+  margin: 16px 0;
+
+  font-size: 12px;
+  line-height: 1.5;
+  font-family: 'Roboto';
+  font-weight: normal;
+
+  white-space: pre;
+}
 </style>
     </head>
       <body>
+        ${renderFrontPage(event, songs)}
         ${songs.map(song => createSongHtml(song, song.transpose)).join('')}
       </body>
     </html>
