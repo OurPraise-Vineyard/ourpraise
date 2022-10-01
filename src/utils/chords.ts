@@ -1,10 +1,9 @@
 const notes = 'C.D.EF.G.A.B'.split('')
 const validKeys = /(Ab|A#|A|Bb|B#|B|Cb|C#|C|Db|D#|D|Eb|E#|E|Fb|F#|F|Gb|G#|G)/g
 
-
-function parseChord (chord) {
+function parseChord(chord) {
   const root = chord[0]
-  const mod = (chord[1] === '#' || chord[1] === 'b') ? chord.substr(2) : chord.substr(1)
+  const mod = chord[1] === '#' || chord[1] === 'b' ? chord.substr(2) : chord.substr(1)
 
   let initialIndex = notes.indexOf(root)
 
@@ -22,7 +21,7 @@ function parseChord (chord) {
   return [initialIndex, mod]
 }
 
-export function getRelativeChord (chord: string, movement = 0) {
+export function getRelativeChord(chord: string, movement = 0) {
   if (movement === 0) {
     return chord
   }
@@ -43,7 +42,7 @@ export function getRelativeChord (chord: string, movement = 0) {
   return notes[newIndex] + mod
 }
 
-export function generateRelativeChordList (chord) {
+export function generateRelativeChordList(chord) {
   const [initialIndex] = parseChord(chord)
 
   const result = [chord]
@@ -71,18 +70,18 @@ export function generateRelativeChordList (chord) {
   return result.reverse()
 }
 
-export function transposeBody (transpose, body) {
+export function transposeBody(transpose, body) {
   const lines = body.split('\n')
 
   return lines
     .map(line => {
       if (line.substr(0, 2) === '//') {
+        if (line.indexOf('[') > -1) {
+          return line.replace(/^\/\//, '  ')
+        }
         return line
           .replace(/^\/\//, '  ')
-          .replace(
-            validKeys,
-            (chord) => getRelativeChord(chord, transpose)
-          )
+          .replace(validKeys, chord => getRelativeChord(chord, transpose))
       }
 
       return line
