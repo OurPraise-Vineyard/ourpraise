@@ -38,7 +38,8 @@ const Item = styled(Link)`
   justify-content: space-between;
   font-size: 20px;
   text-decoration: none;
-  margin-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 2px;
   transition: background-color .2s ease-in;
 
   :hover {
