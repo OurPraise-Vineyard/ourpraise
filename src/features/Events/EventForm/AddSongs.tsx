@@ -2,7 +2,7 @@ import { searchSongs } from '@utils/algolia'
 import AddSongItem from '@features/Events/EventForm/AddSongItem'
 import Modal from '@features/Shared/Modal'
 import SearchSongs from '@features/Shared/SearchSongs'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 interface Song {
@@ -59,9 +59,19 @@ export default function AddSongs({ show, onClose, addedSongs = defaultAddedSongs
     onAddSong(song)
   }
 
+  const searchInput = useRef<HTMLInputElement | null>(null)
+
+  useEffect(() => {
+    if (show) {
+      if (searchInput.current) searchInput.current.focus()
+    } else {
+      if (searchInput.current) searchInput.current.value = ''
+    }
+  }, [show])
+
   return (
     <Modal onClose={onClose} show={show} title="Add songs">
-      <SearchSongs onChangeLoading={setLoading} onSearch={handleSearch} />
+      <SearchSongs onChangeLoading={setLoading} onSearch={handleSearch} inputRef={searchInput} />
       {query.length > 0 && !loading && <Text>Found {hits.length} songs:</Text>}
       {loading && <Text>Loading...</Text>}
       {hits.map(song => (
