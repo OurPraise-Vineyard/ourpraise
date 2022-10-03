@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { css } from 'styled-components'
 import xIcon from '@assets/x.svg'
@@ -97,8 +97,25 @@ export default function Modal ({
     e.stopPropagation()
   }
 
+  const gridRef = useRef<HTMLDivElement | null>(null)
+  const isMouseDown = useRef<boolean>(false)
+
+  const mouseDown = (e: React.MouseEvent) => {
+    if (e.currentTarget === gridRef.current) {
+      isMouseDown.current = true
+    }
+  }
+
+  const mouseUp = (e: React.MouseEvent) => {
+    if (!isMouseDown.current) return
+    if (e.currentTarget === gridRef.current) {
+      onClose()
+    }
+    isMouseDown.current = false
+  }
+
   return (
-    <Grid show={show} narrow={narrow} onClick={onClose}>
+    <Grid show={show} narrow={narrow} onMouseDown={mouseDown} onMouseUp={mouseUp} ref={gridRef}>
       <ModalContainer show={show} narrow={narrow} onClick={handleStopPropagate}>
         {(!blank && !!title) && (
           <Toolbar>
