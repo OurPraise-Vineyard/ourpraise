@@ -63,9 +63,7 @@ export default function AddSongs({ show, onClose, addedSongs = defaultAddedSongs
 
   useEffect(() => {
     if (show) {
-      if (searchInput.current) searchInput.current.focus()
-    } else {
-      if (searchInput.current) searchInput.current.value = ''
+      if (searchInput.current) searchInput.current.select()
     }
   }, [show])
 
