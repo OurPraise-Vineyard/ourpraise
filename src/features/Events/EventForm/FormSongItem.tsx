@@ -4,6 +4,7 @@ import x from '@assets/x.svg'
 import SelectField from '@features/Shared/SelectField'
 import { generateRelativeChordList } from '@utils/chords'
 import TextField from '@features/Shared/TextField'
+import AppTheme from '@styles/AppTheme'
 
 const Container = styled.div`
   display: grid;
@@ -14,7 +15,7 @@ const Container = styled.div`
   margin: 20px 0;
 
   &:not(:last-child) {
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid ${AppTheme.colors.border};
   }
 `
 
@@ -27,7 +28,7 @@ const SongTitle = styled.div`
 
 const SongAuthors = styled.div`
   font-size: 18px;
-  color: #aaa;
+  color: ${AppTheme.colors.textFaded};
   grid-area: authors;
   align-self: start;
 `

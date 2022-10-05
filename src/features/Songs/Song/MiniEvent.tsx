@@ -3,9 +3,10 @@ import { NavLink, useParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useAppSelector } from '@utils/hooks'
 import ButtonBase from '@features/Shared/ButtonBase'
+import AppTheme from '@styles/AppTheme'
 
 const Container = styled.div<{ show: boolean }>`
-  box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: ${AppTheme.boxShadow};
   background-color: white;
   z-index: 1000;
   opacity: 0;
@@ -30,7 +31,7 @@ const Backdrop = styled.div`
 `
 
 const ItemAuthors = styled.p`
-  color: #aaa;
+  color: ${AppTheme.colors.textFaded};
   margin: 0;
   font-size: 16px;
   white-space: nowrap;

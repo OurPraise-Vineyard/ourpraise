@@ -1,8 +1,9 @@
+import AppTheme from '@styles/AppTheme'
 import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${AppTheme.boxShadow};
   border-radius: 4px;
   position: relative;
   margin: 16px 0;

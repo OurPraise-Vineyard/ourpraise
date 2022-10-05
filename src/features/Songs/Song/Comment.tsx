@@ -1,3 +1,4 @@
+import AppTheme from '@styles/AppTheme'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -14,8 +15,8 @@ const Body = styled.p`
 `
 
 const Container = styled.div`
-  box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
-  background-color: #efefef;
+  box-shadow: ${AppTheme.boxShadow};
+  background-color: ${AppTheme.colors.backgroundOffset};
   padding: 20px;
   margin-bottom: 16px;
 `

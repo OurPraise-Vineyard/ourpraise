@@ -1,9 +1,10 @@
+import AppTheme from '@styles/AppTheme'
 import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.label`
   padding: 8px;
-  background-color: #efefef;
+  background-color: ${AppTheme.colors.backgroundOffset};
   border-radius: 4px;
   display: block;
   margin-bottom: 16px;

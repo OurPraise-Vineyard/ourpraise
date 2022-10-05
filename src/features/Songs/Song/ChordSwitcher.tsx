@@ -6,11 +6,12 @@ import reset from '@assets/reset.svg'
 import unchecked from '@assets/square.svg'
 import checked from '@assets/check-square.svg'
 import { generateRelativeChordList, getRelativeChord } from '@utils/chords'
+import AppTheme from '@styles/AppTheme'
 
 const Wrapper = styled.div`
   width: 100%;
   border-radius: 4px;
-  border: 1px solid #aaa;
+  border: 1px solid ${AppTheme.colors.border};
   display: flex;
   flex-direction: row;
   padding: 8px;

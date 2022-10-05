@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { css } from 'styled-components'
 import xIcon from '@assets/x.svg'
+import AppTheme from '@styles/AppTheme'
 
 const Grid = styled.div<{ show: boolean, narrow: boolean }>`
   background-color: rgba(0, 0, 0, 0.2);
@@ -34,7 +35,7 @@ const ModalContainer = styled.div<{ show: boolean, narrow: boolean }>`
   height: 600px;
   max-height: 90vh;
   background-color: white;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${AppTheme.boxShadow};
   border-radius: 4px;
   transition: top 0.2s ease-out, width .2s ease-out;
   display: flex;

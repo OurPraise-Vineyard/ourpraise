@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { getRelativeChord } from '@utils/chords'
 import { Link, useParams } from 'react-router-dom'
+import AppTheme from '@styles/AppTheme'
 
 const Container = styled(Link)`
   display: grid;
@@ -20,12 +21,12 @@ const Container = styled(Link)`
   }
 
   &:hover {
-    background-color: #efefef;
+    background-color: ${AppTheme.colors.backgroundHover};
   }
 
   ::after {
     content: '';
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid ${AppTheme.colors.textFaded};
     display: block;
     grid-area: line;
     margin-top: 10px;
@@ -41,7 +42,7 @@ const SongTitle = styled.div`
 
 const SongAuthors = styled.div`
   font-size: 18px;
-  color: #aaa;
+  color: ${AppTheme.colors.textFaded};
   grid-area: authors;
   align-self: start;
 `
@@ -52,9 +53,9 @@ const PlayKey = styled.div`
   align-self: start;
   padding: 10px 30px;
   border-radius: 22px;
-  background-color: #efefef;
+  background-color: ${AppTheme.colors.backgroundOffset};
   position: relative;
-  border: 1px solid #ddd;
+  border: 1px solid ${AppTheme.colors.borderOffset};
   font-size: 16px;
 `
 

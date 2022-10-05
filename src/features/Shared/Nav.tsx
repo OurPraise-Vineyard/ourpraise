@@ -6,10 +6,11 @@ import { Link } from 'react-router-dom'
 import LinkBase from '@features/Shared/LinkBase'
 import { useAppSelector } from '@utils/hooks'
 import UserOrg from '@features/Auth/UserOrg'
+import AppTheme from '@styles/AppTheme'
 
 const Container = styled.nav`
-  background-color: black;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  background-color: ${AppTheme.colors.navBackground};
+  box-shadow: ${AppTheme.boxShadow};
 `
 
 const Logo = styled.img.attrs({
@@ -22,7 +23,7 @@ const Logo = styled.img.attrs({
 const Username = styled.p<{ org: string }>`
   padding: 0;
   font-size: 20px;
-  color: white;
+  color: ${AppTheme.colors.navText};
   cursor: pointer;
   grid-area: username;
   justify-self: end;
@@ -34,7 +35,7 @@ const Username = styled.p<{ org: string }>`
     content: "${props => props.org}";
     display: block;
     font-size: 0.88em;
-    color: #bbb;
+    color: ${AppTheme.colors.navTextFaded};
   }
 `
 
@@ -53,7 +54,7 @@ const Links = styled.div`
 
   > a {
     font-size: 18px;
-    color: white;
+    color: ${AppTheme.colors.navText};
     text-decoration: none;
     margin-right: 20px;
   }

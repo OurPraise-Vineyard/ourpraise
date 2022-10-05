@@ -6,9 +6,10 @@ import ButtonBase from '@features/Shared/ButtonBase'
 import { deleteSong } from '@state/songs/api'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '@utils/hooks'
+import AppTheme from '@styles/AppTheme'
 
 const Container = styled.div`
-  box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${AppTheme.boxShadow};
   background-color: white;
   padding: 20px;
 `

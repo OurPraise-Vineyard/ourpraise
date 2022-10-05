@@ -2,10 +2,11 @@ import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import LinkBase from '@features/Shared/LinkBase'
 import styled from 'styled-components'
+import AppTheme from '@styles/AppTheme'
 
 const Container = styled.div`
   padding: 20px;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${AppTheme.boxShadow};
   border-radius: 4px;
   position: relative;
   margin: 16px 0;
@@ -32,7 +33,7 @@ const Items = styled.div`
 `
 
 const Item = styled(Link)`
-  border-bottom: 1px solid #AAAAAA;
+  border-bottom: 1px solid ${AppTheme.colors.border};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -43,7 +44,7 @@ const Item = styled(Link)`
   transition: background-color .2s ease-in;
 
   :hover {
-    background-color: #ebebeb;
+    background-color: ${AppTheme.colors.backgroundHover};
   }
 `
 
@@ -56,7 +57,7 @@ const PrimaryText = styled.div`
 `
 
 const SecondaryText = styled.div`
-  color: #AAAAAA;
+  color: ${AppTheme.colors.textFaded};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

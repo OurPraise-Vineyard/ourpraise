@@ -1,3 +1,4 @@
+import AppTheme from '@styles/AppTheme'
 import styled from 'styled-components'
 
 export default styled.button<{ icon }>`
@@ -14,6 +15,6 @@ export default styled.button<{ icon }>`
   cursor: pointer;
 
   &:hover {
-    background-color: #ddd;
+    background-color: ${AppTheme.colors.backgroundHover};
   }
 `

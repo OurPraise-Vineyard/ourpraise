@@ -1,4 +1,5 @@
 import ButtonBase from '@features/Shared/ButtonBase'
+import AppTheme from '@styles/AppTheme'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -10,7 +11,7 @@ const Container = styled.div`
   padding: 10px 0;
 
   &:not(:last-child) {
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid ${AppTheme.colors.border};
   }
 `
 
@@ -23,7 +24,7 @@ const SongTitle = styled.div`
 
 const SongAuthors = styled.div`
   font-size: 18px;
-  color: #aaa;
+  color: ${AppTheme.colors.textFaded};
   grid-area: authors;
   align-self: start;
 `

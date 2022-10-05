@@ -1,10 +1,11 @@
 import ChordSwitcher from '@features/Songs/Song/ChordSwitcher'
+import AppTheme from '@styles/AppTheme'
 import { transposeBody } from '@utils/chords'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-  box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${AppTheme.boxShadow};
   background-color: white;
   padding: 20px;
   overflow-x: auto;
@@ -19,7 +20,7 @@ const Title = styled.h1`
 
 const Authors = styled.h2`
   font-size: 20px;
-  color: #aaaaaa;
+  color: ${AppTheme.colors.textFaded};
   margin: 0;
   grid-area: authors;
 `
