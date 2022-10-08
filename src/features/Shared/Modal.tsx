@@ -32,6 +32,7 @@ const ModalContainer = styled.div<{ show: boolean, narrow: boolean }>`
   width: ${props => props.narrow ? '400px' : '800px'};
   max-width: 90vw;
   height: 600px;
+  max-height: 90vh;
   background-color: white;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   border-radius: 4px;

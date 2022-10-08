@@ -12,6 +12,7 @@ const fadeIn = keyframes`
 
 export default styled.div<{noFadeIn?:boolean}>`
   width: 960px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   ${props => !props.noFadeIn && css`animation: ${fadeIn} .2s ease-out .2s both`};
