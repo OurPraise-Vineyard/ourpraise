@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { css } from 'styled-components'
 import xIcon from '@assets/x.svg'
 
-const Grid = styled.div<{ show: boolean, narrow: boolean }>`
+const Grid = styled.div<{ show: boolean; narrow: boolean }>`
   background-color: rgba(0, 0, 0, 0.2);
   position: fixed;
   top: 0;
@@ -23,20 +23,20 @@ const Grid = styled.div<{ show: boolean, narrow: boolean }>`
     `}
 `
 
-const ModalContainer = styled.div<{ show: boolean, narrow: boolean }>`
+const ModalContainer = styled.div<{ show: boolean; narrow: boolean }>`
   position: fixed;
   z-index: 10001;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: ${props => props.narrow ? '400px' : '800px'};
+  width: ${props => (props.narrow ? '400px' : '800px')};
   max-width: 90vw;
   height: 600px;
   max-height: 90vh;
   background-color: white;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
-  transition: top 0.2s ease-out, width .2s ease-out;
+  transition: top 0.2s ease-out, width 0.2s ease-out;
   display: flex;
   flex-direction: column;
 
@@ -50,7 +50,7 @@ const ModalContainer = styled.div<{ show: boolean, narrow: boolean }>`
 `
 
 const ModalContent = styled.div<{ blank: boolean }>`
-  padding: ${props => props.blank ? 0 : '20px'};
+  padding: ${props => (props.blank ? 0 : '20px')};
   flex: 1 0 auto;
   position: relative;
 `
@@ -75,7 +75,7 @@ const CloseButton = styled.button`
   cursor: pointer;
 `
 
-export default function Modal ({
+export default function Modal({
   onClose = () => null,
   show = false,
   children = undefined,
@@ -98,10 +98,27 @@ export default function Modal ({
     e.stopPropagation()
   }
 
+  const gridRef = useRef<HTMLDivElement | null>(null)
+  const isMouseDown = useRef<boolean>(false)
+
+  const mouseDown = (e: React.MouseEvent) => {
+    if (e.target === gridRef.current) {
+      isMouseDown.current = true
+    }
+  }
+
+  const mouseUp = (e: React.MouseEvent) => {
+    if (!isMouseDown.current) return
+    if (e.target === gridRef.current) {
+      onClose()
+    }
+    isMouseDown.current = false
+  }
+
   return (
-    <Grid show={show} narrow={narrow} onClick={onClose}>
+    <Grid show={show} narrow={narrow} onMouseDown={mouseDown} onMouseUp={mouseUp} ref={gridRef}>
       <ModalContainer show={show} narrow={narrow} onClick={handleStopPropagate}>
-        {(!blank && !!title) && (
+        {!blank && !!title && (
           <Toolbar>
             {!!title && <Title>{title}</Title>}
             {!blank && <CloseButton onClick={onClose} />}
