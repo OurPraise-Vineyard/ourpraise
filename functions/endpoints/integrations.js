@@ -79,6 +79,7 @@ exports.events = functions.region('europe-west1').https.onRequest((request, resp
   function getEvents(organisations) {
     return db
       .collection('events')
+      .orderBy('date', 'desc')
       .get()
       .then(snap =>
         snap.docs.map(doc => {
