@@ -10,15 +10,19 @@ This repo contains the source code for OurPraise, an online worship platform tha
 
 `npm start`
 
-# Integration API
+# API
+
+The API is available at `https://europe-west1-ourpraise-fb.cloudfunctions.net/ENDPOINT`.
+
+## `/slides`
 
 Get events and songs for presentation:
 
 `https://europe-west1-ourpraise-fb.cloudfunctions.net/slides?event=EVENT_ID&song=SONG_ID`
 
-Provide *either* a song id or an event id. If both are present, the song id will be ignored.
+Provide _either_ a song id or an event id. If both are present, the song id will be ignored.
 
-Example response:
+_Example response:_
 
 ```json
 [
@@ -33,6 +37,26 @@ Example response:
       "Love so undeniable I can hardly speak, \npeace so unexplainable I can hardly think. \nAs you call me deeper still,\nas you call me deeper still,\nas you call me deeper still,\ninto Love Love Love ",
       "You are perfect in all of Your ways\nYou are perfect in all of Your ways\nYou are perfect in all of Your ways to us  \n"
     ]
+  }
+]
+```
+
+## `/events`
+
+Get all events with minimal information:
+
+`https://europe-west1-ourpraise-fb.cloudfunctions.net/events`
+
+_Example response:_
+
+```json
+[
+  {
+    "id": "EVENT_ID",
+    "organisationName": "Aarhus Vineyard",
+    "title": "Gudstjeneste",
+    "date": "2022-01-01",
+    "songs": 5
   }
 ]
 ```
