@@ -1,10 +1,16 @@
 const functions = require('firebase-functions')
 const { getFirestore } = require('firebase-admin/firestore')
+const express = require('express')
+const cors = require('cors')
 
+const app = express()
 const db = getFirestore()
 
-exports.slides = functions.region('europe-west1').https.onRequest((request, response) => {
-  const { event, song } = request.query
+app.use(express.urlencoded({ extended: true }))
+app.use(cors({ origin: true }))
+
+app.get('/slides', (req, res) => {
+  const { event, song } = req.query
 
   function getSongs() {
     if (event) {
@@ -55,14 +61,11 @@ exports.slides = functions.region('europe-west1').https.onRequest((request, resp
       }))
     })
     .then(songs => {
-      response.setHeader('content-type', 'application/json')
-      response.setHeader('Access-Control-Allow-Origin', '*')
-      response.setHeader('Access-Control-Allow-Methods', 'get')
-      response.send(songs)
+      res.json(songs)
     })
 })
 
-exports.events = functions.region('europe-west1').https.onRequest((request, response) => {
+app.get('/events', (req, res) => {
   function getOrganisations() {
     return db
       .collection('organisations')
@@ -100,9 +103,8 @@ exports.events = functions.region('europe-west1').https.onRequest((request, resp
   getOrganisations()
     .then(getEvents)
     .then(events => {
-      response.setHeader('content-type', 'application/json')
-      response.setHeader('Access-Control-Allow-Origin', '*')
-      response.setHeader('Access-Control-Allow-Methods', 'get')
-      response.send(events)
+      res.json(events)
     })
 })
+
+exports.app = functions.region('europe-west1').https.onRequest(app)
