@@ -12,13 +12,13 @@ This repo contains the source code for OurPraise, an online worship platform tha
 
 # API
 
-The API is available at `https://europe-west1-ourpraise-fb.cloudfunctions.net/ENDPOINT`.
+The API is available at `https://europe-west1-ourpraise-fb.cloudfunctions.net/api/ENDPOINT`.
 
 ## `/slides`
 
 Get events and songs for presentation:
 
-`https://europe-west1-ourpraise-fb.cloudfunctions.net/slides?event=EVENT_ID&song=SONG_ID`
+`https://europe-west1-ourpraise-fb.cloudfunctions.net/api/slides?event=EVENT_ID&song=SONG_ID`
 
 Provide _either_ a song id or an event id. If both are present, the song id will be ignored.
 
@@ -45,7 +45,7 @@ _Example response:_
 
 Get all events with minimal information:
 
-`https://europe-west1-ourpraise-fb.cloudfunctions.net/events`
+`https://europe-west1-ourpraise-fb.cloudfunctions.net/api/events`
 
 _Example response:_
 
