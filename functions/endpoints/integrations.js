@@ -56,6 +56,8 @@ exports.slides = functions.region('europe-west1').https.onRequest((request, resp
     })
     .then(songs => {
       response.setHeader('content-type', 'application/json')
+      response.setHeader('Access-Control-Allow-Origin', '*')
+      response.setHeader('Access-Control-Allow-Methods', 'get')
       response.send(songs)
     })
 })
@@ -99,6 +101,8 @@ exports.events = functions.region('europe-west1').https.onRequest((request, resp
     .then(getEvents)
     .then(events => {
       response.setHeader('content-type', 'application/json')
+      response.setHeader('Access-Control-Allow-Origin', '*')
+      response.setHeader('Access-Control-Allow-Methods', 'get')
       response.send(events)
     })
 })
