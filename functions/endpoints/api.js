@@ -2,6 +2,7 @@ const functions = require('firebase-functions')
 const { getFirestore } = require('firebase-admin/firestore')
 const express = require('express')
 const cors = require('cors')
+const { getEvent, getSong } = require('../utils/firestore')
 
 const app = express()
 const db = getFirestore()
@@ -9,60 +10,34 @@ const db = getFirestore()
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({ origin: true }))
 
-app.get('/slides', (req, res) => {
-  const { event, song } = req.query
+app.get('/song', (req, res) => {
+  const { id } = req.query
 
-  function getSongs() {
-    if (event) {
-      return db
-        .doc(`events/${event}`)
-        .get()
-        .then(doc =>
-          Promise.all(
-            doc.data().songs.map(song =>
-              db
-                .doc(`songs/${song.id}`)
-                .get()
-                .then(doc =>
-                  doc.exists
-                    ? {
-                        title: doc.data().title,
-                        authors: doc.data().authors,
-                        body: doc.data().body
-                      }
-                    : null
-                )
-            )
-          ).then(songs => songs.filter(Boolean))
-        )
-    } else if (song) {
-      return db
-        .doc(`songs/${song}`)
-        .get()
-        .then(doc => [
-          {
-            title: doc.data().title,
-            authors: doc.data().authors,
-            body: doc.data().body
-          }
-        ])
-    }
+  if (!id) {
+    res.status(400).json({
+      status: 400,
+      error: 'Missing song id in query'
+    })
   }
 
-  getSongs()
-    .then(songs => {
-      return songs.map(({ body, ...song }) => ({
-        ...song,
-        slides: body
-          .replace(/\n\s+\n/g, '\n\n')
-          .split('\n\n')
-          .map(part => part.replace(/\/\/.*(\n|$)/g, ''))
-          .filter(Boolean)
-      }))
+  getSong(id).then(data => {
+    res.json(data)
+  })
+})
+
+app.get('/event', (req, res) => {
+  const { id } = req.query
+
+  if (!id) {
+    res.status(400).json({
+      status: 400,
+      error: 'Missing event id in query'
     })
-    .then(songs => {
-      res.json(songs)
-    })
+  }
+
+  getEvent(id).then(data => {
+    res.json(data)
+  })
 })
 
 app.get('/events', (req, res) => {
