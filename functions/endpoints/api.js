@@ -20,7 +20,7 @@ app.get('/song', (req, res) => {
     })
   }
 
-  getSong(db, id).then(data => {
+  getSong(id).then(data => {
     res.json(data)
   })
 })
@@ -35,7 +35,7 @@ app.get('/event', (req, res) => {
     })
   }
 
-  getEvent(db, id).then(data => {
+  getEvent(id).then(data => {
     res.json(data)
   })
 })

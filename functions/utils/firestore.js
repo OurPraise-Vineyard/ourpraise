@@ -1,5 +1,9 @@
-export const getEvent = async (database, id) => {
-  const doc = await database.doc(`events/${id}`).get()
+const { getFirestore } = require('firebase-admin/firestore')
+
+const db = getFirestore()
+
+export const getEvent = async id => {
+  const doc = await db.doc(`events/${id}`).get()
 
   if (!doc.exists) return null
 
@@ -7,13 +11,13 @@ export const getEvent = async (database, id) => {
     id,
     title: doc.data().title,
     songs: doc.data().songs.map(async songId => {
-      return await getSong(database, songId)
+      return await getSong(songId)
     })
   }
 }
 
-export const getSong = async (database, id) => {
-  const doc = await database.doc(`songs/${id}`).get()
+export const getSong = async id => {
+  const doc = await db.doc(`songs/${id}`).get()
 
   if (!doc.exists) return null
 
