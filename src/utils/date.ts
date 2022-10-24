@@ -27,6 +27,17 @@ i18n.monthNames = [
   'december'
 ]
 
-export default function formatDate(date: string | Date): string {
+export function formatDate(date: string | Date): string {
   return dateFormat(date, 'd. mmmm yyyy')
+}
+
+export function getTime(date: string | Date): number {
+  const dateObj = date instanceof Date ? date : new Date(date)
+  return dateObj.getTime()
+}
+
+export function todayTime(): number {
+  const now = new Date()
+  now.setHours(0, 0, 0, 0)
+  return now.getTime()
 }
