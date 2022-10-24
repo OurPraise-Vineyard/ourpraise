@@ -1,11 +1,10 @@
 import ChordSwitcher from '@features/Songs/Song/ChordSwitcher'
-import AppTheme from '@styles/AppTheme'
 import { transposeBody } from '@utils/chords'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-  box-shadow: ${AppTheme.boxShadow};
+  box-shadow: ${props => props.theme.boxShadow};
   background-color: white;
   padding: 20px;
   overflow-x: auto;
@@ -20,7 +19,7 @@ const Title = styled.h1`
 
 const Authors = styled.h2`
   font-size: 20px;
-  color: ${AppTheme.colors.textFaded};
+  color: ${props => props.theme.colors.textFaded};
   margin: 0;
   grid-area: authors;
 `
@@ -35,7 +34,7 @@ const Header = styled.div`
   display: grid;
   grid-template-columns: 1fr min-content;
   grid-template-rows: 1fr 1fr;
-  grid-template-areas: "title chords" "authors chords";
+  grid-template-areas: 'title chords' 'authors chords';
 `
 
 export default function Song ({ song, transpose, onChangeTranspose, onResetTranspose }) {

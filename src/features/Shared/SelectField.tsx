@@ -1,10 +1,9 @@
-import AppTheme from '@styles/AppTheme'
 import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.label`
   padding: 8px;
-  background-color: ${AppTheme.colors.backgroundOffset};
+  background-color: ${props => props.theme.colors.backgroundOffset};
   border-radius: 4px;
   display: block;
   margin-bottom: 16px;
@@ -21,7 +20,7 @@ const Select = styled.select<{ noTitle: boolean }>`
   display: block;
   border: none;
   font-size: 14px;
-  padding: ${props => props.noTitle ? 0 : '8px'} 0 0;
+  padding: ${props => (props.noTitle ? 0 : '8px')} 0 0;
   font-family: 'Oxygen Mono', monospace;
 
   &:focus {

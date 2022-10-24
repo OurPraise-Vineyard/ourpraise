@@ -6,12 +6,11 @@ import reset from '@assets/reset.svg'
 import unchecked from '@assets/square.svg'
 import checked from '@assets/check-square.svg'
 import { generateRelativeChordList, getRelativeChord } from '@utils/chords'
-import AppTheme from '@styles/AppTheme'
 
 const Wrapper = styled.div`
   width: 100%;
   border-radius: 4px;
-  border: 1px solid ${AppTheme.colors.border};
+  border: 1px solid ${props => props.theme.colors.border};
   display: flex;
   flex-direction: row;
   padding: 8px;
@@ -28,7 +27,7 @@ const Chord = styled.select`
   appearance: none;
   margin: 0 5px;
   text-align: right;
-  transition: all .2s ease-out;
+  transition: all 0.2s ease-out;
 
   &:disabled {
     opacity: 0.5;
@@ -60,7 +59,7 @@ const Switcher = styled.button.attrs({
   height: 20px;
   flex: 0 1 auto;
   border-radius: 50%;
-  transition: all .2s ease-out;
+  transition: all 0.2s ease-out;
   padding: 5px;
   cursor: pointer;
 

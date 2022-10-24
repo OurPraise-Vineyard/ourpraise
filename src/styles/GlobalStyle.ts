@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components'
-import AppTheme from './AppTheme'
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -8,10 +7,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: ${AppTheme.colors.background};
-    color: ${AppTheme.colors.text};
-    font-family: ${AppTheme.fontStack};
-    font-size: ${AppTheme.fontSizes.regular};
+    background-color: ${props => props.theme.colors.background};
+    color: ${props => props.theme.colors.text};
+    font-family: ${props => props.theme.fontStack};
+    font-size: ${props => props.theme.fontSizes.regular};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -21,8 +20,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button, input, select {
-    font-family: ${AppTheme.fontStack};
-    font-size: ${AppTheme.fontSizes.regular};
+    font-family: ${props => props.theme.fontStack};
+    font-size: ${props => props.theme.fontSizes.regular};
   }
 `
 

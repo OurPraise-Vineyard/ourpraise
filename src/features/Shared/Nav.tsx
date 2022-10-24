@@ -6,11 +6,10 @@ import { Link } from 'react-router-dom'
 import LinkBase from '@features/Shared/LinkBase'
 import { useAppSelector } from '@utils/hooks'
 import UserOrg from '@features/Auth/UserOrg'
-import AppTheme from '@styles/AppTheme'
 
 const Container = styled.nav`
-  background-color: ${AppTheme.colors.navBackground};
-  box-shadow: ${AppTheme.boxShadow};
+  background-color: ${props => props.theme.colors.navBackground};
+  box-shadow: ${props => props.theme.boxShadow};
 `
 
 const Logo = styled.img.attrs({
@@ -23,7 +22,7 @@ const Logo = styled.img.attrs({
 const Username = styled.p<{ org: string }>`
   padding: 0;
   font-size: 20px;
-  color: ${AppTheme.colors.navText};
+  color: ${props => props.theme.colors.navText};
   cursor: pointer;
   grid-area: username;
   justify-self: end;
@@ -32,10 +31,10 @@ const Username = styled.p<{ org: string }>`
   text-align: right;
 
   &::after {
-    content: "${props => props.org}";
+    content: '${props => props.org}';
     display: block;
     font-size: 0.88em;
-    color: ${AppTheme.colors.navTextFaded};
+    color: ${props => props.theme.colors.navTextFaded};
   }
 `
 
@@ -54,7 +53,7 @@ const Links = styled.div`
 
   > a {
     font-size: 18px;
-    color: ${AppTheme.colors.navText};
+    color: ${props => props.theme.colors.navText};
     text-decoration: none;
     margin-right: 20px;
   }

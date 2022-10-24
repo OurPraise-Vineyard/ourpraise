@@ -10,10 +10,9 @@ import FormSongItem from '@features/Events/EventForm/FormSongItem'
 import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import SelectField, { SelectItem } from '@features/Shared/SelectField'
 import { pushError } from '@state/errorSlice'
-import AppTheme from '@styles/AppTheme'
 
 const Container = styled.div`
-  box-shadow: ${AppTheme.boxShadow};
+  box-shadow: ${props => props.theme.boxShadow};
   background-color: white;
   padding: 20px;
 `

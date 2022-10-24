@@ -12,7 +12,6 @@ import {
 import { pushError } from '@state/errorSlice'
 import TextField from '@features/Shared/TextField'
 import ButtonBase from '@features/Shared/ButtonBase'
-import AppTheme from '@styles/AppTheme'
 
 const OrgName = styled.p`
   font-size: 24px;
@@ -94,7 +93,7 @@ const AddMemberButton = styled(ButtonBase)`
 
 const MembersHeader = styled.p`
   font-size: 14px;
-  color: ${AppTheme.colors.textFaded};
+  color: ${props => props.theme.colors.textFaded};
   padding: 0 20px;
   margin: 16px 0 0;
 `

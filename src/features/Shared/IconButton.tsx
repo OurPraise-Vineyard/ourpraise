@@ -1,4 +1,3 @@
-import AppTheme from '@styles/AppTheme'
 import styled from 'styled-components'
 
 export default styled.button<{ icon }>`
@@ -11,10 +10,10 @@ export default styled.button<{ icon }>`
   border-radius: 50%;
   width: 36px;
   height: 36px;
-  transition: background-color .2s ease-out;
+  transition: background-color 0.2s ease-out;
   cursor: pointer;
 
   &:hover {
-    background-color: ${AppTheme.colors.backgroundHover};
+    background-color: ${props => props.theme.colors.backgroundHover};
   }
 `

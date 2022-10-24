@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { getRelativeChord } from '@utils/chords'
 import { Link, useParams } from 'react-router-dom'
-import AppTheme from '@styles/AppTheme'
 
 const Container = styled(Link)`
   display: grid;
@@ -11,7 +10,7 @@ const Container = styled(Link)`
   grid-template-areas: 'title key' 'authors key' 'comment comment' 'line line';
   padding: 10px 20px;
   margin-bottom: 10px;
-  transition: background-color .2s ease-out;
+  transition: background-color 0.2s ease-out;
   cursor: pointer;
   color: black;
   text-decoration: none;
@@ -21,12 +20,12 @@ const Container = styled(Link)`
   }
 
   &:hover {
-    background-color: ${AppTheme.colors.backgroundHover};
+    background-color: ${props => props.theme.colors.backgroundHover};
   }
 
   ::after {
     content: '';
-    border-bottom: 1px solid ${AppTheme.colors.textFaded};
+    border-bottom: 1px solid ${props => props.theme.colors.textFaded};
     display: block;
     grid-area: line;
     margin-top: 10px;
@@ -42,7 +41,7 @@ const SongTitle = styled.div`
 
 const SongAuthors = styled.div`
   font-size: 18px;
-  color: ${AppTheme.colors.textFaded};
+  color: ${props => props.theme.colors.textFaded};
   grid-area: authors;
   align-self: start;
 `
@@ -53,9 +52,9 @@ const PlayKey = styled.div`
   align-self: start;
   padding: 10px 30px;
   border-radius: 22px;
-  background-color: ${AppTheme.colors.backgroundOffset};
+  background-color: ${props => props.theme.colors.backgroundOffset};
   position: relative;
-  border: 1px solid ${AppTheme.colors.borderOffset};
+  border: 1px solid ${props => props.theme.colors.borderOffset};
   font-size: 16px;
 `
 

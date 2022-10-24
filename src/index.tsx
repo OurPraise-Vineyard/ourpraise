@@ -21,6 +21,8 @@ import DisplayErrors from '@features/Shared/DisplayErrors'
 import Auth from '@features/Auth'
 import { pushError } from '@state/errorSlice'
 import GlobalStyle from '@styles/GlobalStyle'
+import { ThemeProvider } from 'styled-components'
+import AppTheme from '@styles/AppTheme'
 
 function App() {
   const user = useAppSelector(state => state.auth.user)
@@ -77,7 +79,7 @@ function App() {
 
 ReactDOM.render(
   <React.StrictMode>
-    <div>
+    <ThemeProvider theme={AppTheme}>
       <GlobalStyle />
       <Provider store={store}>
         <BrowserRouter>
@@ -85,7 +87,7 @@ ReactDOM.render(
           <DisplayErrors />
         </BrowserRouter>
       </Provider>
-    </div>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { buttonBase } from '@features/Shared/ButtonBase'
 import styled from 'styled-components'
 import SearchSongs from '@features/Shared/SearchSongs'
-import AppTheme from '@styles/AppTheme'
 
 const Row = styled.div`
   display: flex;
@@ -23,7 +22,7 @@ const Button = styled(Link)`
 `
 
 const HorizontalLine = styled.div`
-  background-color: ${AppTheme.colors.border};
+  background-color: ${props => props.theme.colors.border};
   width: 1px;
   display: block;
   margin: 8px 0;

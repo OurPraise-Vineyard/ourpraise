@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { createDebouncer } from '@utils/debouncer'
 import searchIcon from '@assets/search.svg'
-import AppTheme from '@styles/AppTheme'
 
 const debounce = createDebouncer(1000)
 
@@ -19,7 +18,7 @@ const SearchBar = styled.input`
 
 const SearchBarWrapper = styled.div`
   padding: 10px 20px;
-  border: 1px solid ${AppTheme.colors.border};
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 4px;
   display: flex;
   flex-direction: row;

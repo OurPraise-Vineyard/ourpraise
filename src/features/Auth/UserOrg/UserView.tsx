@@ -7,7 +7,6 @@ import checkIcon from '@assets/check.svg'
 import gearIcon from '@assets/gear.svg'
 import IconButton from '@features/Shared/IconButton'
 import { pushError } from '@state/errorSlice'
-import AppTheme from '@styles/AppTheme'
 
 const Username = styled.p`
   font-size: 24px;
@@ -17,7 +16,7 @@ const Username = styled.p`
 
 const Email = styled.p`
   font-size: 18px;
-  color: ${AppTheme.colors.textFaded};
+  color: ${props => props.theme.colors.textFaded};
   margin: 0 0 25px;
   text-align: center;
 `
@@ -35,7 +34,7 @@ const Organisation = styled.div<{ selected: boolean }>`
   cursor: pointer;
 
   &:hover {
-    background-color: ${AppTheme.colors.backgroundHover};
+    background-color: ${props => props.theme.colors.backgroundHover};
   }
 
   display: flex;
@@ -96,7 +95,7 @@ const Spacer = styled.div`
 
 const NoOrganisations = styled.p`
   font-size: 18px;
-  color: ${AppTheme.colors.textFaded};
+  color: ${props => props.theme.colors.textFaded};
   text-align: center;
   margin: 15px 0;
 `
