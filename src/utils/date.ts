@@ -41,3 +41,9 @@ export function todayTime(): number {
   now.setHours(0, 0, 0, 0)
   return now.getTime()
 }
+
+export function nextWeekday(daynum: number): Date {
+  const now = new Date()
+  now.setDate(now.getDate() + ((daynum + (7 - now.getDay())) % 7))
+  return now
+}

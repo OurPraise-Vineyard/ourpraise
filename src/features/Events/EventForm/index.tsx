@@ -10,6 +10,7 @@ import FormSongItem from '@features/Events/EventForm/FormSongItem'
 import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import SelectField, { SelectItem } from '@features/Shared/SelectField'
 import { pushError } from '@state/errorSlice'
+import { nextWeekday } from '@utils/date'
 
 const Container = styled.div`
   box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -115,7 +116,7 @@ function reducer(state, action) {
 const defaultEvent = {
   title: '',
   comment: '',
-  date: dateFormat(new Date(), 'yyyy-mm-dd'),
+  date: dateFormat(nextWeekday(7), 'yyyy-mm-dd'),
   songs: [],
   organisation: ''
 }
