@@ -39,7 +39,7 @@ export default function EventOverview() {
   for (const ev of events) {
     if (getTime(ev.date) >= today.current) {
       upcoming.push(ev)
-    } else if (past.length < 5) {
+    } else if (past.length < 8) {
       past.push(ev)
     }
   }
