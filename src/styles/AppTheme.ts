@@ -13,7 +13,7 @@ const AppTheme = {
     navBackground: '#000',
     navText: '#fff',
     navTextFaded: '#bbb',
-    backgroundHover: '#ebebeb',
+    backgroundHover: '#f5f5f5',
     border: '#aaa',
     backgroundOffset: '#efefef',
     borderOffset: '#ddd'
