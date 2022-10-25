@@ -8,8 +8,9 @@ const Container = styled(Link)`
   grid-template-columns: 3fr 1fr;
   grid-template-rows: repeat(4, min-content);
   grid-template-areas: 'title key' 'authors key' 'comment comment' 'line line';
-  padding: 10px 20px;
-  margin-bottom: 10px;
+  padding: 16px 10px;
+  margin: 0 10px;
+  border-radius: 4px;
   transition: background-color 0.2s ease-out;
   cursor: pointer;
   color: black;
@@ -21,14 +22,7 @@ const Container = styled(Link)`
 
   &:hover {
     background-color: ${props => props.theme.colors.backgroundHover};
-  }
-
-  ::after {
-    content: '';
-    border-bottom: 1px solid ${props => props.theme.colors.textFaded};
-    display: block;
-    grid-area: line;
-    margin-top: 10px;
+    transition: background-color 0.1s ease-in;
   }
 `
 
@@ -63,7 +57,7 @@ const Comment = styled.div`
   margin-top: 5px;
 `
 
-export default function SongItem ({ song }) {
+export default function SongItem({ song }) {
   const { eventId } = useParams()
   const songKey = useMemo(() => {
     return getRelativeChord(song.key, song.transpose)
@@ -74,7 +68,7 @@ export default function SongItem ({ song }) {
       <SongTitle>{song.title}</SongTitle>
       <SongAuthors>{song.authors}</SongAuthors>
       <PlayKey>Key: {songKey}</PlayKey>
-      <Comment>{song.comment}</Comment>
+      {song.comment && <Comment>{song.comment}</Comment>}
     </Container>
   )
 }
