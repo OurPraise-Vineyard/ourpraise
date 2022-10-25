@@ -18,19 +18,19 @@ export default styled(NavLink)`
   color: ${props => props.color || 'black'};
 
   ::before {
-    content: "";
+    content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 100%;
     right: 0;
-    background-color: ${props => props.color || 'black'};;
+    background-color: ${props => props.color || 'black'};
     height: 1px;
-    transition: all .2s linear;
+    transition: left 0.2s linear, right 0.2s linear;
   }
 
   :hover {
     ::before {
-      animation: ${itemAnimation} .2s;
+      animation: ${itemAnimation} 0.2s;
       right: 0;
       left: 0;
     }
@@ -39,7 +39,7 @@ export default styled(NavLink)`
   &.active {
     ::before {
       left: 0;
-      animation: ${itemAnimation} .2s;
+      animation: ${itemAnimation} 0.2s;
     }
   }
 `
