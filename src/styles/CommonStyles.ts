@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Breaker = styled.hr`
   border: unset;
-  background-color: ${props => props.theme.colors.backgroundOffset};
+  background-color: ${props => props.theme.colors.breaker};
   height: 1px;
   margin: -0.5px 0;
   position: relative;
