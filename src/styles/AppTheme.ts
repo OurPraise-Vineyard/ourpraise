@@ -17,7 +17,8 @@ const AppTheme = {
     border: '#aaa',
     subtleInput: '#efefef',
     subtleButtonBackground: '#efefef',
-    subtleButtonBorder: '#ddd'
+    subtleButtonBorder: '#ddd',
+    chipBackground: '#e0e0e0'
   },
 
   fontWeights: {

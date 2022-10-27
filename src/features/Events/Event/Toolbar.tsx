@@ -39,7 +39,7 @@ const Chips = styled.div`
 
 const Chip = styled.span`
   padding: 4px 8px;
-  background-color: #e0e0e0;
+  background-color: ${props => props.theme.colors.chipBackground};
   color: black;
   border-radius: 4px;
   font-size: 16px;
