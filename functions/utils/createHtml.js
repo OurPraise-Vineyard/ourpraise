@@ -1,36 +1,5 @@
 const { transposeBody } = require('./chords')
-const dateFormat = require('dateformat')
-
-dateFormat.i18n.monthNames = [
-  'jan',
-  'feb',
-  'mar',
-  'apr',
-  'may',
-  'jun',
-  'jul',
-  'aug',
-  'sep',
-  'okt',
-  'nov',
-  'dec',
-  'januar',
-  'februar',
-  'marts',
-  'april',
-  'maj',
-  'juni',
-  'juli',
-  'august',
-  'september',
-  'oktober',
-  'november',
-  'december'
-]
-
-function formatDate(date) {
-  return dateFormat(date, 'd. mmmm yyyy')
-}
+const { formatDate } = require('./date')
 
 function createSongHtml(song, transpose) {
   const body = transposeBody(transpose, song.body)

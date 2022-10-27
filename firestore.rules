@@ -29,9 +29,9 @@ service cloud.firestore {
         allow write: if hasAuth();
       }
 
-      match /events/{songId} {
+      match /events/{eventId} {
         allow read: if true;
-        allow write: if isOrgAdmin(resource.data.organisation);
+        allow write: if isOrgAdmin(request.resource.data.organisation);
       }
     }
   }
