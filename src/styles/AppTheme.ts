@@ -15,8 +15,9 @@ const AppTheme = {
     navTextFaded: '#bbb',
     backgroundHover: '#f5f5f5',
     border: '#aaa',
-    backgroundOffset: '#efefef',
-    borderOffset: '#ddd'
+    subtleInput: '#efefef',
+    subtleButtonBackground: '#efefef',
+    subtleButtonBorder: '#ddd'
   },
 
   fontWeights: {

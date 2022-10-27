@@ -15,7 +15,7 @@ const Body = styled.p`
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
-  background-color: ${props => props.theme.colors.backgroundOffset};
+  background-color: ${props => props.theme.colors.subtleInput};
   padding: 20px;
   margin-bottom: 16px;
 `

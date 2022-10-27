@@ -46,9 +46,9 @@ const PlayKey = styled.div`
   align-self: start;
   padding: 10px 30px;
   border-radius: 22px;
-  background-color: ${props => props.theme.colors.backgroundOffset};
+  background-color: ${props => props.theme.colors.subtleButtonBackground};
   position: relative;
-  border: 1px solid ${props => props.theme.colors.borderOffset};
+  border: 1px solid ${props => props.theme.colors.subtleButtonBorder};
   font-size: 16px;
 `
 
