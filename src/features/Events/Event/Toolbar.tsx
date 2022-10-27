@@ -16,9 +16,25 @@ const Row = styled.div`
   justify-content: flex-end;
 `
 
+const TitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+`
+
 const Title = styled.h1`
   font-size: 24px;
   margin: 0;
+  flex: 1 0 auto;
+`
+
+const Chips = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
 `
 
 const Chip = styled.span`
@@ -27,14 +43,14 @@ const Chip = styled.span`
   color: black;
   border-radius: 4px;
   font-size: 16px;
-  margin-left: 16px;
+  flex: 0 0 auto;
 `
 
 const Spacer = styled.span`
   flex: 1 0 auto;
 `
 
-export default function Toolbar () {
+export default function Toolbar() {
   const { eventId } = useParams()
   const navigate = useNavigate()
   const event = useAppSelector(state => state.events.index[eventId])
@@ -44,21 +60,22 @@ export default function Toolbar () {
   const eventDate = useMemo(() => formatDate(event.date), [event.date])
 
   const handleDownload = () => {
-    window.open(
-      getFunctionUrl('pdf', { event: eventId }),
-      '_blank'
-    )
+    window.open(getFunctionUrl('pdf', { event: eventId }), '_blank')
   }
 
-  function handleEdit () {
+  function handleEdit() {
     navigate(`/events/${eventId}/edit`)
   }
 
   return (
     <Row>
-      <Title>{event.title}</Title>
-      <Chip>{eventDate}</Chip>
-      <Chip>{event.organisationName}</Chip>
+      <TitleRow>
+        <Title>{event.title}</Title>
+        <Chips>
+          <Chip>{eventDate}</Chip>
+          <Chip>{event.organisationName}</Chip>
+        </Chips>
+      </TitleRow>
       <Spacer />
       <IconButton icon={downloadIcon} onClick={handleDownload} />
       {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}
