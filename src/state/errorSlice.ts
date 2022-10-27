@@ -22,7 +22,8 @@ const errors = {
   'auth/email-already-in-use': 'Email already in use.',
   'auth/weak-password': 'Password should be at least six characters long.',
   'auth/wrong-password': 'Wrong password.',
-  'auth/user-not-found': 'User does not exist'
+  'auth/user-not-found': 'User does not exist',
+  'permission-denied': 'You do not have permission to perform this action'
 }
 
 function humanizeError(err): string {

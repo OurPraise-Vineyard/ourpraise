@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom'
 
 const Container = styled(Link)`
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: minmax(0, 3fr) 1fr;
   grid-template-rows: repeat(4, min-content);
   grid-template-areas: 'title key' 'authors key' 'comment comment' 'line line';
   padding: 16px 10px;
@@ -31,6 +31,8 @@ const SongTitle = styled.div`
   font-weight: bold;
   grid-area: title;
   align-self: end;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const SongAuthors = styled.div`
@@ -38,6 +40,8 @@ const SongAuthors = styled.div`
   color: ${props => props.theme.colors.textFaded};
   grid-area: authors;
   align-self: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const PlayKey = styled.div`
