@@ -2,21 +2,7 @@ const { getFirestore } = require('firebase-admin/firestore')
 
 const db = getFirestore()
 
-export const getEvent = async id => {
-  const doc = await db.doc(`events/${id}`).get()
-
-  if (!doc.exists) return null
-
-  return {
-    id,
-    title: doc.data().title,
-    songs: doc.data().songs.map(async song => {
-      return await getSong(song.id)
-    })
-  }
-}
-
-export const getSong = async id => {
+const getSong = async id => {
   const doc = await db.doc(`songs/${id}`).get()
 
   if (!doc.exists) return null
@@ -33,3 +19,23 @@ export const getSong = async id => {
       .filter(Boolean)
   }
 }
+
+exports.getEvent = async id => {
+  const doc = await db.doc(`events/${id}`).get()
+
+  if (!doc.exists) return null
+
+  const songs = await Promise.all(
+    doc.data().songs.map(async song => {
+      return await getSong(song.id)
+    })
+  )
+
+  return {
+    id,
+    title: doc.data().title,
+    songs
+  }
+}
+
+exports.getSong = getSong

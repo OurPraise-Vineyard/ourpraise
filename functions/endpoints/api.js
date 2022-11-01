@@ -60,6 +60,7 @@ app.get('/events', (req, res) => {
     return db
       .collection('events')
       .orderBy('date', 'desc')
+      .limit(20)
       .get()
       .then(snap =>
         snap.docs.map(doc => {
