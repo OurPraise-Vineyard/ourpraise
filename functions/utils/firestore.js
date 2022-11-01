@@ -10,8 +10,8 @@ export const getEvent = async id => {
   return {
     id,
     title: doc.data().title,
-    songs: doc.data().songs.map(async songId => {
-      return await getSong(songId)
+    songs: doc.data().songs.map(async song => {
+      return await getSong(song.id)
     })
   }
 }
