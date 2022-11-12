@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import Toolbar from '@features/Events/Event/Toolbar'
 import { useNavigate, useParams } from 'react-router-dom'
 import ContentBox from '@features/Shared/ContentBox'
@@ -7,6 +7,12 @@ import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { FetchStatus } from '@utils/api'
 import { fetchEvent } from '@state/events/api'
 import { pushError } from '@state/errorSlice'
+import { Breaker } from '@styles/CommonStyles'
+import styled from 'styled-components'
+
+const StyledBreaker = styled(Breaker)`
+  margin: 0 20px;
+`
 
 export default function ViewEvent() {
   const { eventId } = useParams()
@@ -46,8 +52,11 @@ export default function ViewEvent() {
       <Toolbar />
       {!!event.comment && <ContentBox title="Comments">{event.comment}</ContentBox>}
       <ContentBox noPadding title="Set list">
-        {event.songs.map(song => (
-          <SongItem key={song.id} song={song} />
+        {event.songs.map((song, i) => (
+          <Fragment key={song.id}>
+            <SongItem song={song} />
+            {i !== event.songs.length - 1 && <StyledBreaker />}
+          </Fragment>
         ))}
       </ContentBox>
     </div>

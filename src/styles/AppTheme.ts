@@ -13,11 +13,12 @@ const AppTheme = {
     navBackground: '#000',
     navText: '#fff',
     navTextFaded: '#bbb',
-    backgroundHover: '#ebebeb',
+    backgroundHover: '#f5f5f5',
     border: '#aaa',
     subtleInput: '#efefef',
     subtleButtonBackground: '#efefef',
     subtleButtonBorder: '#ddd',
+    breaker: '#ddd',
     chipBackground: '#e0e0e0'
   },
 

@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import LinkBase from '@features/Shared/LinkBase'
 import styled from 'styled-components'
+import { Breaker } from '@styles/CommonStyles'
 
 const Container = styled.div`
   padding: 20px;
@@ -28,22 +29,25 @@ const Title = styled.h2`
 `
 
 const Items = styled.div`
-  margin: 32px 0;
+  margin: 16px 0;
 `
 
 const Item = styled(Link)`
-  border-bottom: 1px solid ${props => props.theme.colors.border};
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 20px;
   text-decoration: none;
-  padding-top: 6px;
-  padding-bottom: 2px;
+  margin: 0 -10px;
+  padding: 6px 10px;
+  border-radius: 4px;
   transition: background-color 0.2s ease-in;
+  position: relative;
+  z-index: 2;
 
   :hover {
     background-color: ${props => props.theme.colors.backgroundHover};
+    transition: background-color 0.1s ease-in;
   }
 `
 
@@ -97,7 +101,7 @@ const NotFound = styled.p`
   font-size: 20px;
 `
 
-export default function ContentTable ({
+export default function ContentTable({
   title,
   items,
   viewAllUrl = undefined,
@@ -105,10 +109,7 @@ export default function ContentTable ({
   actions = undefined,
   mapper = item => item
 }) {
-  const mappedItems = useMemo(
-    () => items.map(mapper),
-    [items, mapper]
-  )
+  const mappedItems = useMemo(() => items.map(mapper), [items, mapper])
 
   return (
     <Container>
@@ -116,26 +117,23 @@ export default function ContentTable ({
         <Title>{title}</Title>
         {actions}
       </Toolbar>
-      {mappedItems.length === 0 && (
-        <NotFound>
-          Nothing to show here...
-        </NotFound>
-      )}
+      {mappedItems.length === 0 && <NotFound>Nothing to show here...</NotFound>}
       {mappedItems.length > 0 && (
         <Items>
           {mappedItems.map(({ primary, secondary, url }, index) => (
-            <Item key={index} to={url}>
-              <PrimaryText>{primary}</PrimaryText>
-              <SecondaryText>{secondary}</SecondaryText>
-            </Item>
+            <Fragment key={index}>
+              <Item to={url}>
+                <PrimaryText>{primary}</PrimaryText>
+                <SecondaryText>{secondary}</SecondaryText>
+              </Item>
+              {index !== mappedItems.length - 1 && <Breaker />}
+            </Fragment>
           ))}
         </Items>
       )}
       {viewAllUrl && (
         <Center>
-          <ViewAllLink to={viewAllUrl}>
-            View all &rarr;
-          </ViewAllLink>
+          <ViewAllLink to={viewAllUrl}>View all &rarr;</ViewAllLink>
         </Center>
       )}
       <LoadingOverlay visible={loading} />
