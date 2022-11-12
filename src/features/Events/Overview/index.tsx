@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ContentTable from '@features/Shared/Table'
 import Toolbar from '@features/Events/Overview/Toolbar'
-import formatDate from '@utils/date'
+import { formatDate, getTime, todayTime } from '@utils/date'
 import { FetchStatus } from '@utils/api'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchRecentEvents } from '@state/events/api'
 import { pushError } from '@state/errorSlice'
+import { WritableDraft } from 'immer/dist/internal'
 
 function mapEvent(data) {
   return {
@@ -20,6 +21,7 @@ export default function EventOverview() {
   const dispatch = useAppDispatch()
   const events = useAppSelector(state => state.events.allEvents)
   const statusAllEvents = useAppSelector(state => state.events.statusAllEvents)
+  const today = useRef(todayTime())
 
   useEffect(() => {
     if (statusAllEvents === FetchStatus.idle) {
@@ -31,10 +33,24 @@ export default function EventOverview() {
     }
   }, [dispatch, statusAllEvents])
 
+  const upcoming: WritableDraft<PartialEvent>[] = []
+  const past: WritableDraft<PartialEvent>[] = []
+
+  for (const ev of events) {
+    if (getTime(ev.date) >= today.current) {
+      upcoming.push(ev)
+    } else if (past.length < 8) {
+      past.push(ev)
+    }
+  }
+
   return (
     <div>
       <Toolbar />
-      <ContentTable items={events} title={'Recent events'} mapper={mapEvent} />
+      {upcoming.length > 0 && (
+        <ContentTable items={upcoming} title={'Upcoming events'} mapper={mapEvent} />
+      )}
+      <ContentTable items={past} title={'Past events'} mapper={mapEvent} />
     </div>
   )
 }

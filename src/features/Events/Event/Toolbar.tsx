@@ -6,7 +6,7 @@ import { useAppSelector } from '@utils/hooks'
 import IconButton from '@features/Shared/IconButton'
 import editIcon from '@assets/edit.svg'
 import downloadIcon from '@assets/download.svg'
-import formatDate from '@utils/date'
+import { formatDate } from '@utils/date'
 
 const Row = styled.div`
   display: flex;
