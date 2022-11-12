@@ -5,19 +5,21 @@ import { useAppSelector } from '@utils/hooks'
 import ButtonBase from '@features/Shared/ButtonBase'
 
 const Container = styled.div<{ show: boolean }>`
-  box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: ${props => props.theme.boxShadow};
   background-color: white;
   z-index: 1000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .2s ease-out;
+  transition: opacity 0.2s ease-out;
   position: absolute;
   transform: translateX(-100%);
 
-  ${props => props.show && css`
-    opacity: 1;
-    pointer-events: all;
-  `}
+  ${props =>
+    props.show &&
+    css`
+      opacity: 1;
+      pointer-events: all;
+    `}
 `
 
 const Backdrop = styled.div`
@@ -30,7 +32,7 @@ const Backdrop = styled.div`
 `
 
 const ItemAuthors = styled.p`
-  color: #aaa;
+  color: ${props => props.theme.colors.textFaded};
   margin: 0;
   font-size: 16px;
   white-space: nowrap;

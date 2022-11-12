@@ -22,7 +22,7 @@ const Button = styled(Link)`
 `
 
 const HorizontalLine = styled.div`
-  background-color: #aaa;
+  background-color: ${props => props.theme.colors.border};
   width: 1px;
   display: block;
   margin: 8px 0;

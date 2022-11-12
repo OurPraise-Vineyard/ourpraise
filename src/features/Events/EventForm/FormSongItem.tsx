@@ -14,7 +14,7 @@ const Container = styled.div`
   margin: 20px 0;
 
   &:not(:last-child) {
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid ${props => props.theme.colors.border};
   }
 `
 
@@ -27,7 +27,7 @@ const SongTitle = styled.div`
 
 const SongAuthors = styled.div`
   font-size: 18px;
-  color: #aaa;
+  color: ${props => props.theme.colors.textFaded};
   grid-area: authors;
   align-self: start;
 `

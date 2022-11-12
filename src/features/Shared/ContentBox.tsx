@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${props => props.theme.boxShadow};
   border-radius: 4px;
   position: relative;
   margin: 16px 0;
@@ -15,10 +15,10 @@ const Title = styled.h2`
   padding: 0 20px;
 `
 
-const Body = styled.div<{noPadding: boolean}>`
+const Body = styled.div<{ noPadding: boolean }>`
   white-space: pre;
   font-size: 20px;
-  padding: ${props => props.noPadding ? 0 : '0 20px'};
+  padding: ${props => (props.noPadding ? 0 : '0 20px')};
 `
 
 export default function ContentBox ({ title, children, noPadding = false }) {

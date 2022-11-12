@@ -34,7 +34,7 @@ const ModalContainer = styled.div<{ show: boolean; narrow: boolean }>`
   height: 600px;
   max-height: 90vh;
   background-color: white;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${props => props.theme.boxShadow};
   border-radius: 4px;
   transition: top 0.2s ease-out, width 0.2s ease-out;
   display: flex;

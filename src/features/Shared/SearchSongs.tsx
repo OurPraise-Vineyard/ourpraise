@@ -18,7 +18,7 @@ const SearchBar = styled.input`
 
 const SearchBarWrapper = styled.div`
   padding: 10px 20px;
-  border: 1px solid #aaa;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 4px;
   display: flex;
   flex-direction: row;

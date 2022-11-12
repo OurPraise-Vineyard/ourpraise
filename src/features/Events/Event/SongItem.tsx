@@ -10,7 +10,7 @@ const Container = styled(Link)`
   grid-template-areas: 'title key' 'authors key' 'comment comment' 'line line';
   padding: 10px 20px;
   margin-bottom: 10px;
-  transition: background-color .2s ease-out;
+  transition: background-color 0.2s ease-out;
   cursor: pointer;
   color: black;
   text-decoration: none;
@@ -20,12 +20,12 @@ const Container = styled(Link)`
   }
 
   &:hover {
-    background-color: #efefef;
+    background-color: ${props => props.theme.colors.backgroundHover};
   }
 
   ::after {
     content: '';
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid ${props => props.theme.colors.textFaded};
     display: block;
     grid-area: line;
     margin-top: 10px;
@@ -43,7 +43,7 @@ const SongTitle = styled.div`
 
 const SongAuthors = styled.div`
   font-size: 18px;
-  color: #aaa;
+  color: ${props => props.theme.colors.textFaded};
   grid-area: authors;
   align-self: start;
   overflow: hidden;
@@ -56,9 +56,9 @@ const PlayKey = styled.div`
   align-self: start;
   padding: 10px 30px;
   border-radius: 22px;
-  background-color: #efefef;
+  background-color: ${props => props.theme.colors.subtleButtonBackground};
   position: relative;
-  border: 1px solid #ddd;
+  border: 1px solid ${props => props.theme.colors.subtleButtonBorder};
   font-size: 16px;
 `
 

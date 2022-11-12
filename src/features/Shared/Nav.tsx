@@ -8,8 +8,8 @@ import { useAppSelector } from '@utils/hooks'
 import UserOrg from '@features/Auth/UserOrg'
 
 const Container = styled.nav`
-  background-color: black;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  background-color: ${props => props.theme.colors.navBackground};
+  box-shadow: ${props => props.theme.boxShadow};
 `
 
 const Logo = styled.img.attrs({
@@ -22,7 +22,7 @@ const Logo = styled.img.attrs({
 const Username = styled.p<{ org: string }>`
   padding: 0;
   font-size: 20px;
-  color: white;
+  color: ${props => props.theme.colors.navText};
   cursor: pointer;
   grid-area: username;
   justify-self: end;
@@ -31,10 +31,10 @@ const Username = styled.p<{ org: string }>`
   text-align: right;
 
   &::after {
-    content: "${props => props.org}";
+    content: '${props => props.org}';
     display: block;
     font-size: 0.88em;
-    color: #bbb;
+    color: ${props => props.theme.colors.navTextFaded};
   }
 `
 
@@ -53,7 +53,7 @@ const Links = styled.div`
 
   > a {
     font-size: 18px;
-    color: white;
+    color: ${props => props.theme.colors.navText};
     text-decoration: none;
     margin-right: 20px;
   }

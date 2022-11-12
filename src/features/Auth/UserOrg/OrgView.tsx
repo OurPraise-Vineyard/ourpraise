@@ -93,7 +93,7 @@ const AddMemberButton = styled(ButtonBase)`
 
 const MembersHeader = styled.p`
   font-size: 14px;
-  color: #aaa;
+  color: ${props => props.theme.colors.textFaded};
   padding: 0 20px;
   margin: 16px 0 0;
 `

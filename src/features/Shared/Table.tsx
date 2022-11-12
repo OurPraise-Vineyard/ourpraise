@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   padding: 20px;
-  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${props => props.theme.boxShadow};
   border-radius: 4px;
   position: relative;
   margin: 16px 0;
@@ -32,7 +32,7 @@ const Items = styled.div`
 `
 
 const Item = styled(Link)`
-  border-bottom: 1px solid #AAAAAA;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -40,10 +40,10 @@ const Item = styled(Link)`
   text-decoration: none;
   padding-top: 6px;
   padding-bottom: 2px;
-  transition: background-color .2s ease-in;
+  transition: background-color 0.2s ease-in;
 
   :hover {
-    background-color: #ebebeb;
+    background-color: ${props => props.theme.colors.backgroundHover};
   }
 `
 
@@ -56,7 +56,7 @@ const PrimaryText = styled.div`
 `
 
 const SecondaryText = styled.div`
-  color: #AAAAAA;
+  color: ${props => props.theme.colors.textFaded};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -72,7 +72,7 @@ const Center = styled.div`
   text-align: center;
 `
 
-const LoadingOverlay = styled.div<{visible:boolean}>`
+const LoadingOverlay = styled.div<{ visible: boolean }>`
   background-color: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
@@ -83,12 +83,12 @@ const LoadingOverlay = styled.div<{visible:boolean}>`
   bottom: 0;
   position: absolute;
   font-size: 20px;
-  opacity: ${props => props.visible ? 1 : 0};
-  transition: opacity .2s linear;
-  pointer-events: ${props => props.visible ? 'all' : 'none'};
+  opacity: ${props => (props.visible ? 1 : 0)};
+  transition: opacity 0.2s linear;
+  pointer-events: ${props => (props.visible ? 'all' : 'none')};
 
   &::after {
-    content: "Loading..."
+    content: 'Loading...';
   }
 `
 

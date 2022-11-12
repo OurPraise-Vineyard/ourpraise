@@ -16,7 +16,7 @@ const Username = styled.p`
 
 const Email = styled.p`
   font-size: 18px;
-  color: #aaa;
+  color: ${props => props.theme.colors.textFaded};
   margin: 0 0 25px;
   text-align: center;
 `
@@ -34,7 +34,7 @@ const Organisation = styled.div<{ selected: boolean }>`
   cursor: pointer;
 
   &:hover {
-    background-color: #efefef;
+    background-color: ${props => props.theme.colors.backgroundHover};
   }
 
   display: flex;
@@ -95,7 +95,7 @@ const Spacer = styled.div`
 
 const NoOrganisations = styled.p`
   font-size: 18px;
-  color: #aaa;
+  color: ${props => props.theme.colors.textFaded};
   text-align: center;
   margin: 15px 0;
 `

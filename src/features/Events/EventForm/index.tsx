@@ -12,7 +12,7 @@ import SelectField, { SelectItem } from '@features/Shared/SelectField'
 import { pushError } from '@state/errorSlice'
 
 const Container = styled.div`
-  box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: ${props => props.theme.boxShadow};
   background-color: white;
   padding: 20px;
 `

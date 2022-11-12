@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import '@utils/firebase'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import { createGlobalStyle } from 'styled-components'
 import Home from '@features/Home'
 import Layout from '@features/Shared/Layout'
 import ViewSong from '@features/Songs/Song'
@@ -21,25 +20,9 @@ import { LoginStatus } from '@state/auth/slice'
 import DisplayErrors from '@features/Shared/DisplayErrors'
 import Auth from '@features/Auth'
 import { pushError } from '@state/errorSlice'
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    font-family: Abel, sans-serif;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  button, input, select {
-    font-family: Abel, sans-serif;
-    font-size: 16px;
-  }
-`
+import GlobalStyle from '@styles/GlobalStyle'
+import { ThemeProvider } from 'styled-components'
+import AppTheme from '@styles/AppTheme'
 
 function App() {
   const user = useAppSelector(state => state.auth.user)
@@ -96,7 +79,7 @@ function App() {
 
 ReactDOM.render(
   <React.StrictMode>
-    <div>
+    <ThemeProvider theme={AppTheme}>
       <GlobalStyle />
       <Provider store={store}>
         <BrowserRouter>
@@ -104,7 +87,7 @@ ReactDOM.render(
           <DisplayErrors />
         </BrowserRouter>
       </Provider>
-    </div>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
