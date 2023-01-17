@@ -3,12 +3,33 @@ const { getFirestore } = require('firebase-admin/firestore')
 const express = require('express')
 const cors = require('cors')
 const { getEvent, getSong } = require('../utils/firestore')
+const { searchSongs } = require('../utils/algolia')
 
 const app = express()
 const db = getFirestore()
 
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({ origin: true }))
+
+app.get('/search', (req, res) => {
+  const { q } = req.query
+
+  const searchQuery = q.trim()
+
+  if (!searchQuery) {
+    res.status(400).json({
+      status: 400,
+      error: 'Missing search query string'
+    })
+  }
+
+  searchSongs(searchQuery).then(data => {
+    res.json({
+      hits: data,
+      query: searchQuery
+    })
+  })
+})
 
 app.get('/song', (req, res) => {
   const { id } = req.query
