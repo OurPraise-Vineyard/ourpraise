@@ -23,6 +23,10 @@ import { pushError } from '@state/errorSlice'
 import GlobalStyle from '@styles/GlobalStyle'
 import { ThemeProvider } from 'styled-components'
 import AppTheme from '@styles/AppTheme'
+import EditSongList from '@features/SongLists/EditSongList'
+import ViewSongList from '@features/SongLists/SongList'
+import AddSongList from '@features/SongLists/AddSongList'
+import SongLists from '@features/SongLists/Overview'
 
 function App() {
   const user = useAppSelector(state => state.auth.user)
@@ -64,6 +68,13 @@ function App() {
             </Route>
             <Route path="/events/add" element={<AddEvent />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/songlists/:songListId/edit" element={<EditSongList />} />
+            <Route path="/songlists/:songListId">
+              <Route path=":state" element={<ViewSongList />} />
+              <Route path="" element={<ViewSongList />} />
+            </Route>
+            <Route path="/songlists/add" element={<AddSongList />} />
+            <Route path="/songlists" element={<SongLists />} />
           </>
         )}
         <Route path="/home" element={<Home />} />

@@ -14,7 +14,7 @@ const Container = styled.nav`
 
 const Logo = styled.img.attrs({
   src: logo,
-  alt: 'OurPraise logo',
+  alt: 'OurPraise logo'
 })`
   height: 40px;
 `
@@ -77,7 +77,9 @@ export default function Nav({ wide = false }) {
           <HomeLink to="/home">
             <Logo />
           </HomeLink>
-          <Username onClick={() => setShowUser(true)} org={orgName}>{user ? user.displayName || user.email : ''}</Username>
+          <Username onClick={() => setShowUser(true)} org={orgName}>
+            {user ? user.displayName || user.email : ''}
+          </Username>
           <Links>
             <LinkBase color="white" to="/home">
               Home
@@ -85,9 +87,16 @@ export default function Nav({ wide = false }) {
             <LinkBase color="white" to="/songs">
               Songs
             </LinkBase>
-            {!!org && (<LinkBase color="white" to="/events">
-              Events
-            </LinkBase>)}
+            {!!org && (
+              <LinkBase color="white" to="/events">
+                Events
+              </LinkBase>
+            )}
+            {!!org && (
+              <LinkBase color="white" to="/songlists">
+                Song Lists
+              </LinkBase>
+            )}
           </Links>
         </Wrapper>
       </Container>

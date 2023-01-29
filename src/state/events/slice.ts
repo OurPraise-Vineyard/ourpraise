@@ -45,7 +45,7 @@ const eventsSlice = createSlice({
         delete state.index[action.payload.id]
         const index = state.allEvents.findIndex(({ id }) => id === action.payload.id)
         if (index > -1) {
-          state.allEvents[index] = action.payload
+          state.allEvents[index] = { ...state.allEvents[index], ...action.payload }
         }
       })
       .addCase(addEvent.fulfilled, (state, action) => {

@@ -31,6 +31,13 @@ service cloud.firestore {
 
       match /events/{eventId} {
         allow read: if true;
+        allow write: if isOrgAdmin(resource.data.organisation);
+        allow write: if isOrgAdmin(request.resource.data.organisation);
+      }
+
+      match /songLists/{eventId} {
+        allow read: if true;
+        allow write: if isOrgAdmin(resource.data.organisation);
         allow write: if isOrgAdmin(request.resource.data.organisation);
       }
     }

@@ -129,7 +129,7 @@ export const saveEvent = createAsyncThunk<
     }))
   })
 
-  await setDoc(doc(getFirestore(), `events/${event.id}`), options)
+  await setDoc(doc(getFirestore(), `events/${event.id}`), options, { merge: true })
 
   return {
     ...options,
@@ -144,10 +144,12 @@ export const addEvent = createAsyncThunk<
     state: RootState
   }
 >('events/add', async (event, { getState }) => {
+  const orgId = getState().auth.organisation ? getState().auth.organisation.id : null
   const options = pruneObject({
     ...event,
     createdAt: new Date().toISOString(),
-    owner: getState().auth.user.email
+    owner: getState().auth.user.email,
+    organisation: orgId
   })
   const doc = await addDoc(collection(getFirestore(), 'events'), options)
 
