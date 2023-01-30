@@ -1,5 +1,5 @@
 import { searchSongs } from '@utils/algolia'
-import AddSongItem from '@features/Events/EventForm/AddSongItem'
+import AddSongItem from '@features/SongLists/SongListForm/AddSongItem'
 import Modal from '@features/Shared/Modal'
 import SearchSongs from '@features/Shared/SearchSongs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'

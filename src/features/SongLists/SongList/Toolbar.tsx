@@ -51,33 +51,25 @@ const Spacer = styled.span`
 `
 
 export default function Toolbar() {
-  const { eventId } = useParams()
+  const { songListId } = useParams()
   const navigate = useNavigate()
-  const event = useAppSelector(state => state.events.index[eventId])
-  const userEmail = useAppSelector(state => state.auth.user.email)
+  const songList = useAppSelector(state => state.songLists.index[songListId])
   const userRole = useAppSelector(state => state.auth.organisation.roles[state.auth.user.email])
-  const canEdit = userEmail === event.owner || userRole === 'admin'
-  const eventDate = useMemo(() => formatDate(event.date), [event.date])
-
-  const handleDownload = () => {
-    window.open(getFunctionUrl('pdf', { event: eventId }), '_blank')
-  }
+  const canEdit = userRole === 'admin'
 
   function handleEdit() {
-    navigate(`/events/${eventId}/edit`)
+    navigate(`/songlists/${songListId}/edit`)
   }
 
   return (
     <Row>
       <TitleRow>
-        <Title>{event.title}</Title>
+        <Title>{songList.name}</Title>
         <Chips>
-          <Chip>{eventDate}</Chip>
-          <Chip>{event.organisationName}</Chip>
+          <Chip>{songList.organisationName}</Chip>
         </Chips>
       </TitleRow>
       <Spacer />
-      <IconButton icon={downloadIcon} onClick={handleDownload} />
       {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}
     </Row>
   )

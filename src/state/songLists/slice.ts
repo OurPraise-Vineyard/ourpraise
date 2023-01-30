@@ -8,7 +8,22 @@ import {
 } from '@state/songLists/api'
 import { FetchStatus } from '@utils/api'
 
-const initialState = {
+function sortLastModified(a, b) {
+  if (a.lastModified < b.lastModified) {
+    return 1
+  } else if (a.lastModified > b.lastModified) {
+    return -1
+  }
+  return 0
+}
+
+interface SongListsState {
+  songLists: SongList[]
+  statusSongLists: FetchStatus
+  index: Record<string, FullSongList>
+}
+
+const initialState: SongListsState = {
   songLists: [],
   statusSongLists: FetchStatus.idle,
   index: {}
@@ -47,16 +62,10 @@ const songListsSlice = createSlice({
         if (index > -1) {
           state.songLists[index] = { ...state.songLists[index], ...action.payload }
         }
+        state.songLists = state.songLists.sort(sortLastModified)
       })
       .addCase(addSongList.fulfilled, (state, action) => {
-        state.songLists = [...state.songLists, action.payload].sort((a, b) => {
-          if (a.lastModified < b.lastModified) {
-            return -1
-          } else if (a.lastModified > b.lastModified) {
-            return 1
-          }
-          return 0
-        })
+        state.songLists = [...state.songLists, action.payload].sort(sortLastModified)
         state.statusSongLists = FetchStatus.idle
       })
       .addCase(deleteSongList.fulfilled, (state, action) => {

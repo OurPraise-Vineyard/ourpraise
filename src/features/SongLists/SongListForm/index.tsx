@@ -3,13 +3,11 @@ import React, { useEffect, useReducer, useState } from 'react'
 import styled from 'styled-components'
 import ButtonBase from '@features/Shared/ButtonBase'
 import { useNavigate } from 'react-router-dom'
-import dateFormat from 'dateformat'
 import { deleteSongList } from '@state/songLists/api'
 import AddSongs from '@features/SongLists/SongListForm/AddSongs'
 import FormSongItem from '@features/SongLists/SongListForm/FormSongItem'
 import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import { pushError } from '@state/errorSlice'
-import { nextWeekday } from '@utils/date'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -94,12 +92,9 @@ function reducer(state, action) {
   }
 }
 
-const defaultEvent = {
-  title: '',
-  comment: '',
-  date: dateFormat(nextWeekday(7), 'yyyy-mm-dd'),
-  songs: [],
-  organisation: ''
+const defaultSongList = {
+  name: '',
+  songs: []
 }
 
 export default function SongListForm({
@@ -111,7 +106,7 @@ export default function SongListForm({
   onSubmit: (options: SongListFormType) => void
   heading: string
 }) {
-  const [{ name, songs }, dispatch] = useReducer(reducer, defaultEvent)
+  const [{ name, songs }, dispatch] = useReducer(reducer, defaultSongList)
   const navigate = useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(false)
   const appDispatch = useAppDispatch()
@@ -128,7 +123,7 @@ export default function SongListForm({
   })
 
   useEffect(() => {
-    dispatch({ type: 'INIT', state: songList || defaultEvent })
+    dispatch({ type: 'INIT', state: songList || defaultSongList })
   }, [songList])
 
   const handleChange = name => e =>
@@ -167,7 +162,7 @@ export default function SongListForm({
       <Heading>{heading}</Heading>
       <Caption>in {songListOrgName}</Caption>
       <form onSubmit={handleSave}>
-        <TextField value={name} title="Name" onChange={handleChange('Name')} />
+        <TextField value={name} title="Name" onChange={handleChange('name')} />
         <SubHeading>Songs</SubHeading>
         {songs.map(song => (
           <FormSongItem key={song.id} song={song} onRemove={() => handleRemoveSong(song.id)} />
@@ -180,7 +175,7 @@ export default function SongListForm({
           <SaveButton type="submit">Save</SaveButton>
           {!!(songList && songList.id) && (
             <DeleteButton type="button" onClick={handleDelete}>
-              Delete event
+              Delete song list
             </DeleteButton>
           )}
         </Buttons>

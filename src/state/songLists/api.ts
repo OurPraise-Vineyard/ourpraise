@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { RootState } from '@state/store'
-import { mapDocsId, pruneObject } from '@utils/api'
+import { mapDocsId, mapDocId, pruneObject } from '@utils/api'
 import {
   addDoc,
   collection,
@@ -26,7 +26,7 @@ export const fetchSongLists = createAsyncThunk<
   return getDocs(
     query(
       collection(getFirestore(), 'songLists'),
-      orderBy('lastModified'),
+      orderBy('lastModified', 'desc'),
       where('organisation', '==', orgId)
     )
   ).then(mapDocsId)
@@ -62,7 +62,6 @@ export const fetchSongList = createAsyncThunk<
       )
     }
 
-    console.log(songList)
     // Fill organisation name
     const org = getState().auth.organisations.find(({ id }) => id === songList.organisation)
     if (org) {
@@ -80,15 +79,11 @@ export const fetchSongList = createAsyncThunk<
           if (!song) {
             song = await getDoc(doc(getFirestore(), `songs/${songId}`)).then(doc => {
               if (doc.exists()) {
-                return doc.data() as SongType
+                return mapDocId(doc) as SongType
               }
 
               return null
             })
-          } else {
-            song = {
-              ...song
-            }
           }
 
           return song
@@ -107,11 +102,8 @@ export const saveSongList = createAsyncThunk<SongList, SongListFormType>(
       ...form,
       id: undefined,
       songs: undefined,
-      songIds: form.songs.map(song => ({
-        id: song.id,
-        transpose: song.transpose,
-        comment: song.comment
-      }))
+      songIds: form.songs.map(song => song.id),
+      lastModified: new Date().toISOString()
     })
 
     await setDoc(doc(getFirestore(), `songLists/${form.id}`), options, { merge: true })

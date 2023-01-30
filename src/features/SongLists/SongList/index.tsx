@@ -1,14 +1,14 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
-import Toolbar from '@features/Events/Event/Toolbar'
+import Toolbar from '@features/SongLists/SongList/Toolbar'
 import { useNavigate, useParams } from 'react-router-dom'
 import ContentBox from '@features/Shared/ContentBox'
-import SongItem from '@features/Events/Event/SongItem'
+import SongItem from '@features/SongLists/SongList/SongItem'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { FetchStatus } from '@utils/api'
-import { fetchEvent } from '@state/events/api'
 import { pushError } from '@state/errorSlice'
 import { Breaker } from '@styles/CommonStyles'
 import styled from 'styled-components'
+import { fetchSongList } from '@state/songLists/api'
 
 const StyledBreaker = styled(Breaker)`
   margin: 0 20px;
@@ -23,12 +23,12 @@ export default function ViewSongList() {
   const navigate = useNavigate()
   useDocumentTitle(songList ? songList.name : '')
 
-  const handleFetchEvent = useCallback(async () => {
+  const handleFetchSongList = useCallback(async () => {
     if (shouldFetch) {
       try {
         setStatus(FetchStatus.loading)
-        const event = await dispatch(fetchEvent(songListId)).unwrap()
-        if (event === null) {
+        const songList = await dispatch(fetchSongList(songListId)).unwrap()
+        if (songList === null) {
           return navigate('/songlists')
         }
         setStatus(FetchStatus.succeeded)
@@ -40,8 +40,8 @@ export default function ViewSongList() {
   }, [songListId, dispatch, shouldFetch, navigate])
 
   useEffect(() => {
-    handleFetchEvent()
-  }, [handleFetchEvent])
+    handleFetchSongList()
+  }, [handleFetchSongList])
 
   if (!songList || status === FetchStatus.loading) {
     return null

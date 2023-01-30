@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { getRelativeChord } from '@utils/chords'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Container = styled(Link)`
   display: grid;
@@ -62,13 +62,12 @@ const Comment = styled.div`
 `
 
 export default function SongItem({ song }) {
-  const { eventId } = useParams()
   const songKey = useMemo(() => {
     return getRelativeChord(song.key, song.transpose)
   }, [song.key, song.transpose])
 
   return (
-    <Container to={`/events/${eventId}/songs/${song.id}`}>
+    <Container to={`/songs/${song.id}`}>
       <SongTitle>{song.title}</SongTitle>
       <SongAuthors>{song.authors}</SongAuthors>
       <PlayKey>Key: {songKey}</PlayKey>

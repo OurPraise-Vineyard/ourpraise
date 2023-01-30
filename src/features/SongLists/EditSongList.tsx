@@ -12,7 +12,7 @@ export default function EditSongList() {
   const songList = useAppSelector(state => state.songLists.index[songListId])
   useDocumentTitle(songList ? `Edit song list: "${songList.name}"` : 'Edit song list')
 
-  const fetchFullEvent = useCallback(async () => {
+  const fetchFullSongList = useCallback(async () => {
     try {
       await dispatch(fetchSongList(songListId)).unwrap()
     } catch (err) {
@@ -21,8 +21,8 @@ export default function EditSongList() {
   }, [dispatch, songListId])
 
   useEffect(() => {
-    fetchFullEvent()
-  }, [fetchFullEvent])
+    fetchFullSongList()
+  }, [fetchFullSongList])
 
   const handleSubmit = async options => {
     try {
