@@ -1,9 +1,9 @@
 import { searchSongs } from '@utils/algolia'
-import AddSongItem from '@features/SongLists/SongListForm/AddSongItem'
 import Modal from '@features/Shared/Modal'
 import SearchSongs from '@features/Shared/SearchSongs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import ButtonBase from '@features/Shared/ButtonBase'
 
 interface Song {
   id: boolean
@@ -23,6 +23,46 @@ const Text = styled.div`
   font-size: 20px;
   text-align: center;
   padding: 20px;
+`
+
+const AddSongItem = styled.div`
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 'title actions' 'authors actions';
+  padding: 10px 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid ${props => props.theme.colors.border};
+  }
+`
+
+const SongTitle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  grid-area: title;
+  align-self: end;
+`
+
+const SongAuthors = styled.div`
+  font-size: 18px;
+  color: ${props => props.theme.colors.textFaded};
+  grid-area: authors;
+  align-self: start;
+`
+
+const Action = styled(ButtonBase)`
+  margin: 0;
+  grid-area: actions;
+  justify-self: end;
+  align-self: center;
+`
+
+const Added = styled.div`
+  font-size: 20px;
+  grid-area: actions;
+  justify-self: end;
+  align-self: center;
 `
 
 const defaultAddedSongs = []
@@ -73,7 +113,15 @@ export default function AddSongs({ show, onClose, addedSongs = defaultAddedSongs
       {query.length > 0 && !loading && <Text>Found {hits.length} songs:</Text>}
       {loading && <Text>Loading...</Text>}
       {hits.map(song => (
-        <AddSongItem key={song.id} song={song} onAdd={() => handleAddSong(song)} />
+        <AddSongItem key={song.id}>
+          <SongTitle>{song.title}</SongTitle>
+          <SongAuthors>{song.authors}</SongAuthors>
+          {song.added ? (
+            <Added>Added</Added>
+          ) : (
+            <Action onClick={() => handleAddSong(song)}>Add song</Action>
+          )}
+        </AddSongItem>
       ))}
     </Modal>
   )

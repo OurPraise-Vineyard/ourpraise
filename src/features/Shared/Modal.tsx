@@ -32,7 +32,6 @@ const ModalContainer = styled.div<{ show: boolean; narrow: boolean }>`
   width: ${props => (props.narrow ? '400px' : '800px')};
   max-width: 90vw;
   height: 600px;
-  max-height: 90vh;
   background-color: white;
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: 4px;
@@ -53,13 +52,16 @@ const ModalContent = styled.div<{ blank: boolean }>`
   padding: ${props => (props.blank ? 0 : '20px')};
   flex: 1 0 auto;
   position: relative;
+  overflow: auto;
+  height: calc(600px - 66px);
 `
 
 const Toolbar = styled.div`
   display: flex;
   align-items: flex-start;
-  padding: 20px 20px 0;
+  padding: 20px;
   flex: 0 1 auto;
+  height: 66px;
 `
 
 const Title = styled.div`
