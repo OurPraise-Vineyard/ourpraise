@@ -8,6 +8,7 @@ import AddSongs from '@features/Shared/AddSongs'
 import FormSongItem from '@features/SongLists/SongListForm/FormSongItem'
 import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import { pushError } from '@state/errorSlice'
+import { sortByTitleAsc } from '@utils/api'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -74,7 +75,7 @@ function reducer(state, action) {
             transpose: 0,
             comment: ''
           }
-        ]
+        ].sort(sortByTitleAsc)
       }
     case 'REMOVE_SONG':
       return {

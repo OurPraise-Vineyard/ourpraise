@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { RootState } from '@state/store'
-import { mapDocsId, mapDocId, pruneObject } from '@utils/api'
+import { mapDocsId, mapDocId, pruneObject, sortByTitleAsc } from '@utils/api'
 import {
   addDoc,
   collection,
@@ -70,7 +70,7 @@ export const fetchSongList = createAsyncThunk<
       songList.organisationName = 'No organisation'
     }
 
-    // Fetch full songs and fill into event
+    // Fetch full songs and fill into song list
     songList.songs = (
       await Promise.all(
         songList.songIds.map(async songId => {
@@ -89,7 +89,9 @@ export const fetchSongList = createAsyncThunk<
           return song
         })
       )
-    ).filter(Boolean)
+    )
+      .filter(Boolean)
+      .sort(sortByTitleAsc)
 
     return songList
   }
