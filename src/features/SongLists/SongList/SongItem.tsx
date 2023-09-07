@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { getRelativeChord } from '@utils/chords'
 import { Link } from 'react-router-dom'
 
 const Container = styled(Link)`
@@ -61,16 +60,12 @@ const Comment = styled.div`
   margin-top: 5px;
 `
 
-export default function SongItem({ song }) {
-  const songKey = useMemo(() => {
-    return getRelativeChord(song.key, song.transpose)
-  }, [song.key, song.transpose])
-
+export default function SongItem ({ song }: { song: SongType }) {
   return (
     <Container to={`/songs/${song.id}`}>
       <SongTitle>{song.title}</SongTitle>
       <SongAuthors>{song.authors}</SongAuthors>
-      <PlayKey>Key: {songKey}</PlayKey>
+      <PlayKey>Key: {song.transposeKey}</PlayKey>
       {song.comment && <Comment>{song.comment}</Comment>}
     </Container>
   )

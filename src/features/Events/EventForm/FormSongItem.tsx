@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import x from '@assets/x.svg'
 import SelectField from '@features/Shared/SelectField'
-import { generateRelativeChordList } from '@utils/chords'
+import { keysOptions } from '@utils/chords'
 import TextField from '@features/Shared/TextField'
 
 const Container = styled.div`
@@ -59,22 +59,18 @@ const CommentWrapper = styled.div`
 `
 
 export default function FormSongItem ({ song, onChangeTranspose, onChangeComment, onRemove }) {
-  const keys = useMemo(() => {
-    return generateRelativeChordList(song.key)
-      .map((chord, index) => ({
-        key: index + chord,
-        value: -(index - 11),
-        label: chord
-      }))
-  }, [song.key])
-
   return (
     <Container>
       <SongTitle>{song.title}</SongTitle>
       <SongAuthors>{song.authors}</SongAuthors>
       <RemoveButton onClick={onRemove} />
       <SelectWrapper>
-        <SelectField value={song.transpose} title="Song Key" onChange={e => onChangeTranspose(parseInt(e.target.value, 10))} options={keys} />
+        <SelectField
+          value={song.transpose}
+          title="Song Key"
+          onChange={e => onChangeTranspose(parseInt(e.target.value, 10))}
+          options={keysOptions}
+        />
       </SelectWrapper>
       <CommentWrapper>
         <TextField

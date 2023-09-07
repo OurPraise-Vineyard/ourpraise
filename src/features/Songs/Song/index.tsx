@@ -41,9 +41,9 @@ const TopRow = styled.div`
   margin-bottom: 16px;
 `
 
-export default function ViewSong() {
+export default function ViewSong () {
   const { songId, eventId } = useParams()
-  const [transpose, setTranspose] = useState(0)
+  const [transposeKey, setTransposeKey] = useState<Key | null>(null)
   const navigate = useNavigate()
   const event = useAppSelector(state => state.events.index[eventId])
   const song = useAppSelector(state => {
@@ -59,9 +59,7 @@ export default function ViewSong() {
   useDocumentTitle(song ? song.title : '')
 
   const songLoaded = song && song.id === songId
-
-  const songTranspose = song ? song.transpose : null
-
+  const songKey = song && song.key
   const canEdit = hasOrg && !eventId
 
   useEffect(() => {
@@ -78,9 +76,9 @@ export default function ViewSong() {
     })()
   }, [songId, dispatch, eventId])
 
-  useEffect(() => setTranspose(songTranspose || 0), [songTranspose])
+  useEffect(() => setTransposeKey(songKey || null), [songKey])
 
-  function handleEdit() {
+  function handleEdit () {
     navigate(`/songs/${songId}/edit`)
   }
 
@@ -94,14 +92,14 @@ export default function ViewSong() {
 
   const handleResetTranspose = () => {
     if (event && songLoaded) {
-      setTranspose(event.songs.find(song => song.id === songId).transpose)
+      setTransposeKey(event.songs.find(song => song.id === songId).transposeKey)
     } else {
-      setTranspose(0)
+      setTransposeKey(song.key)
     }
   }
 
   const handleDownload = () => {
-    window.open(getFunctionUrl('pdf', { song: song.id, transpose }), '_blank')
+    window.open(getFunctionUrl('pdf', { song: song.id, transposeKey }), '_blank')
   }
 
   if (!song) {
@@ -121,8 +119,8 @@ export default function ViewSong() {
         {!!song.comment && <SongComment>{song.comment}</SongComment>}
         <Song
           song={song}
-          transpose={transpose}
-          onChangeTranspose={setTranspose}
+          transposeKey={transposeKey}
+          onChangeTranspose={setTransposeKey}
           onResetTranspose={handleResetTranspose}
         />
       </Content>

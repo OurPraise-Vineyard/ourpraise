@@ -1,3 +1,4 @@
+/* eslint-disable-next-line */
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
@@ -6,8 +7,8 @@ module.exports = {
       ...config,
       resolve: {
         ...config.resolve,
-        plugins: [new TsconfigPathsPlugin()],
-      },
+        plugins: [new TsconfigPathsPlugin()]
+      }
     }
-  },
+  }
 }

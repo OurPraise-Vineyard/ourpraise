@@ -6,6 +6,7 @@ import ButtonBase from '@features/Shared/ButtonBase'
 import { deleteSong } from '@state/songs/api'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '@utils/hooks'
+import { keysOptions } from '@utils/chords'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -40,41 +41,14 @@ const DeleteButton = styled(ButtonBase).attrs({
   margin: 8px 0;
 `
 
-const keys = [
-  'A',
-  'Ab',
-  'A#',
-  'B',
-  'Bb',
-  'B#',
-  'C',
-  'Cb',
-  'C#',
-  'D',
-  'Db',
-  'D#',
-  'E',
-  'Eb',
-  'E#',
-  'F',
-  'Fb',
-  'F#',
-  'G',
-  'Gb',
-  'G#'
-].map(key => ({
-  key,
-  value: key
-}))
-
 interface ReducerType {
   body: string
   title: string
-  key: Chord
+  key: Key
   authors: string
 }
 
-function reducer(state: ReducerType, action): ReducerType {
+function reducer (state: ReducerType, action): ReducerType {
   switch (action.type) {
     case 'SET':
       return {
@@ -96,7 +70,7 @@ const defaultSong: SongType = {
   id: null
 }
 
-export default function SongForm({
+export default function SongForm ({
   song = undefined,
   onSubmit,
   heading
@@ -138,7 +112,12 @@ export default function SongForm({
       <form onSubmit={handleSave}>
         <TextField value={title} title="Title" onChange={handleChange('title')} />
         <TextField value={authors} title="Authors" onChange={handleChange('authors')} />
-        <SelectField value={key} title="Song Key" onChange={handleChange('key')} options={keys} />
+        <SelectField
+          value={key}
+          title="Song Key"
+          onChange={handleChange('key')}
+          options={keysOptions}
+        />
         <TextField
           multiline
           size="large"

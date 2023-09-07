@@ -118,13 +118,13 @@ export const saveEvent = createAsyncThunk<
   {
     dispatch: AppDispatch
   }
->('events/save', async (event, { dispatch }) => {
+>('events/save', async event => {
   const options = pruneObject({
     ...event,
     id: undefined,
     songs: event.songs.map(song => ({
       id: song.id,
-      transpose: song.transpose,
+      transposeKey: song.transposeKey,
       comment: song.comment
     }))
   })

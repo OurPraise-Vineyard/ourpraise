@@ -62,7 +62,7 @@ exports.onWriteEvent = functions
     }
   })
 
-function handleAddedMembers(org, members) {
+function handleAddedMembers (org, members) {
   const orgName = org.name
   return Promise.all(
     members.map(async member => {
@@ -97,7 +97,7 @@ function handleAddedMembers(org, members) {
   )
 }
 
-function handleRemovedMembers(org, members) {
+function handleRemovedMembers (org, members) {
   return Promise.all(
     members.map(async member => {
       await db.runTransaction(transaction =>

@@ -1,9 +1,9 @@
 interface SongType {
   id: string
-  key: Chord
+  key: Key
   title: string
   authors: string
-  transpose?: number
+  transposeKey?: Key
   comment?: string
   body: string
 }

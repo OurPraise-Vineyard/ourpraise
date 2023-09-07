@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import increase from '@assets/increase.svg'
 import decrease from '@assets/decrease.svg'
 import reset from '@assets/reset.svg'
 import unchecked from '@assets/square.svg'
 import checked from '@assets/check-square.svg'
-import { generateRelativeChordList, getRelativeChord } from '@utils/chords'
+import { findNextKey, keysOptions } from '@utils/chords'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -47,9 +47,7 @@ const switchTypes = {
   unchecked
 }
 
-const Switcher = styled.button.attrs({
-  tabIndex: -1
-})<{ icon: string }>`
+const Switcher = styled.button.attrs({ tabIndex: -1 })<{ icon: string }>`
   background-image: url(${props => switchTypes[props.icon]});
   background-size: 90% 90%;
   background-position: center;
@@ -77,33 +75,27 @@ const Switcher = styled.button.attrs({
   }
 `
 
-export default function ChordSwitcher({ songKey, transpose, setTranspose, onResetTranspose, onToggleChords, showChords }) {
-  const [chordList, setKeyList] = useState([])
-  const handleSwitch = movement => () => {
-    if (movement > 0) {
-      setTranspose((transpose + movement + 12) % 12)
-    } else if (movement < 0) {
-      setTranspose((transpose + movement - 12) % 12)
-    }
+export default function ChordSwitcher ({
+  transposeKey,
+  setTransposeKey,
+  onResetTranspose,
+  onToggleChords,
+  showChords
+}) {
+  const handleSwitch = (movement: 1 | -1) => () => {
+    setTransposeKey(findNextKey(transposeKey, movement))
   }
   const handleSelect = e => {
-    handleSwitch(parseInt(e.target.value, 10))()
+    setTransposeKey(e.target.value)
   }
-
-  useEffect(() => {
-    if (songKey) {
-      const key = getRelativeChord(songKey, transpose)
-      setKeyList(generateRelativeChordList(key))
-    }
-  }, [songKey, transpose])
 
   return (
     <Wrapper>
       <Switcher icon={showChords ? 'checked' : 'unchecked'} onClick={onToggleChords} />
-      <Chord value={0} onChange={handleSelect} disabled={!showChords}>
-        {chordList.map((chord, index) => (
-          <option key={index + chord} value={-(index - 11)}>
-            {chord}
+      <Chord value={transposeKey} onChange={handleSelect} disabled={!showChords}>
+        {keysOptions.map(({ value, label }) => (
+          <option key={value} value={value}>
+            {label}
           </option>
         ))}
       </Chord>

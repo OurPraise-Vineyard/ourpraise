@@ -3,7 +3,7 @@ interface PartialEvent {
   date: string
   songs: Array<{
     id: string
-    transpose: number
+    transposeKey: Key
     comment: string
   }>
   id: string

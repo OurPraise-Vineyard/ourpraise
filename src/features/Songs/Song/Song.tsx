@@ -1,5 +1,5 @@
 import ChordSwitcher from '@features/Songs/Song/ChordSwitcher'
-import { transposeBody } from '@utils/chords'
+import { transposeSong } from '@utils/chords'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -37,26 +37,31 @@ const Header = styled.div`
   grid-template-areas: 'title chords' 'authors chords';
 `
 
-export default function Song ({ song, transpose, onChangeTranspose, onResetTranspose }) {
+export default function Song ({ song, transposeKey, onChangeTranspose, onResetTranspose }) {
   const [showChords, setShowChords] = useState(true)
   const [formattedBody, setBody] = useState('')
-  const songBody = song && song.body
+  const songBody = song && song.body.replace(/^\/\//, '  ')
+  const songKey = song && song.key
   useEffect(() => {
     if (songBody) {
       if (showChords) {
-        setBody(transposeBody(transpose, songBody))
+        if (songKey && transposeKey) {
+          setBody(transposeSong(songBody, songKey, transposeKey))
+        } else {
+          setBody(songBody)
+        }
       } else {
         setBody(
           songBody
             .split('\n')
-            .map(line => line.trim() === '//' ? '' : line)
+            .map(line => (line.trim() === '//' ? '' : line))
             .filter(line => line.substr(0, 2) !== '//' || line.trim() === '//')
             .join('\n')
             .replace(/^\n+/, '')
         )
       }
     }
-  }, [songBody, transpose, showChords])
+  }, [songBody, songKey, transposeKey, showChords])
 
   function handleToggleChords () {
     setShowChords(!showChords)
@@ -67,9 +72,8 @@ export default function Song ({ song, transpose, onChangeTranspose, onResetTrans
       <Header>
         <Title>{song.title}</Title>
         <ChordSwitcher
-          songKey={song.key}
-          transpose={transpose}
-          setTranspose={onChangeTranspose}
+          transposeKey={transposeKey}
+          setTransposeKey={onChangeTranspose}
           onResetTranspose={onResetTranspose}
           onToggleChords={handleToggleChords}
           showChords={showChords}
