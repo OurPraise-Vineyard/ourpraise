@@ -1,4 +1,4 @@
-import ChordSwitcher from '@features/Songs/Song/ChordSwitcher'
+import KeySwitcher from '@features/Songs/Song/KeySwitcher'
 import { transposeSong } from '@utils/chords'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -40,7 +40,7 @@ const Header = styled.div`
 export default function Song ({ song, transposeKey, onChangeTranspose, onResetTranspose }) {
   const [showChords, setShowChords] = useState(true)
   const [formattedBody, setBody] = useState('')
-  const songBody = song && song.body.replace(/^\/\//, '  ')
+  const songBody = song && song.body.replace(/^\/\//gm, '  ')
   const songKey = song && song.key
   useEffect(() => {
     if (songBody) {
@@ -71,7 +71,7 @@ export default function Song ({ song, transposeKey, onChangeTranspose, onResetTr
     <Container>
       <Header>
         <Title>{song.title}</Title>
-        <ChordSwitcher
+        <KeySwitcher
           transposeKey={transposeKey}
           setTransposeKey={onChangeTranspose}
           onResetTranspose={onResetTranspose}

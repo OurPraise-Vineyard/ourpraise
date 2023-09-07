@@ -75,7 +75,7 @@ const Switcher = styled.button.attrs({ tabIndex: -1 })<{ icon: string }>`
   }
 `
 
-export default function ChordSwitcher ({
+export default function KeySwitcher ({
   transposeKey,
   setTransposeKey,
   onResetTranspose,
