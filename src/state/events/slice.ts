@@ -3,9 +3,9 @@ import { addEvent, deleteEvent, fetchEvent, fetchRecentEvents, saveEvent } from 
 import { FetchStatus } from '@utils/api'
 
 export interface EventsState {
-  allEvents: PartialEvent[]
+  allEvents: IPartialEvent[]
   statusAllEvents: FetchStatus
-  index: Record<string, FullEvent>
+  index: Record<string, IFullEvent>
 }
 
 const initialState: EventsState = {

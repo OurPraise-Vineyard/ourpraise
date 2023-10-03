@@ -4,16 +4,11 @@ import styled, { keyframes } from 'styled-components'
 import Song from '@features/Songs/Song/Song'
 import SongComment from '@features/Songs/Song/Comment'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { fetchEvent } from '@state/events/api'
 import { fetchSong } from '@state/songs/api'
 import { pushError } from '@state/errorSlice'
 import IconButton from '@features/Shared/IconButton'
-import backIcon from '@assets/arrow-left.svg'
 import editIcon from '@assets/edit.svg'
-import downloadIcon from '@assets/download.svg'
-import { getFunctionUrl } from '@utils/functions'
 import FlexSpacer from '@features/Shared/FlexSpacer'
-import MiniEvent from '@features/Songs/Song/MiniEvent'
 
 const fadeIn = keyframes`
   0% {
@@ -42,18 +37,10 @@ const TopRow = styled.div`
 `
 
 export default function ViewSong () {
-  const { songId, eventId } = useParams()
+  const { songId } = useParams()
   const [transposeKey, setTransposeKey] = useState<Key | null>(null)
   const navigate = useNavigate()
-  const event = useAppSelector(state => state.events.index[eventId])
-  const song = useAppSelector(state => {
-    if (eventId && state.events.index[eventId]) {
-      return state.events.index[eventId].songsIndex[songId]
-    } else if (!eventId) {
-      return state.songs.index[songId]
-    }
-    return null
-  })
+  const song = useAppSelector(state => state.songs.index[songId])
   const isAdmin = useAppSelector(state => state.auth.user.role === 'admin')
   const dispatch = useAppDispatch()
   useDocumentTitle(song ? song.title : '')
@@ -64,16 +51,12 @@ export default function ViewSong () {
   useEffect(() => {
     ;(async () => {
       try {
-        if (eventId) {
-          await dispatch(fetchEvent(eventId)).unwrap()
-        } else if (!eventId) {
-          await dispatch(fetchSong(songId)).unwrap()
-        }
+        await dispatch(fetchSong(songId)).unwrap()
       } catch (err) {
         dispatch(pushError(err))
       }
     })()
-  }, [songId, dispatch, eventId])
+  }, [songId, dispatch])
 
   useEffect(() => setTransposeKey(songKey || null), [songKey])
 
@@ -81,38 +64,19 @@ export default function ViewSong () {
     navigate(`/songs/${songId}/edit`)
   }
 
-  const handleBack = () => {
-    if (eventId) {
-      navigate(`/events/${eventId}`)
-    } else if (songId) {
-      navigate('/songs')
-    }
-  }
-
   const handleResetTranspose = () => {
-    if (event && songLoaded) {
-      setTransposeKey(event.songs.find(song => song.id === songId).transposeKey)
-    } else {
-      setTransposeKey(song.key)
-    }
+    setTransposeKey(song.key)
   }
 
-  const handleDownload = () => {
-    window.open(getFunctionUrl('pdf', { song: song.id, transposeKey }), '_blank')
-  }
-
-  if (!song) {
+  if (!songLoaded) {
     return null
   }
 
   return (
     <FadeIn>
       <TopRow>
-        <IconButton icon={backIcon} onClick={handleBack} />
         <FlexSpacer />
-        {!event && isAdmin && <IconButton icon={downloadIcon} onClick={handleDownload} />}
         {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
-        {!!event && <MiniEvent />}
       </TopRow>
       <Content key={songId}>
         {!!song.comment && <SongComment>{song.comment}</SongComment>}

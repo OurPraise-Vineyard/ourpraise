@@ -1,20 +1,24 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Toolbar from '@features/Events/Event/Toolbar'
 import { useNavigate, useParams } from 'react-router-dom'
-import ContentBox from '@features/Shared/ContentBox'
-import SongItem from '@features/Events/Event/SongItem'
+import Song from '@features/Events/Event/Song'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { FetchStatus } from '@utils/api'
 import { fetchEvent } from '@state/events/api'
 import { pushError } from '@state/errorSlice'
+import SongsOverview from '@features/Events/Event/SongsOverview'
+import Comment from '@features/Events/Event/Comment'
 import { Breaker } from '@styles/CommonStyles'
 import styled from 'styled-components'
 
 const StyledBreaker = styled(Breaker)`
-  margin: 0 20px;
+  margin-top: 32px;
+  @media print {
+    display: none;
+  }
 `
 
-export default function ViewEvent() {
+export default function ViewEvent () {
   const { eventId } = useParams()
   const dispatch = useAppDispatch()
   const event = useAppSelector(state => state.events.index[eventId])
@@ -50,15 +54,12 @@ export default function ViewEvent() {
   return (
     <div>
       <Toolbar />
-      {!!event.comment && <ContentBox title="Comments">{event.comment}</ContentBox>}
-      <ContentBox noPadding title="Set list">
-        {event.songs.map((song, i) => (
-          <Fragment key={song.id}>
-            <SongItem song={song} />
-            {i !== event.songs.length - 1 && <StyledBreaker />}
-          </Fragment>
-        ))}
-      </ContentBox>
+      {!!event.comment && <Comment>{event.comment}</Comment>}
+      <SongsOverview songs={event.songs} />
+      <StyledBreaker />
+      {event.songs.map((song, i) => (
+        <Song song={song} />
+      ))}
     </div>
   )
 }

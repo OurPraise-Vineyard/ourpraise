@@ -25,9 +25,7 @@ export default function ContentBox ({ title, children, noPadding = false }) {
   return (
     <Container>
       {!!title && <Title>{title}</Title>}
-      <Body noPadding={noPadding}>
-        {children}
-      </Body>
+      <Body noPadding={noPadding}>{children}</Body>
     </Container>
   )
 }

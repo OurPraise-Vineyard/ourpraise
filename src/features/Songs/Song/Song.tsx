@@ -40,15 +40,15 @@ const Header = styled.div`
 export default function Song ({ song, transposeKey, onChangeTranspose, onResetTranspose }) {
   const [showChords, setShowChords] = useState(true)
   const [formattedBody, setBody] = useState('')
-  const songBody = song && song.body.replace(/^\/\//gm, '  ')
+  const songBody = song && song.body
   const songKey = song && song.key
   useEffect(() => {
     if (songBody) {
       if (showChords) {
         if (songKey && transposeKey) {
-          setBody(transposeSong(songBody, songKey, transposeKey))
+          setBody(transposeSong(songBody.replace(/^\/\//gm, '  '), songKey, transposeKey))
         } else {
-          setBody(songBody)
+          setBody(songBody.replace(/^\/\//gm, '  '))
         }
       } else {
         setBody(
@@ -57,7 +57,8 @@ export default function Song ({ song, transposeKey, onChangeTranspose, onResetTr
             .map(line => (line.trim() === '//' ? '' : line))
             .filter(line => line.substr(0, 2) !== '//' || line.trim() === '//')
             .join('\n')
-            .replace(/^\n+/, '')
+            .replace(/^\n+/g, '')
+            .replace(/\n{3,}/g, '\n\n')
         )
       }
     }

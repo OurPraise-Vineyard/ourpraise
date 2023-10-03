@@ -60,7 +60,7 @@ const Comment = styled.div`
   margin-top: 5px;
 `
 
-export default function SongItem ({ song }: { song: SongType }) {
+export default function SongItem ({ song }: { song: ISong }) {
   return (
     <Container to={`/songs/${song.id}`}>
       <SongTitle>{song.title}</SongTitle>

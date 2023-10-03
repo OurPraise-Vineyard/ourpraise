@@ -62,7 +62,7 @@ function reducer (state: ReducerType, action): ReducerType {
   }
 }
 
-const defaultSong: SongType = {
+const defaultSong: ISong = {
   title: '',
   key: 'A',
   authors: '',
@@ -75,8 +75,8 @@ export default function SongForm ({
   onSubmit,
   heading
 }: {
-  song?: SongType
-  onSubmit: (options: SongType) => void
+  song?: ISong
+  onSubmit: (options: ISong) => void
   heading: string
 }) {
   const [{ title, authors, body, key }, dispatch] = useReducer(reducer, defaultSong)

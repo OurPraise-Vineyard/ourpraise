@@ -1,4 +1,3 @@
-import { getFunctionUrl } from '@utils/functions'
 import React, { useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -8,46 +7,52 @@ import editIcon from '@assets/edit.svg'
 import downloadIcon from '@assets/download.svg'
 import { formatDate } from '@utils/date'
 
+const StyledIconButton = styled(IconButton)`
+  @media print {
+    display: none;
+  }
+`
+
 const Row = styled.div`
   display: flex;
   margin-bottom: 16px;
   align-items: center;
-  margin: 0 0 16px;
-  justify-content: flex-end;
-`
+  justify-content: space-between;
+  gap: 12px;
 
-const TitleRow = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px 12px;
+  @media print {
+    display: block;
+    border-bottom: 1px solid ${props => props.theme.colors.breaker};
+    padding-bottom: 4px;
+  }
 `
 
 const Title = styled.h1`
   font-size: 24px;
   margin: 0;
-  flex: 1 0 auto;
 `
 
-const Chips = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 12px;
-`
-
-const Chip = styled.span`
+const EventDate = styled.span`
   padding: 4px 8px;
   background-color: ${props => props.theme.colors.chipBackground};
   color: black;
   border-radius: 4px;
   font-size: 16px;
   flex: 0 0 auto;
+
+  @media print {
+    color: ${props => props.theme.colors.textFaded};
+    background-color: transparent;
+    font-size: 22px;
+    padding: 0;
+  }
 `
 
 const Spacer = styled.span`
   flex: 1 0 auto;
+  @media print {
+    display: none;
+  }
 `
 
 export default function Toolbar () {
@@ -58,7 +63,7 @@ export default function Toolbar () {
   const eventDate = useMemo(() => formatDate(event.date), [event.date])
 
   const handleDownload = () => {
-    window.open(getFunctionUrl('pdf', { event: eventId }), '_blank')
+    window.print()
   }
 
   function handleEdit () {
@@ -67,15 +72,11 @@ export default function Toolbar () {
 
   return (
     <Row>
-      <TitleRow>
-        <Title>{event.title}</Title>
-        <Chips>
-          <Chip>{eventDate}</Chip>
-        </Chips>
-      </TitleRow>
+      <Title>{event.title}</Title>
+      <EventDate>{eventDate}</EventDate>
       <Spacer />
-      <IconButton icon={downloadIcon} onClick={handleDownload} />
-      {user.role === 'admin' && <IconButton icon={editIcon} onClick={handleEdit} />}
+      <StyledIconButton icon={downloadIcon} onClick={handleDownload} />
+      {user.role === 'admin' && <StyledIconButton icon={editIcon} onClick={handleEdit} />}
     </Row>
   )
 }

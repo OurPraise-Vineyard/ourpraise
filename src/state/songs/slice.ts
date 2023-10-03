@@ -14,12 +14,12 @@ import {
 export interface SongsState {
   searchCache: Record<string, unknown[]>
   searchResults: unknown[]
-  index: Record<string, SongType>
+  index: Record<string, ISong>
   views: {
-    [key: string]: SongType[]
-    all: SongType[]
-    recent: SongType[]
-    popular: SongType[]
+    [key: string]: ISong[]
+    all: ISong[]
+    recent: ISong[]
+    popular: ISong[]
   }
   status: {
     all: FetchStatus
@@ -44,11 +44,7 @@ const initialState: SongsState = {
   }
 }
 
-function buildViewReducer(
-  builder,
-  name: string,
-  asyncThunk: AsyncThunk<SongType[], void, unknown>
-) {
+function buildViewReducer(builder, name: string, asyncThunk: AsyncThunk<ISong[], void, unknown>) {
   builder
     .addCase(asyncThunk.pending, state => {
       state.status[name] = FetchStatus.loading

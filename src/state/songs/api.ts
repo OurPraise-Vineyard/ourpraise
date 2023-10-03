@@ -22,7 +22,7 @@ interface SearchResult {
   query: string
 }
 
-export const fetchAllSongs = createAsyncThunk<SongType[]>('songs/fetchAll', function () {
+export const fetchAllSongs = createAsyncThunk<ISong[]>('songs/fetchAll', function () {
   return getDocs(query(collection(getFirestore(), 'songs'), orderBy('title', 'asc'))).then(docs =>
     mapDocsId(docs)
   )
@@ -52,20 +52,20 @@ export const fetchSearchQuery = createAsyncThunk<
   }
 })
 
-export const fetchRecentSongs = createAsyncThunk<SongType[]>('home/fetchRecent', () => {
+export const fetchRecentSongs = createAsyncThunk<ISong[]>('home/fetchRecent', () => {
   return getDocs(
     query(collection(getFirestore(), 'songs'), orderBy('createdAt', 'desc'), limit(5))
   ).then(docs => mapDocsId(docs))
 })
 
-export const fetchPopularSongs = createAsyncThunk<SongType[]>('home/fetchPopular', async () => {
+export const fetchPopularSongs = createAsyncThunk<ISong[]>('home/fetchPopular', async () => {
   return getDocs(
     query(collection(getFirestore(), 'songs'), orderBy('popularity', 'desc'), limit(5))
   ).then(docs => mapDocsId(docs))
 })
 
 export const fetchSong = createAsyncThunk<
-  SongType,
+  ISong,
   string,
   {
     state: RootState
@@ -75,14 +75,14 @@ export const fetchSong = createAsyncThunk<
 
   if (!cached) {
     cached = await getDoc(doc(getFirestore(), `songs/${songId}`)).then(doc =>
-      doc.exists() ? ({ ...doc.data(), id: doc.id } as SongType) : null
+      doc.exists() ? ({ ...doc.data(), id: doc.id } as ISong) : null
     )
   }
 
   return cached
 })
 
-export const saveSong = createAsyncThunk<SongType, SongType, { dispatch: AppDispatch }>(
+export const saveSong = createAsyncThunk<ISong, ISong, { dispatch: AppDispatch }>(
   'songs/save',
   async (song, { dispatch }) => {
     await updateDoc(
@@ -95,7 +95,7 @@ export const saveSong = createAsyncThunk<SongType, SongType, { dispatch: AppDisp
   }
 )
 
-export const addSong = createAsyncThunk<SongType, SongType>('songs/add', async song => {
+export const addSong = createAsyncThunk<ISong, ISong>('songs/add', async song => {
   const options = pruneObject({
     ...song,
     createdAt: new Date().toISOString(),
@@ -109,7 +109,7 @@ export const addSong = createAsyncThunk<SongType, SongType>('songs/add', async s
   }
 })
 
-export const deleteSong = createAsyncThunk<string, SongType, { dispatch: AppDispatch }>(
+export const deleteSong = createAsyncThunk<string, ISong, { dispatch: AppDispatch }>(
   'songs/delete',
   async (song, { dispatch }) => {
     await deleteDoc(doc(getFirestore(), `songs/${song.id}`))

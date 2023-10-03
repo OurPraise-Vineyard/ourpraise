@@ -1,4 +1,4 @@
-interface PartialEvent {
+interface IPartialEvent {
   title: string
   date: string
   songs: Array<{
@@ -12,21 +12,21 @@ interface PartialEvent {
   owner: string
 }
 
-interface FullEvent {
+interface IFullEvent {
   title: string
   date: string
-  songs: Array<SongType>
-  songsIndex: Record<string, SongType>
+  songs: Array<ISong>
+  songsIndex: Record<string, ISong>
   id: string
   comment: string
   createdAt: string
   owner: string
 }
 
-interface EventFormType {
+interface IEventForm {
   title: string
   date: string
-  songs: Array<SongType>
+  songs: Array<ISong>
   id?: string
   comment: string
 }

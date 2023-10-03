@@ -8,7 +8,7 @@ interface SongList {
 interface FullSongList {
   lastModified: string
   name: string
-  songs: SongType[]
+  songs: ISong[]
   songIds: string[]
   id: string
 }
@@ -16,5 +16,5 @@ interface FullSongList {
 interface SongListFormType {
   id?: string
   name: string
-  songs: SongType[]
+  songs: ISong[]
 }

@@ -5,14 +5,14 @@ import SongForm from '@features/Songs/SongForm'
 import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
 import { pushError } from '@state/errorSlice'
 
-export default function AddSong() {
+export default function AddSong () {
   useDocumentTitle('Add song')
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const handleSubmit = async options => {
     try {
-      const song: SongType = (await dispatch(addSong(options)).unwrap()) as SongType
+      const song: ISong = (await dispatch(addSong(options)).unwrap()) as ISong
       if (song.id) {
         navigate('/songs/' + song.id)
       }

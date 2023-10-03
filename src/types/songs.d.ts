@@ -1,4 +1,4 @@
-interface SongType {
+interface ISong {
   id: string
   key: Key
   title: string

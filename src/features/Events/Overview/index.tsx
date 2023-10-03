@@ -6,9 +6,8 @@ import { FetchStatus } from '@utils/api'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchRecentEvents } from '@state/events/api'
 import { pushError } from '@state/errorSlice'
-import { WritableDraft } from 'immer/dist/internal'
 
-function mapEvent(data) {
+function mapEvent (data) {
   return {
     primary: data.title,
     secondary: formatDate(data.date),
@@ -16,7 +15,7 @@ function mapEvent(data) {
   }
 }
 
-export default function EventOverview() {
+export default function EventOverview () {
   useDocumentTitle('Events')
   const dispatch = useAppDispatch()
   const events = useAppSelector(state => state.events.allEvents)
@@ -33,8 +32,8 @@ export default function EventOverview() {
     }
   }, [dispatch, statusAllEvents])
 
-  const upcoming: WritableDraft<PartialEvent>[] = []
-  const past: WritableDraft<PartialEvent>[] = []
+  const upcoming: IPartialEvent[] = []
+  const past: IPartialEvent[] = []
 
   for (const ev of events) {
     if (getTime(ev.date) >= today.current) {

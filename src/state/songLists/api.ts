@@ -66,7 +66,7 @@ export const fetchSongList = createAsyncThunk<
           if (!song) {
             song = await getDoc(doc(getFirestore(), `songs/${songId}`)).then(doc => {
               if (doc.exists()) {
-                return mapDocId(doc) as SongType
+                return mapDocId(doc) as ISong
               }
 
               return null

@@ -13,9 +13,10 @@ import {
   query,
   setDoc
 } from 'firebase/firestore'
+import { transposeSong } from '@utils/chords'
 
 export const fetchRecentEvents = createAsyncThunk<
-  PartialEvent[],
+  IPartialEvent[],
   void,
   {
     state: RootState
@@ -27,7 +28,7 @@ export const fetchRecentEvents = createAsyncThunk<
 })
 
 export const fetchEvent = createAsyncThunk<
-  FullEvent,
+  IFullEvent,
   string,
   {
     state: RootState
@@ -38,11 +39,11 @@ export const fetchEvent = createAsyncThunk<
   } else {
     // Find cached partial event from all events list
     const cached = getState().events.allEvents.find(({ id }) => id === eventId)
-    let event: FullEvent
+    let event: IFullEvent
     if (cached) {
       event = {
         ...cached
-      } as FullEvent
+      } as IFullEvent
     }
 
     // Fetch partial event. Used when deep linking to event
@@ -52,7 +53,7 @@ export const fetchEvent = createAsyncThunk<
           ? ({
               ...doc.data(),
               id: doc.id
-            } as FullEvent)
+            } as IFullEvent)
           : null
       )
     }
@@ -81,26 +82,24 @@ export const fetchEvent = createAsyncThunk<
             }
           }
 
+          song.body = transposeSong(
+            song.body.replace(/^\/\//gm, '  ').replace(/\n\s+?\n/g, '\n\n'),
+            song.key,
+            song.transposeKey || song.key
+          )
+
           return song
         })
       )
     ).filter(Boolean)
-
-    event.songsIndex = event.songs.reduce(
-      (acc, song) => ({
-        ...acc,
-        [song.id]: song
-      }),
-      {}
-    )
 
     return event
   }
 })
 
 export const saveEvent = createAsyncThunk<
-  PartialEvent,
-  EventFormType,
+  IPartialEvent,
+  IEventForm,
   {
     dispatch: AppDispatch
   }
@@ -124,8 +123,8 @@ export const saveEvent = createAsyncThunk<
 })
 
 export const addEvent = createAsyncThunk<
-  PartialEvent,
-  EventFormType,
+  IPartialEvent,
+  IEventForm,
   {
     state: RootState
   }
@@ -145,7 +144,7 @@ export const addEvent = createAsyncThunk<
 
 export const deleteEvent = createAsyncThunk<
   string,
-  EventFormType,
+  IEventForm,
   {
     dispatch: AppDispatch
   }

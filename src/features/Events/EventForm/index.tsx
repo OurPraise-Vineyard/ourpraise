@@ -123,8 +123,8 @@ export default function EventForm ({
   onSubmit,
   heading
 }: {
-  event?: FullEvent
-  onSubmit: (options: EventFormType) => void
+  event?: IFullEvent
+  onSubmit: (options: IEventForm) => void
   heading: string
 }) {
   const [{ title, date, songs, comment }, dispatch] = useReducer(reducer, defaultEvent)

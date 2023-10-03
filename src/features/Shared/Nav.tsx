@@ -10,6 +10,10 @@ import UserOrg from '@features/Auth/UserOrg'
 const Container = styled.nav`
   background-color: ${props => props.theme.colors.navBackground};
   box-shadow: ${props => props.theme.boxShadow};
+
+  @media print {
+    display: none;
+  }
 `
 
 const Logo = styled.img.attrs({

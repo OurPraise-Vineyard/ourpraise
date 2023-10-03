@@ -66,7 +66,6 @@ function App () {
         )}
         {user.role === 'admin' && (
           <>
-            <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
             <Route path="/events/:eventId/edit" element={<EditEvent />} />
             <Route path="/events/:eventId">
               <Route path=":state" element={<ViewEvent />} />
