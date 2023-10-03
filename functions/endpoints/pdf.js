@@ -18,26 +18,14 @@ const options = {
 exports.pdf = functions.region('europe-west1').https.onRequest(async (request, response) => {
   const { event: eventId, song: songId, transpose = 0, debug } = request.query
 
-  function getEvent() {
+  function getEvent () {
     if (eventId) {
-      return db
-        .doc(`events/${eventId}`)
-        .get()
-        .then(doc => {
-          const data = doc.data()
-          return db
-            .doc(`organisations/${data.organisation}`)
-            .get()
-            .then(doc => ({
-              ...data,
-              organisation: doc.data()
-            }))
-        })
+      return db.doc(`events/${eventId}`).get()
     }
     return Promise.resolve(null)
   }
 
-  function getSongs(event) {
+  function getSongs (event) {
     if (event) {
       return Promise.all(
         event.songs.map(song =>

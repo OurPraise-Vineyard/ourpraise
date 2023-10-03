@@ -9,7 +9,6 @@ interface PartialEvent {
   id: string
   comment: string
   createdAt: string
-  organisation: string
   owner: string
 }
 
@@ -21,8 +20,6 @@ interface FullEvent {
   id: string
   comment: string
   createdAt: string
-  organisation: string
-  organisationName: string
   owner: string
 }
 
@@ -32,5 +29,4 @@ interface EventFormType {
   songs: Array<SongType>
   id?: string
   comment: string
-  organisation?: string
 }

@@ -2,43 +2,34 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      function isInOrg (orgId) {
-        return request.auth.token.email in get(/databases/$(database)/documents/organisations/$(orgId)).data.members;
+      function isUser () {
+        return get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.role == 'user' || isAdmin();
       }
 
-      function isOrgAdmin (orgId) {
-        return get(/databases/$(database)/documents/organisations/$(orgId)).data.roles[request.auth.token.email] == 'admin';
+      function isAdmin () {
+        return get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.role == 'admin';
       }
 
       function hasAuth () {
         return request.auth.uid != null;
       }
 
-      match /organisations/{orgId} {
-        allow read: if isInOrg(orgId);
-        allow update: if isOrgAdmin(orgId);
-      }
-
       match /users/{email} {
-        allow read: if hasAuth() && request.auth.token.email == email;
-        allow write: if false;
+        allow read: if request.auth.token.email == email;
+        allow read, write: if isAdmin();
       }
 
       match /songs/{songId} {
-        allow read: if hasAuth();
-        allow write: if hasAuth();
+        allow read: if isUser();
+        allow write: if isAdmin();
       }
 
       match /events/{eventId} {
-        allow read: if true;
-        allow write: if isOrgAdmin(resource.data.organisation);
-        allow write: if isOrgAdmin(request.resource.data.organisation);
+        allow read, write: if isAdmin();
       }
 
       match /songLists/{eventId} {
-        allow read: if true;
-        allow write: if isOrgAdmin(resource.data.organisation);
-        allow write: if isOrgAdmin(request.resource.data.organisation);
+        allow read, write: if isAdmin();
       }
     }
   }

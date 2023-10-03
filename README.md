@@ -86,7 +86,6 @@ _Example response:_
 [
   {
     "id": "EVENT_ID",
-    "organisationName": "Aarhus Vineyard",
     "title": "Gudstjeneste",
     "date": "2022-01-01",
     "songs": 5

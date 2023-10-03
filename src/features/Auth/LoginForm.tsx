@@ -4,12 +4,12 @@ import Form from '@features/Auth/Blocks/Form'
 import TextField from '@features/Auth/Blocks/TextField'
 import { signIn } from '@state/auth/api'
 import React, { useState } from 'react'
-import ModeLink from '@features/Auth/Blocks/ModeLink'
 import { pushError } from '@state/errorSlice'
 
-export default function LoginForm() {
+export default function LoginForm () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
   const dispatch = useAppDispatch()
   useDocumentTitle('Login')
 
@@ -27,8 +27,10 @@ export default function LoginForm() {
   const handleSubmit = async e => {
     e.preventDefault()
     try {
+      setLoading(true)
       await dispatch(signIn({ email, password })).unwrap()
     } catch (err) {
+      setLoading(false)
       dispatch(pushError(err))
     }
   }
@@ -49,8 +51,7 @@ export default function LoginForm() {
         password
         title="Password"
       ></TextField>
-      <Button type="submit">Login</Button>
-      <ModeLink to="/register">Not a member yet? Sign up today!</ModeLink>
+      <Button type="submit">{loading ? 'Logging in...' : 'Login'}</Button>
     </Form>
   )
 }

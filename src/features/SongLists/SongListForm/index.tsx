@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { deleteSongList } from '@state/songLists/api'
 import AddSongs from '@features/Shared/AddSongs'
 import FormSongItem from '@features/SongLists/SongListForm/FormSongItem'
-import { useAppDispatch, useAppSelector } from '@utils/hooks'
+import { useAppDispatch } from '@utils/hooks'
 import { pushError } from '@state/errorSlice'
 import { sortByTitleAsc } from '@utils/api'
 
@@ -24,12 +24,6 @@ const Heading = styled.h1`
 const SubHeading = styled.h2`
   font-size: 30px;
   margin: 0 0 16px;
-`
-
-const Caption = styled.h2`
-  font-size: 24px;
-  margin: 0 0 16px;
-  color: ${props => props.theme.colors.textFaded};
 `
 
 const Buttons = styled.div`
@@ -55,7 +49,7 @@ const DeleteButton = styled(ButtonBase).attrs({
   width: 250px;
 `
 
-function reducer(state, action) {
+function reducer (state, action) {
   switch (action.type) {
     case 'SET':
       return {
@@ -85,8 +79,7 @@ function reducer(state, action) {
     case 'INIT':
       return {
         ...state,
-        ...action.state,
-        organisation: state.organisation
+        ...action.state
       }
     default:
       return state
@@ -98,7 +91,7 @@ const defaultSongList = {
   songs: []
 }
 
-export default function SongListForm({
+export default function SongListForm ({
   songList = undefined,
   onSubmit,
   heading
@@ -111,17 +104,6 @@ export default function SongListForm({
   const navigate = useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(false)
   const appDispatch = useAppDispatch()
-  const songListOrg = songList ? songList.organisation : ''
-  const songListOrgName = useAppSelector(state => {
-    const org = songListOrg || (state.auth.organisation ? state.auth.organisation.id : '')
-    if (org) {
-      const orgData = state.auth.organisations.find(({ id }) => id === org)
-      if (orgData) {
-        return orgData.name
-      }
-    }
-    return ''
-  })
 
   useEffect(() => {
     dispatch({ type: 'INIT', state: songList || defaultSongList })
@@ -161,7 +143,6 @@ export default function SongListForm({
   return (
     <Container>
       <Heading>{heading}</Heading>
-      <Caption>in {songListOrgName}</Caption>
       <form onSubmit={handleSave}>
         <TextField value={name} title="Name" onChange={handleChange('name')} />
         <SubHeading>Songs</SubHeading>

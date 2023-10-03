@@ -1,12 +1,8 @@
-interface OrganisationType {
-  name: string,
-  selected: boolean,
-  id: string,
-  members: string[],
-  roles: Record<string, 'user' | 'admin'>
+interface IUser extends IUserMetadata {
+  email: string
+  displayName: string
 }
 
-interface UserType {
-  email: string,
-  displayName: string
+interface IUserMetadata {
+  role: 'user' | 'admin'
 }

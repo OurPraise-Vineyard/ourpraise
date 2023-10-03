@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import '@utils/firebase'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import Home from '@features/Home'
 import Layout from '@features/Shared/Layout'
 import ViewSong from '@features/Songs/Song'
 import EditSong from '@features/Songs/EditSong'
@@ -27,12 +26,12 @@ import EditSongList from '@features/SongLists/EditSongList'
 import ViewSongList from '@features/SongLists/SongList'
 import AddSongList from '@features/SongLists/AddSongList'
 import SongLists from '@features/SongLists/Overview'
+import NoAccessView from '@features/NoAccess'
 
-function App() {
+function App () {
   const user = useAppSelector(state => state.auth.user)
   const ready = useAppSelector(state => state.auth.status !== LoginStatus.undetermined)
   const dispatch = useAppDispatch()
-  const hasOrg = useAppSelector(state => !!state.auth.organisation)
 
   useEffect(
     function () {
@@ -56,11 +55,18 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/songs/add" element={<AddSong />} />
-        <Route path="/songs/:songId/edit" element={<EditSong />} />
-        <Route path="/songs" element={<Songs />} />
-        {hasOrg && (
+        {!user.role && <Route path="*" element={<NoAccessView />} />}
+        {(user.role === 'admin' || user.role === 'user') && (
           <>
+            <Route path="/songs/add" element={<AddSong />} />
+            <Route path="/songs/:songId/edit" element={<EditSong />} />
+            <Route path="/songs/:songId" element={<ViewSong />} />
+            <Route path="/songs" element={<Songs />} />
+          </>
+        )}
+        {user.role === 'admin' && (
+          <>
+            <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
             <Route path="/events/:eventId/edit" element={<EditEvent />} />
             <Route path="/events/:eventId">
               <Route path=":state" element={<ViewEvent />} />
@@ -77,13 +83,12 @@ function App() {
             <Route path="/songlists" element={<SongLists />} />
           </>
         )}
-        <Route path="/home" element={<Home />} />
       </Route>
-      <Route element={<Layout noFadeIn />}>
-        <Route path="/events/:eventId/songs/:songId" element={<ViewSong />} />
-        <Route path="/songs/:songId" element={<ViewSong />} />
-      </Route>
-      <Route index element={<Navigate to="/home" replace />} />
+      <Route
+        index
+        element={<Navigate to={user.role === 'admin' ? '/events' : '/songs'} replace />}
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

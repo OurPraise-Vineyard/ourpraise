@@ -11,8 +11,7 @@ import {
   getFirestore,
   orderBy,
   query,
-  setDoc,
-  where
+  setDoc
 } from 'firebase/firestore'
 
 export const fetchRecentEvents = createAsyncThunk<
@@ -22,14 +21,9 @@ export const fetchRecentEvents = createAsyncThunk<
     state: RootState
   }
 >('events/fetchRecent', function (_, { getState }) {
-  const orgId = getState().auth.organisation ? getState().auth.organisation.id : null
-  return getDocs(
-    query(
-      collection(getFirestore(), 'events'),
-      orderBy('date', 'desc'),
-      where('organisation', '==', orgId)
-    )
-  ).then(docs => mapDocsId(docs))
+  return getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc'))).then(docs =>
+    mapDocsId(docs)
+  )
 })
 
 export const fetchEvent = createAsyncThunk<
@@ -61,14 +55,6 @@ export const fetchEvent = createAsyncThunk<
             } as FullEvent)
           : null
       )
-    }
-
-    // Fill organisation name
-    const org = getState().auth.organisations.find(({ id }) => id === event.organisation)
-    if (org) {
-      event.organisationName = org.name
-    } else {
-      event.organisationName = 'No organisation'
     }
 
     // Fetch full songs and fill into event
@@ -144,12 +130,10 @@ export const addEvent = createAsyncThunk<
     state: RootState
   }
 >('events/add', async (event, { getState }) => {
-  const orgId = getState().auth.organisation ? getState().auth.organisation.id : null
   const options = pruneObject({
     ...event,
     createdAt: new Date().toISOString(),
-    owner: getState().auth.user.email,
-    organisation: orgId
+    owner: getState().auth.user.email
   })
   const doc = await addDoc(collection(getFirestore(), 'events'), options)
 

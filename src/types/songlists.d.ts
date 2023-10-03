@@ -2,7 +2,6 @@ interface SongList {
   lastModified: string
   name: string
   songIds: string[]
-  organisation: string
   id: string
 }
 
@@ -11,8 +10,6 @@ interface FullSongList {
   name: string
   songs: SongType[]
   songIds: string[]
-  organisation: string
-  organisationName: string
   id: string
 }
 

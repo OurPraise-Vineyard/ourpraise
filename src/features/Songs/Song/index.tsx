@@ -54,13 +54,12 @@ export default function ViewSong () {
     }
     return null
   })
-  const hasOrg = useAppSelector(state => !!state.auth.organisation)
+  const isAdmin = useAppSelector(state => state.auth.user.role === 'admin')
   const dispatch = useAppDispatch()
   useDocumentTitle(song ? song.title : '')
 
   const songLoaded = song && song.id === songId
   const songKey = song && song.key
-  const canEdit = hasOrg && !eventId
 
   useEffect(() => {
     ;(async () => {
@@ -111,8 +110,8 @@ export default function ViewSong () {
       <TopRow>
         <IconButton icon={backIcon} onClick={handleBack} />
         <FlexSpacer />
-        {!event && <IconButton icon={downloadIcon} onClick={handleDownload} />}
-        {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}
+        {!event && isAdmin && <IconButton icon={downloadIcon} onClick={handleDownload} />}
+        {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
         {!!event && <MiniEvent />}
       </TopRow>
       <Content key={songId}>

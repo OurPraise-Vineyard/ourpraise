@@ -7,7 +7,7 @@ import dateFormat from 'dateformat'
 import { deleteEvent } from '@state/events/api'
 import AddSongs from '@features/Shared/AddSongs'
 import FormSongItem from '@features/Events/EventForm/FormSongItem'
-import { useAppDispatch, useAppSelector } from '@utils/hooks'
+import { useAppDispatch } from '@utils/hooks'
 import { pushError } from '@state/errorSlice'
 import { nextWeekday } from '@utils/date'
 
@@ -25,12 +25,6 @@ const Heading = styled.h1`
 const SubHeading = styled.h2`
   font-size: 30px;
   margin: 0 0 16px;
-`
-
-const Caption = styled.h2`
-  font-size: 24px;
-  margin: 0 0 16px;
-  color: ${props => props.theme.colors.textFaded};
 `
 
 const Buttons = styled.div`
@@ -56,7 +50,7 @@ const DeleteButton = styled(ButtonBase).attrs({
   width: 250px;
 `
 
-function reducer(state, action) {
+function reducer (state, action) {
   switch (action.type) {
     case 'SET':
       return {
@@ -110,8 +104,7 @@ function reducer(state, action) {
     case 'INIT':
       return {
         ...state,
-        ...action.state,
-        organisation: state.organisation
+        ...action.state
       }
     default:
       return state
@@ -125,7 +118,7 @@ const defaultEvent = {
   songs: []
 }
 
-export default function EventForm({
+export default function EventForm ({
   event = undefined,
   onSubmit,
   heading
@@ -138,17 +131,6 @@ export default function EventForm({
   const navigate = useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(false)
   const appDispatch = useAppDispatch()
-  const eventOrg = event ? event.organisation : ''
-  const eventOrgName = useAppSelector(state => {
-    const org = eventOrg || (state.auth.organisation ? state.auth.organisation.id : '')
-    if (org) {
-      const orgData = state.auth.organisations.find(({ id }) => id === org)
-      if (orgData) {
-        return orgData.name
-      }
-    }
-    return ''
-  })
 
   useEffect(() => {
     dispatch({ type: 'INIT', state: event || defaultEvent })
@@ -196,7 +178,6 @@ export default function EventForm({
   return (
     <Container>
       <Heading>{heading}</Heading>
-      <Caption>in {eventOrgName}</Caption>
       <form onSubmit={handleSave}>
         <TextField value={title} title="Title" onChange={handleChange('title')} />
         <TextField value={date} type="date" title="Date" onChange={handleChange('date')} />

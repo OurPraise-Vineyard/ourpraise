@@ -62,43 +62,21 @@ app.get('/event', (req, res) => {
 })
 
 app.get('/events', (req, res) => {
-  function getOrganisations() {
-    return db
-      .collection('organisations')
-      .get()
-      .then(snap =>
-        snap.docs.reduce(
-          (acc, doc) => ({
-            ...acc,
-            [doc.id]: doc.data().name
-          }),
-          {}
-        )
-      )
-  }
-
-  function getEvents(organisations) {
-    return db
-      .collection('events')
-      .orderBy('date', 'desc')
-      .limit(20)
-      .get()
-      .then(snap =>
-        snap.docs.map(doc => {
-          const ev = doc.data()
-          return {
-            id: doc.id,
-            organisationName: organisations[ev.organisation],
-            title: ev.title,
-            date: ev.date,
-            songs: ev.songs.length
-          }
-        })
-      )
-  }
-
-  getOrganisations()
-    .then(getEvents)
+  db.collection('events')
+    .orderBy('date', 'desc')
+    .limit(20)
+    .get()
+    .then(snap =>
+      snap.docs.map(doc => {
+        const ev = doc.data()
+        return {
+          id: doc.id,
+          title: ev.title,
+          date: ev.date,
+          songs: ev.songs.length
+        }
+      })
+    )
     .then(events => {
       res.json(events)
     })

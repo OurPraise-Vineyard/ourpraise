@@ -1,7 +1,7 @@
 const { transposeBody } = require('./chords')
 const { formatDate } = require('./date')
 
-function createSongHtml(song, transpose) {
+function createSongHtml (song, transpose) {
   const body = transposeBody(transpose, song.body)
   const width = Math.max(...body.split('\n').map(line => line.length))
   const columns = width > 34 ? 1 : 2
@@ -64,7 +64,7 @@ function createSongHtml(song, transpose) {
   `
 }
 
-function renderFrontPage(event, songs) {
+function renderFrontPage (event, songs) {
   if (!event) {
     return ''
   }
@@ -73,7 +73,6 @@ function renderFrontPage(event, songs) {
     <div class="frontpage">
       <h1 class="heading">${event.title}</h1>
       <h2 class="subheading">
-        ${event.organisation.name}
         <span class="align-right">${formatDate(event.date)}</span>
       </h2>
       <ul>
@@ -84,7 +83,7 @@ function renderFrontPage(event, songs) {
   `
 }
 
-module.exports = function createHtml(songs, event) {
+module.exports = function createHtml (songs, event) {
   return `
     <html>
     <head>

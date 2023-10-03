@@ -1,12 +1,9 @@
-import { getFunctionUrl } from '@utils/functions'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAppSelector } from '@utils/hooks'
 import IconButton from '@features/Shared/IconButton'
 import editIcon from '@assets/edit.svg'
-import downloadIcon from '@assets/download.svg'
-import { formatDate } from '@utils/date'
 
 const Row = styled.div`
   display: flex;
@@ -29,35 +26,17 @@ const Title = styled.h1`
   flex: 1 0 auto;
 `
 
-const Chips = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 12px;
-`
-
-const Chip = styled.span`
-  padding: 4px 8px;
-  background-color: ${props => props.theme.colors.chipBackground};
-  color: black;
-  border-radius: 4px;
-  font-size: 16px;
-  flex: 0 0 auto;
-`
-
 const Spacer = styled.span`
   flex: 1 0 auto;
 `
 
-export default function Toolbar() {
+export default function Toolbar () {
   const { songListId } = useParams()
   const navigate = useNavigate()
   const songList = useAppSelector(state => state.songLists.index[songListId])
-  const userRole = useAppSelector(state => state.auth.organisation.roles[state.auth.user.email])
-  const canEdit = userRole === 'admin'
+  const canEdit = useAppSelector(state => state.auth.user.role === 'admin')
 
-  function handleEdit() {
+  function handleEdit () {
     navigate(`/songlists/${songListId}/edit`)
   }
 
@@ -65,9 +44,6 @@ export default function Toolbar() {
     <Row>
       <TitleRow>
         <Title>{songList.name}</Title>
-        <Chips>
-          <Chip>{songList.organisationName}</Chip>
-        </Chips>
       </TitleRow>
       <Spacer />
       {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}

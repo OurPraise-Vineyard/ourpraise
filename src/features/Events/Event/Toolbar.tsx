@@ -50,20 +50,18 @@ const Spacer = styled.span`
   flex: 1 0 auto;
 `
 
-export default function Toolbar() {
+export default function Toolbar () {
   const { eventId } = useParams()
   const navigate = useNavigate()
   const event = useAppSelector(state => state.events.index[eventId])
-  const userEmail = useAppSelector(state => state.auth.user.email)
-  const userRole = useAppSelector(state => state.auth.organisation.roles[state.auth.user.email])
-  const canEdit = userEmail === event.owner || userRole === 'admin'
+  const user = useAppSelector(state => state.auth.user)
   const eventDate = useMemo(() => formatDate(event.date), [event.date])
 
   const handleDownload = () => {
     window.open(getFunctionUrl('pdf', { event: eventId }), '_blank')
   }
 
-  function handleEdit() {
+  function handleEdit () {
     navigate(`/events/${eventId}/edit`)
   }
 
@@ -73,12 +71,11 @@ export default function Toolbar() {
         <Title>{event.title}</Title>
         <Chips>
           <Chip>{eventDate}</Chip>
-          <Chip>{event.organisationName}</Chip>
         </Chips>
       </TitleRow>
       <Spacer />
       <IconButton icon={downloadIcon} onClick={handleDownload} />
-      {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}
+      {user.role === 'admin' && <IconButton icon={editIcon} onClick={handleEdit} />}
     </Row>
   )
 }

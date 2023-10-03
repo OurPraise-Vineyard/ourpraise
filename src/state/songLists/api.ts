@@ -22,13 +22,8 @@ export const fetchSongLists = createAsyncThunk<
     state: RootState
   }
 >('songLists/fetchAll', function (_, { getState }) {
-  const orgId = getState().auth.organisation ? getState().auth.organisation.id : null
   return getDocs(
-    query(
-      collection(getFirestore(), 'songLists'),
-      orderBy('lastModified', 'desc'),
-      where('organisation', '==', orgId)
-    )
+    query(collection(getFirestore(), 'songLists'), orderBy('lastModified', 'desc'))
   ).then(mapDocsId)
 })
 
@@ -60,14 +55,6 @@ export const fetchSongList = createAsyncThunk<
             } as FullSongList)
           : null
       )
-    }
-
-    // Fill organisation name
-    const org = getState().auth.organisations.find(({ id }) => id === songList.organisation)
-    if (org) {
-      songList.organisationName = org.name
-    } else {
-      songList.organisationName = 'No organisation'
     }
 
     // Fetch full songs and fill into song list
@@ -124,13 +111,11 @@ export const addSongList = createAsyncThunk<
     state: RootState
   }
 >('songLists/add', async function (form, { getState }) {
-  const orgId = getState().auth.organisation ? getState().auth.organisation.id : null
   const options = pruneObject({
     ...form,
     songs: undefined,
     songIds: form.songs.map(({ id }) => id),
-    lastModified: new Date().toISOString(),
-    organisation: orgId
+    lastModified: new Date().toISOString()
   })
   const doc = await addDoc(collection(getFirestore(), 'songLists'), options)
   return {

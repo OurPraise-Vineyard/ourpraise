@@ -19,7 +19,7 @@ const Logo = styled.img.attrs({
   height: 40px;
 `
 
-const Username = styled.p<{ org: string }>`
+const Username = styled.p`
   padding: 0;
   font-size: 20px;
   color: ${props => props.theme.colors.navText};
@@ -29,13 +29,6 @@ const Username = styled.p<{ org: string }>`
   margin: 0;
   white-space: nowrap;
   text-align: right;
-
-  &::after {
-    content: '${props => props.org}';
-    display: block;
-    font-size: 0.88em;
-    color: ${props => props.theme.colors.navTextFaded};
-  }
 `
 
 const Wrapper = styled(Page)`
@@ -63,10 +56,8 @@ const HomeLink = styled(Link)`
   grid-area: logo;
 `
 
-export default function Nav({ wide = false }) {
+export default function Nav ({ wide = false }) {
   const user = useAppSelector(state => state.auth.user)
-  const org = useAppSelector(state => state.auth.organisation)
-  const orgName = org ? org.name : ''
   const [showUser, setShowUser] = useState(false)
 
   return (
@@ -77,25 +68,22 @@ export default function Nav({ wide = false }) {
           <HomeLink to="/home">
             <Logo />
           </HomeLink>
-          <Username onClick={() => setShowUser(true)} org={orgName}>
+          <Username onClick={() => setShowUser(true)}>
             {user ? user.displayName || user.email : ''}
           </Username>
           <Links>
-            <LinkBase color="white" to="/home">
-              Home
-            </LinkBase>
-            <LinkBase color="white" to="/songs">
-              Songs
-            </LinkBase>
-            {!!org && (
-              <LinkBase color="white" to="/events">
-                Events
-              </LinkBase>
-            )}
-            {!!org && (
-              <LinkBase color="white" to="/songlists">
-                Song Lists
-              </LinkBase>
+            {user.role === 'admin' && (
+              <>
+                <LinkBase color="white" to="/events">
+                  Events
+                </LinkBase>
+                <LinkBase color="white" to="/songs">
+                  Songs
+                </LinkBase>
+                <LinkBase color="white" to="/songlists">
+                  Song Lists
+                </LinkBase>
+              </>
             )}
           </Links>
         </Wrapper>
