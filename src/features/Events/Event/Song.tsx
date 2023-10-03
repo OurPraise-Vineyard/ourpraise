@@ -79,7 +79,9 @@ const SongBody = styled.div`
   page-break-inside: avoid;
 
   @media screen {
-    display: none;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
   }
 `
 
@@ -94,8 +96,8 @@ export default function Song ({ song }: { song: ISong }) {
         <PlayKey>{song.transposeKey || song.key}</PlayKey>
       </Header>
       {song.comment && <Comment>{song.comment}</Comment>}
-      {parts.map(part => (
-        <SongBody>{part}</SongBody>
+      {parts.map((part, index) => (
+        <SongBody key={index}>{part}</SongBody>
       ))}
     </Container>
   )

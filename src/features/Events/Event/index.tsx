@@ -58,7 +58,7 @@ export default function ViewEvent () {
       <SongsOverview songs={event.songs} />
       <StyledBreaker />
       {event.songs.map((song, i) => (
-        <Song song={song} />
+        <Song key={song.id} song={song} />
       ))}
     </div>
   )
