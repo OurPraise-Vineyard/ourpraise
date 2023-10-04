@@ -1,47 +1,58 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import styled, { keyframes } from 'styled-components'
-import Song from '@features/Songs/Song/Song'
+import styled from 'styled-components'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchSong } from '@state/songs/api'
 import { pushError } from '@state/errorSlice'
 import IconButton from '@components/IconButton'
 import editIcon from '@assets/edit.svg'
-import FlexSpacer from '@components/FlexSpacer'
+import Toolbar from '@components/Toolbar'
+import KeySwitcher from '@components/KeySwitcher'
+import useFormattedSongBody from '@hooks/useFormattedSongBody'
 
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
+const Container = styled.div`
+  box-shadow: ${props => props.theme.boxShadow};
+  background-color: white;
+  padding: 20px;
+  overflow-x: auto;
+  max-width: 100%;
 `
 
-const FadeIn = styled.div`
-  animation: ${fadeIn} 0.2s ease-out 0.2s both;
+const Title = styled.h1`
+  font-size: 36px;
+  margin: 0;
+  grid-area: title;
 `
 
-const Content = styled(FadeIn)`
-  flex: 1 0 auto;
-  max-width: calc(100%);
+const Authors = styled.h2`
+  font-size: 20px;
+  color: ${props => props.theme.colors.textFaded};
+  margin: 0;
+  grid-area: authors;
 `
 
-const TopRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 16px;
+const SongBody = styled.div`
+  font-family: 'Oxygen Mono', monospace;
+  margin: 16px 0;
+  white-space: pre;
+`
+
+const Header = styled.div`
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 'title chords' 'authors chords';
 `
 
 export default function ViewSong () {
   const { songId } = useParams()
-  const [transposeKey, setTransposeKey] = useState<Key | null>(null)
+  const [transposeKey, setTransposeKey] = useState<IKey | null>(null)
+  const [showChords, setShowChords] = useState(true)
   const navigate = useNavigate()
   const song = useAppSelector(state => state.songs.index[songId])
   const isAdmin = useAppSelector(state => state.auth.user.role === 'admin')
   const dispatch = useAppDispatch()
+  const formattedBody = useFormattedSongBody(song, showChords, transposeKey)
   useDocumentTitle(song ? song.title : '')
 
   const songLoaded = song && song.id === songId
@@ -67,24 +78,31 @@ export default function ViewSong () {
     setTransposeKey(song.key)
   }
 
+  function handleToggleChords () {
+    setShowChords(!showChords)
+  }
+
   if (!songLoaded) {
     return null
   }
 
   return (
-    <FadeIn>
-      <TopRow>
-        <FlexSpacer />
-        {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
-      </TopRow>
-      <Content key={songId}>
-        <Song
-          song={song}
-          transposeKey={transposeKey}
-          onChangeTranspose={setTransposeKey}
-          onResetTranspose={handleResetTranspose}
-        />
-      </Content>
-    </FadeIn>
+    <div>
+      <Toolbar>{isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}</Toolbar>
+      <Container>
+        <Header>
+          <Title>{song.title}</Title>
+          <KeySwitcher
+            transposeKey={transposeKey}
+            setTransposeKey={setTransposeKey}
+            onResetTranspose={handleResetTranspose}
+            onToggleChords={handleToggleChords}
+            showChords={showChords}
+          />
+          <Authors>{song.authors}</Authors>
+        </Header>
+        <SongBody>{formattedBody}</SongBody>
+      </Container>
+    </div>
   )
 }

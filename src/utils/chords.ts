@@ -75,7 +75,7 @@ export function findNextKey(fromKey: string, steps: 1 | -1): string {
   return keys[(index + steps + keys.length) % keys.length][0]
 }
 
-export function transposeSong(body: string, fromKey: Key | null, toKey: string): string {
+export function transposeSong(body: string, fromKey: IKey | null, toKey: string): string {
   if (fromKey === null) {
     return Transposer.transpose(body).toKey(toKey).toString()
   }

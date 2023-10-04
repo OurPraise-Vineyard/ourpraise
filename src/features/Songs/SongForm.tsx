@@ -44,7 +44,7 @@ const DeleteButton = styled(ButtonBase).attrs({
 interface ReducerType {
   body: string
   title: string
-  key: Key
+  key: IKey
   authors: string
 }
 
