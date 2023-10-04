@@ -3,10 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 const Container = styled(Link)`
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) 1fr;
-  grid-template-rows: repeat(4, min-content);
-  grid-template-areas: 'title key' 'authors key' 'comment comment' 'line line';
+  display: block;
   padding: 16px 10px;
   margin: 0 10px;
   border-radius: 4px;
@@ -43,18 +40,6 @@ const SongAuthors = styled.div`
   text-overflow: ellipsis;
 `
 
-const PlayKey = styled.div`
-  grid-area: key;
-  justify-self: end;
-  align-self: start;
-  padding: 10px 30px;
-  border-radius: 22px;
-  background-color: ${props => props.theme.colors.subtleButtonBackground};
-  position: relative;
-  border: 1px solid ${props => props.theme.colors.subtleButtonBorder};
-  font-size: 16px;
-`
-
 const Comment = styled.div`
   grid-area: comment;
   margin-top: 5px;
@@ -65,7 +50,6 @@ export default function SongItem ({ song }: { song: ISong }) {
     <Container to={`/songs/${song.id}`}>
       <SongTitle>{song.title}</SongTitle>
       <SongAuthors>{song.authors}</SongAuthors>
-      <PlayKey>Key: {song.transposeKey}</PlayKey>
       {song.comment && <Comment>{song.comment}</Comment>}
     </Container>
   )

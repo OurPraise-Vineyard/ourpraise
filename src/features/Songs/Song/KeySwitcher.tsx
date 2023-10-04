@@ -76,7 +76,7 @@ const Switcher = styled.button.attrs({ tabIndex: -1 })<{ icon: string }>`
 `
 
 export default function KeySwitcher ({
-  transposeKey,
+  transposeKey = '',
   setTransposeKey,
   onResetTranspose,
   onToggleChords,
@@ -92,7 +92,7 @@ export default function KeySwitcher ({
   return (
     <Wrapper>
       <Switcher icon={showChords ? 'checked' : 'unchecked'} onClick={onToggleChords} />
-      <Chord value={transposeKey} onChange={handleSelect} disabled={!showChords}>
+      <Chord value={transposeKey || ''} onChange={handleSelect} disabled={!showChords}>
         {keysOptions.map(({ value, label }) => (
           <option key={value} value={value}>
             {label}

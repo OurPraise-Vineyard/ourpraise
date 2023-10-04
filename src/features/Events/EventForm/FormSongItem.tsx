@@ -66,9 +66,9 @@ export default function FormSongItem ({ song, onChangeTranspose, onChangeComment
       <RemoveButton onClick={onRemove} />
       <SelectWrapper>
         <SelectField
-          value={song.transpose}
+          value={song.transposeKey}
           title="Song Key"
-          onChange={e => onChangeTranspose(parseInt(e.target.value, 10))}
+          onChange={e => onChangeTranspose(e.target.value)}
           options={keysOptions}
         />
       </SelectWrapper>

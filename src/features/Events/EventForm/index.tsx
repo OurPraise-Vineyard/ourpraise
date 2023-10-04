@@ -67,7 +67,7 @@ function reducer (state, action) {
             authors: action.song.authors,
             id: action.song.id,
             key: action.song.key,
-            transpose: 0,
+            transposeKey: action.song.key,
             comment: ''
           }
         ]
@@ -79,7 +79,7 @@ function reducer (state, action) {
           song.id === action.songId
             ? {
                 ...song,
-                transpose: action.transpose
+                transposeKey: action.transposeKey
               }
             : song
         )
@@ -163,8 +163,8 @@ export default function EventForm ({
     dispatch({ type: 'ADD_SONG', song })
   }
 
-  const handleChangeTranspose = (songId, transpose) => {
-    dispatch({ type: 'SET_TRANSPOSE', songId, transpose })
+  const handleChangeTranspose = (songId, transposeKey) => {
+    dispatch({ type: 'SET_TRANSPOSE', songId, transposeKey })
   }
 
   const handleChangeSongComment = (songId, comment) => {
