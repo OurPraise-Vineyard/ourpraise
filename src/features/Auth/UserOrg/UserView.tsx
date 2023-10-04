@@ -1,5 +1,5 @@
 import { signOut } from '@state/auth/api'
-import ButtonBase from '@features/Shared/ButtonBase'
+import ButtonBase from '@components/ButtonBase'
 import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import React from 'react'
 import styled from 'styled-components'

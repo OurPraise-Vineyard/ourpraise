@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 import Song from '@features/Songs/Song/Song'
-import SongComment from '@features/Songs/Song/Comment'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchSong } from '@state/songs/api'
 import { pushError } from '@state/errorSlice'
-import IconButton from '@features/Shared/IconButton'
+import IconButton from '@components/IconButton'
 import editIcon from '@assets/edit.svg'
-import FlexSpacer from '@features/Shared/FlexSpacer'
+import FlexSpacer from '@components/FlexSpacer'
 
 const fadeIn = keyframes`
   0% {
@@ -79,7 +78,6 @@ export default function ViewSong () {
         {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
       </TopRow>
       <Content key={songId}>
-        {!!song.comment && <SongComment>{song.comment}</SongComment>}
         <Song
           song={song}
           transposeKey={transposeKey}

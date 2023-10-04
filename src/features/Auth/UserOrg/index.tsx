@@ -1,4 +1,4 @@
-import Modal from '@features/Shared/Modal'
+import Modal from '@components/Modal'
 import React, { useState } from 'react'
 import UserView from '@features/Auth/UserOrg/UserView'
 import styled from 'styled-components'

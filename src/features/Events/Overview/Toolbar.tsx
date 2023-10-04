@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { buttonBase } from '@features/Shared/ButtonBase'
+import { buttonBase } from '@components/ButtonBase'
 import styled from 'styled-components'
 
 const Row = styled.div`
@@ -24,9 +24,7 @@ const Button = styled(Link)`
 export default function Toolbar ({ onSearch = undefined }) {
   return (
     <Row>
-      <Button to="/events/add">
-        Add new event
-      </Button>
+      <Button to="/events/add">Add new event</Button>
     </Row>
   )
 }

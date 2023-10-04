@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import ContentTable from '@features/Shared/Table'
+import ContentTable from '@components/Table'
 import Toolbar from '@features/Songs/Overview/Toolbar'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchAllSongs, fetchSearchQuery } from '@state/songs/api'
 import { FetchStatus } from '@utils/api'
 import { pushError } from '@state/errorSlice'
 
-function mapSong(data) {
+function mapSong (data) {
   return {
     primary: data.title,
     secondary: data.authors,
@@ -14,7 +14,7 @@ function mapSong(data) {
   }
 }
 
-export default function SongsOverview() {
+export default function SongsOverview () {
   useDocumentTitle('Songs')
   const [query, setQuery] = useState('')
   const statusAllSongs = useAppSelector(state => state.songs.status.all)

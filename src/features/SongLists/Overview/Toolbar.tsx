@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { buttonBase } from '@features/Shared/ButtonBase'
+import { buttonBase } from '@components/ButtonBase'
 import styled from 'styled-components'
 
 const Row = styled.div`
@@ -21,7 +21,7 @@ const Button = styled(Link)`
   text-decoration: none;
 `
 
-export default function Toolbar() {
+export default function Toolbar () {
   return (
     <Row>
       <Button to="/songlists/add">Add new songlist</Button>

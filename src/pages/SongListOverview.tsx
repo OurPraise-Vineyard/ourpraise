@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react'
-import ContentTable from '@features/Shared/Table'
+import ContentTable from '@components/Table'
 import Toolbar from '@features/SongLists/Overview/Toolbar'
 import { FetchStatus } from '@utils/api'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { pushError } from '@state/errorSlice'
 import { fetchSongLists } from '@state/songLists/api'
 
-function mapSongList(data) {
+function mapSongList (data) {
   return {
     primary: data.name,
     url: `/songlists/${data.id || data.objectID}`
   }
 }
 
-export default function SongLists() {
+export default function SongLists () {
   useDocumentTitle('Song Lists')
   const dispatch = useAppDispatch()
   const songLists = useAppSelector(state => state.songLists.songLists)

@@ -1,6 +1,6 @@
 import React, { Outlet, useLocation } from 'react-router-dom'
-import Nav from '@features/Shared/Nav'
-import Page from '@features/Shared/Page'
+import Nav from '@components/Nav'
+import Page from '@components/Page'
 
 export default function Layout ({ noFadeIn = false }) {
   const { pathname } = useLocation()

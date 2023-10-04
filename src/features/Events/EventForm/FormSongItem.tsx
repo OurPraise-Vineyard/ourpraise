@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import x from '@assets/x.svg'
-import SelectField from '@features/Shared/SelectField'
+import SelectField from '@components/SelectField'
 import { keysOptions } from '@utils/chords'
-import TextField from '@features/Shared/TextField'
+import TextField from '@components/TextField'
 
 const Container = styled.div`
   display: grid;

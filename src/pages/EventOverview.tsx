@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import ContentTable from '@features/Shared/Table'
+import ContentTable from '@components/Table'
 import Toolbar from '@features/Events/Overview/Toolbar'
 import { formatDate, getTime, todayTime } from '@utils/date'
 import { FetchStatus } from '@utils/api'

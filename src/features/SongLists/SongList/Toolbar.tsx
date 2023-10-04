@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAppSelector } from '@utils/hooks'
-import IconButton from '@features/Shared/IconButton'
+import IconButton from '@components/IconButton'
 import editIcon from '@assets/edit.svg'
 
 const Row = styled.div`

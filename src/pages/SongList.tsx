@@ -1,7 +1,7 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import Toolbar from '@features/SongLists/SongList/Toolbar'
 import { useNavigate, useParams } from 'react-router-dom'
-import ContentBox from '@features/Shared/ContentBox'
+import ContentBox from '@components/ContentBox'
 import SongItem from '@features/SongLists/SongList/SongItem'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { FetchStatus } from '@utils/api'
@@ -14,7 +14,7 @@ const StyledBreaker = styled(Breaker)`
   margin: 0 20px;
 `
 
-export default function ViewSongList() {
+export default function ViewSongList () {
   const { songListId } = useParams()
   const dispatch = useAppDispatch()
   const songList = useAppSelector(state => state.songLists.index[songListId])

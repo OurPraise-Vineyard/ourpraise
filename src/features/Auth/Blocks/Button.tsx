@@ -1,4 +1,4 @@
-import ButtonBase from '@features/Shared/ButtonBase'
+import ButtonBase from '@components/ButtonBase'
 import styled from 'styled-components'
 
 export default styled(ButtonBase).attrs({

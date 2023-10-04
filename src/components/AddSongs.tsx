@@ -1,9 +1,9 @@
 import { searchSongs } from '@utils/algolia'
-import Modal from '@features/Shared/Modal'
-import SearchSongs from '@features/Shared/SearchSongs'
+import Modal from '@components/Modal'
+import SearchSongs from '@components/SearchSongs'
 import React, { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
-import ButtonBase from '@features/Shared/ButtonBase'
+import ButtonBase from '@components/ButtonBase'
 import { useAppDispatch, useAppSelector } from '@utils/hooks'
 import { FetchStatus } from '@utils/api'
 import { fetchSongList, fetchSongLists } from '@state/songLists/api'
@@ -13,7 +13,7 @@ interface Song {
   id: boolean
 }
 
-function mapSong(data, addedSongs: Array<Song>) {
+function mapSong (data, addedSongs: Array<Song>) {
   const id = data.objectID || data.id
   return {
     title: data.title,
@@ -108,7 +108,7 @@ const StickyContainer = styled.div`
   position: relative;
 `
 
-function AddSongsContent({ show, addedSongs: externalAddedSongs, onAddSong }) {
+function AddSongsContent ({ show, addedSongs: externalAddedSongs, onAddSong }) {
   const [addedSongs, setAddedSongs] = useState([])
   const [loading, setLoading] = useState(false)
   const [hits, setHits] = useState([])
@@ -266,7 +266,7 @@ function AddSongsContent({ show, addedSongs: externalAddedSongs, onAddSong }) {
   )
 }
 
-export default function AddSongs({ show, onClose, addedSongs, onAddSong }) {
+export default function AddSongs ({ show, onClose, addedSongs, onAddSong }) {
   return (
     <Modal onClose={onClose} show={show} title="Add songs">
       <AddSongsContent show={show} addedSongs={addedSongs} onAddSong={onAddSong} />

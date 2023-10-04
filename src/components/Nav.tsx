@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import logo from '@assets/logo_light.svg'
-import Page from '@features/Shared/Page'
+import Page from '@components/Page'
 import { Link } from 'react-router-dom'
-import LinkBase from '@features/Shared/LinkBase'
+import LinkBase from '@components/LinkBase'
 import { useAppSelector } from '@utils/hooks'
 import UserOrg from '@features/Auth/UserOrg'
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { buttonBase } from '@features/Shared/ButtonBase'
+import { buttonBase } from '@components/ButtonBase'
 import styled from 'styled-components'
-import SearchSongs from '@features/Shared/SearchSongs'
+import SearchSongs from '@components/SearchSongs'
 import { useAppSelector } from '@utils/hooks'
 
 const Row = styled.div`

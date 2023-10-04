@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { useAppSelector } from '@utils/hooks'
-import ButtonBase from '@features/Shared/ButtonBase'
+import ButtonBase from '@components/ButtonBase'
 
 const Container = styled.div<{ show: boolean }>`
   box-shadow: ${props => props.theme.boxShadow};
@@ -103,7 +103,11 @@ export default function MiniEvent () {
         {isLoading
           ? 'Loading...'
           : event.songs.map(song => (
-              <Item key={song.id} to={`/events/${eventId}/songs/${song.id}`} onClick={() => setShow(false)}>
+              <Item
+                key={song.id}
+                to={`/events/${eventId}/songs/${song.id}`}
+                onClick={() => setShow(false)}
+              >
                 <ItemTitle>{song.title}</ItemTitle>
                 <ItemAuthors>{song.authors}</ItemAuthors>
               </Item>
