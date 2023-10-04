@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import ContentTable from '@components/Table'
-import Toolbar from '@features/Songs/Overview/Toolbar'
+import Toolbar from '@components/Toolbar'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchAllSongs, fetchSearchQuery } from '@state/songs/api'
 import { FetchStatus } from '@utils/api'
 import { pushError } from '@state/errorSlice'
+import SearchSongs from '@components/SearchSongs'
+import ToolbarSeparator from '@components/ToolbarSeparator'
+import ToolbarButton from '@components/ToolbarButton'
 
 function mapSong (data) {
   return {
@@ -14,13 +17,14 @@ function mapSong (data) {
   }
 }
 
-export default function SongsOverview () {
+export default function Songs () {
   useDocumentTitle('Songs')
   const [query, setQuery] = useState('')
   const statusAllSongs = useAppSelector(state => state.songs.status.all)
   const songs = useAppSelector(state => state.songs.views.all)
   const hits = useAppSelector(state => state.songs.searchResults)
   const dispatch = useAppDispatch()
+  const user = useAppSelector(state => state.auth.user)
 
   const [searchStatus, setSearchStatus] = useState(FetchStatus.idle)
 
@@ -68,7 +72,15 @@ export default function SongsOverview () {
 
   return (
     <div>
-      <Toolbar onSearch={handleSearch} onChangeLoading={handleSetSearchLoading} />
+      <Toolbar>
+        <SearchSongs onSearch={handleSearch} onChangeLoading={handleSetSearchLoading} />
+        {user.role === 'admin' && (
+          <>
+            <ToolbarSeparator />
+            <ToolbarButton to="/songs/add">Add new song</ToolbarButton>
+          </>
+        )}
+      </Toolbar>
       <ContentTable
         mapper={mapSong}
         items={query ? hits : songs}

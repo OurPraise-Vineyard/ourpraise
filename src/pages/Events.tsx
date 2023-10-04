@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 import ContentTable from '@components/Table'
-import Toolbar from '@features/Events/Overview/Toolbar'
 import { formatDate, getTime, todayTime } from '@utils/date'
 import { FetchStatus } from '@utils/api'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchRecentEvents } from '@state/events/api'
 import { pushError } from '@state/errorSlice'
+import Toolbar from '@components/Toolbar'
+import ToolbarButton from '@components/ToolbarButton'
 
 function mapEvent (data) {
   return {
@@ -45,7 +46,9 @@ export default function EventOverview () {
 
   return (
     <div>
-      <Toolbar />
+      <Toolbar>
+        <ToolbarButton to="/events/add">Add new event</ToolbarButton>
+      </Toolbar>
       {upcoming.length > 0 && (
         <ContentTable items={upcoming} title={'Upcoming events'} mapper={mapEvent} />
       )}
