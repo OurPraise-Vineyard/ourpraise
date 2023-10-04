@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import ContentTable from '@components/Table'
+import ContentTable from '@components/ContentTable'
 import Toolbar from '@components/Toolbar'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
 import { fetchAllSongs, fetchSearchQuery } from '@state/songs/api'

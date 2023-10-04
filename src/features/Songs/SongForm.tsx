@@ -1,5 +1,5 @@
-import SelectField from '@components/SelectField'
-import TextField from '@components/TextField'
+import SelectField from '@components/form/SelectField'
+import TextField from '@components/form/TextField'
 import React, { useEffect, useReducer } from 'react'
 import styled from 'styled-components'
 import ButtonBase from '@components/ButtonBase'

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import ContentTable from '@components/Table'
+import ContentTable from '@components/ContentTable'
 import Toolbar from '@features/SongLists/Overview/Toolbar'
 import { FetchStatus } from '@utils/api'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'

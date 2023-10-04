@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import ContentTable from '@components/Table'
+import ContentTable from '@components/ContentTable'
 import { formatDate, getTime, todayTime } from '@utils/date'
 import { FetchStatus } from '@utils/api'
 import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
