@@ -21,7 +21,7 @@ import AppTheme from '@styles/AppTheme'
 import EditSongList from '@pages/SongListEdit'
 import ViewSongList from '@pages/SongList'
 import AddSongList from '@pages/SongListAdd'
-import SongLists from '@pages/SongListOverview'
+import SongLists from '@pages/SongLists'
 import NoAccessView from '@pages/NoAccess'
 import useAuth from '@hooks/useAuth'
 

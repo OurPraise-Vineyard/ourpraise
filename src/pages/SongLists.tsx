@@ -1,9 +1,10 @@
 import React from 'react'
 import ContentTable from '@components/ContentTable'
-import Toolbar from '@features/SongLists/Overview/Toolbar'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
 import { fetchSongLists } from '@backend/songLists'
+import ToolbarButton from '@components/ToolbarButton'
+import Toolbar from '@components/Toolbar'
 
 function mapSongList (data) {
   return {
@@ -17,7 +18,9 @@ function SongLists ({ data: songLists }: IWithFetchProps<ISongList[]>) {
 
   return (
     <div>
-      <Toolbar />
+      <Toolbar>
+        <ToolbarButton to="/songlists/add">Add new songlist</ToolbarButton>
+      </Toolbar>
       <ContentTable items={songLists} title={'Song Lists'} mapper={mapSongList} />
     </div>
   )
