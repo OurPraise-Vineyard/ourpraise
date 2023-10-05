@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import logo from '@assets/logo_light.svg'
 import Page from '@components/Page'
-import { Link } from 'react-router-dom'
 import LinkBase from '@components/LinkBase'
-import { useAppSelector } from '@utils/hooks'
 import UserOrg from '@features/Auth/UserOrg'
+import useAuth from '@hooks/useAuth'
 
 const Container = styled.nav`
   background-color: ${props => props.theme.colors.navBackground};
@@ -21,6 +20,8 @@ const Logo = styled.img.attrs({
   alt: 'OurPraise logo'
 })`
   height: 40px;
+  grid-area: logo;
+  margin-bottom: 2px;
 `
 
 const Username = styled.p`
@@ -56,12 +57,8 @@ const Links = styled.div`
   }
 `
 
-const HomeLink = styled(Link)`
-  grid-area: logo;
-`
-
 export default function Nav ({ wide = false }) {
-  const user = useAppSelector(state => state.auth.user)
+  const { user } = useAuth()
   const [showUser, setShowUser] = useState(false)
 
   return (
@@ -69,9 +66,7 @@ export default function Nav ({ wide = false }) {
       <UserOrg show={showUser} onClose={() => setShowUser(false)} />
       <Container>
         <Wrapper>
-          <HomeLink to="/home">
-            <Logo />
-          </HomeLink>
+          <Logo />
           <Username onClick={() => setShowUser(true)}>
             {user ? user.displayName || user.email : ''}
           </Username>

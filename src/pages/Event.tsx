@@ -1,15 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 import Toolbar from '@features/Events/Event/Toolbar'
-import { useNavigate, useParams } from 'react-router-dom'
 import Song from '@features/Events/Event/Song'
-import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { FetchStatus } from '@utils/api'
-import { fetchEvent } from '@state/events/api'
-import { pushError } from '@state/errorSlice'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import SongsOverview from '@features/Events/Event/SongsOverview'
 import Comment from '@features/Events/Event/Comment'
 import { Breaker } from '@styles/CommonStyles'
 import styled from 'styled-components'
+import withFetch from '@components/withFetch'
+import { fetchEvent } from '@backend/events'
 
 const StyledBreaker = styled(Breaker)`
   margin-top: 32px;
@@ -18,42 +16,12 @@ const StyledBreaker = styled(Breaker)`
   }
 `
 
-export default function ViewEvent () {
-  const { eventId } = useParams()
-  const dispatch = useAppDispatch()
-  const event = useAppSelector(state => state.events.index[eventId])
-  const [status, setStatus] = useState(FetchStatus.idle)
-  const shouldFetch = eventId && !event
-  const navigate = useNavigate()
-  useDocumentTitle(event ? event.title : '')
-
-  const handleFetchEvent = useCallback(async () => {
-    if (shouldFetch) {
-      try {
-        setStatus(FetchStatus.loading)
-        const event = await dispatch(fetchEvent(eventId)).unwrap()
-        if (event === null) {
-          return navigate('/events')
-        }
-        setStatus(FetchStatus.succeeded)
-      } catch (err) {
-        dispatch(pushError(err))
-        setStatus(FetchStatus.failed)
-      }
-    }
-  }, [eventId, dispatch, shouldFetch, navigate])
-
-  useEffect(() => {
-    handleFetchEvent()
-  }, [handleFetchEvent])
-
-  if (!event || status === FetchStatus.loading) {
-    return null
-  }
+function EventPage ({ data: event }: { data: IEvent }) {
+  useDocumentTitle(event.title)
 
   return (
     <div>
-      <Toolbar />
+      <Toolbar event={event} />
       {!!event.comment && <Comment>{event.comment}</Comment>}
       <SongsOverview songs={event.songs} />
       <StyledBreaker />
@@ -63,3 +31,5 @@ export default function ViewEvent () {
     </div>
   )
 }
+
+export default withFetch<IEvent>(params => fetchEvent(params.eventId as string))(EventPage)

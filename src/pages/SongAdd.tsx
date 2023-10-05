@@ -1,9 +1,10 @@
 import React from 'react'
-import { addSong } from '@state/songs/api'
 import { useNavigate } from 'react-router-dom'
 import SongForm from '@features/Songs/SongForm'
-import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
+import { useAppDispatch } from '@hooks/state'
 import { pushError } from '@state/errorSlice'
+import { createSong } from '@backend/songs'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
 
 export default function AddSong () {
   useDocumentTitle('Add song')
@@ -12,9 +13,9 @@ export default function AddSong () {
 
   const handleSubmit = async options => {
     try {
-      const song: ISong = (await dispatch(addSong(options)).unwrap()) as ISong
-      if (song.id) {
-        navigate('/songs/' + song.id)
+      const id: IDocId = await createSong(options)
+      if (id) {
+        navigate('/songs/' + id)
       }
     } catch (err) {
       dispatch(pushError(err))

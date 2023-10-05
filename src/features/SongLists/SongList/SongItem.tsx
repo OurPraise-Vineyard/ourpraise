@@ -40,17 +40,11 @@ const SongAuthors = styled.div`
   text-overflow: ellipsis;
 `
 
-const Comment = styled.div`
-  grid-area: comment;
-  margin-top: 5px;
-`
-
 export default function SongItem ({ song }: { song: ISong }) {
   return (
     <Container to={`/songs/${song.id}`}>
       <SongTitle>{song.title}</SongTitle>
       <SongAuthors>{song.authors}</SongAuthors>
-      {song.comment && <Comment>{song.comment}</Comment>}
     </Container>
   )
 }

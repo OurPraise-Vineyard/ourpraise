@@ -1,12 +1,11 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import ContentTable from '@components/ContentTable'
-import { formatDate, getTime, todayTime } from '@utils/date'
-import { FetchStatus } from '@utils/api'
-import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { fetchRecentEvents } from '@state/events/api'
-import { pushError } from '@state/errorSlice'
+import { formatDate } from '@utils/date'
 import Toolbar from '@components/Toolbar'
 import ToolbarButton from '@components/ToolbarButton'
+import withFetch from '@components/withFetch'
+import { IEventsData, fetchEvents } from '@backend/events'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
 
 function mapEvent (data) {
   return {
@@ -16,33 +15,8 @@ function mapEvent (data) {
   }
 }
 
-export default function EventOverview () {
+function EventOverview ({ data: { upcoming, past } }: { data: IEventsData }) {
   useDocumentTitle('Events')
-  const dispatch = useAppDispatch()
-  const events = useAppSelector(state => state.events.allEvents)
-  const statusAllEvents = useAppSelector(state => state.events.statusAllEvents)
-  const today = useRef(todayTime())
-
-  useEffect(() => {
-    if (statusAllEvents === FetchStatus.idle) {
-      dispatch(fetchRecentEvents())
-        .unwrap()
-        .catch(err => {
-          dispatch(pushError(err))
-        })
-    }
-  }, [dispatch, statusAllEvents])
-
-  const upcoming: IPartialEvent[] = []
-  const past: IPartialEvent[] = []
-
-  for (const ev of events) {
-    if (getTime(ev.date) >= today.current) {
-      upcoming.push(ev)
-    } else if (past.length < 8) {
-      past.push(ev)
-    }
-  }
 
   return (
     <div>
@@ -56,3 +30,5 @@ export default function EventOverview () {
     </div>
   )
 }
+
+export default withFetch<IEventsData>(fetchEvents)(EventOverview)

@@ -1,6 +1,5 @@
 import Comment from '@features/Events/Event/Comment'
-import { keysOptions } from '@utils/chords'
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -86,23 +85,16 @@ const SongBody = styled.div`
   }
 `
 
-export default function Song ({ song }: { song: ISong }) {
-  const parts = useMemo(() => song.body.split('\n\n'), [song.body])
-  const songKey = song.transposeKey || song.key
-  const formattedKey = useMemo(
-    () => keysOptions.find(key => key.value === songKey).label,
-    [songKey]
-  )
-
+export default function Song ({ song }: { song: IEventSong }) {
   return (
     <Container>
       <Header>
         <SongTitle>{song.title}</SongTitle>
         <SongAuthors>{song.authors}</SongAuthors>
-        <PlayKey>{formattedKey}</PlayKey>
+        <PlayKey>{song.formattedKey}</PlayKey>
       </Header>
       {song.comment && <Comment>{song.comment}</Comment>}
-      {parts.map((part, index) => (
+      {song.body.map((part, index) => (
         <SongBody key={index}>{part}</SongBody>
       ))}
     </Container>

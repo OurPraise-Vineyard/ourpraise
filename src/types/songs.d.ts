@@ -1,9 +1,9 @@
 interface ISong {
-  id: string
-  key: Key
+  id: IDocId
+  key: IKey
   title: string
   authors: string
-  transposeKey?: Key
-  comment?: string
   body: string
 }
+
+type ISongForm = ISong

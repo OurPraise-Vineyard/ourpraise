@@ -4,12 +4,12 @@ import styled from 'styled-components'
 import ButtonBase from '@components/ButtonBase'
 import { useNavigate } from 'react-router-dom'
 import dateFormat from 'dateformat'
-import { deleteEvent } from '@state/events/api'
 import AddSongs from '@components/AddSongs'
 import FormSongItem from '@features/Events/EventForm/FormSongItem'
-import { useAppDispatch } from '@utils/hooks'
+import { useAppDispatch } from '@hooks/state'
 import { pushError } from '@state/errorSlice'
 import { nextWeekday } from '@utils/date'
+import { deleteEvent } from '@backend/events'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -123,7 +123,7 @@ export default function EventForm ({
   onSubmit,
   heading
 }: {
-  event?: IFullEvent
+  event?: IEvent
   onSubmit: (options: IEventForm) => void
   heading: string
 }) {
@@ -151,10 +151,10 @@ export default function EventForm ({
   const handleDelete = async e => {
     if (window.confirm('Delete this event?')) {
       try {
-        await appDispatch(deleteEvent(event)).unwrap()
+        await deleteEvent(event.id)
         navigate('/events')
       } catch (err) {
-        dispatch(pushError(err))
+        appDispatch(pushError(err))
       }
     }
   }

@@ -1,4 +1,4 @@
-import { useAppSelector } from '@utils/hooks'
+import { useAppSelector } from '@hooks/state'
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
@@ -14,7 +14,7 @@ const fadeIn = keyframes`
   }
 `
 
-const DisplayError = styled.div<{unmounted: boolean}>`
+const DisplayError = styled.div<{ unmounted: boolean }>`
   background-color: #f00;
   color: white;
   border-radius: 4px;
@@ -24,11 +24,11 @@ const DisplayError = styled.div<{unmounted: boolean}>`
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  opacity: ${props => props.unmounted ? 0 : 1};
-  height: ${props => props.unmounted ? '0px' : '40px'};
-  transition: all .2s ease-out;
+  opacity: ${props => (props.unmounted ? 0 : 1)};
+  height: ${props => (props.unmounted ? '0px' : '40px')};
+  transition: all 0.2s ease-out;
 
-  animation: ${fadeIn} .2s ease-out;
+  animation: ${fadeIn} 0.2s ease-out;
 
   z-index: 20000;
 `
@@ -36,7 +36,13 @@ const DisplayError = styled.div<{unmounted: boolean}>`
 export default function DisplayErrors () {
   const stack = useAppSelector(state => state.errors.stack)
 
-  return <>{stack.map((error, index) => (
-    <DisplayError key={error.id} style={{ bottom: (index) * 48 + 8}} unmounted={!!error.removed}>{error.message}</DisplayError>
-  ))}</>
+  return (
+    <>
+      {stack.map((error, index) => (
+        <DisplayError key={error.id} style={{ bottom: index * 48 + 8 }} unmounted={!!error.removed}>
+          {error.message}
+        </DisplayError>
+      ))}
+    </>
+  )
 }

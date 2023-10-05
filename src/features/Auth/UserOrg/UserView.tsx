@@ -1,9 +1,10 @@
-import { signOut } from '@state/auth/api'
+import { signOut } from '@state/authSlice'
 import ButtonBase from '@components/ButtonBase'
-import { useAppDispatch, useAppSelector } from '@utils/hooks'
+import { useAppDispatch } from '@hooks/state'
 import React from 'react'
 import styled from 'styled-components'
 import { pushError } from '@state/errorSlice'
+import useAuth from '@hooks/useAuth'
 
 const Username = styled.p`
   font-size: 24px;
@@ -42,7 +43,7 @@ const Spacer = styled.div`
 `
 
 export default function UserView ({ onEditOrg }) {
-  const user = useAppSelector(state => state.auth.user)
+  const { user } = useAuth()
   const dispatch = useAppDispatch()
 
   const handleLogout = () => {

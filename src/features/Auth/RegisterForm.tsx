@@ -1,14 +1,15 @@
-import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
+import { useAppDispatch } from '@hooks/state'
 import Button from '@features/Auth/Blocks/Button'
 import Form from '@features/Auth/Blocks/Form'
 import TextField from '@features/Auth/Blocks/TextField'
-import { createAccount } from '@state/auth/api'
+import { createAccount } from '@state/authSlice'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { pushError } from '@state/errorSlice'
 import ModeLink from '@features/Auth/Blocks/ModeLink'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
 
-function safeMatchSearch(key) {
+function safeMatchSearch (key) {
   const reg = new RegExp(`\\?.*${key}=([\\w\\d.@]*).*$`)
   const match = window.location.search.match(reg)
 
@@ -19,7 +20,7 @@ function safeMatchSearch(key) {
   return ''
 }
 
-export default function RegisterForm() {
+export default function RegisterForm () {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')

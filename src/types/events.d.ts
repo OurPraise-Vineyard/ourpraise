@@ -1,23 +1,19 @@
-interface IPartialEvent {
-  title: string
-  date: string
-  songs: Array<{
-    id: string
-    transposeKey: Key
-    comment: string
-  }>
-  id: string
+interface IEventSong {
+  id: IDocId
+  transposeKey: IKey
   comment: string
-  createdAt: string
-  owner: string
+  body?: Array<string>
+  title?: string
+  authors?: string
+  key?: IKey
+  formattedKey?: string
 }
 
-interface IFullEvent {
+interface IEvent {
   title: string
   date: string
-  songs: Array<ISong>
-  songsIndex: Record<string, ISong>
-  id: string
+  songs: Array<IEventSong>
+  id: IDocId
   comment: string
   createdAt: string
   owner: string
@@ -26,7 +22,7 @@ interface IFullEvent {
 interface IEventForm {
   title: string
   date: string
-  songs: Array<ISong>
-  id?: string
+  songs: Array<IEventSong>
+  id?: IDocId
   comment: string
 }

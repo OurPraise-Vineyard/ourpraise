@@ -1,32 +1,21 @@
-import React, { useCallback, useEffect } from 'react'
+import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import SongListForm from '@features/SongLists/SongListForm'
-import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
+import { useAppDispatch } from '@hooks/state'
 import { pushError } from '@state/errorSlice'
-import { fetchSongList, saveSongList } from '@state/songLists/api'
+import withFetch, { IWithFetchProps } from '@components/withFetch'
+import { fetchSongList, saveSongList } from '@backend/songLists'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
 
-export default function EditSongList() {
+function EditSongList ({ data: songList }: IWithFetchProps<ISongList>) {
   const { songListId } = useParams()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const songList = useAppSelector(state => state.songLists.index[songListId])
   useDocumentTitle(songList ? `Edit song list: "${songList.name}"` : 'Edit song list')
-
-  const fetchFullSongList = useCallback(async () => {
-    try {
-      await dispatch(fetchSongList(songListId)).unwrap()
-    } catch (err) {
-      dispatch(pushError(err))
-    }
-  }, [dispatch, songListId])
-
-  useEffect(() => {
-    fetchFullSongList()
-  }, [fetchFullSongList])
 
   const handleSubmit = async options => {
     try {
-      await dispatch(saveSongList({ ...options, id: songListId })).unwrap()
+      await saveSongList({ ...options, id: songListId })
       navigate('/songlists/' + songListId)
     } catch (err) {
       dispatch(pushError(err))
@@ -35,3 +24,7 @@ export default function EditSongList() {
 
   return <SongListForm songList={songList} onSubmit={handleSubmit} heading="Edit song list" />
 }
+
+export default withFetch<ISongList>(params => fetchSongList(params.songListId as string))(
+  EditSongList
+)

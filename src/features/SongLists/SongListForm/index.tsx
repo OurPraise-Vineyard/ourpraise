@@ -3,12 +3,12 @@ import React, { useEffect, useReducer, useState } from 'react'
 import styled from 'styled-components'
 import ButtonBase from '@components/ButtonBase'
 import { useNavigate } from 'react-router-dom'
-import { deleteSongList } from '@state/songLists/api'
 import AddSongs from '@components/AddSongs'
 import FormSongItem from '@features/SongLists/SongListForm/FormSongItem'
-import { useAppDispatch } from '@utils/hooks'
+import { useAppDispatch } from '@hooks/state'
 import { pushError } from '@state/errorSlice'
 import { sortByTitleAsc } from '@utils/api'
+import { deleteSongList } from '@backend/songLists'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -96,8 +96,8 @@ export default function SongListForm ({
   onSubmit,
   heading
 }: {
-  songList?: FullSongList
-  onSubmit: (options: SongListFormType) => void
+  songList?: ISongList
+  onSubmit: (options: ISongListForm) => void
   heading: string
 }) {
   const [{ name, songs }, dispatch] = useReducer(reducer, defaultSongList)
@@ -124,10 +124,10 @@ export default function SongListForm ({
   const handleDelete = async e => {
     if (window.confirm('Delete this song list?')) {
       try {
-        await appDispatch(deleteSongList(songList)).unwrap()
+        await deleteSongList(songList.id)
         navigate('/songlists')
       } catch (err) {
-        dispatch(pushError(err))
+        appDispatch(pushError(err))
       }
     }
   }

@@ -3,10 +3,11 @@ import TextField from '@components/form/TextField'
 import React, { useEffect, useReducer } from 'react'
 import styled from 'styled-components'
 import ButtonBase from '@components/ButtonBase'
-import { deleteSong } from '@state/songs/api'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '@utils/hooks'
+import { useAppDispatch } from '@hooks/state'
 import { keysOptions } from '@utils/chords'
+import { deleteSong } from '@backend/songs'
+import { pushError } from '@state/errorSlice'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -101,8 +102,12 @@ export default function SongForm ({
 
   const handleDelete = async e => {
     if (window.confirm('Delete this song?')) {
-      await appDispatch(deleteSong(song))
-      navigate('/songs')
+      try {
+        await deleteSong(song.id)
+        navigate('/songs')
+      } catch (err) {
+        appDispatch(pushError(err))
+      }
     }
   }
 

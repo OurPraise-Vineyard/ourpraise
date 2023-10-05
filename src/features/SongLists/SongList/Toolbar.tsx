@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useAppSelector } from '@utils/hooks'
 import IconButton from '@components/IconButton'
 import editIcon from '@assets/edit.svg'
+import useAuth from '@hooks/useAuth'
 
 const Row = styled.div`
   display: flex;
@@ -30,11 +30,11 @@ const Spacer = styled.span`
   flex: 1 0 auto;
 `
 
-export default function Toolbar () {
+export default function Toolbar ({ songList }: { songList: ISongList }) {
   const { songListId } = useParams()
   const navigate = useNavigate()
-  const songList = useAppSelector(state => state.songLists.index[songListId])
-  const canEdit = useAppSelector(state => state.auth.user.role === 'admin')
+  const { user } = useAuth()
+  const canEdit = user.role === 'admin'
 
   function handleEdit () {
     navigate(`/songlists/${songListId}/edit`)

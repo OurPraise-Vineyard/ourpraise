@@ -1,10 +1,11 @@
-import { useAppDispatch, useDocumentTitle } from '@utils/hooks'
+import { useAppDispatch } from '@hooks/state'
 import Button from '@features/Auth/Blocks/Button'
 import Form from '@features/Auth/Blocks/Form'
 import TextField from '@features/Auth/Blocks/TextField'
-import { signIn } from '@state/auth/api'
+import { signIn } from '@state/authSlice'
 import React, { useState } from 'react'
 import { pushError } from '@state/errorSlice'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
 
 export default function LoginForm () {
   const [email, setEmail] = useState('')

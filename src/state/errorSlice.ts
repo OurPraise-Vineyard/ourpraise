@@ -34,6 +34,7 @@ function humanizeError(err): string {
       return errors[err.code]
     } else {
       console.log('Could not map error: ' + err.code)
+      console.log(err)
       return 'Something went wrong. Check that you provided correct information.'
     }
   } else if ('message' in err) {

@@ -1,32 +1,21 @@
-import React, { useCallback, useEffect } from 'react'
+import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EventForm from '@features/Events/EventForm'
-import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { fetchEvent, saveEvent } from '@state/events/api'
+import { useAppDispatch } from '@hooks/state'
 import { pushError } from '@state/errorSlice'
+import withFetch from '@components/withFetch'
+import { fetchEvent, saveEvent } from '@backend/events'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
 
-export default function EditEvent() {
+function EditEvent ({ data: event }: { data: IEvent }) {
   const { eventId } = useParams()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const event = useAppSelector(state => state.events.index[eventId])
   useDocumentTitle(event ? `Edit event: "${event.title}"` : 'Edit event')
-
-  const fetchFullEvent = useCallback(async () => {
-    try {
-      await dispatch(fetchEvent(eventId)).unwrap()
-    } catch (err) {
-      dispatch(pushError(err))
-    }
-  }, [dispatch, eventId])
-
-  useEffect(() => {
-    fetchFullEvent()
-  }, [fetchFullEvent])
 
   const handleSubmit = async options => {
     try {
-      await dispatch(saveEvent({ ...options, id: eventId })).unwrap()
+      await saveEvent({ ...options, id: eventId })
       navigate('/events/' + eventId)
     } catch (err) {
       dispatch(pushError(err))
@@ -35,3 +24,5 @@ export default function EditEvent() {
 
   return <EventForm event={event} onSubmit={handleSubmit} heading="Edit event" />
 }
+
+export default withFetch<IEvent>(params => fetchEvent(params.eventId as string))(EditEvent)

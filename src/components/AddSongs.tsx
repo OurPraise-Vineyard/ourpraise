@@ -1,19 +1,13 @@
-import { searchSongs } from '@utils/algolia'
 import Modal from '@components/Modal'
 import SearchSongs from '@components/SearchSongs'
-import React, { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import ButtonBase from '@components/ButtonBase'
-import { useAppDispatch, useAppSelector } from '@utils/hooks'
-import { FetchStatus } from '@utils/api'
-import { fetchSongList, fetchSongLists } from '@state/songLists/api'
-import { pushError } from '@state/errorSlice'
+import { fetchSearchQuery } from '@backend/songs'
+import withFetch, { IWithFetchProps } from '@components/withFetch'
+import { fetchSongLists } from '@backend/songLists'
 
-interface Song {
-  id: boolean
-}
-
-function mapSong (data, addedSongs: Array<Song>) {
+function mapSong (data, addedSongs: Array<ISong>) {
   const id = data.objectID || data.id
   return {
     title: data.title,
@@ -50,26 +44,6 @@ const AddSongItem = styled.div`
   }
 `
 
-const SongListItem = styled.div`
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  grid-template-rows: 1fr;
-  grid-template-areas: 'title actions';
-  padding: 10px 0;
-  top: -20px;
-  position: sticky;
-  background-color: white;
-  z-index: 1;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid ${props => props.theme.colors.border};
-  }
-
-  & > :first-child {
-    align-self: center;
-  }
-`
-
 const PrimaryItemText = styled.div`
   font-size: 20px;
   font-weight: bold;
@@ -96,42 +70,26 @@ const Added = styled.div`
   align-self: center;
 `
 
-const SongListSongs = styled.div`
-  grid-column: 1/3;
-  padding-left: 40px;
-  & > :last-child {
-    margin-bottom: 20px;
-  }
-`
+type AddSongsContentProps = IWithFetchProps<ISongList[]> & {
+  show: boolean
+  addedSongs: ISongList[]
+  onAddSong: (song: ISong) => void
+}
 
-const StickyContainer = styled.div`
-  position: relative;
-`
-
-function AddSongsContent ({ show, addedSongs: externalAddedSongs, onAddSong }) {
+const AddSongsContent = withFetch<ISongList[]>(fetchSongLists)(function ({
+  show,
+  addedSongs: externalAddedSongs,
+  onAddSong
+}: AddSongsContentProps) {
   const [addedSongs, setAddedSongs] = useState([])
   const [loading, setLoading] = useState(false)
   const [hits, setHits] = useState([])
   const [query, setQuery] = useState('')
-  const dispatch = useAppDispatch()
-  const songLists = useAppSelector(state => state.songLists.songLists)
-  const statusSongLists = useAppSelector(state => state.songLists.statusSongLists)
-  const [selectedList, setSelectedList] = useState<string>(null)
-  const selectedListData = useAppSelector(state => state.songLists.index[selectedList])
   const searchInput = useRef<HTMLInputElement | null>(null)
-  const selectedListLoading = !!selectedListData
-
-  const selectedListSongs = useMemo(() => {
-    if (selectedListData) {
-      return selectedListData.songs.map(song => mapSong(song, addedSongs))
-    }
-    return null
-  }, [selectedListData, addedSongs])
 
   useEffect(() => {
     if (show) {
       setAddedSongs(externalAddedSongs)
-      setSelectedList(null)
       setQuery('')
       setHits([])
       setLoading(false)
@@ -140,30 +98,11 @@ function AddSongsContent ({ show, addedSongs: externalAddedSongs, onAddSong }) {
     /* eslint-disable-next-line */
   }, [show])
 
-  useEffect(() => {
-    if (statusSongLists === FetchStatus.idle) {
-      dispatch(fetchSongLists())
-        .unwrap()
-        .catch(err => {
-          dispatch(pushError(err))
-        })
-    }
-  }, [statusSongLists, dispatch])
-
-  useEffect(() => {
-    if (selectedList && !selectedListLoading) {
-      dispatch(fetchSongList(selectedList))
-        .unwrap()
-        .catch(err => dispatch(pushError(err)))
-    }
-  }, [dispatch, selectedList, selectedListLoading])
-
   const handleSearch = useCallback(
     async query => {
       if (query) {
-        const hits = await searchSongs(query)
+        const hits = await fetchSearchQuery(query)
         setHits(hits.map(hit => mapSong(hit, addedSongs)))
-        setSelectedList(null)
       } else {
         setHits([])
       }
@@ -188,14 +127,6 @@ function AddSongsContent ({ show, addedSongs: externalAddedSongs, onAddSong }) {
     onAddSong(song)
   }
 
-  const handleViewSongList = songListId => {
-    if (songListId === selectedList) {
-      setSelectedList(null)
-    } else {
-      setSelectedList(songListId)
-    }
-  }
-
   useEffect(() => {
     if (show) {
       if (searchInput.current) searchInput.current.select()
@@ -203,7 +134,7 @@ function AddSongsContent ({ show, addedSongs: externalAddedSongs, onAddSong }) {
   }, [show])
 
   let body: ReactElement = null
-  if (loading || (query.length === 0 && statusSongLists === FetchStatus.loading)) {
+  if (loading /*&& statusSongLists === FetchStatus.loading */) {
     body = <Text>Loading...</Text>
   } else if (query.length > 0) {
     body = (
@@ -223,39 +154,7 @@ function AddSongsContent ({ show, addedSongs: externalAddedSongs, onAddSong }) {
       </>
     )
   } else {
-    body = (
-      <>
-        <Text>Select from song lists:</Text>
-        {songLists.map(songList => (
-          <StickyContainer key={songList.id}>
-            <SongListItem>
-              <PrimaryItemText>{songList.name}</PrimaryItemText>
-              <Action onClick={() => handleViewSongList(songList.id)}>
-                {selectedList === songList.id ? 'Hide songs' : 'View songs'}
-              </Action>
-            </SongListItem>
-            <SongListSongs>
-              {selectedList === songList.id && !selectedListSongs && (
-                <Text>Loading song list...</Text>
-              )}
-              {selectedList === songList.id &&
-                !!selectedListSongs &&
-                selectedListSongs.map(song => (
-                  <AddSongItem key={song.id}>
-                    <PrimaryItemText>{song.title}</PrimaryItemText>
-                    <SecondaryItemText>{song.authors}</SecondaryItemText>
-                    {song.added ? (
-                      <Added>Added</Added>
-                    ) : (
-                      <Action onClick={() => handleAddSong(song)}>Add song</Action>
-                    )}
-                  </AddSongItem>
-                ))}
-            </SongListSongs>
-          </StickyContainer>
-        ))}
-      </>
-    )
+    body = <Text>Search songs to add them</Text>
   }
 
   return (
@@ -264,9 +163,15 @@ function AddSongsContent ({ show, addedSongs: externalAddedSongs, onAddSong }) {
       {body}
     </>
   )
-}
+})
 
-export default function AddSongs ({ show, onClose, addedSongs, onAddSong }) {
+type AddSongsProps = {
+  show: boolean
+  onClose: () => void
+  addedSongs: ISongList[]
+  onAddSong: (song: ISong) => void
+}
+export default function AddSongs ({ show, onClose, addedSongs, onAddSong }: AddSongsProps) {
   return (
     <Modal onClose={onClose} show={show} title="Add songs">
       <AddSongsContent show={show} addedSongs={addedSongs} onAddSong={onAddSong} />

@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ContentTable from '@components/ContentTable'
 import Toolbar from '@features/SongLists/Overview/Toolbar'
-import { FetchStatus } from '@utils/api'
-import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { pushError } from '@state/errorSlice'
-import { fetchSongLists } from '@state/songLists/api'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import withFetch, { IWithFetchProps } from '@components/withFetch'
+import { fetchSongLists } from '@backend/songLists'
 
 function mapSongList (data) {
   return {
@@ -13,21 +12,8 @@ function mapSongList (data) {
   }
 }
 
-export default function SongLists () {
+function SongLists ({ data: songLists }: IWithFetchProps<ISongList[]>) {
   useDocumentTitle('Song Lists')
-  const dispatch = useAppDispatch()
-  const songLists = useAppSelector(state => state.songLists.songLists)
-  const statusSongLists = useAppSelector(state => state.songLists.statusSongLists)
-
-  useEffect(() => {
-    if (statusSongLists === FetchStatus.idle) {
-      dispatch(fetchSongLists())
-        .unwrap()
-        .catch(err => {
-          dispatch(pushError(err))
-        })
-    }
-  }, [dispatch, statusSongLists])
 
   return (
     <div>
@@ -36,3 +22,5 @@ export default function SongLists () {
     </div>
   )
 }
+
+export default withFetch<ISongList[]>(fetchSongLists)(SongLists)

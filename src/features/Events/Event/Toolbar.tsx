@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useAppSelector } from '@utils/hooks'
 import IconButton from '@components/IconButton'
 import editIcon from '@assets/edit.svg'
 import downloadIcon from '@assets/download.svg'
 import { formatDate } from '@utils/date'
+import useAuth from '@hooks/useAuth'
 
 const StyledIconButton = styled(IconButton)`
   @media print {
@@ -55,11 +55,10 @@ const Spacer = styled.span`
   }
 `
 
-export default function Toolbar () {
+export default function Toolbar ({ event }: { event: IEvent }) {
   const { eventId } = useParams()
   const navigate = useNavigate()
-  const event = useAppSelector(state => state.events.index[eventId])
-  const user = useAppSelector(state => state.auth.user)
+  const { user } = useAuth()
   const eventDate = useMemo(() => formatDate(event.date), [event.date])
 
   const handleDownload = () => {

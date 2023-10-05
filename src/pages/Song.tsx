@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useAppDispatch, useAppSelector, useDocumentTitle } from '@utils/hooks'
-import { fetchSong } from '@state/songs/api'
-import { pushError } from '@state/errorSlice'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import IconButton from '@components/IconButton'
 import editIcon from '@assets/edit.svg'
 import Toolbar from '@components/Toolbar'
 import KeySwitcher from '@components/KeySwitcher'
 import useFormattedSongBody from '@hooks/useFormattedSongBody'
+import withFetch from '@components/withFetch'
+import { fetchSong } from '@backend/songs'
+import useAuth from '@hooks/useAuth'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -44,31 +45,16 @@ const Header = styled.div`
   grid-template-areas: 'title chords' 'authors chords';
 `
 
-export default function ViewSong () {
+function Song ({ data: song }: { data: ISong }) {
   const { songId } = useParams()
-  const [transposeKey, setTransposeKey] = useState<IKey | null>(null)
+  const [transposeKey, setTransposeKey] = useState<IKey | null>(song.key)
   const [showChords, setShowChords] = useState(true)
   const navigate = useNavigate()
-  const song = useAppSelector(state => state.songs.index[songId])
-  const isAdmin = useAppSelector(state => state.auth.user.role === 'admin')
-  const dispatch = useAppDispatch()
+  const { user } = useAuth()
   const formattedBody = useFormattedSongBody(song, showChords, transposeKey)
-  useDocumentTitle(song ? song.title : '')
+  useDocumentTitle(song.title)
 
-  const songLoaded = song && song.id === songId
-  const songKey = song && song.key
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        await dispatch(fetchSong(songId)).unwrap()
-      } catch (err) {
-        dispatch(pushError(err))
-      }
-    })()
-  }, [songId, dispatch])
-
-  useEffect(() => setTransposeKey(songKey || null), [songKey])
+  const isAdmin = user.role === 'admin'
 
   function handleEdit () {
     navigate(`/songs/${songId}/edit`)
@@ -80,10 +66,6 @@ export default function ViewSong () {
 
   function handleToggleChords () {
     setShowChords(!showChords)
-  }
-
-  if (!songLoaded) {
-    return null
   }
 
   return (
@@ -106,3 +88,5 @@ export default function ViewSong () {
     </div>
   )
 }
+
+export default withFetch<ISong>(params => fetchSong(params.songId as string))(Song)

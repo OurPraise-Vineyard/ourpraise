@@ -1,10 +1,3 @@
-export enum FetchStatus {
-  idle = 'idle',
-  loading = 'loading',
-  failed = 'failed',
-  succeeded = 'succeeded'
-}
-
 export function mapDocsId(snap) {
   return snap.docs.map(doc => ({ ...doc.data(), id: doc.id }))
 }

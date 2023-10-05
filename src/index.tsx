@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import '@utils/firebase'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
@@ -13,12 +13,8 @@ import ViewEvent from '@pages/Event'
 import EditEvent from '@pages/EventEdit'
 import { Provider } from 'react-redux'
 import store from '@state/store'
-import { useAppDispatch, useAppSelector } from '@utils/hooks'
-import { initializeUser } from '@state/auth/api'
-import { LoginStatus } from '@state/auth/slice'
 import DisplayErrors from '@components/DisplayErrors'
 import Auth from '@pages/Auth'
-import { pushError } from '@state/errorSlice'
 import GlobalStyle from '@styles/GlobalStyle'
 import { ThemeProvider } from 'styled-components'
 import AppTheme from '@styles/AppTheme'
@@ -27,22 +23,10 @@ import ViewSongList from '@pages/SongList'
 import AddSongList from '@pages/SongListAdd'
 import SongLists from '@pages/SongListOverview'
 import NoAccessView from '@pages/NoAccess'
+import useAuth from '@hooks/useAuth'
 
 function App () {
-  const user = useAppSelector(state => state.auth.user)
-  const ready = useAppSelector(state => state.auth.status !== LoginStatus.undetermined)
-  const dispatch = useAppDispatch()
-
-  useEffect(
-    function () {
-      try {
-        dispatch(initializeUser()).unwrap()
-      } catch (err) {
-        dispatch(pushError(err))
-      }
-    },
-    [dispatch]
-  )
+  const { user, ready } = useAuth()
 
   if (!ready) {
     return null

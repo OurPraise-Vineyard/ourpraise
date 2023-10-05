@@ -1,20 +1,13 @@
-interface SongList {
+interface ISongList {
   lastModified: string
   name: string
   songIds: string[]
-  id: string
+  id: IDocId
+  songs?: ISong[]
 }
 
-interface FullSongList {
-  lastModified: string
-  name: string
-  songs: ISong[]
-  songIds: string[]
-  id: string
-}
-
-interface SongListFormType {
-  id?: string
+interface ISongListForm {
+  id?: IDocId
   name: string
   songs: ISong[]
 }
