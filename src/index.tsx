@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import '@utils/firebase'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import Layout from '@components/Layout'
 import ViewSong from '@pages/Song'
