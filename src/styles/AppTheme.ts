@@ -28,11 +28,15 @@ const AppTheme = {
   },
 
   fontSizes: {
-    regular: 16
+    regular: '16px'
   },
 
   fontStack: 'Abel, sans-serif',
-  boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.2)'
+  boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.2)',
+
+  sizes: {
+    toolbarHeight: '50px'
+  }
 }
 
 export default AppTheme

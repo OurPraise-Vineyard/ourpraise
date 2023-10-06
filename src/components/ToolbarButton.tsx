@@ -7,4 +7,5 @@ export default styled(Link)`
   ${buttonBase}
   margin: 0;
   text-decoration: none;
+  height: ${props => props.theme.sizes.toolbarHeight};
 `

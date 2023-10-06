@@ -1,19 +1,23 @@
 import React from 'react'
 
 import { IEventsData, fetchEvents } from '@backend/events'
-import ContentTable from '@components/ContentTable'
+import CompactListItem from '@components/CompactListItem'
 import Toolbar from '@components/Toolbar'
 import ToolbarButton from '@components/ToolbarButton'
+import Paragraph from '@components/text/Paragraph'
+import Title from '@components/text/Title'
 import withFetch from '@components/withFetch'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { formatDate } from '@utils/date'
 
-function mapEvent(data) {
-  return {
-    primary: data.title,
-    secondary: formatDate(data.date),
-    url: `/events/${data.id || data.objectID}`
-  }
+function renderEventItem(event: IEvent): JSX.Element {
+  return (
+    <CompactListItem
+      to={`/events/${event.id}`}
+      primary={event.title}
+      secondary={formatDate(event.date)}
+    />
+  )
 }
 
 function EventOverview({ data: { upcoming, past } }: { data: IEventsData }) {
@@ -22,16 +26,15 @@ function EventOverview({ data: { upcoming, past } }: { data: IEventsData }) {
   return (
     <div>
       <Toolbar>
+        <Title>Upcoming events</Title>
         <ToolbarButton to="/events/add">Add new event</ToolbarButton>
       </Toolbar>
-      {upcoming.length > 0 && (
-        <ContentTable
-          items={upcoming}
-          title={'Upcoming events'}
-          mapper={mapEvent}
-        />
-      )}
-      <ContentTable items={past} title={'Past events'} mapper={mapEvent} />
+      {upcoming.map(renderEventItem)}
+      {upcoming.length === 0 && <Paragraph>No upcoming events</Paragraph>}
+      <Toolbar extraSpacingTop>
+        <Title>Past events</Title>
+      </Toolbar>
+      {past.map(renderEventItem)}
     </div>
   )
 }

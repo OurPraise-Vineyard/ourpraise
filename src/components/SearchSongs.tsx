@@ -10,6 +10,7 @@ const SearchBar = styled.input`
   font-size: 20px;
   border: none;
   flex: 1 0 auto;
+  width: 122px;
 
   &:focus {
     outline: none;
@@ -24,11 +25,14 @@ const SearchBarWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex: 1 0 auto;
+  flex: 0 1 auto;
+  height: ${props => props.theme.sizes.toolbarHeight};
+  width: 200px;
 
   &::before {
     content: '';
     background-image: url(${searchIcon});
+    background-size: contain;
     width: 20px;
     height: 20px;
     display: block;

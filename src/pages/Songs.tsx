@@ -1,32 +1,28 @@
 import React, { useCallback, useState } from 'react'
 
 import { fetchSearchQuery, fetchSongs } from '@backend/songs'
-import ContentTable from '@components/ContentTable'
+import Center from '@components/Center'
+import CompactListItem from '@components/CompactListItem'
 import SearchSongs from '@components/SearchSongs'
 import Toolbar from '@components/Toolbar'
 import ToolbarButton from '@components/ToolbarButton'
 import ToolbarSeparator from '@components/ToolbarSeparator'
+import Title from '@components/text/Title'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
 import { useAppDispatch } from '@hooks/state'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { pushError } from '@state/errorSlice'
 
-function mapSong(data) {
-  return {
-    primary: data.title,
-    secondary: data.authors,
-    url: `/songs/${data.id || data.objectID}`
-  }
-}
-
 function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
   useDocumentTitle('Songs')
-  const [query, setQuery] = useState('')
-  const [hits, setHits] = useState([])
+  const [query, setQuery] = useState<string>('')
+  const [hits, setHits] = useState<ISong[]>([])
   const dispatch = useAppDispatch()
   const { user } = useAuth()
   const [searchStatus, setSearchStatus] = useState<FetchStatus>('idle')
+
+  const items = query ? hits : songs
 
   const handleSearch = useCallback(
     async query => {
@@ -63,6 +59,7 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
   return (
     <div>
       <Toolbar>
+        <Title>{query ? `Search results for "${query}"` : 'All songs'}</Title>
         <SearchSongs
           onSearch={handleSearch}
           onChangeLoading={handleSetSearchLoading}
@@ -74,12 +71,19 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
           </>
         )}
       </Toolbar>
-      <ContentTable
-        mapper={mapSong}
-        items={query ? hits : songs}
-        title={query ? `Search results for "${query}"` : 'All songs'}
-        loading={loading}
-      />
+      {loading ? (
+        <Center>Loading...</Center>
+      ) : (
+        <div>
+          {items.map(song => (
+            <CompactListItem
+              to={`/songs/${song.id}`}
+              primary={song.title}
+              secondary={song.authors}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
