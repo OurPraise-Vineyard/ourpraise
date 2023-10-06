@@ -66,7 +66,7 @@ const Toolbar = styled.div`
 `
 
 const Title = styled.div`
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.large};
   flex: 1 0 auto;
 `
 

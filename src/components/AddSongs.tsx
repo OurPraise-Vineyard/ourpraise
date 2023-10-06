@@ -26,7 +26,7 @@ function mapSong(data, addedSongs: Array<ISong>) {
 }
 
 const Text = styled.div`
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   text-align: center;
   padding: 20px;
 `
@@ -52,13 +52,13 @@ const AddSongItem = styled.div`
 `
 
 const PrimaryItemText = styled.div`
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   font-weight: bold;
   grid-area: title;
 `
 
 const SecondaryItemText = styled.div`
-  font-size: 18px;
+  font-size: ${props => props.theme.fontSizes.regular};
   color: ${props => props.theme.colors.textFaded};
   grid-area: authors;
 `
@@ -71,7 +71,7 @@ const Action = styled(ButtonBase)`
 `
 
 const Added = styled.div`
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   grid-area: actions;
   justify-self: end;
   align-self: center;

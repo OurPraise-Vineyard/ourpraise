@@ -21,13 +21,13 @@ const Container = styled.div`
 `
 
 const Title = styled.h1`
-  font-size: 36px;
+  font-size: ${props => props.theme.fontSizes.large};
   margin: 0;
   grid-area: title;
 `
 
 const Authors = styled.h2`
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   color: ${props => props.theme.colors.textFaded};
   margin: 0;
   grid-area: authors;
@@ -37,6 +37,7 @@ const SongBody = styled.div`
   font-family: 'Oxygen Mono', monospace;
   margin: 16px 0;
   white-space: pre;
+  font-size: ${props => props.theme.fontSizes.small};
 `
 
 const Header = styled.div`

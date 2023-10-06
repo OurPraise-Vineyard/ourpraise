@@ -10,7 +10,7 @@ const Container = styled.label`
 `
 
 const Label = styled.span`
-  font-size: 16px;
+  font-size: ${props => props.theme.fontSizes.small};
   display: block;
 `
 
@@ -19,7 +19,7 @@ const Input = styled.input`
   width: 100%;
   display: block;
   border: none;
-  font-size: 16px;
+  font-size: ${props => props.theme.fontSizes.small};
   padding: 8px 0 0;
 
   &:focus {

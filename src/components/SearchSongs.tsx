@@ -7,7 +7,7 @@ import { createDebouncer } from '@utils/debouncer'
 const debounce = createDebouncer(1000)
 
 const SearchBar = styled.input`
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   border: none;
   flex: 1 0 auto;
   width: 122px;

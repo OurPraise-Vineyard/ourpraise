@@ -27,7 +27,7 @@ const Logo = styled.img.attrs({
 
 const Username = styled.p`
   padding: 0;
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   color: ${props => props.theme.colors.navText};
   cursor: pointer;
   grid-area: username;
@@ -51,7 +51,7 @@ const Links = styled.div`
   grid-area: links;
 
   > a {
-    font-size: 18px;
+    font-size: ${props => props.theme.fontSizes.small};
     color: ${props => props.theme.colors.navText};
     text-decoration: none;
     margin-right: 20px;

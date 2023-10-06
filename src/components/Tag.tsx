@@ -5,13 +5,13 @@ export default styled.span`
   background-color: ${props => props.theme.colors.chipBackground};
   color: black;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: ${props => props.theme.fontSizes.small};
   flex: 0 0 auto;
 
   @media print {
     color: ${props => props.theme.colors.textFaded};
     background-color: transparent;
-    font-size: 22px;
+    font-size: ${props => props.theme.fontSizes.large};
     padding: 0;
   }
 `

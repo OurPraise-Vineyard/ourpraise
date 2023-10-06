@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export default styled.div`
   margin: 8px 0 0;
 
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   line-height: 1.5;
   font-weight: normal;
 

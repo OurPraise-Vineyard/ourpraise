@@ -20,14 +20,14 @@ const Container = styled.div`
 `
 
 const SongTitle = styled.div`
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   font-weight: bold;
   grid-area: title;
   align-self: end;
 `
 
 const SongAuthors = styled.div`
-  font-size: 18px;
+  font-size: ${props => props.theme.fontSizes.regular};
   color: ${props => props.theme.colors.textFaded};
   grid-area: authors;
   align-self: start;

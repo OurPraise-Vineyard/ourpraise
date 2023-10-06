@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const List = styled.ul`
   display: none;
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   page-break-after: always;
   padding: 10px 0 10px 40px;
   line-height: 1.5;

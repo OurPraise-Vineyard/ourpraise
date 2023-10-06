@@ -32,7 +32,7 @@ export const buttonBase = css<{
   color?: keyof typeof colorSchemes
 }>`
   cursor: pointer;
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   transition: all 0.2s ease-out;
   padding: 10px 20px;
   border-radius: 4px;

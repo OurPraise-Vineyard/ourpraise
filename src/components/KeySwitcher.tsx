@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 `
 
 const Chord = styled.select`
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   flex: 1 0 auto;
   background: transparent;
   border: 0;

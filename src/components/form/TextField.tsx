@@ -10,7 +10,7 @@ const Container = styled.label`
 `
 
 const Label = styled.span`
-  font-size: 16px;
+  font-size: ${props => props.theme.fontSizes.small};
   display: block;
 `
 
@@ -19,7 +19,7 @@ const Input = styled.input`
   width: 100%;
   display: block;
   border: none;
-  font-size: 14px;
+  font-size: ${props => props.theme.fontSizes.small};
   padding: 8px 0 0;
   font-family: 'Oxygen Mono', monospace;
 
@@ -40,7 +40,7 @@ const Textarea = styled.textarea<{ size: string }>`
   width: 100%;
   display: block;
   border: none;
-  font-size: 14px;
+  font-size: ${props => props.theme.fontSizes.small};
   padding: 8px 0 0;
   font-family: 'Oxygen Mono', monospace;
   min-height: ${props => sizes[props.size]};

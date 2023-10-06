@@ -33,7 +33,7 @@ const Header = styled.div`
 `
 
 const SongTitle = styled.div`
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   font-weight: bold;
   grid-area: title;
   align-self: end;
@@ -41,12 +41,12 @@ const SongTitle = styled.div`
   text-overflow: ellipsis;
 
   @media print {
-    font-size: 24px;
+    font-size: ${props => props.theme.fontSizes.large};
   }
 `
 
 const SongAuthors = styled.div`
-  font-size: 18px;
+  font-size: ${props => props.theme.fontSizes.regular};
   color: ${props => props.theme.colors.textFaded};
   grid-area: authors;
   align-self: start;
@@ -56,7 +56,7 @@ const SongAuthors = styled.div`
   white-space: nowrap;
 
   @media print {
-    font-size: 22px;
+    font-size: ${props => props.theme.fontSizes.regular};
   }
 `
 
@@ -69,14 +69,14 @@ const PlayKey = styled.div`
   background-color: ${props => props.theme.colors.subtleButtonBackground};
   position: relative;
   border: 1px solid ${props => props.theme.colors.subtleButtonBorder};
-  font-size: 16px;
+  font-size: ${props => props.theme.fontSizes.small};
 `
 
 const SongBody = styled.div`
   font-family: 'Oxygen Mono', monospace;
   margin: 20px 0;
   white-space: pre;
-  font-size: 16px;
+  font-size: ${props => props.theme.fontSizes.small};
   page-break-inside: avoid;
 
   @media screen {

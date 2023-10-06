@@ -3,12 +3,10 @@ import { useNavigate } from 'react-router-dom'
 
 import editIcon from '@assets/edit.svg'
 import { fetchSongList } from '@backend/songLists'
-import { Breaker } from '@components/Breaker'
-import FlexSpacer from '@components/FlexSpacer'
+import CompactListItem from '@components/CompactListItem'
 import IconButton from '@components/IconButton'
-import Link from '@components/Link'
-import PageHeader from '@components/PageHeader'
-import SongListItem from '@components/SongListItem'
+import Toolbar from '@components/Toolbar'
+import Title from '@components/text/Title'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
@@ -25,15 +23,17 @@ function SongList({ data: songList }: IWithFetchProps<ISongList>) {
 
   return (
     <div>
-      <PageHeader title={songList.name}>
-        <FlexSpacer />
+      <Toolbar>
+        <Title>{songList.name}</Title>
         {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}
-      </PageHeader>
-      <Breaker />
+      </Toolbar>
       {songList.songs.map((song, i) => (
-        <Link key={song.id} to={`/songs/${song.id}`}>
-          <SongListItem authors={song.authors} title={song.title} />
-        </Link>
+        <CompactListItem
+          key={song.id}
+          to={`/songs/${song.id}`}
+          primary={song.title}
+          secondary={song.authors}
+        />
       ))}
     </div>
   )

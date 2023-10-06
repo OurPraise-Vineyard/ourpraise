@@ -12,4 +12,9 @@ export default styled.div<{ extraSpacingTop?: boolean }>`
   & > *:not(:last-child) {
     margin-right: 16px;
   }
+
+  @media print {
+    padding: 0;
+    height: ${props => props.theme.sizes.toolbarHeight};
+  }
 `

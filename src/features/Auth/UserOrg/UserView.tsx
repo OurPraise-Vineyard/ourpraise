@@ -8,13 +8,13 @@ import { signOut } from '@state/authSlice'
 import { pushError } from '@state/errorSlice'
 
 const Username = styled.p`
-  font-size: 24px;
+  font-size: ${props => props.theme.fontSizes.large};
   margin: 20px 0 0;
   text-align: center;
 `
 
 const Email = styled.p`
-  font-size: 18px;
+  font-size: ${props => props.theme.fontSizes.regular};
   color: ${props => props.theme.colors.textFaded};
   margin: 0 0 25px;
   text-align: center;

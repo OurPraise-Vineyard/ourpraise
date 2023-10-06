@@ -6,7 +6,7 @@ const Wrapper = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 20px;
+  font-size: ${props => props.theme.fontSizes.regular};
   text-decoration: none;
   padding: 6px 0;
   border-radius: 4px;

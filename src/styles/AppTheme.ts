@@ -28,7 +28,9 @@ const AppTheme = {
   },
 
   fontSizes: {
-    regular: '16px'
+    small: '16px',
+    regular: '20px',
+    large: '24px'
   },
 
   fontStack: 'Abel, sans-serif',
