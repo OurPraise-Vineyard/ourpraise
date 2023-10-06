@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import logo from '@assets/logo_light.svg'
-import LinkBase from '@components/LinkBase'
+import NavMenuItem from '@components/NavMenuItem'
 import Page from '@components/Page'
 import UserOrg from '@features/Auth/UserOrg'
 import useAuth from '@hooks/useAuth'
@@ -74,15 +74,9 @@ export default function Nav({ wide = false }) {
           <Links>
             {user.role === 'admin' && (
               <>
-                <LinkBase color="white" to="/events">
-                  Events
-                </LinkBase>
-                <LinkBase color="white" to="/songs">
-                  Songs
-                </LinkBase>
-                <LinkBase color="white" to="/songlists">
-                  Song Lists
-                </LinkBase>
+                <NavMenuItem to="/events">Events</NavMenuItem>
+                <NavMenuItem to="/songs">Songs</NavMenuItem>
+                <NavMenuItem to="/songlists">Song Lists</NavMenuItem>
               </>
             )}
           </Links>

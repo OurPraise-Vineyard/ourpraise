@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const Row = styled.div`
   display: flex;
-  margin-bottom: 16px;
+  margin: 16px 0;
   align-items: center;
   justify-content: space-between;
   gap: 12px;

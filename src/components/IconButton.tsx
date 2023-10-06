@@ -16,4 +16,8 @@ export default styled.button<{ icon }>`
   &:hover {
     background-color: ${props => props.theme.colors.backgroundHover};
   }
+
+  @media print {
+    display: none;
+  }
 `

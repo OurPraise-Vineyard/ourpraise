@@ -2,8 +2,8 @@ import React, { Fragment, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import LinkBase from '@components/LinkBase'
-import { Breaker } from '@styles/CommonStyles'
+import { Breaker } from '@components/Breaker'
+import LinkBase from '@components/NavMenuItem'
 
 const Container = styled.div`
   padding: 20px;
@@ -127,15 +127,10 @@ export default function ContentTable({
                 <PrimaryText>{primary}</PrimaryText>
                 <SecondaryText>{secondary}</SecondaryText>
               </Item>
-              {index !== mappedItems.length - 1 && <Breaker />}
+              {index !== mappedItems.length - 1 && <Breaker noMargin />}
             </Fragment>
           ))}
         </Items>
-      )}
-      {viewAllUrl && (
-        <Center>
-          <ViewAllLink to={viewAllUrl}>View all &rarr;</ViewAllLink>
-        </Center>
       )}
       <LoadingOverlay visible={loading} />
     </Container>

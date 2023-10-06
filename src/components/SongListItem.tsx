@@ -86,16 +86,30 @@ const SongBody = styled.div`
   }
 `
 
-export default function Song({ song }: { song: IEventSong }) {
+type SongListItemProps = {
+  formattedKey?: string
+  title: string
+  body?: string[]
+  authors: string
+  comment?: string
+}
+
+export default function SongListItem({
+  title,
+  authors,
+  formattedKey,
+  body = [],
+  comment
+}: SongListItemProps) {
   return (
     <Container>
       <Header>
-        <SongTitle>{song.title}</SongTitle>
-        <SongAuthors>{song.authors}</SongAuthors>
-        <PlayKey>{song.formattedKey}</PlayKey>
+        <SongTitle>{title}</SongTitle>
+        <SongAuthors>{authors}</SongAuthors>
+        {formattedKey && <PlayKey>{formattedKey}</PlayKey>}
       </Header>
-      {song.comment && <Comment>{song.comment}</Comment>}
-      {song.body.map((part, index) => (
+      {comment && <Comment>{comment}</Comment>}
+      {body.map((part, index) => (
         <SongBody key={index}>{part}</SongBody>
       ))}
     </Container>

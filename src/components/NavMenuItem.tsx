@@ -15,7 +15,7 @@ const itemAnimation = keyframes`
 
 export default styled(NavLink)`
   position: relative;
-  color: ${props => props.color || 'black'};
+  color: white;
 
   ::before {
     content: '';
@@ -23,7 +23,7 @@ export default styled(NavLink)`
     bottom: -2px;
     left: 100%;
     right: 0;
-    background-color: ${props => props.color || 'black'};
+    background-color: white;
     height: 1px;
     transition: left 0.2s linear, right 0.2s linear;
   }
