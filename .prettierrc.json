@@ -16,7 +16,7 @@
   "vueIndentScriptAndStyle": false,
   "printWidth": 80,
   "tabWidth": 2,
-  "importOrder": ["^@components/(.*)$", "^@features/(.*)$", "^[./]"],
+  "importOrder": ["^@.*?/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "plugins": ["@trivago/prettier-plugin-sort-imports"]
