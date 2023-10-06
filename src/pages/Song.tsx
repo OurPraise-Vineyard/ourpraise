@@ -13,6 +13,10 @@ import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useFormattedSongBody from '@hooks/useFormattedSongBody'
 
+const Container = styled.div`
+  margin-top: 16px;
+`
+
 const Authors = styled(Paragraph)`
   color: ${props => props.theme.colors.textFaded};
   margin: 0;
@@ -28,13 +32,17 @@ const SongBody = styled.div`
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
 `
 
 const Column = styled.div`
   flex: 1 0 auto;
-  margin: 16px 0;
+  margin: 0 0 16px;
+`
+
+const Centered = styled(Row)`
+  align-items: center;
 `
 
 function Song({ data: song }: { data: ISong }) {
@@ -61,13 +69,13 @@ function Song({ data: song }: { data: ISong }) {
   }
 
   return (
-    <div>
+    <Container>
       <Row>
         <Column>
           <Title>{song.title}</Title>
           <Authors>{song.authors}</Authors>
         </Column>
-        <Row>
+        <Centered>
           <KeySwitcher
             transposeKey={transposeKey}
             setTransposeKey={setTransposeKey}
@@ -76,10 +84,10 @@ function Song({ data: song }: { data: ISong }) {
             showChords={showChords}
           />
           {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
-        </Row>
+        </Centered>
       </Row>
       <SongBody>{formattedBody}</SongBody>
-    </div>
+    </Container>
   )
 }
 
