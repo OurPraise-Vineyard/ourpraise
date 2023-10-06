@@ -7,6 +7,7 @@ import { fetchSong } from '@backend/songs'
 import IconButton from '@components/IconButton'
 import KeySwitcher from '@components/KeySwitcher'
 import Toolbar from '@components/Toolbar'
+import ToolbarButton from '@components/ToolbarButton'
 import withFetch from '@components/withFetch'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
@@ -73,6 +74,11 @@ function Song({ data: song }: { data: ISong }) {
   return (
     <div>
       <Toolbar>
+        {isAdmin && (
+          <ToolbarButton onClick={() => console.log('hej')}>
+            Add to playlist
+          </ToolbarButton>
+        )}
         {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
       </Toolbar>
       <Container>

@@ -5,7 +5,7 @@ import Center from '@components/Center'
 import CompactListItem from '@components/CompactListItem'
 import SearchSongs from '@components/SearchSongs'
 import Toolbar from '@components/Toolbar'
-import ToolbarButton from '@components/ToolbarButton'
+import ToolbarLinkButton from '@components/ToolbarLinkButton'
 import Title from '@components/text/Title'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
 import useAuth from '@hooks/useAuth'
@@ -26,7 +26,7 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
         <Title>{query ? `Search results for "${query}"` : 'All songs'}</Title>
         <SearchSongs onSearch={setQuery} />
         {user.role === 'admin' && (
-          <ToolbarButton to="/songs/add">Add new song</ToolbarButton>
+          <ToolbarLinkButton to="/songs/add">Add new song</ToolbarLinkButton>
         )}
       </Toolbar>
       {searchStatus === 'loading' ? (

@@ -3,7 +3,7 @@ import React from 'react'
 import { IEventsData, fetchEvents } from '@backend/events'
 import CompactListItem from '@components/CompactListItem'
 import Toolbar from '@components/Toolbar'
-import ToolbarButton from '@components/ToolbarButton'
+import ToolbarLinkButton from '@components/ToolbarLinkButton'
 import Paragraph from '@components/text/Paragraph'
 import Title from '@components/text/Title'
 import withFetch from '@components/withFetch'
@@ -27,7 +27,7 @@ function EventOverview({ data: { upcoming, past } }: { data: IEventsData }) {
     <div>
       <Toolbar>
         <Title>Upcoming events</Title>
-        <ToolbarButton to="/events/add">Add new event</ToolbarButton>
+        <ToolbarLinkButton to="/events/add">Add new event</ToolbarLinkButton>
       </Toolbar>
       {upcoming.map(renderEventItem)}
       {upcoming.length === 0 && <Paragraph>No upcoming events</Paragraph>}
