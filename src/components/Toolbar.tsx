@@ -8,10 +8,7 @@ export default styled.div<{ extraSpacingTop?: boolean }>`
   justify-content: flex-end;
   height: calc(${props => props.theme.sizes.toolbarHeight} + 8px);
   border-bottom: 1px solid ${props => props.theme.colors.breaker};
-
-  & > *:not(:last-child) {
-    margin-right: 16px;
-  }
+  gap: 16px;
 
   @media print {
     padding: 0;

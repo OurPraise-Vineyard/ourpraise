@@ -6,46 +6,35 @@ import editIcon from '@assets/edit.svg'
 import { fetchSong } from '@backend/songs'
 import IconButton from '@components/IconButton'
 import KeySwitcher from '@components/KeySwitcher'
-import Toolbar from '@components/Toolbar'
-import ToolbarButton from '@components/ToolbarButton'
+import Paragraph from '@components/text/Paragraph'
+import Title from '@components/text/Title'
 import withFetch from '@components/withFetch'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useFormattedSongBody from '@hooks/useFormattedSongBody'
 
-const Container = styled.div`
-  box-shadow: ${props => props.theme.boxShadow};
-  background-color: white;
-  padding: 20px;
-  overflow-x: auto;
-  max-width: 100%;
-`
-
-const Title = styled.h1`
-  font-size: ${props => props.theme.fontSizes.large};
-  margin: 0;
-  grid-area: title;
-`
-
-const Authors = styled.h2`
-  font-size: ${props => props.theme.fontSizes.regular};
+const Authors = styled(Paragraph)`
   color: ${props => props.theme.colors.textFaded};
   margin: 0;
-  grid-area: authors;
 `
 
 const SongBody = styled.div`
   font-family: 'Oxygen Mono', monospace;
-  margin: 16px 0;
+  margin: 16px 0 64px;
   white-space: pre;
   font-size: ${props => props.theme.fontSizes.small};
 `
 
-const Header = styled.div`
-  display: grid;
-  grid-template-columns: 1fr min-content;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas: 'title chords' 'authors chords';
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+`
+
+const Column = styled.div`
+  flex: 1 0 auto;
+  margin: 16px 0;
 `
 
 function Song({ data: song }: { data: ISong }) {
@@ -73,17 +62,12 @@ function Song({ data: song }: { data: ISong }) {
 
   return (
     <div>
-      <Toolbar>
-        {isAdmin && (
-          <ToolbarButton onClick={() => console.log('hej')}>
-            Add to playlist
-          </ToolbarButton>
-        )}
-        {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
-      </Toolbar>
-      <Container>
-        <Header>
+      <Row>
+        <Column>
           <Title>{song.title}</Title>
+          <Authors>{song.authors}</Authors>
+        </Column>
+        <Row>
           <KeySwitcher
             transposeKey={transposeKey}
             setTransposeKey={setTransposeKey}
@@ -91,10 +75,10 @@ function Song({ data: song }: { data: ISong }) {
             onToggleChords={handleToggleChords}
             showChords={showChords}
           />
-          <Authors>{song.authors}</Authors>
-        </Header>
-        <SongBody>{formattedBody}</SongBody>
-      </Container>
+          {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
+        </Row>
+      </Row>
+      <SongBody>{formattedBody}</SongBody>
     </div>
   )
 }
