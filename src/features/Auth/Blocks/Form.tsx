@@ -20,5 +20,5 @@ export default styled.form`
   padding: 20px;
   margin: 20vh auto 0;
   position: relative;
-  animation: ${transitionIn} .2s ease-out .2s both;
+  animation: ${transitionIn} 0.2s ease-out 0.2s both;
 `

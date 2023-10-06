@@ -1,7 +1,8 @@
 import React, { Fragment, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import LinkBase from '@components/LinkBase'
 import styled from 'styled-components'
+
+import LinkBase from '@components/LinkBase'
 import { Breaker } from '@styles/CommonStyles'
 
 const Container = styled.div`
@@ -101,7 +102,7 @@ const NotFound = styled.p`
   font-size: 20px;
 `
 
-export default function ContentTable ({
+export default function ContentTable({
   title,
   items,
   viewAllUrl = undefined,

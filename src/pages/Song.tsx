@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import IconButton from '@components/IconButton'
+
 import editIcon from '@assets/edit.svg'
-import Toolbar from '@components/Toolbar'
-import KeySwitcher from '@components/KeySwitcher'
-import useFormattedSongBody from '@hooks/useFormattedSongBody'
-import withFetch from '@components/withFetch'
 import { fetchSong } from '@backend/songs'
+import IconButton from '@components/IconButton'
+import KeySwitcher from '@components/KeySwitcher'
+import Toolbar from '@components/Toolbar'
+import withFetch from '@components/withFetch'
 import useAuth from '@hooks/useAuth'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import useFormattedSongBody from '@hooks/useFormattedSongBody'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -45,7 +46,7 @@ const Header = styled.div`
   grid-template-areas: 'title chords' 'authors chords';
 `
 
-function Song ({ data: song }: { data: ISong }) {
+function Song({ data: song }: { data: ISong }) {
   const { songId } = useParams()
   const [transposeKey, setTransposeKey] = useState<IKey | null>(song.key)
   const [showChords, setShowChords] = useState(true)
@@ -56,7 +57,7 @@ function Song ({ data: song }: { data: ISong }) {
 
   const isAdmin = user.role === 'admin'
 
-  function handleEdit () {
+  function handleEdit() {
     navigate(`/songs/${songId}/edit`)
   }
 
@@ -64,13 +65,15 @@ function Song ({ data: song }: { data: ISong }) {
     setTransposeKey(song.key)
   }
 
-  function handleToggleChords () {
+  function handleToggleChords() {
     setShowChords(!showChords)
   }
 
   return (
     <div>
-      <Toolbar>{isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}</Toolbar>
+      <Toolbar>
+        {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
+      </Toolbar>
       <Container>
         <Header>
           <Title>{song.title}</Title>
@@ -89,4 +92,6 @@ function Song ({ data: song }: { data: ISong }) {
   )
 }
 
-export default withFetch<ISong>(params => fetchSong(params.songId as string))(Song)
+export default withFetch<ISong>(params => fetchSong(params.songId as string))(
+  Song
+)

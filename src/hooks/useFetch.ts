@@ -1,6 +1,7 @@
-import { pushError } from '@state/errorSlice'
-import { useAppDispatch } from '@hooks/state'
 import { useEffect, useState } from 'react'
+
+import { useAppDispatch } from '@hooks/state'
+import { pushError } from '@state/errorSlice'
 
 export type IFetchCreatorParams = Record<string, unknown>
 

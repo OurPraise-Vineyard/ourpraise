@@ -1,30 +1,31 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import Layout from '@components/Layout'
-import ViewSong from '@pages/Song'
-import EditSong from '@pages/SongEdit'
-import Songs from '@pages/Songs'
-import AddSong from '@pages/SongAdd'
-import AddEvent from '@pages/EventAdd'
-import Events from '@pages/Events'
-import ViewEvent from '@pages/Event'
-import EditEvent from '@pages/EventEdit'
 import { Provider } from 'react-redux'
-import store from '@state/store'
-import DisplayErrors from '@components/DisplayErrors'
-import Auth from '@pages/Auth'
-import GlobalStyle from '@styles/GlobalStyle'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import AppTheme from '@styles/AppTheme'
-import EditSongList from '@pages/SongListEdit'
+
+import DisplayErrors from '@components/DisplayErrors'
+import Layout from '@components/Layout'
+import useAuth from '@hooks/useAuth'
+import Auth from '@pages/Auth'
+import ViewEvent from '@pages/Event'
+import AddEvent from '@pages/EventAdd'
+import EditEvent from '@pages/EventEdit'
+import Events from '@pages/Events'
+import NoAccessView from '@pages/NoAccess'
+import ViewSong from '@pages/Song'
+import AddSong from '@pages/SongAdd'
+import EditSong from '@pages/SongEdit'
 import ViewSongList from '@pages/SongList'
 import AddSongList from '@pages/SongListAdd'
+import EditSongList from '@pages/SongListEdit'
 import SongLists from '@pages/SongLists'
-import NoAccessView from '@pages/NoAccess'
-import useAuth from '@hooks/useAuth'
+import Songs from '@pages/Songs'
+import store from '@state/store'
+import AppTheme from '@styles/AppTheme'
+import GlobalStyle from '@styles/GlobalStyle'
 
-function App () {
+function App() {
   const { user, ready } = useAuth()
 
   if (!ready) {
@@ -56,7 +57,10 @@ function App () {
             </Route>
             <Route path="/events/add" element={<AddEvent />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/songlists/:songListId/edit" element={<EditSongList />} />
+            <Route
+              path="/songlists/:songListId/edit"
+              element={<EditSongList />}
+            />
             <Route path="/songlists/:songListId">
               <Route path=":state" element={<ViewSongList />} />
               <Route path="" element={<ViewSongList />} />
@@ -68,7 +72,9 @@ function App () {
       </Route>
       <Route
         index
-        element={<Navigate to={user.role === 'admin' ? '/events' : '/songs'} replace />}
+        element={
+          <Navigate to={user.role === 'admin' ? '/events' : '/songs'} replace />
+        }
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

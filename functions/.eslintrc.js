@@ -2,16 +2,11 @@ module.exports = {
   root: true,
   env: {
     es6: true,
-    node: true,
+    node: true
   },
-  extends: [
-    'react-app',
-  ],
+  extends: ['react-app'],
   rules: {
-    'quotes': ['error', 'single'],
-    'semi': [
-      'error',
-      'never',
-    ],
-  },
+    quotes: ['error', 'single'],
+    semi: ['error', 'never']
+  }
 }

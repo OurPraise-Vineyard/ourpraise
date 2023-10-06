@@ -1,13 +1,14 @@
 import React from 'react'
+
+import { IEventsData, fetchEvents } from '@backend/events'
 import ContentTable from '@components/ContentTable'
-import { formatDate } from '@utils/date'
 import Toolbar from '@components/Toolbar'
 import ToolbarButton from '@components/ToolbarButton'
 import withFetch from '@components/withFetch'
-import { IEventsData, fetchEvents } from '@backend/events'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import { formatDate } from '@utils/date'
 
-function mapEvent (data) {
+function mapEvent(data) {
   return {
     primary: data.title,
     secondary: formatDate(data.date),
@@ -15,7 +16,7 @@ function mapEvent (data) {
   }
 }
 
-function EventOverview ({ data: { upcoming, past } }: { data: IEventsData }) {
+function EventOverview({ data: { upcoming, past } }: { data: IEventsData }) {
   useDocumentTitle('Events')
 
   return (
@@ -24,7 +25,11 @@ function EventOverview ({ data: { upcoming, past } }: { data: IEventsData }) {
         <ToolbarButton to="/events/add">Add new event</ToolbarButton>
       </Toolbar>
       {upcoming.length > 0 && (
-        <ContentTable items={upcoming} title={'Upcoming events'} mapper={mapEvent} />
+        <ContentTable
+          items={upcoming}
+          title={'Upcoming events'}
+          mapper={mapEvent}
+        />
       )}
       <ContentTable items={past} title={'Past events'} mapper={mapEvent} />
     </div>

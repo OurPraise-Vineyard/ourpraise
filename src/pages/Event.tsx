@@ -1,14 +1,10 @@
-import downloadIcon from '@assets/download.svg'
-import editIcon from '@assets/edit.svg'
-import { fetchEvent } from '@backend/events'
-import useAuth from '@hooks/useAuth'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import { Breaker } from '@styles/CommonStyles'
-import { formatDate } from '@utils/date'
 import React, { useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
+import downloadIcon from '@assets/download.svg'
+import editIcon from '@assets/edit.svg'
+import { fetchEvent } from '@backend/events'
 import FlexSpacer from '@components/FlexSpacer'
 import IconButton from '@components/IconButton'
 import PageHeader from '@components/PageHeader'
@@ -16,8 +12,11 @@ import Song from '@components/SongListItem'
 import SongsOverview from '@components/SongsBulletList'
 import Tag from '@components/Tag'
 import withFetch from '@components/withFetch'
-
 import Comment from '@features/Events/Event/Comment'
+import useAuth from '@hooks/useAuth'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import { Breaker } from '@styles/CommonStyles'
+import { formatDate } from '@utils/date'
 
 const StyledBreaker = styled(Breaker)`
   margin-top: 32px;

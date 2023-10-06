@@ -1,5 +1,6 @@
-import { transposeSong } from '@utils/chords'
 import { useEffect, useState } from 'react'
+
+import { transposeSong } from '@utils/chords'
 
 export default function useFormattedSongBody(
   song: ISong,
@@ -13,7 +14,13 @@ export default function useFormattedSongBody(
     if (songBody) {
       if (showChords) {
         if (songKey && transposeKey) {
-          setBody(transposeSong(songBody.replace(/^\/\//gm, '  '), songKey, transposeKey))
+          setBody(
+            transposeSong(
+              songBody.replace(/^\/\//gm, '  '),
+              songKey,
+              transposeKey
+            )
+          )
         } else {
           setBody(songBody.replace(/^\/\//gm, '  '))
         }

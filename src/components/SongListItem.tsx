@@ -1,6 +1,7 @@
-import Comment from '@features/Events/Event/Comment'
 import React from 'react'
 import styled from 'styled-components'
+
+import Comment from '@features/Events/Event/Comment'
 
 const Container = styled.div`
   margin: 32px 0;
@@ -85,7 +86,7 @@ const SongBody = styled.div`
   }
 `
 
-export default function Song ({ song }: { song: IEventSong }) {
+export default function Song({ song }: { song: IEventSong }) {
   return (
     <Container>
       <Header>

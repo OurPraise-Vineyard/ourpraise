@@ -1,15 +1,16 @@
-import TextField from '@components/form/TextField'
-import React, { useEffect, useReducer, useState } from 'react'
-import styled from 'styled-components'
-import ButtonBase from '@components/ButtonBase'
-import { useNavigate } from 'react-router-dom'
 import dateFormat from 'dateformat'
+import React, { useEffect, useReducer, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+
+import { deleteEvent } from '@backend/events'
 import AddSongs from '@components/AddSongs'
+import ButtonBase from '@components/ButtonBase'
+import TextField from '@components/form/TextField'
 import FormSongItem from '@features/Events/EventForm/FormSongItem'
 import { useAppDispatch } from '@hooks/state'
 import { pushError } from '@state/errorSlice'
 import { nextWeekday } from '@utils/date'
-import { deleteEvent } from '@backend/events'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -50,7 +51,7 @@ const DeleteButton = styled(ButtonBase).attrs({
   width: 250px;
 `
 
-function reducer (state, action) {
+function reducer(state, action) {
   switch (action.type) {
     case 'SET':
       return {
@@ -118,7 +119,7 @@ const defaultEvent = {
   songs: []
 }
 
-export default function EventForm ({
+export default function EventForm({
   event = undefined,
   onSubmit,
   heading
@@ -127,7 +128,10 @@ export default function EventForm ({
   onSubmit: (options: IEventForm) => void
   heading: string
 }) {
-  const [{ title, date, songs, comment }, dispatch] = useReducer(reducer, defaultEvent)
+  const [{ title, date, songs, comment }, dispatch] = useReducer(
+    reducer,
+    defaultEvent
+  )
   const navigate = useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(false)
   const appDispatch = useAppDispatch()
@@ -179,8 +183,17 @@ export default function EventForm ({
     <Container>
       <Heading>{heading}</Heading>
       <form onSubmit={handleSave}>
-        <TextField value={title} title="Title" onChange={handleChange('title')} />
-        <TextField value={date} type="date" title="Date" onChange={handleChange('date')} />
+        <TextField
+          value={title}
+          title="Title"
+          onChange={handleChange('title')}
+        />
+        <TextField
+          value={date}
+          type="date"
+          title="Date"
+          onChange={handleChange('date')}
+        />
         <TextField
           multiline
           value={comment}
@@ -192,12 +205,20 @@ export default function EventForm ({
           <FormSongItem
             key={song.id}
             song={song}
-            onChangeTranspose={transpose => handleChangeTranspose(song.id, transpose)}
-            onChangeComment={comment => handleChangeSongComment(song.id, comment)}
+            onChangeTranspose={transpose =>
+              handleChangeTranspose(song.id, transpose)
+            }
+            onChangeComment={comment =>
+              handleChangeSongComment(song.id, comment)
+            }
             onRemove={() => handleRemoveSong(song.id)}
           />
         ))}
-        <ButtonBase type="button" fullWidth onClick={() => setShowAddDialog(true)}>
+        <ButtonBase
+          type="button"
+          fullWidth
+          onClick={() => setShowAddDialog(true)}
+        >
           Add songs
         </ButtonBase>
 

@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import increase from '@assets/increase.svg'
+
+import checked from '@assets/check-square.svg'
 import decrease from '@assets/decrease.svg'
+import increase from '@assets/increase.svg'
 import reset from '@assets/reset.svg'
 import unchecked from '@assets/square.svg'
-import checked from '@assets/check-square.svg'
 import { findNextKey, keysOptions } from '@utils/chords'
 
 const Wrapper = styled.div`
@@ -75,7 +76,7 @@ const Switcher = styled.button.attrs({ tabIndex: -1 })<{ icon: string }>`
   }
 `
 
-export default function KeySwitcher ({
+export default function KeySwitcher({
   transposeKey = '',
   setTransposeKey,
   onResetTranspose,
@@ -91,17 +92,36 @@ export default function KeySwitcher ({
 
   return (
     <Wrapper>
-      <Switcher icon={showChords ? 'checked' : 'unchecked'} onClick={onToggleChords} />
-      <Chord value={transposeKey || ''} onChange={handleSelect} disabled={!showChords}>
+      <Switcher
+        icon={showChords ? 'checked' : 'unchecked'}
+        onClick={onToggleChords}
+      />
+      <Chord
+        value={transposeKey || ''}
+        onChange={handleSelect}
+        disabled={!showChords}
+      >
         {keysOptions.map(({ value, label }) => (
           <option key={value} value={value}>
             {label}
           </option>
         ))}
       </Chord>
-      <Switcher icon="increase" onClick={handleSwitch(1)} disabled={!showChords} />
-      <Switcher icon="decrease" onClick={handleSwitch(-1)} disabled={!showChords} />
-      <Switcher icon="reset" onClick={onResetTranspose} disabled={!showChords} />
+      <Switcher
+        icon="increase"
+        onClick={handleSwitch(1)}
+        disabled={!showChords}
+      />
+      <Switcher
+        icon="decrease"
+        onClick={handleSwitch(-1)}
+        disabled={!showChords}
+      />
+      <Switcher
+        icon="reset"
+        onClick={onResetTranspose}
+        disabled={!showChords}
+      />
     </Wrapper>
   )
 }

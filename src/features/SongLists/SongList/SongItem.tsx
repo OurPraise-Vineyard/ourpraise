@@ -1,6 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 const Container = styled(Link)`
   display: block;
@@ -40,7 +40,7 @@ const SongAuthors = styled.div`
   text-overflow: ellipsis;
 `
 
-export default function SongItem ({ song }: { song: ISong }) {
+export default function SongItem({ song }: { song: ISong }) {
   return (
     <Container to={`/songs/${song.id}`}>
       <SongTitle>{song.title}</SongTitle>

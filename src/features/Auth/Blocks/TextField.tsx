@@ -29,16 +29,25 @@ const Input = styled.input`
 `
 
 interface TextFieldProps {
-  title: string,
-  name?: string,
-  password?: boolean,
-  onChange?: React.ChangeEventHandler<HTMLInputElement>,
-  value: string,
-  disabled?: boolean,
-  required?: boolean,
+  title: string
+  name?: string
+  password?: boolean
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
+  value: string
+  disabled?: boolean
+  required?: boolean
   autoFocus?: boolean
 }
-export default function TextField ({ required = false, disabled = false, title = '', name = '', password = false, onChange, value, autoFocus = false }: TextFieldProps) {
+export default function TextField({
+  required = false,
+  disabled = false,
+  title = '',
+  name = '',
+  password = false,
+  onChange,
+  value,
+  autoFocus = false
+}: TextFieldProps) {
   return (
     <Container>
       <Label>{title}</Label>

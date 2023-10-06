@@ -30,32 +30,42 @@ const Select = styled.select<{ noTitle: boolean }>`
 `
 
 export interface SelectItem {
-  label?: string,
-  value: string | number,
-  key?: string | number,
+  label?: string
+  value: string | number
+  key?: string | number
   disabled?: boolean
 }
 
 interface SelectFieldProps {
-  title?: string,
-  name?: string,
-  onChange: React.ChangeEventHandler<HTMLSelectElement>,
-  value: string,
-  options: SelectItem[],
+  title?: string
+  name?: string
+  onChange: React.ChangeEventHandler<HTMLSelectElement>
+  value: string
+  options: SelectItem[]
   className?: string
 }
 
-export default function SelectField ({ className, title = '', name = '', onChange, value, options = [] }: SelectFieldProps) {
+export default function SelectField({
+  className,
+  title = '',
+  name = '',
+  onChange,
+  value,
+  options = []
+}: SelectFieldProps) {
   return (
     <Container className={className}>
       {!!title && <Label>{title}</Label>}
-      <Select
-        value={value}
-        name={name}
-        onChange={onChange}
-        noTitle={!title}
-      >
-        {options.map(option => <option disabled={option.disabled} key={option.key || option.value} value={option.value}>{option.label || option.value}</option>)}
+      <Select value={value} name={name} onChange={onChange} noTitle={!title}>
+        {options.map(option => (
+          <option
+            disabled={option.disabled}
+            key={option.key || option.value}
+            value={option.value}
+          >
+            {option.label || option.value}
+          </option>
+        ))}
       </Select>
     </Container>
   )

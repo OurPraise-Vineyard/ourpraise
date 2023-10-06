@@ -1,14 +1,15 @@
-import TextField from '@components/form/TextField'
 import React, { useEffect, useReducer, useState } from 'react'
-import styled from 'styled-components'
-import ButtonBase from '@components/ButtonBase'
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+
+import { deleteSongList } from '@backend/songLists'
 import AddSongs from '@components/AddSongs'
+import ButtonBase from '@components/ButtonBase'
+import TextField from '@components/form/TextField'
 import FormSongItem from '@features/SongLists/SongListForm/FormSongItem'
 import { useAppDispatch } from '@hooks/state'
 import { pushError } from '@state/errorSlice'
 import { sortByTitleAsc } from '@utils/api'
-import { deleteSongList } from '@backend/songLists'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -49,7 +50,7 @@ const DeleteButton = styled(ButtonBase).attrs({
   width: 250px;
 `
 
-function reducer (state, action) {
+function reducer(state, action) {
   switch (action.type) {
     case 'SET':
       return {
@@ -91,7 +92,7 @@ const defaultSongList = {
   songs: []
 }
 
-export default function SongListForm ({
+export default function SongListForm({
   songList = undefined,
   onSubmit,
   heading
@@ -147,9 +148,17 @@ export default function SongListForm ({
         <TextField value={name} title="Name" onChange={handleChange('name')} />
         <SubHeading>Songs</SubHeading>
         {songs.map(song => (
-          <FormSongItem key={song.id} song={song} onRemove={() => handleRemoveSong(song.id)} />
+          <FormSongItem
+            key={song.id}
+            song={song}
+            onRemove={() => handleRemoveSong(song.id)}
+          />
         ))}
-        <ButtonBase type="button" fullWidth onClick={() => setShowAddDialog(true)}>
+        <ButtonBase
+          type="button"
+          fullWidth
+          onClick={() => setShowAddDialog(true)}
+        >
           Add songs
         </ButtonBase>
 

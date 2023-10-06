@@ -82,7 +82,12 @@ export default function TextField({
       {multiline ? (
         <Textarea value={value} name={name} onChange={onChange} size={size} />
       ) : (
-        <Input name={name} type={password ? 'password' : type} onChange={onChange} value={value} />
+        <Input
+          name={name}
+          type={password ? 'password' : type}
+          onChange={onChange}
+          value={value}
+        />
       )}
     </Container>
   )

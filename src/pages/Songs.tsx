@@ -1,17 +1,18 @@
 import React, { useCallback, useState } from 'react'
-import ContentTable from '@components/ContentTable'
-import Toolbar from '@components/Toolbar'
-import { useAppDispatch } from '@hooks/state'
-import { pushError } from '@state/errorSlice'
-import SearchSongs from '@components/SearchSongs'
-import ToolbarSeparator from '@components/ToolbarSeparator'
-import ToolbarButton from '@components/ToolbarButton'
-import withFetch, { IWithFetchProps } from '@components/withFetch'
+
 import { fetchSearchQuery, fetchSongs } from '@backend/songs'
+import ContentTable from '@components/ContentTable'
+import SearchSongs from '@components/SearchSongs'
+import Toolbar from '@components/Toolbar'
+import ToolbarButton from '@components/ToolbarButton'
+import ToolbarSeparator from '@components/ToolbarSeparator'
+import withFetch, { IWithFetchProps } from '@components/withFetch'
+import { useAppDispatch } from '@hooks/state'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import { pushError } from '@state/errorSlice'
 
-function mapSong (data) {
+function mapSong(data) {
   return {
     primary: data.title,
     secondary: data.authors,
@@ -19,7 +20,7 @@ function mapSong (data) {
   }
 }
 
-function Songs ({ data: songs }: IWithFetchProps<ISong[]>) {
+function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
   useDocumentTitle('Songs')
   const [query, setQuery] = useState('')
   const [hits, setHits] = useState([])
@@ -62,7 +63,10 @@ function Songs ({ data: songs }: IWithFetchProps<ISong[]>) {
   return (
     <div>
       <Toolbar>
-        <SearchSongs onSearch={handleSearch} onChangeLoading={handleSetSearchLoading} />
+        <SearchSongs
+          onSearch={handleSearch}
+          onChangeLoading={handleSetSearchLoading}
+        />
         {user.role === 'admin' && (
           <>
             <ToolbarSeparator />

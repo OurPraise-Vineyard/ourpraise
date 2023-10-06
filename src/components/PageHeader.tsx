@@ -24,7 +24,7 @@ type PageHeaderProps = {
   title: string
   children: React.ReactNode
 }
-export default function PageHeader ({ title, children }: PageHeaderProps) {
+export default function PageHeader({ title, children }: PageHeaderProps) {
   return (
     <Row>
       <Title>{title}</Title>

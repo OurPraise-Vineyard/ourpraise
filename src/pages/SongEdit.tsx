@@ -1,13 +1,14 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+
+import { fetchSong, saveSong } from '@backend/songs'
+import withFetch, { IWithFetchProps } from '@components/withFetch'
 import SongForm from '@features/Songs/SongForm'
+import { useAppDispatch } from '@hooks/state'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { pushError } from '@state/errorSlice'
-import withFetch, { IWithFetchProps } from '@components/withFetch'
-import { fetchSong, saveSong } from '@backend/songs'
-import { useAppDispatch } from '@hooks/state'
 
-function EditSong ({ data: song }: IWithFetchProps<ISong>) {
+function EditSong({ data: song }: IWithFetchProps<ISong>) {
   const { songId } = useParams()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -32,4 +33,6 @@ function EditSong ({ data: song }: IWithFetchProps<ISong>) {
   return <SongForm song={song} onSubmit={handleSubmit} heading="Edit song" />
 }
 
-export default withFetch<ISong>(params => fetchSong(params.songId as string))(EditSong)
+export default withFetch<ISong>(params => fetchSong(params.songId as string))(
+  EditSong
+)

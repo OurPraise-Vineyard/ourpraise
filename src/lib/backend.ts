@@ -1,5 +1,15 @@
 // Import the functions you need from the SDKs you need
+import algoliasearch from 'algoliasearch/lite'
 import { initializeApp } from 'firebase/app'
+import {
+  User,
+  signOut as _signOut,
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  updateProfile
+} from 'firebase/auth'
 import {
   addDoc,
   collection,
@@ -13,16 +23,6 @@ import {
   query,
   setDoc
 } from 'firebase/firestore'
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut as _signOut,
-  updateProfile,
-  User
-} from 'firebase/auth'
-import algoliasearch from 'algoliasearch/lite'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -34,7 +34,10 @@ const firebaseConfig = {
   appId: '1:485823144275:web:a6eae91b382d7ebefc41a6'
 }
 
-const algoliaClient = algoliasearch('BF560MHA8D', '1d21dece723f3c5b40a8ae2faad53c0f')
+const algoliaClient = algoliasearch(
+  'BF560MHA8D',
+  '1d21dece723f3c5b40a8ae2faad53c0f'
+)
 const algoliaIndex = algoliaClient.initIndex('dev_ourpraise')
 
 // Initialize Firebase
@@ -45,7 +48,9 @@ if (window.location.hostname === 'localhost') {
 }
 
 function getUserMetadata(email: string): Promise<IUserMetadata> {
-  return getDoc(doc(getFirestore(), `users/${email}`)).then(doc => doc.data() as IUserMetadata)
+  return getDoc(doc(getFirestore(), `users/${email}`)).then(
+    doc => doc.data() as IUserMetadata
+  )
 }
 
 function mapDocsId(snap) {
@@ -60,8 +65,16 @@ export class BackendError extends Error {
 }
 
 const Backend = {
-  async createUser({ email, password, displayName }: IRegisterForm): Promise<IUser> {
-    const userCred = await createUserWithEmailAndPassword(getAuth(), email, password)
+  async createUser({
+    email,
+    password,
+    displayName
+  }: IRegisterForm): Promise<IUser> {
+    const userCred = await createUserWithEmailAndPassword(
+      getAuth(),
+      email,
+      password
+    )
     await updateProfile(userCred.user, { displayName })
 
     const meta = await getUserMetadata(email)
@@ -74,7 +87,11 @@ const Backend = {
   },
 
   async signIn(email: string, password: string): Promise<IUser> {
-    const userCred = await signInWithEmailAndPassword(getAuth(), email, password)
+    const userCred = await signInWithEmailAndPassword(
+      getAuth(),
+      email,
+      password
+    )
     const { displayName } = userCred.user
 
     const meta = await getUserMetadata(email)
@@ -124,10 +141,15 @@ const Backend = {
   }: ICollectionQuery): Promise<ICollection> {
     if (orderBy && sortDirection) {
       return getDocs(
-        query(collection(getFirestore(), collectionPath), orderBy(orderByField, sortDirection))
+        query(
+          collection(getFirestore(), collectionPath),
+          orderBy(orderByField, sortDirection)
+        )
       ).then(docs => mapDocsId(docs))
     }
-    return getDocs(query(collection(getFirestore(), collectionPath))).then(docs => mapDocsId(docs))
+    return getDocs(query(collection(getFirestore(), collectionPath))).then(
+      docs => mapDocsId(docs)
+    )
   },
 
   async getDoc(path: string): Promise<IDoc | null> {
@@ -143,7 +165,11 @@ const Backend = {
     throw new BackendError(`Document "${path}" does not exist.`)
   },
 
-  setDoc(path: string, value: unknown, options?: { merge?: boolean }): Promise<void> {
+  setDoc(
+    path: string,
+    value: unknown,
+    options?: { merge?: boolean }
+  ): Promise<void> {
     return setDoc(doc(getFirestore(), path), value, options)
   },
 

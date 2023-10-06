@@ -1,13 +1,13 @@
+import Backend from '@lib/backend'
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import Backend from '@lib/backend'
 
-export const signIn = createAsyncThunk<IUser, { email: string; password: string }>(
-  'auth/signIn',
-  async ({ email, password }) => {
-    return Backend.signIn(email, password)
-  }
-)
+export const signIn = createAsyncThunk<
+  IUser,
+  { email: string; password: string }
+>('auth/signIn', async ({ email, password }) => {
+  return Backend.signIn(email, password)
+})
 
 export const createAccount = createAsyncThunk<IUser, IRegisterForm>(
   'auth/createAccount',

@@ -1,13 +1,20 @@
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+import styled from 'styled-components'
+
+import { fetchSongLists } from '@backend/songLists'
+import { fetchSearchQuery } from '@backend/songs'
+import ButtonBase from '@components/ButtonBase'
 import Modal from '@components/Modal'
 import SearchSongs from '@components/SearchSongs'
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
-import ButtonBase from '@components/ButtonBase'
-import { fetchSearchQuery } from '@backend/songs'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
-import { fetchSongLists } from '@backend/songLists'
 
-function mapSong (data, addedSongs: Array<ISong>) {
+function mapSong(data, addedSongs: Array<ISong>) {
   const id = data.objectID || data.id
   return {
     title: data.title,
@@ -159,7 +166,11 @@ const AddSongsContent = withFetch<ISongList[]>(fetchSongLists)(function ({
 
   return (
     <>
-      <SearchSongs onChangeLoading={setLoading} onSearch={handleSearch} inputRef={searchInput} />
+      <SearchSongs
+        onChangeLoading={setLoading}
+        onSearch={handleSearch}
+        inputRef={searchInput}
+      />
       {body}
     </>
   )
@@ -171,10 +182,19 @@ type AddSongsProps = {
   addedSongs: ISongList[]
   onAddSong: (song: ISong) => void
 }
-export default function AddSongs ({ show, onClose, addedSongs, onAddSong }: AddSongsProps) {
+export default function AddSongs({
+  show,
+  onClose,
+  addedSongs,
+  onAddSong
+}: AddSongsProps) {
   return (
     <Modal onClose={onClose} show={show} title="Add songs">
-      <AddSongsContent show={show} addedSongs={addedSongs} onAddSong={onAddSong} />
+      <AddSongsContent
+        show={show}
+        addedSongs={addedSongs}
+        onAddSong={onAddSong}
+      />
     </Modal>
   )
 }

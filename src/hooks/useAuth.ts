@@ -1,7 +1,8 @@
+import { useEffect } from 'react'
+
+import { useAppDispatch, useAppSelector } from '@hooks/state'
 import { initializeUser } from '@state/authSlice'
 import { pushError } from '@state/errorSlice'
-import { useAppDispatch, useAppSelector } from '@hooks/state'
-import { useEffect } from 'react'
 
 type IAuthHook = {
   user: IUser | null

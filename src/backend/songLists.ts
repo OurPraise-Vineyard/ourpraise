@@ -16,7 +16,9 @@ export function fetchSongLists(): Promise<ISongList[]> {
 }
 
 export async function fetchSongList(songListId: IDocId): Promise<ISongList> {
-  const songList = await Backend.getDoc(`songLists/${songListId}`).then(mapDocToSongList)
+  const songList = await Backend.getDoc(`songLists/${songListId}`).then(
+    mapDocToSongList
+  )
 
   const songs: ISong[] = (
     await Promise.all(songList.songIds.map(songId => fetchSong(songId)))
@@ -29,11 +31,16 @@ export async function fetchSongList(songListId: IDocId): Promise<ISongList> {
 }
 
 export async function saveSongList(form: ISongListForm): Promise<void> {
-  Backend.setDoc(`songLists/${form.id}`, mapSongListFormToSongList(form), { merge: true })
+  Backend.setDoc(`songLists/${form.id}`, mapSongListFormToSongList(form), {
+    merge: true
+  })
 }
 
 export async function createSongList(form: ISongListForm): Promise<IDocId> {
-  const doc = await Backend.createDoc('songLists', mapSongListFormToSongList(form))
+  const doc = await Backend.createDoc(
+    'songLists',
+    mapSongListFormToSongList(form)
+  )
 
   return doc.id
 }

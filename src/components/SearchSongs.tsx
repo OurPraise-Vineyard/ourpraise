@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { createDebouncer } from '@utils/debouncer'
+
 import searchIcon from '@assets/search.svg'
+import { createDebouncer } from '@utils/debouncer'
 
 const debounce = createDebouncer(1000)
 
@@ -36,20 +37,24 @@ const SearchBarWrapper = styled.div`
 `
 
 interface SearchBarProps {
-  onSearch: (query: string) => void,
-  onChangeLoading: (val: boolean) => void,
+  onSearch: (query: string) => void
+  onChangeLoading: (val: boolean) => void
   inputRef?: React.Ref<HTMLInputElement | null>
 }
 
 const defaultChangeFunc = () => undefined
-export default function SearchSongs ({ onSearch, onChangeLoading = defaultChangeFunc, inputRef }: SearchBarProps) {
+export default function SearchSongs({
+  onSearch,
+  onChangeLoading = defaultChangeFunc,
+  inputRef
+}: SearchBarProps) {
   const [query, setQuery] = useState('')
 
   useEffect(() => {
     onSearch(query)
   }, [query, onSearch])
 
-  function debounceSearch (q) {
+  function debounceSearch(q) {
     if (q === query) {
       onChangeLoading(false)
     } else {
@@ -61,7 +66,11 @@ export default function SearchSongs ({ onSearch, onChangeLoading = defaultChange
 
   return (
     <SearchBarWrapper>
-      <SearchBar placeholder="Search" onChange={e => debounceSearch(e.target.value)} ref={inputRef} />
+      <SearchBar
+        placeholder="Search"
+        onChange={e => debounceSearch(e.target.value)}
+        ref={inputRef}
+      />
     </SearchBarWrapper>
   )
 }

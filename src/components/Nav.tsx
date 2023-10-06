@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+
 import logo from '@assets/logo_light.svg'
-import Page from '@components/Page'
 import LinkBase from '@components/LinkBase'
+import Page from '@components/Page'
 import UserOrg from '@features/Auth/UserOrg'
 import useAuth from '@hooks/useAuth'
 
@@ -57,7 +58,7 @@ const Links = styled.div`
   }
 `
 
-export default function Nav ({ wide = false }) {
+export default function Nav({ wide = false }) {
   const { user } = useAuth()
   const [showUser, setShowUser] = useState(false)
 

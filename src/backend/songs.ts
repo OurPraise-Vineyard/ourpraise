@@ -11,9 +11,11 @@ export function fetchSong(songId: IDocId): Promise<ISong> {
 }
 
 export function fetchSongs(): Promise<ISong[]> {
-  return Backend.getCollection({ path: 'songs', orderBy: 'title', sortDirection: 'asc' }).then(
-    mapCollectionToSongs
-  )
+  return Backend.getCollection({
+    path: 'songs',
+    orderBy: 'title',
+    sortDirection: 'asc'
+  }).then(mapCollectionToSongs)
 }
 
 export function fetchSearchQuery(query: string): Promise<ISong[]> {
@@ -21,7 +23,9 @@ export function fetchSearchQuery(query: string): Promise<ISong[]> {
 }
 
 export async function saveSong(form: ISongForm): Promise<void> {
-  await Backend.setDoc(`songs/${form.id}`, mapSongFormToSong(form), { merge: true })
+  await Backend.setDoc(`songs/${form.id}`, mapSongFormToSong(form), {
+    merge: true
+  })
 }
 
 export async function createSong(form: ISongForm): Promise<IDocId> {

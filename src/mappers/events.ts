@@ -23,7 +23,10 @@ export function mapDocToEvent(doc: IDoc): IEvent {
   }
 }
 
-export function mergeSongEventSong(song: ISong, eventSong: IEventSong): IEventSong {
+export function mergeSongEventSong(
+  song: ISong,
+  eventSong: IEventSong
+): IEventSong {
   const body = transposeSong(
     song.body.replace(/^\/\//gm, '  ').replace(/\n\s+?\n/g, '\n\n'),
     song.key,

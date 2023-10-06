@@ -1,29 +1,30 @@
 import React, { Fragment } from 'react'
-import ContentBox from '@components/ContentBox'
-import SongItem from '@features/SongLists/SongList/SongItem'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import { Breaker } from '@styles/CommonStyles'
-import styled from 'styled-components'
-import withFetch, { IWithFetchProps } from '@components/withFetch'
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+
+import editIcon from '@assets/edit.svg'
 import { fetchSongList } from '@backend/songLists'
-import PageHeader from '@components/PageHeader'
+import ContentBox from '@components/ContentBox'
 import FlexSpacer from '@components/FlexSpacer'
 import IconButton from '@components/IconButton'
-import editIcon from '@assets/edit.svg'
+import PageHeader from '@components/PageHeader'
+import withFetch, { IWithFetchProps } from '@components/withFetch'
+import SongItem from '@features/SongLists/SongList/SongItem'
 import useAuth from '@hooks/useAuth'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import { Breaker } from '@styles/CommonStyles'
 
 const StyledBreaker = styled(Breaker)`
   margin: 0 20px;
 `
 
-function SongList ({ data: songList }: IWithFetchProps<ISongList>) {
+function SongList({ data: songList }: IWithFetchProps<ISongList>) {
   useDocumentTitle(songList.name)
   const navigate = useNavigate()
   const { user } = useAuth()
   const canEdit = user.role === 'admin'
 
-  function handleEdit () {
+  function handleEdit() {
     navigate(`/songlists/${songList.id}/edit`)
   }
 
@@ -45,4 +46,6 @@ function SongList ({ data: songList }: IWithFetchProps<ISongList>) {
   )
 }
 
-export default withFetch<ISongList>(params => fetchSongList(params.songListId as string))(SongList)
+export default withFetch<ISongList>(params =>
+  fetchSongList(params.songListId as string)
+)(SongList)

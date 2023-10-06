@@ -1,12 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+
+import { createSong } from '@backend/songs'
 import SongForm from '@features/Songs/SongForm'
 import { useAppDispatch } from '@hooks/state'
-import { pushError } from '@state/errorSlice'
-import { createSong } from '@backend/songs'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import { pushError } from '@state/errorSlice'
 
-export default function AddSong () {
+export default function AddSong() {
   useDocumentTitle('Add song')
   const navigate = useNavigate()
   const dispatch = useAppDispatch()

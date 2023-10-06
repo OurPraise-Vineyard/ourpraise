@@ -16,5 +16,5 @@ export default styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  animation: ${fadeIn} .2s ease-out .2s both;
+  animation: ${fadeIn} 0.2s ease-out 0.2s both;
 `

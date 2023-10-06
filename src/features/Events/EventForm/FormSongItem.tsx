@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+
 import x from '@assets/x.svg'
 import SelectField from '@components/form/SelectField'
-import { keysOptions } from '@utils/chords'
 import TextField from '@components/form/TextField'
+import { keysOptions } from '@utils/chords'
 
 const Container = styled.div`
   display: grid;
@@ -58,7 +59,12 @@ const CommentWrapper = styled.div`
   margin-top: 10px;
 `
 
-export default function FormSongItem ({ song, onChangeTranspose, onChangeComment, onRemove }) {
+export default function FormSongItem({
+  song,
+  onChangeTranspose,
+  onChangeComment,
+  onRemove
+}) {
   return (
     <Container>
       <SongTitle>{song.title}</SongTitle>

@@ -1,15 +1,16 @@
-import { useAppDispatch } from '@hooks/state'
-import Button from '@features/Auth/Blocks/Button'
-import Form from '@features/Auth/Blocks/Form'
-import TextField from '@features/Auth/Blocks/TextField'
-import { createAccount } from '@state/authSlice'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { pushError } from '@state/errorSlice'
-import ModeLink from '@features/Auth/Blocks/ModeLink'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
 
-function safeMatchSearch (key) {
+import Button from '@features/Auth/Blocks/Button'
+import Form from '@features/Auth/Blocks/Form'
+import ModeLink from '@features/Auth/Blocks/ModeLink'
+import TextField from '@features/Auth/Blocks/TextField'
+import { useAppDispatch } from '@hooks/state'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import { createAccount } from '@state/authSlice'
+import { pushError } from '@state/errorSlice'
+
+function safeMatchSearch(key) {
   const reg = new RegExp(`\\?.*${key}=([\\w\\d.@]*).*$`)
   const match = window.location.search.match(reg)
 
@@ -20,7 +21,7 @@ function safeMatchSearch (key) {
   return ''
 }
 
-export default function RegisterForm () {
+export default function RegisterForm() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
@@ -66,7 +67,9 @@ export default function RegisterForm () {
     }
 
     try {
-      await dispatch(createAccount({ email, password, displayName: name })).unwrap()
+      await dispatch(
+        createAccount({ email, password, displayName: name })
+      ).unwrap()
       navigate('/')
     } catch (err) {
       dispatch(pushError(err))
@@ -83,7 +86,12 @@ export default function RegisterForm () {
         title="Name"
       ></TextField>
       {isInvite ? (
-        <TextField disabled value={email} name="email" title="Email"></TextField>
+        <TextField
+          disabled
+          value={email}
+          name="email"
+          title="Email"
+        ></TextField>
       ) : (
         <TextField
           onChange={handleChange('email')}

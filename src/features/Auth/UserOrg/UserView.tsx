@@ -1,10 +1,11 @@
-import { signOut } from '@state/authSlice'
-import ButtonBase from '@components/ButtonBase'
-import { useAppDispatch } from '@hooks/state'
 import React from 'react'
 import styled from 'styled-components'
-import { pushError } from '@state/errorSlice'
+
+import ButtonBase from '@components/ButtonBase'
+import { useAppDispatch } from '@hooks/state'
 import useAuth from '@hooks/useAuth'
+import { signOut } from '@state/authSlice'
+import { pushError } from '@state/errorSlice'
 
 const Username = styled.p`
   font-size: 24px;
@@ -42,7 +43,7 @@ const Spacer = styled.div`
   flex: 1 0 auto;
 `
 
-export default function UserView ({ onEditOrg }) {
+export default function UserView({ onEditOrg }) {
   const { user } = useAuth()
   const dispatch = useAppDispatch()
 

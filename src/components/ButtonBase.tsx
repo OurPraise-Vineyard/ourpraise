@@ -27,10 +27,13 @@ export const buttonBaseHover = css`
   filter: brightness(1.05);
 `
 
-export const buttonBase = css<{fullWidth?:boolean;color?:keyof typeof colorSchemes}>`
+export const buttonBase = css<{
+  fullWidth?: boolean
+  color?: keyof typeof colorSchemes
+}>`
   cursor: pointer;
   font-size: 20px;
-  transition: all .2s ease-out;
+  transition: all 0.2s ease-out;
   padding: 10px 20px;
   border-radius: 4px;
   border: 0;
@@ -38,7 +41,7 @@ export const buttonBase = css<{fullWidth?:boolean;color?:keyof typeof colorSchem
   display: block;
   ${props => colorSchemes[props.color || 'default']}
 
-  width: ${props => props.fullWidth ? '100%' : 'auto'};
+  width: ${props => (props.fullWidth ? '100%' : 'auto')};
 
   :hover {
     ${buttonBaseHover}

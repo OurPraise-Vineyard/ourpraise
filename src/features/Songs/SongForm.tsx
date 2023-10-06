@@ -1,13 +1,14 @@
+import React, { useEffect, useReducer } from 'react'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+
+import { deleteSong } from '@backend/songs'
+import ButtonBase from '@components/ButtonBase'
 import SelectField from '@components/form/SelectField'
 import TextField from '@components/form/TextField'
-import React, { useEffect, useReducer } from 'react'
-import styled from 'styled-components'
-import ButtonBase from '@components/ButtonBase'
-import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '@hooks/state'
-import { keysOptions } from '@utils/chords'
-import { deleteSong } from '@backend/songs'
 import { pushError } from '@state/errorSlice'
+import { keysOptions } from '@utils/chords'
 
 const Container = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
@@ -49,7 +50,7 @@ interface ReducerType {
   authors: string
 }
 
-function reducer (state: ReducerType, action): ReducerType {
+function reducer(state: ReducerType, action): ReducerType {
   switch (action.type) {
     case 'SET':
       return {
@@ -71,7 +72,7 @@ const defaultSong: ISong = {
   id: null
 }
 
-export default function SongForm ({
+export default function SongForm({
   song = undefined,
   onSubmit,
   heading
@@ -80,7 +81,10 @@ export default function SongForm ({
   onSubmit: (options: ISong) => void
   heading: string
 }) {
-  const [{ title, authors, body, key }, dispatch] = useReducer(reducer, defaultSong)
+  const [{ title, authors, body, key }, dispatch] = useReducer(
+    reducer,
+    defaultSong
+  )
   const navigate = useNavigate()
   const appDispatch = useAppDispatch()
 
@@ -115,8 +119,16 @@ export default function SongForm ({
     <Container>
       <Heading>{heading}</Heading>
       <form onSubmit={handleSave}>
-        <TextField value={title} title="Title" onChange={handleChange('title')} />
-        <TextField value={authors} title="Authors" onChange={handleChange('authors')} />
+        <TextField
+          value={title}
+          title="Title"
+          onChange={handleChange('title')}
+        />
+        <TextField
+          value={authors}
+          title="Authors"
+          onChange={handleChange('authors')}
+        />
         <SelectField
           value={key}
           title="Song Key"

@@ -71,11 +71,17 @@ export const keysOptions: { value: string; label: string }[] = [
 ]
 
 export function findNextKey(fromKey: string, steps: 1 | -1): string {
-  const index = keys.findIndex(key => key.some(keyVariant => keyVariant === fromKey))
+  const index = keys.findIndex(key =>
+    key.some(keyVariant => keyVariant === fromKey)
+  )
   return keys[(index + steps + keys.length) % keys.length][0]
 }
 
-export function transposeSong(body: string, fromKey: IKey | null, toKey: string): string {
+export function transposeSong(
+  body: string,
+  fromKey: IKey | null,
+  toKey: string
+): string {
   if (fromKey === null) {
     return Transposer.transpose(body).toKey(toKey).toString()
   }

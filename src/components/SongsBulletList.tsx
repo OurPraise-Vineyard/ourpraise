@@ -13,7 +13,7 @@ const List = styled.ul`
   }
 `
 
-export default function SongsOverview ({ songs }: { songs: IEventSong[] }) {
+export default function SongsOverview({ songs }: { songs: IEventSong[] }) {
   return (
     <List>
       {songs.map((song, index) => (

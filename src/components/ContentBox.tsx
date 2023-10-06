@@ -21,7 +21,7 @@ const Body = styled.div<{ noPadding: boolean }>`
   padding: ${props => (props.noPadding ? 0 : '0 20px')};
 `
 
-export default function ContentBox ({ title, children, noPadding = false }) {
+export default function ContentBox({ title, children, noPadding = false }) {
   return (
     <Container>
       {!!title && <Title>{title}</Title>}

@@ -53,7 +53,9 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
 }
 
 export async function saveEvent(form: IEventForm): Promise<void> {
-  await Backend.setDoc(`events/${form.id}`, mapEventFormToEvent(form), { merge: true })
+  await Backend.setDoc(`events/${form.id}`, mapEventFormToEvent(form), {
+    merge: true
+  })
 }
 
 export async function createEvent(form: IEventForm): Promise<IDocId> {

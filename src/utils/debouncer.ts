@@ -1,4 +1,4 @@
-export function createDebouncer (interval:number) {
+export function createDebouncer(interval: number) {
   let timeout: number
 
   return function (this, cb: () => void, immediate = false) {
