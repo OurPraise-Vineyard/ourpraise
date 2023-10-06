@@ -166,11 +166,7 @@ const AddSongsContent = withFetch<ISongList[]>(fetchSongLists)(function ({
 
   return (
     <>
-      <SearchSongs
-        onChangeLoading={setLoading}
-        onSearch={handleSearch}
-        inputRef={searchInput}
-      />
+      <SearchSongs onSearch={handleSearch} inputRef={searchInput} />
       {body}
     </>
   )

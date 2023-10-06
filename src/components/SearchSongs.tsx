@@ -42,16 +42,10 @@ const SearchBarWrapper = styled.div`
 
 interface SearchBarProps {
   onSearch: (query: string) => void
-  onChangeLoading: (val: boolean) => void
   inputRef?: React.Ref<HTMLInputElement | null>
 }
 
-const defaultChangeFunc = () => undefined
-export default function SearchSongs({
-  onSearch,
-  onChangeLoading = defaultChangeFunc,
-  inputRef
-}: SearchBarProps) {
+export default function SearchSongs({ onSearch, inputRef }: SearchBarProps) {
   const [query, setQuery] = useState('')
 
   useEffect(() => {
@@ -59,12 +53,6 @@ export default function SearchSongs({
   }, [query, onSearch])
 
   function debounceSearch(q) {
-    if (q === query) {
-      onChangeLoading(false)
-    } else {
-      onChangeLoading(true)
-    }
-
     debounce(() => setQuery(q), !q)
   }
 
