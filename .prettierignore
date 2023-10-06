@@ -1,0 +1,5 @@
+build
+firestore-import
+.firebase
+.vscode
+scripts
