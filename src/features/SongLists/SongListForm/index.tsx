@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { deleteSongList } from '@backend/songLists'
-import AddSongs from '@components/AddSongs'
 import ButtonBase from '@components/ButtonBase'
 import TextField from '@components/form/TextField'
 import FormSongItem from '@features/SongLists/SongListForm/FormSongItem'
@@ -123,12 +122,14 @@ export default function SongListForm({
   }
 
   const handleDelete = async e => {
-    if (window.confirm('Delete this song list?')) {
-      try {
-        await deleteSongList(songList.id)
-        navigate('/songlists')
-      } catch (err) {
-        appDispatch(pushError(err))
+    if (songList) {
+      if (window.confirm('Delete this song list?')) {
+        try {
+          await deleteSongList(songList.id)
+          navigate('/songlists')
+        } catch (err) {
+          appDispatch(pushError(err))
+        }
       }
     }
   }
@@ -171,12 +172,12 @@ export default function SongListForm({
           )}
         </Buttons>
       </form>
-      <AddSongs
+      {/* <AddSongs
         show={showAddDialog}
         onClose={() => setShowAddDialog(false)}
         onAddSong={handleAddSong}
         addedSongs={songs}
-      />
+      /> */}
     </Container>
   )
 }

@@ -22,12 +22,15 @@ export const createAccount = createAsyncThunk<IUser, IRegisterForm>(
 
 export const signOut = createAsyncThunk('auth/signOut', () => Backend.signOut())
 
-export const initializeUser = createAsyncThunk<IUser>('auth/init', () => {
-  return Backend.initializeUser()
-})
+export const initializeUser = createAsyncThunk<IUser | null>(
+  'auth/init',
+  () => {
+    return Backend.initializeUser()
+  }
+)
 
 export interface AuthState {
-  user: IUser
+  user: IUser | null
   status: LoginStatus
 }
 

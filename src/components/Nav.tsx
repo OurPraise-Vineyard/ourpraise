@@ -58,7 +58,7 @@ const Links = styled.div`
   }
 `
 
-export default function Nav({ wide = false }) {
+export default function Nav() {
   const { user } = useAuth()
   const [showUser, setShowUser] = useState(false)
 
@@ -72,7 +72,7 @@ export default function Nav({ wide = false }) {
             {user ? user.displayName || user.email : ''}
           </Username>
           <Links>
-            {user.role === 'admin' && (
+            {user?.role === 'admin' && (
               <>
                 <NavMenuItem to="/events">Events</NavMenuItem>
                 <NavMenuItem to="/songs">Songs</NavMenuItem>

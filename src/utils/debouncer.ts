@@ -3,8 +3,7 @@ export function createDebouncer(interval: number) {
 
   return function (this, cb: () => void, immediate = false) {
     const later = function () {
-      timeout = null
-      if (!immediate) cb.apply(this)
+      if (!immediate) cb()
     }
 
     const callNow = immediate
@@ -12,6 +11,6 @@ export function createDebouncer(interval: number) {
     clearTimeout(timeout)
     timeout = setTimeout(later, interval)
 
-    if (callNow) cb.apply(this)
+    if (callNow) cb()
   }
 }

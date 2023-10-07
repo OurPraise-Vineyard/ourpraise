@@ -5,11 +5,8 @@ import { pushError } from '@state/errorSlice'
 
 export type IFetchCreatorParams = Record<string, unknown>
 
-export default function useFetch<T>(
-  fn: (params: IFetchCreatorParams) => Promise<T>,
-  params?: IFetchCreatorParams
-): IFetchHookValue<T> {
-  const [data, setData] = useState<T>(null)
+export default function useFetch<T>(fn: () => Promise<T>): IFetchHookValue<T> {
+  const [data, setData] = useState<T | null>(null)
   const [status, setStatus] = useState<FetchStatus>('idle')
   const dispatch = useAppDispatch()
 
@@ -17,14 +14,14 @@ export default function useFetch<T>(
     ;(async () => {
       try {
         setStatus('loading')
-        setData(await fn(params))
+        setData(await fn())
         setStatus('succeeded')
       } catch (err) {
         setStatus('failed')
         dispatch(pushError(err))
       }
     })()
-  }, [dispatch, fn, params])
+  }, [dispatch, fn])
 
   return [status, data]
 }

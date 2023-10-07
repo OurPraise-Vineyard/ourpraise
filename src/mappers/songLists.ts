@@ -1,11 +1,12 @@
 import { pruneObject } from '@utils/api'
 
 export function mapDocToSongList(doc: IDoc): ISongList {
+  const songList = doc as ISongList
   return {
-    id: doc.id,
-    lastModified: doc.lastModified as string,
-    name: doc.name as string,
-    songIds: doc.songIds as Array<string>
+    id: songList.id,
+    lastModified: songList.lastModified,
+    name: songList.name,
+    songIds: songList.songIds
   }
 }
 

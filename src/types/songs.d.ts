@@ -6,4 +6,10 @@ interface ISong {
   body: string
 }
 
-type ISongForm = ISong
+type ISongForm = {
+  id?: IDocId
+  key: IKey
+  title: string
+  authors: string
+  body: string
+}

@@ -64,12 +64,12 @@ function reducer(state: ReducerType, action): ReducerType {
   }
 }
 
-const defaultSong: ISong = {
+const defaultSong: ISongForm = {
   title: '',
   key: 'A',
   authors: '',
   body: '',
-  id: null
+  id: ''
 }
 
 export default function SongForm({
@@ -78,7 +78,7 @@ export default function SongForm({
   heading
 }: {
   song?: ISong
-  onSubmit: (options: ISong) => void
+  onSubmit: (options: ISongForm) => void
   heading: string
 }) {
   const [{ title, authors, body, key }, dispatch] = useReducer(
@@ -105,12 +105,14 @@ export default function SongForm({
   }
 
   const handleDelete = async e => {
-    if (window.confirm('Delete this song?')) {
-      try {
-        await deleteSong(song.id)
-        navigate('/songs')
-      } catch (err) {
-        appDispatch(pushError(err))
+    if (song) {
+      if (window.confirm('Delete this song?')) {
+        try {
+          await deleteSong(song.id)
+          navigate('/songs')
+        } catch (err) {
+          appDispatch(pushError(err))
+        }
       }
     }
   }

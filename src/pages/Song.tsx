@@ -51,7 +51,7 @@ const Centered = styled(Row)`
 
 function Song({ data: song }: { data: ISong }) {
   const { songId } = useParams()
-  const [transposeKey, setTransposeKey] = useState<IKey | null>(song.key)
+  const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
   const [showChords, setShowChords] = useState(true)
   const [showEventsDialog, setShowEventsDialog] = useState(false)
   const navigate = useNavigate()
@@ -59,7 +59,7 @@ function Song({ data: song }: { data: ISong }) {
   const formattedBody = useFormattedSongBody(song, showChords, transposeKey)
   useDocumentTitle(song.title)
 
-  const isAdmin = user.role === 'admin'
+  const isAdmin = user?.role === 'admin'
 
   function handleEdit() {
     navigate(`/songs/${songId}/edit`)
@@ -106,6 +106,6 @@ function Song({ data: song }: { data: ISong }) {
   )
 }
 
-export default withFetch<ISong>(params => fetchSong(params.songId as string))(
-  Song
-)
+export default withFetch<INoProps, ISong>(params =>
+  fetchSong(params.songId as string)
+)(Song)

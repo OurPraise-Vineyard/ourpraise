@@ -18,14 +18,14 @@ export default function AddToEvent({ song, show, onClose }: AddToEventProps) {
   return (
     <Modal title="Add song to event" narrow onClose={onClose} show={show}>
       {status === 'succeeded' &&
-        events.upcoming.map(event => (
+        events?.upcoming.map(event => (
           <CompactListItem
             to=""
             primary={event.title}
             secondary={formatDate(event.date)}
           />
         ))}
-      {status === 'succeeded' && events.upcoming.length === 0 && (
+      {status === 'succeeded' && events?.upcoming.length === 0 && (
         <Center>No upcoming events.</Center>
       )}
       {status === 'loading' && <Center>Loading events...</Center>}

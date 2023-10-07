@@ -42,7 +42,7 @@ const SearchBarWrapper = styled.div`
 
 interface SearchBarProps {
   onSearch: (query: string) => void
-  inputRef?: React.Ref<HTMLInputElement | null>
+  inputRef?: React.Ref<HTMLInputElement>
 }
 
 export default function SearchSongs({ onSearch, inputRef }: SearchBarProps) {

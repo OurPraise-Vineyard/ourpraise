@@ -68,14 +68,22 @@ const StyledIconButton = styled(IconButton)`
   margin-right: -12px;
 `
 
+type ModalProps = {
+  onClose: () => void
+  show: boolean
+  children: React.ReactNode
+  title?: string
+  narrow?: boolean
+  blank?: boolean
+}
 export default function Modal({
-  onClose = () => null,
-  show = false,
-  children = undefined,
-  title = undefined,
+  onClose,
+  show,
+  children,
+  title = '',
   narrow = false,
   blank = false
-}) {
+}: ModalProps) {
   useEffect(
     function () {
       if (show) {

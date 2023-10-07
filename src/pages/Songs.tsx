@@ -25,7 +25,7 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
       <Toolbar>
         <Title>{query ? `Search results for "${query}"` : 'All songs'}</Title>
         <SearchSongs onSearch={setQuery} />
-        {user.role === 'admin' && (
+        {user?.role === 'admin' && (
           <ToolbarLinkButton to="/songs/add">Add new song</ToolbarLinkButton>
         )}
       </Toolbar>
@@ -35,6 +35,7 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
         <div>
           {items.map(song => (
             <CompactListItem
+              key={song.id}
               to={`/songs/${song.id}`}
               primary={song.title}
               secondary={song.authors}
@@ -46,4 +47,4 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
   )
 }
 
-export default withFetch<ISong[]>(fetchSongs)(Songs)
+export default withFetch<INoProps, ISong[]>(fetchSongs)(Songs)

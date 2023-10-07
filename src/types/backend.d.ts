@@ -5,12 +5,10 @@ interface ICollectionQuery {
 }
 
 type ISearchHit = {
-  [index: string]: unknown
   objectID: IDocId
 }
 
 type IDoc = {
-  [index: string]: unknown
   id: IDocId
 }
 

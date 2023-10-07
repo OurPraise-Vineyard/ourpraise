@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Center from '@components/Center'
@@ -7,13 +7,14 @@ import useFetch, { IFetchCreatorParams } from '@hooks/useFetch'
 
 export type IWithFetchProps<T> = { data: T }
 
-export default function withFetch<T>(
-  fn: (params: IFetchCreatorParams) => Promise<T>
+export default function withFetch<Props, Data>(
+  fn: (params: IFetchCreatorParams) => Promise<Data>
 ) {
-  return function (Comp: React.ComponentType<IWithFetchProps<T>>) {
-    return function (props): JSX.Element {
+  return function (Comp: React.ComponentType<Props & IWithFetchProps<Data>>) {
+    return function (props: Props): JSX.Element {
       const params = useParams()
-      const [status, data] = useFetch(fn, params as IFetchCreatorParams)
+      const fnWithParams = useCallback(() => fn(params), [params])
+      const [status, data] = useFetch(fnWithParams)
       const [showLoading, setShowLoading] = useState(false)
 
       useEffect(() => {
@@ -21,9 +22,9 @@ export default function withFetch<T>(
         return () => clearTimeout(t)
       }, [status])
 
-      if (status !== 'succeeded') {
+      if (status !== 'succeeded' || !data) {
         if (!showLoading) {
-          return null
+          return <></>
         }
 
         return <Center>Loading...</Center>

@@ -1,12 +1,13 @@
 import { pruneObject } from '@utils/api'
 
 export function mapDocToSong(doc: IDoc): ISong {
+  const song = doc as ISong
   return {
-    authors: doc.authors as string,
-    body: doc.body as string,
-    id: doc.id as string,
-    key: doc.key as IKey,
-    title: doc.title as string
+    authors: song.authors as string,
+    body: song.body as string,
+    id: song.id as string,
+    key: song.key as IKey,
+    title: song.title as string
   }
 }
 
@@ -15,13 +16,16 @@ export function mapCollectionToSongs(docs: ICollection) {
 }
 
 export function mapSearchHitsToSongs(hits: ISearchHit[]): ISong[] {
-  return hits.map(hit => ({
-    authors: hit.authors as string,
-    body: hit.body as string,
-    key: hit.key as IKey,
-    title: hit.title as string,
-    id: hit.objectID
-  }))
+  return hits.map(hit => {
+    const song = hit as unknown as ISong
+    return {
+      authors: song.authors as string,
+      body: song.body as string,
+      key: song.key as IKey,
+      title: song.title as string,
+      id: hit.objectID
+    }
+  })
 }
 
 export function mapSongFormToSong(form: ISongForm): ISong {

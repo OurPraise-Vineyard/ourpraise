@@ -15,7 +15,7 @@ function SongList({ data: songList }: IWithFetchProps<ISongList>) {
   useDocumentTitle(songList.name)
   const navigate = useNavigate()
   const { user } = useAuth()
-  const canEdit = user.role === 'admin'
+  const canEdit = user?.role === 'admin'
 
   function handleEdit() {
     navigate(`/songlists/${songList.id}/edit`)
@@ -27,7 +27,7 @@ function SongList({ data: songList }: IWithFetchProps<ISongList>) {
         <Title>{songList.name}</Title>
         {canEdit && <IconButton icon={editIcon} onClick={handleEdit} />}
       </Toolbar>
-      {songList.songs.map((song, i) => (
+      {songList.songs?.map((song, i) => (
         <CompactListItem
           key={song.id}
           to={`/songs/${song.id}`}
@@ -39,6 +39,6 @@ function SongList({ data: songList }: IWithFetchProps<ISongList>) {
   )
 }
 
-export default withFetch<ISongList>(params =>
+export default withFetch<INoProps, ISongList>(params =>
   fetchSongList(params.songListId as string)
 )(SongList)

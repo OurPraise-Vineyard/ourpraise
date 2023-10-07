@@ -21,6 +21,7 @@ function SongLists({ data: songLists }: IWithFetchProps<ISongList[]>) {
       </Toolbar>
       {songLists.map(songList => (
         <CompactListItem
+          key={songList.id}
           to={`/songlists/${songList.id}`}
           primary={songList.name}
         />
@@ -29,4 +30,4 @@ function SongLists({ data: songLists }: IWithFetchProps<ISongList[]>) {
   )
 }
 
-export default withFetch<ISongList[]>(fetchSongLists)(SongLists)
+export default withFetch<INoProps, ISongList[]>(fetchSongLists)(SongLists)

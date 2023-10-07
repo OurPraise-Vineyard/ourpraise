@@ -34,6 +34,6 @@ function EditSongList({ data: songList }: IWithFetchProps<ISongList>) {
   )
 }
 
-export default withFetch<ISongList>(params =>
+export default withFetch<INoProps, ISongList>(params =>
   fetchSongList(params.songListId as string)
 )(EditSongList)

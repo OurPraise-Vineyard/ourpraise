@@ -33,6 +33,6 @@ function EditSong({ data: song }: IWithFetchProps<ISong>) {
   return <SongForm song={song} onSubmit={handleSubmit} heading="Edit song" />
 }
 
-export default withFetch<ISong>(params => fetchSong(params.songId as string))(
-  EditSong
-)
+export default withFetch<INoProps, ISong>(params =>
+  fetchSong(params.songId as string)
+)(EditSong)

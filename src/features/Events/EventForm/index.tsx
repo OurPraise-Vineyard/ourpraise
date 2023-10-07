@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { deleteEvent } from '@backend/events'
-import AddSongs from '@components/AddSongs'
 import ButtonBase from '@components/ButtonBase'
 import TextField from '@components/form/TextField'
 import FormSongItem from '@features/Events/EventForm/FormSongItem'
@@ -153,12 +152,14 @@ export default function EventForm({
   }
 
   const handleDelete = async e => {
-    if (window.confirm('Delete this event?')) {
-      try {
-        await deleteEvent(event.id)
-        navigate('/events')
-      } catch (err) {
-        appDispatch(pushError(err))
+    if (event) {
+      if (window.confirm('Delete this event?')) {
+        try {
+          await deleteEvent(event.id)
+          navigate('/events')
+        } catch (err) {
+          appDispatch(pushError(err))
+        }
       }
     }
   }
@@ -231,12 +232,12 @@ export default function EventForm({
           )}
         </Buttons>
       </form>
-      <AddSongs
+      {/* <AddSongs
         show={showAddDialog}
         onClose={() => setShowAddDialog(false)}
         onAddSong={handleAddSong}
         addedSongs={songs}
-      />
+      /> */}
     </Container>
   )
 }

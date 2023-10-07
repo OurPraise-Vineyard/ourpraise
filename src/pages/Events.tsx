@@ -13,6 +13,7 @@ import { formatDate } from '@utils/date'
 function renderEventItem(event: IEvent): JSX.Element {
   return (
     <CompactListItem
+      key={event.id}
       to={`/events/${event.id}`}
       primary={event.title}
       secondary={formatDate(event.date)}
@@ -20,7 +21,7 @@ function renderEventItem(event: IEvent): JSX.Element {
   )
 }
 
-function EventOverview({ data: { upcoming, past } }: { data: IEventsData }) {
+function Events({ data: { upcoming, past } }: { data: IEventsData }) {
   useDocumentTitle('Events')
 
   return (
@@ -39,4 +40,4 @@ function EventOverview({ data: { upcoming, past } }: { data: IEventsData }) {
   )
 }
 
-export default withFetch<IEventsData>(fetchEvents)(EventOverview)
+export default withFetch<INoProps, IEventsData>(fetchEvents)(Events)

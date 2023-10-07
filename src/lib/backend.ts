@@ -98,7 +98,7 @@ const Backend = {
 
     return {
       email,
-      displayName,
+      displayName: displayName || email,
       ...meta
     }
   },
@@ -108,7 +108,7 @@ const Backend = {
   },
 
   async initializeUser(): Promise<IUser | null> {
-    const user: User = await new Promise((resolve, reject) => {
+    const user: User | null = await new Promise((resolve, reject) => {
       const unsubscribe = onAuthStateChanged(
         getAuth(),
         user => {
@@ -119,14 +119,14 @@ const Backend = {
       )
     })
 
-    if (user) {
+    if (user && user.email) {
       const { displayName, email } = user
 
       const meta = await getUserMetadata(email)
 
       return {
         email,
-        displayName,
+        displayName: displayName || email,
         ...meta
       }
     }
@@ -139,7 +139,7 @@ const Backend = {
     orderBy: orderByField,
     sortDirection
   }: ICollectionQuery): Promise<ICollection> {
-    if (orderBy && sortDirection) {
+    if (orderByField && sortDirection) {
       return getDocs(
         query(
           collection(getFirestore(), collectionPath),
@@ -152,7 +152,7 @@ const Backend = {
     )
   },
 
-  async getDoc(path: string): Promise<IDoc | null> {
+  async getDoc(path: string): Promise<IDoc> {
     const result = await getDoc(doc(getFirestore(), path))
 
     if (result.exists()) {
@@ -167,22 +167,49 @@ const Backend = {
 
   setDoc(
     path: string,
-    value: unknown,
+    value: IDoc,
     options?: { merge?: boolean }
   ): Promise<void> {
-    return setDoc(doc(getFirestore(), path), value, options)
+    try {
+      if (options) {
+        return setDoc(doc(getFirestore(), path), value, options)
+      }
+      return setDoc(doc(getFirestore(), path), value)
+    } catch (err) {
+      throw new BackendError(`Failed saving document "${path}"`)
+    }
   },
 
   createDoc(path, value: unknown) {
-    return addDoc(collection(getFirestore(), path), value)
+    try {
+      return addDoc(collection(getFirestore(), path), value)
+    } catch (err) {
+      throw new BackendError(`Failed creating document in "${path}"`)
+    }
   },
 
   deleteDoc(path) {
-    return deleteDoc(doc(getFirestore(), path))
+    try {
+      return deleteDoc(doc(getFirestore(), path))
+    } catch (err) {
+      throw new BackendError(`Failed deleting document "${path}"`)
+    }
   },
 
   async searchSongs(query: string): Promise<ISearchHit[]> {
-    return algoliaIndex.search(query).then(({ hits }) => hits)
+    try {
+      return algoliaIndex.search(query).then(({ hits }) => hits)
+    } catch (err) {
+      throw new BackendError(`Failed searching songs for "${query}"`)
+    }
+  },
+
+  async getAndSetDoc(path: string, value: IDoc) {
+    try {
+      console.log('getandset')
+    } catch (err) {
+      throw new BackendError(`Failed getting and setting document "${path}"`)
+    }
   }
 }
 

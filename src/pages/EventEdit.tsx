@@ -28,6 +28,6 @@ function EditEvent({ data: event }: { data: IEvent }) {
   )
 }
 
-export default withFetch<IEvent>(params =>
+export default withFetch<INoProps, IEvent>(params =>
   fetchEvent(params.eventId as string)
 )(EditEvent)

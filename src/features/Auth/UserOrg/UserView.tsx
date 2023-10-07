@@ -57,8 +57,8 @@ export default function UserView({ onEditOrg }) {
 
   return (
     <Column>
-      <Username>{user.displayName}</Username>
-      <Email>{user.email}</Email>
+      <Username>{user?.displayName}</Username>
+      <Email>{user?.email}</Email>
       <Line />
       <Spacer />
       <LogoutWrapper>

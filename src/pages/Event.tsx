@@ -44,8 +44,8 @@ function EventPage({ data: event }: { data: IEvent }) {
       {event.songs.map((song, i) => (
         <SongListItem
           key={song.id}
-          title={song.title}
-          authors={song.authors}
+          title={song.title || ''}
+          authors={song.authors || ''}
           body={song.body}
           formattedKey={song.formattedKey}
         />
@@ -54,6 +54,6 @@ function EventPage({ data: event }: { data: IEvent }) {
   )
 }
 
-export default withFetch<IEvent>(params =>
+export default withFetch<INoProps, IEvent>(params =>
   fetchEvent(params.eventId as string)
 )(EventPage)

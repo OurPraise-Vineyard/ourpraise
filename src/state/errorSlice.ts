@@ -46,7 +46,7 @@ function humanizeError(err): string {
 
 export const pushError = createAsyncThunk<
   string,
-  string | { code?: string; message?: string },
+  unknown,
   {
     state: RootState
     dispatch: AppDispatch
