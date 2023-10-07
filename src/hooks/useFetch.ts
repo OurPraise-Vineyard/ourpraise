@@ -7,7 +7,7 @@ export type IFetchCreatorParams = Record<string, unknown>
 
 export default function useFetch<T>(
   fn: (params: IFetchCreatorParams) => Promise<T>,
-  params: IFetchCreatorParams
+  params?: IFetchCreatorParams
 ): IFetchHookValue<T> {
   const [data, setData] = useState<T>(null)
   const [status, setStatus] = useState<FetchStatus>('idle')

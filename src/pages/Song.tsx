@@ -4,8 +4,10 @@ import styled from 'styled-components'
 
 import editIcon from '@assets/edit.svg'
 import { fetchSong } from '@backend/songs'
+import AddToEvent from '@components/AddToEvent'
 import IconButton from '@components/IconButton'
 import KeySwitcher from '@components/KeySwitcher'
+import ToolbarButton from '@components/ToolbarButton'
 import Paragraph from '@components/text/Paragraph'
 import Title from '@components/text/Title'
 import withFetch from '@components/withFetch'
@@ -43,12 +45,14 @@ const Column = styled.div`
 
 const Centered = styled(Row)`
   align-items: center;
+  height: ${props => props.theme.sizes.toolbarHeight};
 `
 
 function Song({ data: song }: { data: ISong }) {
   const { songId } = useParams()
   const [transposeKey, setTransposeKey] = useState<IKey | null>(song.key)
   const [showChords, setShowChords] = useState(true)
+  const [showEventsDialog, setShowEventsDialog] = useState(false)
   const navigate = useNavigate()
   const { user } = useAuth()
   const formattedBody = useFormattedSongBody(song, showChords, transposeKey)
@@ -70,11 +74,21 @@ function Song({ data: song }: { data: ISong }) {
 
   return (
     <Container>
+      <AddToEvent
+        show={showEventsDialog}
+        onClose={() => setShowEventsDialog(false)}
+        song={song}
+      />
       <Row>
         <Column>
           <Title>{song.title}</Title>
           <Authors>{song.authors}</Authors>
         </Column>
+        {isAdmin && (
+          <ToolbarButton onClick={() => setShowEventsDialog(true)}>
+            Add to event
+          </ToolbarButton>
+        )}
         <Centered>
           <KeySwitcher
             transposeKey={transposeKey}

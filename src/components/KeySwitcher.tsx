@@ -15,8 +15,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   padding: 8px;
   align-items: center;
-  grid-area: chords;
-  align-self: flex-start;
+  height: ${props => props.theme.sizes.toolbarHeight};
 `
 
 const Chord = styled.select`
