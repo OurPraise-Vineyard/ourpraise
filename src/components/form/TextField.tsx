@@ -57,7 +57,7 @@ interface TextFieldProps {
   title?: string
   name?: string
   password?: boolean
-  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  onChange: (string) => void
   value: string
   multiline?: boolean
   type?: 'text' | 'password' | 'date'
@@ -80,12 +80,17 @@ export default function TextField({
     <Container className={className}>
       <Label>{title}</Label>
       {multiline ? (
-        <Textarea value={value} name={name} onChange={onChange} size={size} />
+        <Textarea
+          value={value}
+          name={name}
+          onChange={e => onChange(e.target.value)}
+          size={size}
+        />
       ) : (
         <Input
           name={name}
           type={password ? 'password' : type}
-          onChange={onChange}
+          onChange={e => onChange(e.target.value)}
           value={value}
         />
       )}

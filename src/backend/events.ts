@@ -71,3 +71,28 @@ export async function createEvent(form: IEventForm): Promise<IDocId> {
 export async function deleteEvent(id: IDocId) {
   await Backend.deleteDoc(`events/${id}`)
 }
+
+export async function addSongToEvent(eventId: IDocId, songOptions: IEventSong) {
+  await Backend.getAndSetDoc(
+    `events/${eventId}`,
+    (data: IDoc) => {
+      const songs = (data as IEvent).songs
+      if (songs.find(song => song.id === songOptions.id)) {
+        throw new Error('Song already added')
+      }
+      return {
+        songs: [
+          ...songs,
+          {
+            id: songOptions.id,
+            transposeKey: songOptions.transposeKey,
+            comment: songOptions.comment
+          }
+        ]
+      }
+    },
+    {
+      merge: true
+    }
+  )
+}

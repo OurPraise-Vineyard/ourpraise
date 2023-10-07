@@ -59,34 +59,50 @@ const CommentWrapper = styled.div`
   margin-top: 10px;
 `
 
+type FormSongItemProps = {
+  song: ISong | IEventSong
+  transposeKey: IKey
+  comment: string
+  onChangeTransposeKey: (IKey) => void
+  onChangeComment: (string) => void
+  onRemove: () => void
+  showSongOptions?: boolean
+}
 export default function FormSongItem({
   song,
-  onChangeTranspose,
+  transposeKey,
+  comment,
+  onChangeTransposeKey,
   onChangeComment,
-  onRemove
-}) {
+  onRemove,
+  showSongOptions
+}: FormSongItemProps) {
   return (
     <Container>
       <SongTitle>{song.title}</SongTitle>
       <SongAuthors>{song.authors}</SongAuthors>
       <RemoveButton onClick={onRemove} />
-      <SelectWrapper>
-        <SelectField
-          value={song.transposeKey}
-          title="Song Key"
-          onChange={e => onChangeTranspose(e.target.value)}
-          options={keysOptions}
-        />
-      </SelectWrapper>
-      <CommentWrapper>
-        <TextField
-          multiline
-          size="small"
-          value={song.comment}
-          onChange={e => onChangeComment(e.target.value)}
-          title="Comment"
-        />
-      </CommentWrapper>
+      {showSongOptions && (
+        <>
+          <SelectWrapper>
+            <SelectField
+              value={transposeKey}
+              title="Song Key"
+              onChange={onChangeTransposeKey}
+              options={keysOptions}
+            />
+          </SelectWrapper>
+          <CommentWrapper>
+            <TextField
+              multiline
+              size="small"
+              value={comment}
+              onChange={onChangeComment}
+              title="Comment"
+            />
+          </CommentWrapper>
+        </>
+      )}
     </Container>
   )
 }

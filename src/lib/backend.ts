@@ -11,6 +11,8 @@ import {
   updateProfile
 } from 'firebase/auth'
 import {
+  DocumentData,
+  QuerySnapshot,
   addDoc,
   collection,
   connectFirestoreEmulator,
@@ -21,6 +23,7 @@ import {
   getFirestore,
   orderBy,
   query,
+  runTransaction,
   setDoc
 } from 'firebase/firestore'
 
@@ -53,7 +56,14 @@ function getUserMetadata(email: string): Promise<IUserMetadata> {
   )
 }
 
-function mapDocsId(snap) {
+function mapDocId(doc: DocumentData): IDoc {
+  return {
+    ...doc.data(),
+    id: doc.id
+  }
+}
+
+function mapDocsId(snap: QuerySnapshot<DocumentData>): ICollection {
   return snap.docs.map(doc => ({ ...doc.data(), id: doc.id }))
 }
 
@@ -156,10 +166,7 @@ const Backend = {
     const result = await getDoc(doc(getFirestore(), path))
 
     if (result.exists()) {
-      return {
-        ...result.data(),
-        id: result.id
-      } as IDoc
+      return mapDocId(result)
     }
 
     throw new BackendError(`Document "${path}" does not exist.`)
@@ -204,11 +211,29 @@ const Backend = {
     }
   },
 
-  async getAndSetDoc(path: string, value: IDoc) {
+  async getAndSetDoc(
+    path: string,
+    updater: (data: IDoc) => unknown,
+    options?: { merge?: boolean }
+  ): Promise<void> {
     try {
-      console.log('getandset')
+      await runTransaction(getFirestore(), async transaction => {
+        const docRef = doc(getFirestore(), path)
+        const docData = await transaction.get(docRef)
+        if (!docData.exists()) {
+          throw new Error()
+        }
+        const oldData = mapDocId(docData)
+        const newData = updater(oldData) as Partial<unknown>
+
+        if (options) {
+          transaction.set(docRef, newData, options)
+        } else {
+          transaction.set(docRef, newData)
+        }
+      })
     } catch (err) {
-      throw new BackendError(`Failed getting and setting document "${path}"`)
+      throw new BackendError(err)
     }
   }
 }

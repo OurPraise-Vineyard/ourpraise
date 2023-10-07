@@ -78,7 +78,8 @@ function Song({ data: song }: { data: ISong }) {
       <AddToEvent
         show={showEventsDialog}
         onClose={() => setShowEventsDialog(false)}
-        song={song}
+        songId={song.id}
+        songKey={transposeKey}
       />
       <Row>
         <Column>

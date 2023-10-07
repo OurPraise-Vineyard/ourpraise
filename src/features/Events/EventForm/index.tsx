@@ -1,12 +1,12 @@
 import dateFormat from 'dateformat'
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { deleteEvent } from '@backend/events'
 import ButtonBase from '@components/ButtonBase'
+import FormSongItem from '@components/FormSongItem'
 import TextField from '@components/form/TextField'
-import FormSongItem from '@features/Events/EventForm/FormSongItem'
 import { useAppDispatch } from '@hooks/state'
 import { pushError } from '@state/errorSlice'
 import { nextWeekday } from '@utils/date'
@@ -132,7 +132,6 @@ export default function EventForm({
     defaultEvent
   )
   const navigate = useNavigate()
-  const [showAddDialog, setShowAddDialog] = useState(false)
   const appDispatch = useAppDispatch()
 
   useEffect(() => {
@@ -162,10 +161,6 @@ export default function EventForm({
         }
       }
     }
-  }
-
-  const handleAddSong = song => {
-    dispatch({ type: 'ADD_SONG', song })
   }
 
   const handleChangeTranspose = (songId, transposeKey) => {
@@ -205,8 +200,11 @@ export default function EventForm({
         {songs.map(song => (
           <FormSongItem
             key={song.id}
+            showSongOptions
             song={song}
-            onChangeTranspose={transpose =>
+            transposeKey={song.transposeKey}
+            comment={song.comment}
+            onChangeTransposeKey={transpose =>
               handleChangeTranspose(song.id, transpose)
             }
             onChangeComment={comment =>
@@ -215,14 +213,6 @@ export default function EventForm({
             onRemove={() => handleRemoveSong(song.id)}
           />
         ))}
-        <ButtonBase
-          type="button"
-          fullWidth
-          onClick={() => setShowAddDialog(true)}
-        >
-          Add songs
-        </ButtonBase>
-
         <Buttons>
           <SaveButton type="submit">Save</SaveButton>
           {!!(event && event.id) && (
@@ -232,12 +222,6 @@ export default function EventForm({
           )}
         </Buttons>
       </form>
-      {/* <AddSongs
-        show={showAddDialog}
-        onClose={() => setShowAddDialog(false)}
-        onAddSong={handleAddSong}
-        addedSongs={songs}
-      /> */}
     </Container>
   )
 }

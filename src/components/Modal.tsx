@@ -56,11 +56,13 @@ const ModalContainer = styled.div<{
 `
 
 const ModalContent = styled.div<{ blank: boolean }>`
+  display: flex;
+  flex-direction: column;
   flex: 1 0 auto;
   position: relative;
   overflow: auto;
   height: ${props =>
-    css`calc(600px - ${props.theme.sizes.toolbarHeight} 20px)`};
+    css`calc(600px - ${props.theme.sizes.toolbarHeight} - 20px)`};
   padding: ${props => (props.blank ? '0' : '20px')};
 `
 

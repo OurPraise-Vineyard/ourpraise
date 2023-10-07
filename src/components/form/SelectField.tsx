@@ -39,7 +39,7 @@ export interface SelectItem {
 interface SelectFieldProps {
   title?: string
   name?: string
-  onChange: React.ChangeEventHandler<HTMLSelectElement>
+  onChange: (string) => void
   value: string
   options: SelectItem[]
   className?: string
@@ -56,7 +56,12 @@ export default function SelectField({
   return (
     <Container className={className}>
       {!!title && <Label>{title}</Label>}
-      <Select value={value} name={name} onChange={onChange} noTitle={!title}>
+      <Select
+        value={value}
+        name={name}
+        onChange={e => onChange(e.target.value)}
+        noTitle={!title}
+      >
         {options.map(option => (
           <option
             disabled={option.disabled}

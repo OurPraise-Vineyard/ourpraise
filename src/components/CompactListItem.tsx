@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-const Wrapper = styled(Link)`
+const wrapperStyles = css<{ highlight?: boolean }>`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,6 +14,10 @@ const Wrapper = styled(Link)`
   transition: background-color 0.2s ease-in;
   position: relative;
   z-index: 2;
+  border: 0;
+  background-color: ${props =>
+    props.highlight ? props.theme.colors.backgroundHover : 'transparent'};
+  cursor: pointer;
 
   :hover {
     background-color: ${props => props.theme.colors.backgroundHover};
@@ -22,6 +27,13 @@ const Wrapper = styled(Link)`
   &:not(:last-child) {
     border-bottom: 1px solid ${props => props.theme.colors.breaker};
   }
+`
+
+const WrapperLink = styled(Link)`
+  ${wrapperStyles}
+`
+const WrapperButton = styled.button`
+  ${wrapperStyles}
 `
 
 const PrimaryText = styled.div`
@@ -43,17 +55,31 @@ const SecondaryText = styled.div`
 type CompactListItemProps = {
   primary?: string
   secondary?: string
-  to: string
+  to?: string
+  onClick?: React.MouseEventHandler
+  highlight?: boolean
 }
 export default function CompactListItem({
   primary = '',
   secondary = '',
-  to
+  to,
+  onClick,
+  highlight
 }: CompactListItemProps) {
-  return (
-    <Wrapper to={to}>
-      <PrimaryText>{primary}</PrimaryText>
-      <SecondaryText>{secondary}</SecondaryText>
-    </Wrapper>
-  )
+  if (to) {
+    return (
+      <WrapperLink highlight={highlight} to={to}>
+        <PrimaryText>{primary}</PrimaryText>
+        <SecondaryText>{secondary}</SecondaryText>
+      </WrapperLink>
+    )
+  } else if (onClick) {
+    return (
+      <WrapperButton highlight={highlight} onClick={onClick}>
+        <PrimaryText>{primary}</PrimaryText>
+        <SecondaryText>{secondary}</SecondaryText>
+      </WrapperButton>
+    )
+  }
+  return <></>
 }

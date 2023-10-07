@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import downloadIcon from '@assets/download.svg'
 import editIcon from '@assets/edit.svg'
-import addIcon from '@assets/plus-square.svg'
 import { fetchEvent } from '@backend/events'
 import IconButton from '@components/IconButton'
 import SongListItem from '@components/SongListItem'
@@ -37,7 +36,6 @@ function EventPage({ data: event }: { data: IEvent }) {
         <Tag>{eventDate}</Tag>
         <IconButton icon={editIcon} onClick={handleEdit} />
         <IconButton icon={downloadIcon} onClick={handleDownload} />
-        <IconButton icon={addIcon} onClick={handleEdit} />
       </Toolbar>
       {!!event.comment && <Comment>{event.comment}</Comment>}
       <SongsOverview songs={event.songs} />
@@ -48,6 +46,7 @@ function EventPage({ data: event }: { data: IEvent }) {
           authors={song.authors || ''}
           body={song.body}
           formattedKey={song.formattedKey}
+          comment={song.comment}
         />
       ))}
     </div>

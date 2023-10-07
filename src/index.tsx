@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
+import Center from '@components/Center'
 import DisplayErrors from '@components/DisplayErrors'
 import Layout from '@components/Layout'
 import useAuth from '@hooks/useAuth'
@@ -17,8 +18,6 @@ import ViewSong from '@pages/Song'
 import AddSong from '@pages/SongAdd'
 import EditSong from '@pages/SongEdit'
 import ViewSongList from '@pages/SongList'
-import AddSongList from '@pages/SongListAdd'
-import EditSongList from '@pages/SongListEdit'
 import SongLists from '@pages/SongLists'
 import Songs from '@pages/Songs'
 import store from '@state/store'
@@ -29,7 +28,7 @@ function App() {
   const { user, ready } = useAuth()
 
   if (!ready) {
-    return null
+    return <Center fullscreen>Loading...</Center>
   }
 
   if (!user) {
@@ -57,15 +56,10 @@ function App() {
             </Route>
             <Route path="/events/add" element={<AddEvent />} />
             <Route path="/events" element={<Events />} />
-            <Route
-              path="/songlists/:songListId/edit"
-              element={<EditSongList />}
-            />
             <Route path="/songlists/:songListId">
               <Route path=":state" element={<ViewSongList />} />
               <Route path="" element={<ViewSongList />} />
             </Route>
-            <Route path="/songlists/add" element={<AddSongList />} />
             <Route path="/songlists" element={<SongLists />} />
           </>
         )}
