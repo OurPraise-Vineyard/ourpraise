@@ -25,6 +25,9 @@ export default function AddToEvent({ song, show, onClose }: AddToEventProps) {
             secondary={formatDate(event.date)}
           />
         ))}
+      {status === 'succeeded' && events.upcoming.length === 0 && (
+        <Center>No upcoming events.</Center>
+      )}
       {status === 'loading' && <Center>Loading events...</Center>}
     </Modal>
   )

@@ -3,6 +3,9 @@ import styled from 'styled-components'
 import { css } from 'styled-components'
 
 import xIcon from '@assets/x.svg'
+import IconButton from '@components/IconButton'
+import Toolbar from '@components/Toolbar'
+import Title from '@components/text/Title'
 
 const Grid = styled.div<{ show: boolean; narrow: boolean }>`
   background-color: rgba(0, 0, 0, 0.2);
@@ -24,7 +27,10 @@ const Grid = styled.div<{ show: boolean; narrow: boolean }>`
     `}
 `
 
-const ModalContainer = styled.div<{ show: boolean; narrow: boolean }>`
+const ModalContainer = styled.div<{
+  show: boolean
+  narrow: boolean
+}>`
   position: fixed;
   z-index: 10001;
   top: 50%;
@@ -50,32 +56,16 @@ const ModalContainer = styled.div<{ show: boolean; narrow: boolean }>`
 `
 
 const ModalContent = styled.div<{ blank: boolean }>`
-  padding: ${props => (props.blank ? 0 : '20px')};
   flex: 1 0 auto;
   position: relative;
   overflow: auto;
-  height: calc(600px - 66px);
+  height: ${props =>
+    css`calc(600px - ${props.theme.sizes.toolbarHeight} 20px)`};
+  padding: ${props => (props.blank ? '0' : '20px')};
 `
 
-const Toolbar = styled.div`
-  display: flex;
-  align-items: flex-start;
-  padding: 20px;
-  flex: 0 1 auto;
-  height: 66px;
-`
-
-const Title = styled.div`
-  font-size: ${props => props.theme.fontSizes.large};
-  flex: 1 0 auto;
-`
-
-const CloseButton = styled.button`
-  background: url(${xIcon});
-  width: 20px;
-  height: 20px;
-  border: 0;
-  cursor: pointer;
+const StyledIconButton = styled(IconButton)`
+  margin-right: -12px;
 `
 
 export default function Modal({
@@ -128,9 +118,9 @@ export default function Modal({
     >
       <ModalContainer show={show} narrow={narrow} onClick={handleStopPropagate}>
         {!blank && !!title && (
-          <Toolbar>
+          <Toolbar horizontalPadding>
             {!!title && <Title>{title}</Title>}
-            {!blank && <CloseButton onClick={onClose} />}
+            {!blank && <StyledIconButton icon={xIcon} onClick={onClose} />}
           </Toolbar>
         )}
         <ModalContent blank={blank}>{children}</ModalContent>

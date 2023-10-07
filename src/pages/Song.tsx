@@ -22,6 +22,7 @@ const Container = styled.div`
 const Authors = styled(Paragraph)`
   color: ${props => props.theme.colors.textFaded};
   margin: 0;
+  max-width: 30vw;
 `
 
 const SongBody = styled.div`
