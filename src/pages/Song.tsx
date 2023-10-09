@@ -75,12 +75,14 @@ function Song({ data: song }: { data: ISong }) {
 
   return (
     <Container>
-      <AddToEvent
-        show={showEventsDialog}
-        onClose={() => setShowEventsDialog(false)}
-        songId={song.id}
-        songKey={transposeKey}
-      />
+      {isAdmin && (
+        <AddToEvent
+          show={showEventsDialog}
+          onClose={() => setShowEventsDialog(false)}
+          songId={song.id}
+          songKey={transposeKey}
+        />
+      )}
       <Row>
         <Column>
           <Title>{song.title}</Title>
