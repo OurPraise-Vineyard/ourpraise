@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Comment from '@features/Events/Event/Comment'
+import Comment from '@components/EventComment'
 
 const Container = styled.div`
   margin: 32px 0;

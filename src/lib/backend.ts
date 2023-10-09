@@ -60,6 +60,10 @@ const firebaseErrors = {
 }
 
 function mapFirebaseError(err: unknown, fallback: string) {
+  if ((err as BackendError).name === 'BackendError') {
+    return (err as BackendError).message
+  }
+
   const code = (err as FirebaseError).code
 
   if (firebaseErrors[code]) {
@@ -72,9 +76,12 @@ function mapFirebaseError(err: unknown, fallback: string) {
 }
 
 function getUserMetadata(email: string): Promise<IUserMetadata> {
-  return getDoc(doc(getFirestore(), `users/${email}`)).then(
-    doc => doc.data() as IUserMetadata
-  )
+  return getDoc(doc(getFirestore(), `users/${email}`)).then(doc => {
+    if (doc.exists() && doc.data().role) {
+      return doc.data() as IUserMetadata
+    }
+    throw new BackendError(`Email ${email} not authorized`)
+  })
 }
 
 function mapDocId(doc: DocumentData): IDoc {
@@ -112,7 +119,6 @@ const Backend = {
         password
       )
       await updateProfile(userCred.user, { displayName })
-
       const meta = await getUserMetadata(email)
 
       return {

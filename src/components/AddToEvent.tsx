@@ -8,7 +8,7 @@ import Modal from '@components/Modal'
 import ScrollContainer from '@components/ScrollContainer'
 import SaveButton from '@components/form/SaveButton'
 import SelectField from '@components/form/SelectField'
-import TextField from '@components/form/TextField'
+import TextArea from '@components/form/Textarea'
 import useErrors from '@hooks/useErrors'
 import useFetch from '@hooks/useFetch'
 import { keysOptions } from '@utils/chords'
@@ -76,11 +76,10 @@ export default function AddToEvent({
       </FlexGrow>
       {!!selectedEvent && (
         <>
-          <TextField
+          <TextArea
             onChange={setComment}
             value={comment}
             title="Comment"
-            multiline
             size="small"
           />
           <SelectField

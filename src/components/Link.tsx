@@ -3,11 +3,11 @@ import styled from 'styled-components'
 
 export default styled(Link)`
   cursor: pointer;
-  color: black;
+  color: ${props => props.color || 'black'};
   text-decoration: none;
 
   &:visited {
-    color: black;
+    color: ${props => props.color || 'black'};
   }
 
   &:hover {

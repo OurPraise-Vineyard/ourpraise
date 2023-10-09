@@ -1,33 +1,69 @@
 import Backend from '@lib/backend'
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { AppDispatch } from '@state/store'
 
 export const signIn = createAsyncThunk<
   IUser,
-  { email: string; password: string }
->('auth/signIn', async ({ email, password }) => {
-  return Backend.signIn(email, password)
+  { email: string; password: string },
+  { dispatch: AppDispatch }
+>('auth/signIn', async ({ email, password }, { dispatch }) => {
+  try {
+    return await Backend.signIn(email, password)
+  } catch (err) {
+    const backendErr = err as IBackendError
+    if (
+      backendErr.name === 'BackendError' &&
+      backendErr.message.toString().includes('not authorized')
+    ) {
+      await dispatch(signOut()).unwrap()
+    }
+    throw err
+  }
 })
 
-export const createAccount = createAsyncThunk<IUser, IRegisterForm>(
+export const createAccount = createAsyncThunk<
+  IUser,
+  IRegisterForm,
+  { dispatch: AppDispatch }
+>(
   'auth/createAccount',
-  async ({ email, password, displayName }) => {
-    if (!displayName) {
-      throw new Error('Please provide a name for this account.')
+  async ({ email, password, displayName }, { dispatch }) => {
+    try {
+      return await Backend.createUser({ email, password, displayName })
+    } catch (err) {
+      const backendErr = err as IBackendError
+      if (
+        backendErr.name === 'BackendError' &&
+        backendErr.message.toString().includes('not authorized')
+      ) {
+        await dispatch(signOut()).unwrap()
+      }
+      throw err
     }
-
-    return Backend.createUser({ email, password, displayName })
   }
 )
 
 export const signOut = createAsyncThunk('auth/signOut', () => Backend.signOut())
 
-export const initializeUser = createAsyncThunk<IUser | null>(
-  'auth/init',
-  () => {
-    return Backend.initializeUser()
+export const initializeUser = createAsyncThunk<
+  IUser | null,
+  void,
+  { dispatch: AppDispatch }
+>('auth/init', async (_, { dispatch }) => {
+  try {
+    return await Backend.initializeUser()
+  } catch (err) {
+    const backendErr = err as IBackendError
+    if (
+      backendErr.name === 'BackendError' &&
+      backendErr.message.toString().includes('not authorized')
+    ) {
+      await dispatch(signOut()).unwrap()
+    }
+    throw err
   }
-)
+})
 
 export interface IAuthState {
   user: IUser | null

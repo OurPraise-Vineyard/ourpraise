@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import ButtonBase from '@components/ButtonBase'
+import Modal from '@components/Modal'
 import useAuth from '@hooks/useAuth'
 
 const Username = styled.p`
@@ -40,21 +41,27 @@ const Spacer = styled.div`
   flex: 1 0 auto;
 `
 
-export default function UserView({ onEditOrg }) {
+type UserModalProps = {
+  show: boolean
+  onClose: () => void
+}
+export default function UserModal({ show, onClose }: UserModalProps) {
   const { user, signOut } = useAuth()
   const handleLogout = () => signOut()
 
   return (
-    <Column>
-      <Username>{user?.displayName}</Username>
-      <Email>{user?.email}</Email>
-      <Line />
-      <Spacer />
-      <LogoutWrapper>
-        <LogoutButton fullWidth onClick={handleLogout}>
-          Sign out
-        </LogoutButton>
-      </LogoutWrapper>
-    </Column>
+    <Modal onClose={onClose} show={show} blank narrow>
+      <Column>
+        <Username>{user?.displayName}</Username>
+        <Email>{user?.email}</Email>
+        <Line />
+        <Spacer />
+        <LogoutWrapper>
+          <LogoutButton fullWidth onClick={handleLogout}>
+            Sign out
+          </LogoutButton>
+        </LogoutWrapper>
+      </Column>
+    </Modal>
   )
 }

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import x from '@assets/x.svg'
 import SelectField from '@components/form/SelectField'
-import TextField from '@components/form/TextField'
+import TextArea from '@components/form/Textarea'
 import { keysOptions } from '@utils/chords'
 
 const Container = styled.div`
@@ -93,8 +93,7 @@ export default function FormSongItem({
             />
           </SelectWrapper>
           <CommentWrapper>
-            <TextField
-              multiline
+            <TextArea
               size="small"
               value={comment}
               onChange={onChangeComment}

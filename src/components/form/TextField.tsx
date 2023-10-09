@@ -29,40 +29,18 @@ const Input = styled.input`
   }
 `
 
-const sizes = {
-  small: '50px',
-  medium: '200px',
-  large: '400px'
-}
-
-const Textarea = styled.textarea<{ size: string }>`
-  background: transparent;
-  width: 100%;
-  display: block;
-  border: none;
-  font-size: ${props => props.theme.fontSizes.small};
-  padding: 8px 0 0;
-  font-family: 'Oxygen Mono', monospace;
-  min-height: ${props => sizes[props.size]};
-  min-width: 100%;
-  max-width: 100%;
-
-  &:focus {
-    border: none;
-    outline: none;
-  }
-`
-
 interface TextFieldProps {
   title?: string
   name?: string
   password?: boolean
   onChange: (string) => void
   value: string
-  multiline?: boolean
   type?: 'text' | 'password' | 'date'
   size?: 'small' | 'medium' | 'large'
   className?: string
+  autoFocus?: boolean
+  required?: boolean
+  disabled?: boolean
 }
 
 export default function TextField({
@@ -71,29 +49,25 @@ export default function TextField({
   password = false,
   onChange,
   value,
-  multiline = false,
   type = 'text',
   size = 'medium',
-  className
+  className,
+  autoFocus = false,
+  required = false,
+  disabled = false
 }: TextFieldProps) {
   return (
     <Container className={className}>
       <Label>{title}</Label>
-      {multiline ? (
-        <Textarea
-          value={value}
-          name={name}
-          onChange={e => onChange(e.target.value)}
-          size={size}
-        />
-      ) : (
-        <Input
-          name={name}
-          type={password ? 'password' : type}
-          onChange={e => onChange(e.target.value)}
-          value={value}
-        />
-      )}
+      <Input
+        name={name}
+        type={password ? 'password' : type}
+        onChange={e => onChange(e.target.value)}
+        value={value}
+        disabled={disabled}
+        required={required}
+        autoFocus={autoFocus}
+      />
     </Container>
   )
 }

@@ -6,6 +6,7 @@ import { deleteSong } from '@backend/songs'
 import ButtonBase from '@components/ButtonBase'
 import SelectField from '@components/form/SelectField'
 import TextField from '@components/form/TextField'
+import TextArea from '@components/form/Textarea'
 import useErrors from '@hooks/useErrors'
 import { keysOptions } from '@utils/chords'
 
@@ -136,8 +137,7 @@ export default function SongForm({
           onChange={handleChange('key')}
           options={keysOptions}
         />
-        <TextField
-          multiline
+        <TextArea
           size="large"
           value={body}
           title="Body"

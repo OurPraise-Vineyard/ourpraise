@@ -2,8 +2,8 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { fetchEvent, saveEvent } from '@backend/events'
+import EventForm from '@components/EventForm'
 import withFetch from '@components/withFetch'
-import EventForm from '@features/Events/EventForm'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useErrors from '@hooks/useErrors'
 

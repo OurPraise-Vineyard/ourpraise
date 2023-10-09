@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { createEvent } from '@backend/events'
-import EventForm from '@features/Events/EventForm'
+import EventForm from '@components/EventForm'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useErrors from '@hooks/useErrors'
 

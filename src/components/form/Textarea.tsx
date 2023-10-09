@@ -14,13 +14,22 @@ const Label = styled.span`
   display: block;
 `
 
-const Input = styled.input`
+const sizes = {
+  small: '50px',
+  medium: '200px',
+  large: '400px'
+}
+
+const Textarea = styled.textarea<{ size: string }>`
   background: transparent;
   width: 100%;
   display: block;
   border: none;
   font-size: ${props => props.theme.fontSizes.small};
   padding: 8px 0 0;
+  font-family: 'Oxygen Mono', monospace;
+  min-height: ${props => sizes[props.size]};
+  min-width: 100%;
 
   &:focus {
     border: none;
@@ -28,37 +37,37 @@ const Input = styled.input`
   }
 `
 
-interface TextFieldProps {
-  title: string
+interface TextAreaProps {
+  title?: string
   name?: string
-  password?: boolean
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
+  onChange: (string) => void
   value: string
-  disabled?: boolean
-  required?: boolean
+  size?: 'small' | 'medium' | 'large'
+  className?: string
   autoFocus?: boolean
+  required?: boolean
+  disabled?: boolean
 }
-export default function TextField({
-  required = false,
-  disabled = false,
+
+export default function TextArea({
   title = '',
   name = '',
-  password = false,
   onChange,
   value,
-  autoFocus = false
-}: TextFieldProps) {
+  size = 'medium',
+  className,
+  autoFocus = false,
+  required = false,
+  disabled = false
+}: TextAreaProps) {
   return (
-    <Container>
+    <Container className={className}>
       <Label>{title}</Label>
-      <Input
-        name={name}
-        type={password ? 'password' : 'text'}
-        onChange={onChange}
+      <Textarea
         value={value}
-        disabled={disabled}
-        required={required}
-        autoFocus={autoFocus}
+        name={name}
+        onChange={e => onChange(e.target.value)}
+        size={size}
       />
     </Container>
   )

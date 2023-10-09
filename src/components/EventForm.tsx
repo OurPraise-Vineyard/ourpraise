@@ -7,6 +7,7 @@ import { deleteEvent } from '@backend/events'
 import ButtonBase from '@components/ButtonBase'
 import FormSongItem from '@components/FormSongItem'
 import TextField from '@components/form/TextField'
+import TextArea from '@components/form/Textarea'
 import useErrors from '@hooks/useErrors'
 import { nextWeekday } from '@utils/date'
 
@@ -189,8 +190,7 @@ export default function EventForm({
           title="Date"
           onChange={handleChange('date')}
         />
-        <TextField
-          multiline
+        <TextArea
           value={comment}
           title="Set comments"
           onChange={handleChange('comment')}

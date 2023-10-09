@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import logo from '@assets/logo_light.svg'
+import Logo from '@components/Logo'
 import NavMenuItem from '@components/NavMenuItem'
 import Page from '@components/Page'
-import UserOrg from '@features/Auth/UserOrg'
+import UserModal from '@components/UserModal'
 import useAuth from '@hooks/useAuth'
 
 const Container = styled.nav`
@@ -14,15 +14,6 @@ const Container = styled.nav`
   @media print {
     display: none;
   }
-`
-
-const Logo = styled.img.attrs({
-  src: logo,
-  alt: 'OurPraise logo'
-})`
-  height: 40px;
-  grid-area: logo;
-  margin-bottom: 2px;
 `
 
 const Username = styled.p`
@@ -35,6 +26,12 @@ const Username = styled.p`
   margin: 0;
   white-space: nowrap;
   text-align: right;
+`
+
+const StyledLogo = styled(Logo)`
+  height: 40px;
+  grid-area: logo;
+  margin-bottom: 2px;
 `
 
 const Wrapper = styled(Page)`
@@ -64,10 +61,10 @@ export default function Nav() {
 
   return (
     <>
-      <UserOrg show={showUser} onClose={() => setShowUser(false)} />
+      <UserModal show={showUser} onClose={() => setShowUser(false)} />
       <Container>
         <Wrapper>
-          <Logo />
+          <StyledLogo />
           <Username onClick={() => setShowUser(true)}>
             {user ? user.displayName || user.email : ''}
           </Username>

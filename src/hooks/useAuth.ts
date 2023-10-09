@@ -12,18 +12,13 @@ import {
 type IAuthHook = {
   user: IUser | null
   ready: boolean
-  signIn: (
-    email: string,
-    password: string,
-    onFail?: IFailedFetchHandler
-  ) => Promise<void>
-  signOut: (onFail?: IFailedFetchHandler) => Promise<void>
+  signIn: (email: string, password: string) => Promise<boolean>
+  signOut: () => Promise<boolean>
   createUser: (
     email: string,
     password: string,
-    displayName: string,
-    onFail?: IFailedFetchHandler
-  ) => Promise<void>
+    displayName: string
+  ) => Promise<boolean>
 }
 
 export default function useAuth(): IAuthHook {
@@ -38,58 +33,49 @@ export default function useAuth(): IAuthHook {
         return
       }
 
-      try {
-        dispatch(initializeUser()).unwrap()
-      } catch (err) {
-        pushError(err)
-      }
+      dispatch(initializeUser())
+        .unwrap()
+        .catch(err => pushError(err))
     },
     [dispatch, ready, pushError]
   )
 
   const _signIn = useCallback(
-    async (email: string, password: string, onFail?: IFailedFetchHandler) => {
+    async (email: string, password: string): Promise<boolean> => {
       try {
         await dispatch(signIn({ email, password })).unwrap()
       } catch (err) {
         pushError(err)
-        if (onFail) {
-          onFail(err as IBackendError)
-        }
+        return false
       }
+      return true
     },
     [dispatch, pushError]
   )
 
-  const _signOut = useCallback(
-    async (onFail?: IFailedFetchHandler) => {
-      try {
-        await dispatch(signOut()).unwrap()
-      } catch (err) {
-        pushError(err)
-        if (onFail) {
-          onFail(err as IBackendError)
-        }
-      }
-    },
-    [dispatch, pushError]
-  )
+  const _signOut = useCallback(async (): Promise<boolean> => {
+    try {
+      await dispatch(signOut()).unwrap()
+    } catch (err) {
+      pushError(err)
+      return false
+    }
+    return true
+  }, [dispatch, pushError])
 
   const _createUser = useCallback(
     async (
       email: string,
       password: string,
-      displayName: string,
-      onFail?: IFailedFetchHandler
-    ) => {
+      displayName: string
+    ): Promise<boolean> => {
       try {
         await dispatch(createAccount({ email, password, displayName })).unwrap()
       } catch (err) {
         pushError(err)
-        if (onFail) {
-          onFail(err as IBackendError)
-        }
+        return false
       }
+      return true
     },
     [dispatch, pushError]
   )
