@@ -1,7 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import moreIcon from '@assets/more-vertical.svg'
 import Comment from '@components/EventComment'
+import FlexGrow from '@components/FlexGrow'
+import IconButton from '@components/IconButton'
 
 const Container = styled.div`
   margin: 32px 0;
@@ -21,10 +24,11 @@ const Container = styled.div`
 `
 
 const Header = styled.div`
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) 1fr;
-  grid-template-rows: repeat(4, min-content);
-  grid-template-areas: 'title key' 'authors key';
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
 
   @media print {
     padding-bottom: 4px;
@@ -35,8 +39,6 @@ const Header = styled.div`
 const SongTitle = styled.div`
   font-size: ${props => props.theme.fontSizes.regular};
   font-weight: bold;
-  grid-area: title;
-  align-self: end;
   overflow: hidden;
   text-overflow: ellipsis;
 
@@ -48,8 +50,6 @@ const SongTitle = styled.div`
 const SongAuthors = styled.div`
   font-size: ${props => props.theme.fontSizes.regular};
   color: ${props => props.theme.colors.textFaded};
-  grid-area: authors;
-  align-self: start;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 90%;
@@ -61,9 +61,6 @@ const SongAuthors = styled.div`
 `
 
 const PlayKey = styled.div`
-  grid-area: key;
-  justify-self: end;
-  align-self: start;
   padding: 10px 15px;
   border-radius: 22px;
   background-color: ${props => props.theme.colors.subtleButtonBackground};
@@ -104,9 +101,12 @@ export default function SongListItem({
   return (
     <Container>
       <Header>
-        <SongTitle>{title}</SongTitle>
-        <SongAuthors>{authors}</SongAuthors>
+        <FlexGrow>
+          <SongTitle>{title}</SongTitle>
+          <SongAuthors>{authors}</SongAuthors>
+        </FlexGrow>
         {formattedKey && <PlayKey>{formattedKey}</PlayKey>}
+        <IconButton icon={moreIcon} />
       </Header>
       {comment && <Comment>{comment}</Comment>}
       {body.map((part, index) => (
