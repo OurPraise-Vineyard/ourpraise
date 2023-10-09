@@ -29,12 +29,12 @@ export const initializeUser = createAsyncThunk<IUser | null>(
   }
 )
 
-export interface AuthState {
+export interface IAuthState {
   user: IUser | null
   status: ILoginStatus
 }
 
-const initialState: AuthState = {
+const initialState: IAuthState = {
   user: null,
   status: 'undetermined'
 }

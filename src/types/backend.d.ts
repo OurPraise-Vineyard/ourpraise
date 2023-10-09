@@ -1,4 +1,9 @@
-interface ICollectionQuery {
+interface IBackendError {
+  message: string
+  name: string
+}
+
+type ICollectionQuery = {
   path: string
   orderBy?: string
   sortDirection?: 'asc' | 'desc'
@@ -17,3 +22,5 @@ type ICollection = IDoc[]
 type IDocId = string
 
 type FetchStatus = 'idle' | 'loading' | 'failed' | 'succeeded'
+
+type IFailedFetchHandler = (err: IBackendError) => void

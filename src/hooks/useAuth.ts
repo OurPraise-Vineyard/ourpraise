@@ -12,12 +12,17 @@ import {
 type IAuthHook = {
   user: IUser | null
   ready: boolean
-  signIn: (email: string, password: string) => Promise<void>
-  signOut: () => Promise<void>
+  signIn: (
+    email: string,
+    password: string,
+    onFail?: IFailedFetchHandler
+  ) => Promise<void>
+  signOut: (onFail?: IFailedFetchHandler) => Promise<void>
   createUser: (
     email: string,
     password: string,
-    displayName: string
+    displayName: string,
+    onFail?: IFailedFetchHandler
   ) => Promise<void>
 }
 
@@ -43,33 +48,47 @@ export default function useAuth(): IAuthHook {
   )
 
   const _signIn = useCallback(
-    async (email: string, password: string) => {
+    async (email: string, password: string, onFail?: IFailedFetchHandler) => {
       try {
         await dispatch(signIn({ email, password })).unwrap()
       } catch (err) {
         pushError(err)
-        throw err
+        if (onFail) {
+          onFail(err as IBackendError)
+        }
       }
     },
     [dispatch, pushError]
   )
 
-  const _signOut = useCallback(async () => {
-    try {
-      await dispatch(signOut()).unwrap()
-    } catch (err) {
-      pushError(err)
-      throw err
-    }
-  }, [dispatch, pushError])
+  const _signOut = useCallback(
+    async (onFail?: IFailedFetchHandler) => {
+      try {
+        await dispatch(signOut()).unwrap()
+      } catch (err) {
+        pushError(err)
+        if (onFail) {
+          onFail(err as IBackendError)
+        }
+      }
+    },
+    [dispatch, pushError]
+  )
 
   const _createUser = useCallback(
-    async (email: string, password: string, displayName: string) => {
+    async (
+      email: string,
+      password: string,
+      displayName: string,
+      onFail?: IFailedFetchHandler
+    ) => {
       try {
         await dispatch(createAccount({ email, password, displayName })).unwrap()
       } catch (err) {
         pushError(err)
-        throw err
+        if (onFail) {
+          onFail(err as IBackendError)
+        }
       }
     },
     [dispatch, pushError]

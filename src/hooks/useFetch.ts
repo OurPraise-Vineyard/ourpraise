@@ -4,7 +4,10 @@ import useErrors from '@hooks/useErrors'
 
 export type IFetchCreatorParams = Record<string, unknown>
 
-export default function useFetch<T>(fn: () => Promise<T>): IFetchHookValue<T> {
+export default function useFetch<T>(
+  fn: () => Promise<T>,
+  onFail?: IFailedFetchHandler
+): IFetchHookValue<T> {
   const [data, setData] = useState<T | null>(null)
   const [status, setStatus] = useState<FetchStatus>('idle')
   const { pushError } = useErrors()
@@ -18,9 +21,12 @@ export default function useFetch<T>(fn: () => Promise<T>): IFetchHookValue<T> {
       } catch (err) {
         setStatus('failed')
         pushError(err)
+        if (onFail) {
+          onFail(err as IBackendError)
+        }
       }
     })()
-  }, [pushError, fn])
+  }, [pushError, fn, onFail])
 
   return [status, data]
 }

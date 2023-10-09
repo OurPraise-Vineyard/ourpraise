@@ -17,26 +17,9 @@ const initialState: ErrorState = {
   counter: 0
 }
 
-const errors = {
-  'auth/invalid-email': 'Please provide a valid email.',
-  'auth/email-already-in-use': 'Email already in use.',
-  'auth/weak-password': 'Password should be at least six characters long.',
-  'auth/wrong-password': 'Wrong password.',
-  'auth/user-not-found': 'User does not exist',
-  'permission-denied': 'You do not have permission to perform this action'
-}
-
 function humanizeError(err): string {
   if (typeof err === 'string') {
     return err
-  } else if ('code' in err) {
-    if (errors[err.code]) {
-      return errors[err.code]
-    } else {
-      console.log('Could not map error: ' + err.code)
-      console.log(err)
-      return 'Something went wrong. Check that you provided correct information.'
-    }
   } else if ('message' in err) {
     return err.message as string
   } else {

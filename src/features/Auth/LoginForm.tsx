@@ -26,13 +26,8 @@ export default function LoginForm() {
 
   const handleSubmit = async e => {
     e.preventDefault()
-
-    try {
-      setLoading(true)
-      await signIn(email, password)
-    } catch (err) {
-      setLoading(false)
-    }
+    setLoading(true)
+    await signIn(email, password, () => setLoading(false))
   }
 
   return (

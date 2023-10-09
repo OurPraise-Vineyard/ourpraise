@@ -66,12 +66,8 @@ export default function RegisterForm() {
       return
     }
 
-    try {
-      await createUser(email, password, name)
-      navigate('/')
-    } catch (err) {
-      pushError('Try again')
-    }
+    await createUser(email, password, name)
+    navigate('/')
   }
 
   return (
