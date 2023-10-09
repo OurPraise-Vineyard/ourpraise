@@ -6,7 +6,6 @@ const Container = styled.label`
   background-color: ${props => props.theme.colors.subtleInput};
   border-radius: 4px;
   display: block;
-  margin-bottom: 16px;
 `
 
 const Label = styled.span`

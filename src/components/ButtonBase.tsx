@@ -30,6 +30,7 @@ export const buttonBaseHover = css`
 export const buttonBase = css<{
   fullWidth?: boolean
   color?: keyof typeof colorSchemes
+  width?: string
 }>`
   cursor: pointer;
   font-size: ${props => props.theme.fontSizes.regular};
@@ -41,7 +42,7 @@ export const buttonBase = css<{
   display: block;
   ${props => colorSchemes[props.color || 'default']}
 
-  width: ${props => (props.fullWidth ? '100%' : 'auto')};
+  width: ${props => props.width || (props.fullWidth ? '100%' : 'auto')};
 
   :hover {
     ${buttonBaseHover}
