@@ -73,7 +73,6 @@ export default function Nav() {
               <>
                 <NavMenuItem to="/events">Events</NavMenuItem>
                 <NavMenuItem to="/songs">Songs</NavMenuItem>
-                <NavMenuItem to="/songlists">Song Lists</NavMenuItem>
               </>
             )}
           </Links>

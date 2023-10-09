@@ -17,8 +17,6 @@ import NoAccessView from '@pages/NoAccess'
 import ViewSong from '@pages/Song'
 import AddSong from '@pages/SongAdd'
 import EditSong from '@pages/SongEdit'
-import ViewSongList from '@pages/SongList'
-import SongLists from '@pages/SongLists'
 import Songs from '@pages/Songs'
 import store from '@state/store'
 import AppTheme from '@styles/AppTheme'
@@ -56,11 +54,6 @@ function App() {
             </Route>
             <Route path="/events/add" element={<AddEvent />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/songlists/:songListId">
-              <Route path=":state" element={<ViewSongList />} />
-              <Route path="" element={<ViewSongList />} />
-            </Route>
-            <Route path="/songlists" element={<SongLists />} />
           </>
         )}
       </Route>
