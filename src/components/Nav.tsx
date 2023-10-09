@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
+import ContextMenu from '@components/ContextMenu'
 import Logo from '@components/Logo'
 import NavMenuItem from '@components/NavMenuItem'
 import Page from '@components/Page'
-import UserModal from '@components/UserModal'
 import useAuth from '@hooks/useAuth'
+import useContextMenuState from '@hooks/useContextMenuState'
 
 const Container = styled.nav`
   background-color: ${props => props.theme.colors.navBackground};
@@ -57,15 +58,33 @@ const Links = styled.div`
 
 export default function Nav() {
   const { user } = useAuth()
-  const [showUser, setShowUser] = useState(false)
+  const menu = useContextMenuState()
+  const { signOut } = useAuth()
+
+  const menuItems = useMemo(
+    () => [
+      {
+        label: 'Sign out',
+        onClick: signOut
+      }
+    ],
+    [signOut]
+  )
 
   return (
     <>
-      <UserModal show={showUser} onClose={() => setShowUser(false)} />
+      {menu.show && (
+        <ContextMenu
+          items={menuItems}
+          top={menu.top}
+          left={menu.left}
+          onClose={menu.onClose}
+        />
+      )}
       <Container>
         <Wrapper>
           <StyledLogo />
-          <Username onClick={() => setShowUser(true)}>
+          <Username onClick={menu.onOpen}>
             {user ? user.displayName || user.email : ''}
           </Username>
           <Links>

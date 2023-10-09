@@ -2,7 +2,9 @@ import styled from 'styled-components'
 
 import { buttonBase } from '@components/ButtonBase'
 
-export default styled.button`
+export default styled.button.attrs({
+  color: 'primary'
+})`
   ${buttonBase}
   margin: 0;
   text-decoration: none;

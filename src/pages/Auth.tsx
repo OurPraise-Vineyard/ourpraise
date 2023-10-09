@@ -108,7 +108,7 @@ export default function Auth() {
               password
               title="Password"
             />
-            <SaveButton type="submit">
+            <SaveButton type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </SaveButton>
           </>

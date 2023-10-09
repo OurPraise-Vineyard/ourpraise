@@ -3,7 +3,9 @@ import styled from 'styled-components'
 
 import { buttonBase } from '@components/ButtonBase'
 
-export default styled(Link)`
+export default styled(Link).attrs({
+  color: 'primary'
+})`
   ${buttonBase}
   margin: 0;
   text-decoration: none;

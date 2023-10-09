@@ -35,14 +35,8 @@ function EventPage({ data: event }: { data: IEvent }) {
 
   const handleOpenMenu =
     (id: IDocId) => (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation()
-      const { offsetLeft, offsetTop, offsetWidth, offsetHeight } =
-        e.currentTarget
       setSelectedSong(id)
-      const left = offsetLeft + offsetWidth / 2
-      const top = offsetTop + offsetHeight / 2
-      contextMenu.setPosition(left, top)
-      contextMenu.setShow(true)
+      contextMenu.onOpen(e)
     }
 
   const handleRemoveSong = useCallback(() => {
@@ -90,7 +84,7 @@ function EventPage({ data: event }: { data: IEvent }) {
           items={contextMenuItems}
           top={contextMenu.top}
           left={contextMenu.left}
-          onClose={() => contextMenu.setShow(false)}
+          onClose={contextMenu.onClose}
         />
       )}
       <Toolbar>
