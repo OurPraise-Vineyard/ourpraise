@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom'
 
 import { createSong } from '@backend/songs'
 import SongForm from '@features/Songs/SongForm'
-import { useAppDispatch } from '@hooks/state'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import { pushError } from '@state/errorSlice'
+import useErrors from '@hooks/useErrors'
 
 export default function AddSong() {
   useDocumentTitle('Add song')
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const { pushError } = useErrors()
 
   const handleSubmit = async options => {
     try {
@@ -19,7 +18,7 @@ export default function AddSong() {
         navigate('/songs/' + id)
       }
     } catch (err) {
-      dispatch(pushError(err))
+      pushError(err)
     }
   }
 

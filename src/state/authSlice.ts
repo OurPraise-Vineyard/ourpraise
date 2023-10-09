@@ -31,7 +31,7 @@ export const initializeUser = createAsyncThunk<IUser | null>(
 
 export interface AuthState {
   user: IUser | null
-  status: LoginStatus
+  status: ILoginStatus
 }
 
 const initialState: AuthState = {

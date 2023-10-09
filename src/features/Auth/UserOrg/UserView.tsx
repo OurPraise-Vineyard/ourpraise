@@ -2,10 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import ButtonBase from '@components/ButtonBase'
-import { useAppDispatch } from '@hooks/state'
 import useAuth from '@hooks/useAuth'
-import { signOut } from '@state/authSlice'
-import { pushError } from '@state/errorSlice'
 
 const Username = styled.p`
   font-size: ${props => props.theme.fontSizes.large};
@@ -44,16 +41,8 @@ const Spacer = styled.div`
 `
 
 export default function UserView({ onEditOrg }) {
-  const { user } = useAuth()
-  const dispatch = useAppDispatch()
-
-  const handleLogout = () => {
-    try {
-      dispatch(signOut()).unwrap()
-    } catch (err) {
-      dispatch(pushError(err))
-    }
-  }
+  const { user, signOut } = useAuth()
+  const handleLogout = () => signOut()
 
   return (
     <Column>

@@ -4,4 +4,4 @@ interface IRegisterForm {
   displayName: string
 }
 
-type LoginStatus = 'loggedIn' | 'loggedOut' | 'undetermined'
+type ILoginStatus = 'loggedIn' | 'loggedOut' | 'undetermined'

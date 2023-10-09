@@ -9,9 +9,8 @@ import ScrollContainer from '@components/ScrollContainer'
 import SaveButton from '@components/form/SaveButton'
 import SelectField from '@components/form/SelectField'
 import TextField from '@components/form/TextField'
-import { useAppDispatch } from '@hooks/state'
+import useErrors from '@hooks/useErrors'
 import useFetch from '@hooks/useFetch'
-import { pushError } from '@state/errorSlice'
 import { keysOptions } from '@utils/chords'
 import { formatDate } from '@utils/date'
 
@@ -28,7 +27,7 @@ export default function AddToEvent({
   onClose
 }: AddToEventProps) {
   const [status, events] = useFetch<IEventsData>(fetchEvents)
-  const dispatch = useAppDispatch()
+  const { pushError } = useErrors()
   const [selectedEvent, setSelectedEvent] = useState<IDocId>('')
   const [comment, setComment] = useState<string>('')
   const [transposeKey, setTransposeKey] = useState<IKey>(songKey)
@@ -51,7 +50,7 @@ export default function AddToEvent({
       setComment('')
     } catch (err) {
       setSaving(false)
-      dispatch(pushError(err))
+      pushError(err)
     }
   }
 

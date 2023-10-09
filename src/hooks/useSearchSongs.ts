@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 
 import { fetchSearchQuery } from '@backend/songs'
-import { useAppDispatch } from '@hooks/state'
-import { pushError } from '@state/errorSlice'
+import useErrors from '@hooks/useErrors'
 
 export default function useSearchSongs(query: string): [FetchStatus, ISong[]] {
   const [hits, setHits] = useState<ISong[]>([])
   const [searchStatus, setSearchStatus] = useState<FetchStatus>('idle')
-  const dispatch = useAppDispatch()
+  const { pushError } = useErrors()
 
   useEffect(() => {
     async function search() {
@@ -19,14 +18,14 @@ export default function useSearchSongs(query: string): [FetchStatus, ISong[]] {
           setHits(await fetchSearchQuery(query))
           setSearchStatus('succeeded')
         } catch (err) {
-          dispatch(pushError(err))
+          pushError(err)
           setSearchStatus('failed')
         }
       }
     }
 
     search()
-  }, [query, dispatch])
+  }, [query, pushError])
 
   return [searchStatus, hits]
 }

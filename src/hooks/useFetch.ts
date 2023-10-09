@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 
-import { useAppDispatch } from '@hooks/state'
-import { pushError } from '@state/errorSlice'
+import useErrors from '@hooks/useErrors'
 
 export type IFetchCreatorParams = Record<string, unknown>
 
 export default function useFetch<T>(fn: () => Promise<T>): IFetchHookValue<T> {
   const [data, setData] = useState<T | null>(null)
   const [status, setStatus] = useState<FetchStatus>('idle')
-  const dispatch = useAppDispatch()
+  const { pushError } = useErrors()
 
   useEffect(() => {
     ;(async () => {
@@ -18,10 +17,10 @@ export default function useFetch<T>(fn: () => Promise<T>): IFetchHookValue<T> {
         setStatus('succeeded')
       } catch (err) {
         setStatus('failed')
-        dispatch(pushError(err))
+        pushError(err)
       }
     })()
-  }, [dispatch, fn])
+  }, [pushError, fn])
 
   return [status, data]
 }

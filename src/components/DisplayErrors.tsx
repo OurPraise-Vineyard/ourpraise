@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 
-import { useAppSelector } from '@hooks/state'
+import useErrors from '@hooks/useErrors'
 
 const fadeIn = keyframes`
   0% {
@@ -35,11 +35,11 @@ const DisplayError = styled.div<{ unmounted: boolean }>`
 `
 
 export default function DisplayErrors() {
-  const stack = useAppSelector(state => state.errors.stack)
+  const { errors } = useErrors()
 
   return (
     <>
-      {stack.map((error, index) => (
+      {errors.map((error, index) => (
         <DisplayError
           key={error.id}
           style={{ bottom: index * 48 + 8 }}

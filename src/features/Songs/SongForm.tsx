@@ -6,8 +6,7 @@ import { deleteSong } from '@backend/songs'
 import ButtonBase from '@components/ButtonBase'
 import SelectField from '@components/form/SelectField'
 import TextField from '@components/form/TextField'
-import { useAppDispatch } from '@hooks/state'
-import { pushError } from '@state/errorSlice'
+import useErrors from '@hooks/useErrors'
 import { keysOptions } from '@utils/chords'
 
 const Container = styled.div`
@@ -86,7 +85,7 @@ export default function SongForm({
     defaultSong
   )
   const navigate = useNavigate()
-  const appDispatch = useAppDispatch()
+  const { pushError } = useErrors()
 
   useEffect(() => {
     dispatch({ type: 'INIT', state: song || defaultSong })
@@ -111,7 +110,7 @@ export default function SongForm({
           await deleteSong(song.id)
           navigate('/songs')
         } catch (err) {
-          appDispatch(pushError(err))
+          pushError(err)
         }
       }
     }

@@ -7,8 +7,7 @@ import { deleteEvent } from '@backend/events'
 import ButtonBase from '@components/ButtonBase'
 import FormSongItem from '@components/FormSongItem'
 import TextField from '@components/form/TextField'
-import { useAppDispatch } from '@hooks/state'
-import { pushError } from '@state/errorSlice'
+import useErrors from '@hooks/useErrors'
 import { nextWeekday } from '@utils/date'
 
 const Container = styled.div`
@@ -132,7 +131,7 @@ export default function EventForm({
     defaultEvent
   )
   const navigate = useNavigate()
-  const appDispatch = useAppDispatch()
+  const { pushError } = useErrors()
 
   useEffect(() => {
     dispatch({ type: 'INIT', state: event || defaultEvent })
@@ -157,7 +156,7 @@ export default function EventForm({
           await deleteEvent(event.id)
           navigate('/events')
         } catch (err) {
-          appDispatch(pushError(err))
+          pushError(err)
         }
       }
     }

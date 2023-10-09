@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router-dom'
 
 import { createEvent } from '@backend/events'
 import EventForm from '@features/Events/EventForm'
-import { useAppDispatch } from '@hooks/state'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import { pushError } from '@state/errorSlice'
+import useErrors from '@hooks/useErrors'
 
 export default function AddEvent() {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const { pushError } = useErrors()
   useDocumentTitle('Add event')
 
   const handleSubmit = async options => {
@@ -19,7 +18,7 @@ export default function AddEvent() {
         navigate('/events/' + id)
       }
     } catch (err) {
-      dispatch(pushError(err))
+      pushError(err)
     }
   }
 

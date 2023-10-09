@@ -5,10 +5,9 @@ import Button from '@features/Auth/Blocks/Button'
 import Form from '@features/Auth/Blocks/Form'
 import ModeLink from '@features/Auth/Blocks/ModeLink'
 import TextField from '@features/Auth/Blocks/TextField'
-import { useAppDispatch } from '@hooks/state'
+import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import { createAccount } from '@state/authSlice'
-import { pushError } from '@state/errorSlice'
+import useErrors from '@hooks/useErrors'
 
 function safeMatchSearch(key) {
   const reg = new RegExp(`\\?.*${key}=([\\w\\d.@]*).*$`)
@@ -27,7 +26,8 @@ export default function RegisterForm() {
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatPassword] = useState('')
   const [isInvite, setIsInvite] = useState(false)
-  const dispatch = useAppDispatch()
+  const { createUser } = useAuth()
+  const { pushError } = useErrors()
   const navigate = useNavigate()
   useDocumentTitle('Register')
 
@@ -62,17 +62,15 @@ export default function RegisterForm() {
   const handleSubmit = async e => {
     e.preventDefault()
     if (password !== repeatPassword) {
-      dispatch(pushError('Passwords must match'))
+      pushError('Passwords must match')
       return
     }
 
     try {
-      await dispatch(
-        createAccount({ email, password, displayName: name })
-      ).unwrap()
+      await createUser(email, password, name)
       navigate('/')
     } catch (err) {
-      dispatch(pushError(err))
+      pushError('Try again')
     }
   }
 

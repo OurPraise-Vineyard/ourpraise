@@ -4,14 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { fetchEvent, saveEvent } from '@backend/events'
 import withFetch from '@components/withFetch'
 import EventForm from '@features/Events/EventForm'
-import { useAppDispatch } from '@hooks/state'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import { pushError } from '@state/errorSlice'
+import useErrors from '@hooks/useErrors'
 
 function EditEvent({ data: event }: { data: IEvent }) {
   const { eventId } = useParams()
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const { pushError } = useErrors()
   useDocumentTitle(event ? `Edit event: "${event.title}"` : 'Edit event')
 
   const handleSubmit = async options => {
@@ -19,7 +18,7 @@ function EditEvent({ data: event }: { data: IEvent }) {
       await saveEvent({ ...options, id: eventId })
       navigate('/events/' + eventId)
     } catch (err) {
-      dispatch(pushError(err))
+      pushError(err)
     }
   }
 

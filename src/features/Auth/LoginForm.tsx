@@ -3,16 +3,14 @@ import React, { useState } from 'react'
 import Button from '@features/Auth/Blocks/Button'
 import Form from '@features/Auth/Blocks/Form'
 import TextField from '@features/Auth/Blocks/TextField'
-import { useAppDispatch } from '@hooks/state'
+import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import { signIn } from '@state/authSlice'
-import { pushError } from '@state/errorSlice'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const dispatch = useAppDispatch()
+  const { signIn } = useAuth()
   useDocumentTitle('Login')
 
   const handleChange = name => e => {
@@ -28,12 +26,12 @@ export default function LoginForm() {
 
   const handleSubmit = async e => {
     e.preventDefault()
+
     try {
       setLoading(true)
-      await dispatch(signIn({ email, password })).unwrap()
+      await signIn(email, password)
     } catch (err) {
       setLoading(false)
-      dispatch(pushError(err))
     }
   }
 

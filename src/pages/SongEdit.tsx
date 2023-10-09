@@ -4,14 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { fetchSong, saveSong } from '@backend/songs'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
 import SongForm from '@features/Songs/SongForm'
-import { useAppDispatch } from '@hooks/state'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import { pushError } from '@state/errorSlice'
+import useErrors from '@hooks/useErrors'
 
 function EditSong({ data: song }: IWithFetchProps<ISong>) {
   const { songId } = useParams()
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const { pushError } = useErrors()
   useDocumentTitle(song ? `Edit song: "${song.title}"` : 'Edit song')
 
   const handleSubmit = async options => {
@@ -22,7 +21,7 @@ function EditSong({ data: song }: IWithFetchProps<ISong>) {
       })
       navigate('/songs/' + songId)
     } catch (err) {
-      dispatch(pushError(err))
+      pushError(err)
     }
   }
 
