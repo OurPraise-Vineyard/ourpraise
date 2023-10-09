@@ -2,9 +2,9 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { deleteEvent } from '@backend/events'
-import EventFormWrapper from '@components/EventFormWrapper'
 import FlexGrow from '@components/FlexGrow'
 import FlexRow from '@components/FlexRow'
+import Form from '@components/Form'
 import DeleteButton from '@components/form/DeleteButton'
 import SaveButton from '@components/form/SaveButton'
 import TextField from '@components/form/TextField'
@@ -46,7 +46,7 @@ export default function EventForm({
   }
 
   return (
-    <EventFormWrapper onSubmit={handleSave}>
+    <Form onSubmit={handleSave}>
       <Title>{heading}</Title>
       <TextField
         value={title}
@@ -75,6 +75,6 @@ export default function EventForm({
           </DeleteButton>
         )}
       </FlexRow>
-    </EventFormWrapper>
+    </Form>
   )
 }

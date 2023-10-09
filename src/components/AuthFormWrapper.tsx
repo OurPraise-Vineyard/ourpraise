@@ -1,5 +1,7 @@
 import styled, { keyframes } from 'styled-components'
 
+import Form from '@components/Form'
+
 const transitionIn = keyframes`
   0% {
     top: 20px;
@@ -14,7 +16,7 @@ const transitionIn = keyframes`
   }
 `
 
-export default styled.form`
+export default styled(Form)`
   width: 440px;
   max-width: 100vw;
   padding: 20px;
