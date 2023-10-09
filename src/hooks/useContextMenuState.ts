@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useReducer } from 'react'
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { useTheme } from 'styled-components'
 
 type ContextMenuState = {
@@ -44,11 +44,11 @@ export default function useContextMenuState(): ContextMenuHookValue {
       const { offsetLeft, offsetTop, offsetWidth, offsetHeight } =
         e.currentTarget
       const left = offsetLeft + offsetWidth - contextMenuWidth
-      const top = offsetTop + offsetHeight
+      const top = offsetTop + offsetHeight - window.scrollY
       setPosition(left, top)
       setShow(true)
     },
-    [setPosition, setShow]
+    [setPosition, setShow, contextMenuWidth]
   )
   const onClose = useCallback(() => setShow(false), [setShow])
 

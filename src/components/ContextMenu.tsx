@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useTheme } from 'styled-components'
 
 import ContextMenuContainer from '@components/ContextMenuContainer'
@@ -29,6 +29,11 @@ export default function ContextMenu({
     () => Math.max(0, Math.min(window.innerWidth - contextMenuWidth, left)),
     [left, contextMenuWidth]
   )
+
+  useEffect(() => {
+    window.addEventListener('scroll', onClose)
+    return () => window.removeEventListener('scroll', onClose)
+  }, [onClose])
 
   return (
     <>
