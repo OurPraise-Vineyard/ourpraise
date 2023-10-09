@@ -89,6 +89,7 @@ type SongListItemProps = {
   body?: string[]
   authors: string
   comment?: string
+  onOpenMenu: React.MouseEventHandler<HTMLButtonElement>
 }
 
 export default function SongListItem({
@@ -96,7 +97,8 @@ export default function SongListItem({
   authors,
   formattedKey,
   body = [],
-  comment
+  comment,
+  onOpenMenu
 }: SongListItemProps) {
   return (
     <Container>
@@ -106,7 +108,7 @@ export default function SongListItem({
           <SongAuthors>{authors}</SongAuthors>
         </FlexGrow>
         {formattedKey && <PlayKey>{formattedKey}</PlayKey>}
-        <IconButton icon={moreIcon} />
+        <IconButton icon={moreIcon} onClick={onOpenMenu} />
       </Header>
       {comment && <Comment>{comment}</Comment>}
       {body.map((part, index) => (

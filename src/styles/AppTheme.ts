@@ -37,7 +37,18 @@ const AppTheme = {
   boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.2)',
 
   sizes: {
-    toolbarHeight: '50px'
+    toolbarHeight: '50px',
+    contextMenuWidth: 150,
+    contextMenuItemHeight: 40
+  },
+
+  zIndex: {
+    contextMenu: 1000,
+    backdrop: 999
+  },
+
+  transitions: {
+    default: '.2s ease-out'
   }
 }
 
