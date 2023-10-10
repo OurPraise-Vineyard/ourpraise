@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import { useCallback, useMemo, useReducer } from 'react'
 import { useTheme } from 'styled-components'
 
 type ContextMenuState = {
