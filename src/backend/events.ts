@@ -121,3 +121,15 @@ export async function saveEventSong(eventId: IDocId, form: IEventSongForm) {
     }
   )
 }
+
+export async function removeEventSong(eventId: IDocId, removeId: IDocId) {
+  await Backend.getAndSetDoc(
+    `events/${eventId}`,
+    (data: IDoc) => ({
+      songs: (data as IEvent).songs.filter(song => song.id !== removeId)
+    }),
+    {
+      merge: true
+    }
+  )
+}

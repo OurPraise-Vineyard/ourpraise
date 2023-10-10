@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import downloadIcon from '@assets/download.svg'
 import editIcon from '@assets/edit.svg'
-import { fetchEvent, saveEventSong } from '@backend/events'
+import { fetchEvent, removeEventSong, saveEventSong } from '@backend/events'
 import ContextMenu from '@components/ContextMenu'
 import Comment from '@components/EventComment'
 import EventSongForm from '@components/EventSongForm'
@@ -48,15 +48,6 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
       contextMenu.onOpen(e)
     }
 
-  const handleRemoveSong = useCallback(() => {
-    console.log(`remove song: ${selectedSong}`)
-  }, [selectedSong])
-
-  const handleEditSong = useCallback(() => {
-    setEditSong(true)
-    contextMenu.onClose()
-  }, [contextMenu])
-
   const handleMoveSongUp = useCallback(() => {
     console.log(`move song up: ${selectedSong}`)
   }, [selectedSong])
@@ -77,14 +68,41 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
       },
       {
         label: 'Edit options',
-        onClick: handleEditSong
+        onClick() {
+          setEditSong(true)
+          contextMenu.onClose()
+        }
       },
       {
         label: 'Remove song',
-        onClick: handleRemoveSong
+        async onClick() {
+          if (selectedSong) {
+            if (
+              window.confirm(`Remove "${selectedSong.title}" from this event?`)
+            ) {
+              contextMenu.onClose()
+              try {
+                await removeEventSong(event.id, selectedSong.id)
+                onTriggerFetch()
+              } catch (err) {
+                pushError(err)
+              } finally {
+                contextMenu.onClose()
+              }
+            }
+          }
+        }
       }
     ],
-    [handleEditSong, handleRemoveSong, handleMoveSongUp, handleMoveSongDown]
+    [
+      contextMenu,
+      selectedSong,
+      event.id,
+      pushError,
+      handleMoveSongUp,
+      handleMoveSongDown,
+      onTriggerFetch
+    ]
   )
 
   return (
