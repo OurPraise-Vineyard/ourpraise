@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import useErrors from '@hooks/useErrors'
 
@@ -10,6 +10,7 @@ export default function useFetch<T>(
 ): IFetchHookValue<T> {
   const [data, setData] = useState<T | null>(null)
   const [status, setStatus] = useState<FetchStatus>('idle')
+  const [trigger, setTrigger] = useState(0)
   const { pushError } = useErrors()
 
   useEffect(() => {
@@ -26,7 +27,9 @@ export default function useFetch<T>(
         }
       }
     })()
-  }, [pushError, fn, onFail])
+  }, [pushError, fn, onFail, trigger])
 
-  return [status, data]
+  const triggerFetch = useCallback(() => setTrigger(Date.now()), [])
+
+  return [status, data, triggerFetch]
 }

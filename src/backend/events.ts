@@ -4,6 +4,7 @@ import {
   mapCollectionToEvents,
   mapDocToEvent,
   mapEventFormToEvent,
+  mapEventSongFormToEventSong,
   mergeSongEventSong
 } from '@mappers/events'
 import { getTime, todayTime } from '@utils/date'
@@ -89,6 +90,30 @@ export async function addSongToEvent(eventId: IDocId, songOptions: IEventSong) {
             comment: songOptions.comment
           }
         ]
+      }
+    },
+    {
+      merge: true
+    }
+  )
+}
+
+export async function saveEventSong(eventId: IDocId, form: IEventSongForm) {
+  const eventSong = mapEventSongFormToEventSong(form)
+
+  await Backend.getAndSetDoc(
+    `events/${eventId}`,
+    (data: IDoc) => {
+      return {
+        songs: (data as IEvent).songs.map(song => {
+          if (song.id === eventSong.id) {
+            return {
+              ...song,
+              ...eventSong
+            }
+          }
+          return song
+        })
       }
     },
     {

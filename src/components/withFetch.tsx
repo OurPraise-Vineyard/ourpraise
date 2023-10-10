@@ -5,7 +5,7 @@ import Center from '@components/Center'
 import FadeIn from '@components/FadeIn'
 import useFetch, { IFetchCreatorParams } from '@hooks/useFetch'
 
-export type IWithFetchProps<T> = { data: T }
+export type IWithFetchProps<T> = { data: T; onTriggerFetch: () => void }
 
 export default function withFetch<Props, Data>(
   fn: (params: IFetchCreatorParams) => Promise<Data>
@@ -14,7 +14,7 @@ export default function withFetch<Props, Data>(
     return function (props: Props): JSX.Element {
       const params = useParams()
       const fnWithParams = useCallback(() => fn(params), [params])
-      const [status, data] = useFetch(fnWithParams)
+      const [status, data, triggerFetch] = useFetch(fnWithParams)
       const [showLoading, setShowLoading] = useState(false)
 
       useEffect(() => {
@@ -32,7 +32,7 @@ export default function withFetch<Props, Data>(
 
       return (
         <FadeIn>
-          <Comp data={data} {...props} />
+          <Comp data={data} onTriggerFetch={triggerFetch} {...props} />
         </FadeIn>
       )
     }

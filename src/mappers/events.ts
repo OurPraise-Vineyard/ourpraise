@@ -42,11 +42,12 @@ export function mergeSongEventSong(
     ...song,
     ...eventSong,
     body,
+    transposeKey: songKey,
     formattedKey
   }
 }
 
-export function mapEventFormToEvent(event: IEventForm) {
+export function mapEventFormToEvent(event: IEventForm): IEvent {
   return pruneObject({
     ...event,
     id: undefined,
@@ -57,5 +58,15 @@ export function mapEventFormToEvent(event: IEventForm) {
         comment: song.comment
       })
     )
+  })
+}
+
+export function mapEventSongFormToEventSong(
+  eventSong: IEventSongForm
+): IEventSong {
+  return pruneObject({
+    transposeKey: eventSong.transposeKey,
+    comment: eventSong.comment,
+    id: eventSong.id
   })
 }

@@ -287,7 +287,7 @@ const Backend = {
         const docRef = doc(getFirestore(), path)
         const docData = await transaction.get(docRef)
         if (!docData.exists()) {
-          throw new Error()
+          throw new BackendError(`Document "${path}" not found`)
         }
         const oldData = mapDocId(docData)
         const newData = updater(oldData) as Partial<unknown>

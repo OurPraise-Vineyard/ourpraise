@@ -1,4 +1,4 @@
-interface IEventSong {
+type IEventSong = {
   id: IDocId
   transposeKey: IKey
   comment: string
@@ -9,7 +9,13 @@ interface IEventSong {
   formattedKey?: string
 }
 
-interface IEvent {
+type IEventSongForm = {
+  id: IDocId
+  transposeKey: IKey
+  comment: string
+}
+
+type IEvent = {
   title: string
   date: string
   songs: Array<IEventSong>
@@ -19,7 +25,7 @@ interface IEvent {
   owner: string
 }
 
-interface IEventForm {
+type IEventForm = {
   title: string
   date: string
   songs: Array<IEventSong>
