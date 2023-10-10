@@ -62,8 +62,7 @@ export async function saveEvent(form: IEventForm): Promise<void> {
 export async function createEvent(form: IEventForm): Promise<IDocId> {
   const doc = await Backend.createDoc('events', {
     ...mapEventFormToEvent(form),
-    createdAt: new Date().toISOString(),
-    owner: 'MISSING OWNER'
+    createdAt: new Date().toISOString()
   })
 
   return doc.id

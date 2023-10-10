@@ -31,4 +31,5 @@ type IEventForm = {
   songs: Array<IEventSong>
   id?: IDocId
   comment: string
+  owner: string
 }

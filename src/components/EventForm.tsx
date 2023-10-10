@@ -11,6 +11,7 @@ import Title from '@blocks/text/Title'
 import TextField from '@components/form/TextField'
 import TextArea from '@components/form/Textarea'
 import useEventForm from '@hooks/forms/useEventForm'
+import useAuth from '@hooks/useAuth'
 import useErrors from '@hooks/useErrors'
 
 export default function EventForm({
@@ -22,6 +23,7 @@ export default function EventForm({
   onSubmit: (options: IEventForm) => void
   heading: string
 }) {
+  const { user } = useAuth()
   const [{ title, comment, date, songs }, setField] = useEventForm(event)
   const navigate = useNavigate()
   const { pushError } = useErrors()
@@ -29,7 +31,7 @@ export default function EventForm({
 
   const handleSave = async e => {
     e.preventDefault()
-    onSubmit({ title, date, songs, comment })
+    onSubmit({ title, date, songs, comment, owner: user?.email || '' })
   }
 
   const handleDelete = async () => {

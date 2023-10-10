@@ -12,7 +12,8 @@ const defaultEventForm: IEventForm = {
   title: '',
   comment: '',
   date: dateFormat(nextWeekday(7), 'yyyy-mm-dd'),
-  songs: []
+  songs: [],
+  owner: ''
 }
 
 const reducer = (state: IEventForm, action: Action) => {
