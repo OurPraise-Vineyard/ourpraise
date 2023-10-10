@@ -1,9 +1,14 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import downloadIcon from '@assets/download.svg'
 import editIcon from '@assets/edit.svg'
-import { fetchEvent, removeEventSong, saveEventSong } from '@backend/events'
+import {
+  fetchEvent,
+  moveEventSong,
+  removeEventSong,
+  saveEventSong
+} from '@backend/events'
 import ContextMenu from '@components/ContextMenu'
 import Comment from '@components/EventComment'
 import EventSongForm from '@components/EventSongForm'
@@ -48,23 +53,37 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
       contextMenu.onOpen(e)
     }
 
-  const handleMoveSongUp = useCallback(() => {
-    console.log(`move song up: ${selectedSong}`)
-  }, [selectedSong])
-
-  const handleMoveSongDown = useCallback(() => {
-    console.log(`move song down: ${selectedSong}`)
-  }, [selectedSong])
-
   const contextMenuItems = useMemo(
     () => [
       {
         label: 'Move up',
-        onClick: handleMoveSongUp
+        async onClick() {
+          if (selectedSong) {
+            try {
+              await moveEventSong(event.id, selectedSong.id, -1)
+              onTriggerFetch()
+            } catch (err) {
+              pushError(err)
+            } finally {
+              contextMenu.onClose()
+            }
+          }
+        }
       },
       {
         label: 'Move down',
-        onClick: handleMoveSongDown
+        async onClick() {
+          if (selectedSong) {
+            try {
+              await moveEventSong(event.id, selectedSong.id, 1)
+              onTriggerFetch()
+            } catch (err) {
+              pushError(err)
+            } finally {
+              contextMenu.onClose()
+            }
+          }
+        }
       },
       {
         label: 'Edit options',
@@ -94,15 +113,7 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
         }
       }
     ],
-    [
-      contextMenu,
-      selectedSong,
-      event.id,
-      pushError,
-      handleMoveSongUp,
-      handleMoveSongDown,
-      onTriggerFetch
-    ]
+    [contextMenu, selectedSong, event.id, pushError, onTriggerFetch]
   )
 
   return (

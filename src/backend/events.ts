@@ -133,3 +133,29 @@ export async function removeEventSong(eventId: IDocId, removeId: IDocId) {
     }
   )
 }
+
+export async function moveEventSong(
+  eventId: IDocId,
+  moveId: IDocId,
+  steps: number
+) {
+  if (steps !== 0) {
+    await Backend.getAndSetDoc(
+      `events/${eventId}`,
+      (data: IDoc) => {
+        const songs = (data as IEvent).songs
+        const index = songs.findIndex(song => song.id === moveId)
+        if (index + steps >= 0 && index + steps <= songs.length - 1) {
+          const moveSong = songs.splice(index, 1)[0]
+          songs.splice(index + steps, 0, moveSong)
+          return {
+            songs
+          }
+        }
+      },
+      {
+        merge: true
+      }
+    )
+  }
+}

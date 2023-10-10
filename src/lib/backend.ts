@@ -292,10 +292,12 @@ const Backend = {
         const oldData = mapDocId(docData)
         const newData = updater(oldData) as Partial<unknown>
 
-        if (options) {
-          transaction.set(docRef, newData, options)
-        } else {
-          transaction.set(docRef, newData)
+        if (newData) {
+          if (options) {
+            transaction.set(docRef, newData, options)
+          } else {
+            transaction.set(docRef, newData)
+          }
         }
       })
     } catch (err) {
