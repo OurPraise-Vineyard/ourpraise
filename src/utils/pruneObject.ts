@@ -2,7 +2,7 @@ const isObject = obj => {
   return Object.prototype.toString.call(obj) === '[object Object]'
 }
 
-export function pruneObject(obj) {
+export default function pruneObject(obj) {
   return Object.entries(obj).reduce((acc, [key, value]) => {
     if (value !== undefined) {
       if (isObject(value)) {
@@ -19,13 +19,4 @@ export function pruneObject(obj) {
     }
     return acc
   }, {})
-}
-
-export function sortByTitleAsc(a, b) {
-  if (a.title < b.title) {
-    return -1
-  } else if (a.title > b.title) {
-    return 1
-  }
-  return 0
 }

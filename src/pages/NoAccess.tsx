@@ -1,11 +1,7 @@
 import React from 'react'
-import styled from 'styled-components'
 
+import Center from '@blocks/Center'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
-
-const Center = styled.p`
-  text-align: center;
-`
 
 export default function NoAccessView() {
   useDocumentTitle()

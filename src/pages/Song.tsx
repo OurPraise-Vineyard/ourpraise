@@ -1,53 +1,21 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import styled from 'styled-components'
 
 import editIcon from '@assets/edit.svg'
 import { fetchSong } from '@backend/songs'
+import FlexGrow from '@blocks/FlexGrow'
+import FlexRow from '@blocks/FlexRow'
+import IconButton from '@blocks/IconButton'
+import ToolbarButton from '@blocks/ToolbarButton'
+import EllipsisText from '@blocks/text/EllipsisText'
+import Monospace from '@blocks/text/Monospace'
+import Title from '@blocks/text/Title'
 import AddToEvent from '@components/AddToEvent'
-import IconButton from '@components/IconButton'
 import KeySwitcher from '@components/KeySwitcher'
-import ToolbarButton from '@components/ToolbarButton'
-import Paragraph from '@components/text/Paragraph'
-import Title from '@components/text/Title'
 import withFetch from '@components/withFetch'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useFormattedSongBody from '@hooks/useFormattedSongBody'
-
-const Container = styled.div`
-  margin-top: 16px;
-`
-
-const Authors = styled(Paragraph)`
-  color: ${props => props.theme.colors.textFaded};
-  margin: 0;
-  max-width: 30vw;
-`
-
-const SongBody = styled.div`
-  font-family: 'Oxygen Mono', monospace;
-  margin: 16px 0 64px;
-  white-space: pre;
-  font-size: ${props => props.theme.fontSizes.small};
-`
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 12px;
-`
-
-const Column = styled.div`
-  flex: 1 0 auto;
-  margin: 0 0 16px;
-`
-
-const Centered = styled(Row)`
-  align-items: center;
-  height: ${props => props.theme.sizes.toolbarHeight};
-`
 
 function Song({ data: song }: { data: ISong }) {
   const { songId } = useParams()
@@ -74,7 +42,7 @@ function Song({ data: song }: { data: ISong }) {
   }
 
   return (
-    <Container>
+    <>
       {isAdmin && (
         <AddToEvent
           show={showEventsDialog}
@@ -83,17 +51,17 @@ function Song({ data: song }: { data: ISong }) {
           songKey={transposeKey}
         />
       )}
-      <Row>
-        <Column>
+      <FlexRow gap margin="16px 0 32px">
+        <FlexGrow>
           <Title>{song.title}</Title>
-          <Authors>{song.authors}</Authors>
-        </Column>
+          <EllipsisText width="30vw">{song.authors}</EllipsisText>
+        </FlexGrow>
         {isAdmin && (
           <ToolbarButton onClick={() => setShowEventsDialog(true)}>
             Add to event
           </ToolbarButton>
         )}
-        <Centered>
+        <FlexRow centered gap>
           <KeySwitcher
             transposeKey={transposeKey}
             setTransposeKey={setTransposeKey}
@@ -101,11 +69,11 @@ function Song({ data: song }: { data: ISong }) {
             onToggleChords={handleToggleChords}
             showChords={showChords}
           />
-          {isAdmin && <IconButton icon={editIcon} onClick={handleEdit} />}
-        </Centered>
-      </Row>
-      <SongBody>{formattedBody}</SongBody>
-    </Container>
+          {isAdmin && <IconButton edge icon={editIcon} onClick={handleEdit} />}
+        </FlexRow>
+      </FlexRow>
+      <Monospace>{formattedBody}</Monospace>
+    </>
   )
 }
 

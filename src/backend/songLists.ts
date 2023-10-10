@@ -5,7 +5,6 @@ import {
   mapDocToSongList,
   mapSongListFormToSongList
 } from '@mappers/songLists'
-import { sortByTitleAsc } from '@utils/api'
 
 export function fetchSongLists(): Promise<ISongList[]> {
   return Backend.getCollection({
@@ -20,9 +19,9 @@ export async function fetchSongList(songListId: IDocId): Promise<ISongList> {
     mapDocToSongList
   )
 
-  const songs: ISong[] = (
-    await Promise.all(songList.songIds.map(songId => fetchSong(songId)))
-  ).sort(sortByTitleAsc)
+  const songs: ISong[] = await Promise.all(
+    songList.songIds.map(songId => fetchSong(songId))
+  )
 
   return {
     ...songList,

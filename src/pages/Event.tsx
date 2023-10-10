@@ -9,15 +9,15 @@ import {
   removeEventSong,
   saveEventSong
 } from '@backend/events'
+import Comment from '@blocks/EventComment'
+import EventSongsBulletList from '@blocks/EventSongsBulletList'
+import IconButton from '@blocks/IconButton'
+import Tag from '@blocks/Tag'
+import Toolbar from '@blocks/Toolbar'
+import Title from '@blocks/text/Title'
 import ContextMenu from '@components/ContextMenu'
-import Comment from '@components/EventComment'
 import EventSongForm from '@components/EventSongForm'
-import IconButton from '@components/IconButton'
 import SongListItem from '@components/SongListItem'
-import SongsOverview from '@components/SongsBulletList'
-import Tag from '@components/Tag'
-import Toolbar from '@components/Toolbar'
-import Title from '@components/text/Title'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
 import useContextMenuState from '@hooks/useContextMenuState'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
@@ -142,7 +142,11 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
         <IconButton icon={downloadIcon} onClick={() => window.print()} />
       </Toolbar>
       {!!event.comment && <Comment>{event.comment}</Comment>}
-      <SongsOverview songs={event.songs} />
+      <EventSongsBulletList>
+        {event.songs.map(song => (
+          <li key={song.id}>{song.title}</li>
+        ))}
+      </EventSongsBulletList>
       {event.songs.map((song, i) => (
         <SongListItem
           key={song.id}

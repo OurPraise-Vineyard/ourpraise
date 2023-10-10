@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { buttonBase } from '@components/ButtonBase'
+import { buttonBase } from '@blocks/ButtonBase'
 
-export default styled.button.attrs({
+export default styled(Link).attrs({
   color: 'primary'
 })`
   ${buttonBase}

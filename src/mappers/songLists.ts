@@ -1,4 +1,4 @@
-import { pruneObject } from '@utils/api'
+import pruneObject from '@utils/pruneObject'
 
 export function mapDocToSongList(doc: IDoc): ISongList {
   const songList = doc as ISongList

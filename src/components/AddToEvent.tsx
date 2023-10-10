@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import { IEventsData, addSongToEvent, fetchEvents } from '@backend/events'
-import Center from '@components/Center'
+import Center from '@blocks/Center'
+import FlexGrow from '@blocks/FlexGrow'
+import Form from '@blocks/Form'
+import ScrollContainer from '@blocks/ScrollContainer'
+import SaveButton from '@blocks/form/SaveButton'
 import CompactListItem from '@components/CompactListItem'
-import FlexGrow from '@components/FlexGrow'
 import Modal from '@components/Modal'
-import ScrollContainer from '@components/ScrollContainer'
-import SaveButton from '@components/form/SaveButton'
 import SelectField from '@components/form/SelectField'
 import TextArea from '@components/form/Textarea'
 import useErrors from '@hooks/useErrors'
@@ -37,7 +38,8 @@ export default function AddToEvent({
     setTransposeKey(songKey)
   }, [songKey])
 
-  const handleAddSong = async () => {
+  const handleAddSong = async (e: React.FormEvent) => {
+    e.preventDefault()
     try {
       if (!selectedEvent) {
         throw new Error('No event selected')
@@ -55,7 +57,7 @@ export default function AddToEvent({
   }
 
   return (
-    <Modal title="Add song to event" narrow onClose={onClose} show={show}>
+    <Modal title="Add song to event" onClose={onClose} show={show}>
       <FlexGrow>
         <ScrollContainer>
           {status === 'succeeded' &&
@@ -75,23 +77,25 @@ export default function AddToEvent({
         </ScrollContainer>
       </FlexGrow>
       {!!selectedEvent && (
-        <>
-          <TextArea
-            onChange={setComment}
-            value={comment}
-            title="Comment"
-            size="small"
-          />
-          <SelectField
-            value={transposeKey}
-            onChange={setTransposeKey}
-            options={keysOptions}
-            title="Key"
-          />
-          <SaveButton onClick={handleAddSong}>
-            {saving ? 'Saving...' : 'Add song'}
-          </SaveButton>
-        </>
+        <div>
+          <Form onSubmit={handleAddSong}>
+            <TextArea
+              onChange={setComment}
+              value={comment}
+              title="Comment"
+              size="small"
+            />
+            <SelectField
+              value={transposeKey}
+              onChange={setTransposeKey}
+              options={keysOptions}
+              title="Key"
+            />
+            <SaveButton type="submit">
+              {saving ? 'Saving...' : 'Add song'}
+            </SaveButton>
+          </Form>
+        </div>
       )}
     </Modal>
   )

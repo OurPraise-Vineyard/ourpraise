@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export default styled.button<{ icon }>`
+export default styled.button<{ icon: string; edge?: boolean }>`
   background-color: transparent;
   background-image: url(${props => props.icon});
   background-repeat: no-repeat;
@@ -12,6 +12,8 @@ export default styled.button<{ icon }>`
   height: 36px;
   transition: background-color 0.2s ease-out;
   cursor: pointer;
+
+  margin-right: ${props => (props.edge ? '-12px' : 0)};
 
   &:hover {
     background-color: ${props => props.theme.colors.backgroundHover};

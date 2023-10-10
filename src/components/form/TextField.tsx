@@ -1,32 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
 
-const Container = styled.label`
-  padding: 8px;
-  background-color: ${props => props.theme.colors.subtleInput};
-  border-radius: 4px;
-  display: block;
-`
-
-const Label = styled.span`
-  font-size: ${props => props.theme.fontSizes.small};
-  display: block;
-`
-
-const Input = styled.input`
-  background: transparent;
-  width: 100%;
-  display: block;
-  border: none;
-  font-size: ${props => props.theme.fontSizes.small};
-  padding: 8px 0 0;
-  font-family: 'Oxygen Mono', monospace;
-
-  &:focus {
-    border: none;
-    outline: none;
-  }
-`
+import FieldContainer from '@blocks/form/FieldContainer'
+import FieldLabel from '@blocks/form/FieldLabel'
+import TextFieldInput from '@blocks/form/TextFieldInput'
 
 interface TextFieldProps {
   title?: string
@@ -56,9 +32,9 @@ export default function TextField({
   disabled = false
 }: TextFieldProps) {
   return (
-    <Container className={className}>
-      <Label>{title}</Label>
-      <Input
+    <FieldContainer className={className}>
+      <FieldLabel>{title}</FieldLabel>
+      <TextFieldInput
         name={name}
         type={password ? 'password' : type}
         onChange={e => onChange(e.target.value)}
@@ -67,6 +43,6 @@ export default function TextField({
         required={required}
         autoFocus={autoFocus}
       />
-    </Container>
+    </FieldContainer>
   )
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import ButtonBase from '@components/ButtonBase'
+import ButtonBase from '@blocks/ButtonBase'
 
 export default styled(ButtonBase).attrs({
   color: 'danger',

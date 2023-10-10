@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
-import Center from '@components/Center'
+import Center from '@blocks/Center'
 import DisplayErrors from '@components/DisplayErrors'
 import Layout from '@components/Layout'
 import useAuth from '@hooks/useAuth'

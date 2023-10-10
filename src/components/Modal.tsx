@@ -1,91 +1,20 @@
-import React, { useEffect, useRef } from 'react'
-import styled from 'styled-components'
-import { css } from 'styled-components'
+import React, { useEffect } from 'react'
 
 import xIcon from '@assets/x.svg'
-import IconButton from '@components/IconButton'
-import Toolbar from '@components/Toolbar'
-import Title from '@components/text/Title'
-
-const Grid = styled.div<{ show: boolean; narrow: boolean }>`
-  background-color: rgba(0, 0, 0, 0.2);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  overflow-y: auto;
-  transition: opacity 0.2s ease-out, grid-template-columns 0.5s ease-out;
-  padding: 60px;
-
-  ${props =>
-    !props.show &&
-    css`
-      opacity: 0;
-      pointer-events: none;
-    `}
-`
-
-const ModalContainer = styled.div<{
-  show: boolean
-  narrow: boolean
-}>`
-  position: fixed;
-  z-index: 10001;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: ${props => (props.narrow ? '400px' : '800px')};
-  max-width: 90vw;
-  height: 600px;
-  background-color: white;
-  box-shadow: ${props => props.theme.boxShadow};
-  border-radius: 4px;
-  transition: top 0.2s ease-out, width 0.2s ease-out;
-  display: flex;
-  flex-direction: column;
-
-  ${props =>
-    !props.show &&
-    css`
-      top: calc(50% + 20px);
-      transition: top 0.2s ease-out;
-      pointer-events: none;
-    `}
-`
-
-const ModalContent = styled.div<{ blank: boolean }>`
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  position: relative;
-  overflow: auto;
-  height: ${props =>
-    css`calc(600px - ${props.theme.sizes.toolbarHeight} - 20px)`};
-  padding: ${props => (props.blank ? '0' : '20px')};
-`
-
-const StyledIconButton = styled(IconButton)`
-  margin-right: -12px;
-`
+import Backdrop from '@blocks/Backdrop'
+import IconButton from '@blocks/IconButton'
+import ModalContainer from '@blocks/ModalContainer'
+import ModalContent from '@blocks/ModalContent'
+import Toolbar from '@blocks/Toolbar'
+import Title from '@blocks/text/Title'
 
 type ModalProps = {
   onClose: () => void
   show: boolean
   children: React.ReactNode
   title?: string
-  narrow?: boolean
-  blank?: boolean
 }
-export default function Modal({
-  onClose,
-  show,
-  children,
-  title = '',
-  narrow = false,
-  blank = false
-}: ModalProps) {
+export default function Modal({ onClose, show, children, title }: ModalProps) {
   useEffect(
     function () {
       if (show) {
@@ -101,40 +30,16 @@ export default function Modal({
     e.stopPropagation()
   }
 
-  const gridRef = useRef<HTMLDivElement | null>(null)
-  const isMouseDown = useRef<boolean>(false)
-
-  const mouseDown = (e: React.MouseEvent) => {
-    if (e.target === gridRef.current) {
-      isMouseDown.current = true
-    }
-  }
-
-  const mouseUp = (e: React.MouseEvent) => {
-    if (!isMouseDown.current) return
-    if (e.target === gridRef.current) {
-      onClose()
-    }
-    isMouseDown.current = false
-  }
-
   return (
-    <Grid
-      show={show}
-      narrow={narrow}
-      onMouseDown={mouseDown}
-      onMouseUp={mouseUp}
-      ref={gridRef}
-    >
-      <ModalContainer show={show} narrow={narrow} onClick={handleStopPropagate}>
-        {!blank && !!title && (
-          <Toolbar horizontalPadding>
-            {!!title && <Title>{title}</Title>}
-            {!blank && <StyledIconButton icon={xIcon} onClick={onClose} />}
-          </Toolbar>
-        )}
-        <ModalContent blank={blank}>{children}</ModalContent>
+    <>
+      <Backdrop visible={show} disabled={!show} onClick={onClose} />
+      <ModalContainer show={show} onClick={handleStopPropagate}>
+        <Toolbar horizontalPadding>
+          {!!title && <Title>{title}</Title>}
+          <IconButton edge icon={xIcon} onClick={onClose} />
+        </Toolbar>
+        <ModalContent>{children}</ModalContent>
       </ModalContainer>
-    </Grid>
+    </>
   )
 }

@@ -1,60 +1,14 @@
 import React, { useMemo } from 'react'
-import styled from 'styled-components'
 
+import NavContainer from '@blocks/NavContainer'
+import NavContent from '@blocks/NavContent'
+import NavLogo from '@blocks/NavLogo'
+import NavMenu from '@blocks/NavMenu'
+import NavMenuItem from '@blocks/NavMenuItem'
+import NavUsername from '@blocks/NavUsername'
 import ContextMenu from '@components/ContextMenu'
-import Logo from '@components/Logo'
-import NavMenuItem from '@components/NavMenuItem'
-import Page from '@components/Page'
 import useAuth from '@hooks/useAuth'
 import useContextMenuState from '@hooks/useContextMenuState'
-
-const Container = styled.nav`
-  background-color: ${props => props.theme.colors.navBackground};
-  box-shadow: ${props => props.theme.boxShadow};
-
-  @media print {
-    display: none;
-  }
-`
-
-const Username = styled.p`
-  padding: 0;
-  font-size: ${props => props.theme.fontSizes.regular};
-  color: ${props => props.theme.colors.navText};
-  cursor: pointer;
-  grid-area: username;
-  justify-self: end;
-  margin: 0;
-  white-space: nowrap;
-  text-align: right;
-`
-
-const StyledLogo = styled(Logo)`
-  height: 40px;
-  grid-area: logo;
-  margin-bottom: 2px;
-`
-
-const Wrapper = styled(Page)`
-  display: grid;
-  grid-template-columns: 1fr min-content;
-  grid-template-rows: min-content min-content;
-  grid-template-areas: 'logo username' 'links username';
-  align-items: center;
-  height: 100%;
-`
-
-const Links = styled.div`
-  display: flex;
-  grid-area: links;
-
-  > a {
-    font-size: ${props => props.theme.fontSizes.small};
-    color: ${props => props.theme.colors.navText};
-    text-decoration: none;
-    margin-right: 20px;
-  }
-`
 
 export default function Nav() {
   const { user } = useAuth()
@@ -81,22 +35,22 @@ export default function Nav() {
           onClose={menu.onClose}
         />
       )}
-      <Container>
-        <Wrapper>
-          <StyledLogo />
-          <Username onClick={menu.onOpen}>
+      <NavContainer>
+        <NavContent>
+          <NavLogo />
+          <NavUsername onClick={menu.onOpen}>
             {user ? user.displayName || user.email : ''}
-          </Username>
-          <Links>
+          </NavUsername>
+          <NavMenu>
             {user?.role === 'admin' && (
               <>
                 <NavMenuItem to="/events">Events</NavMenuItem>
                 <NavMenuItem to="/songs">Songs</NavMenuItem>
               </>
             )}
-          </Links>
-        </Wrapper>
-      </Container>
+          </NavMenu>
+        </NavContent>
+      </NavContainer>
     </>
   )
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import Logo from '@components/Logo'
+import Logo from '@blocks/Logo'
 
 export default styled(Logo)`
   height: 5vh;

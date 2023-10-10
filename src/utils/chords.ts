@@ -1,6 +1,6 @@
 import { Transposer } from 'chord-transposer'
 
-const keys: string[][] = [
+const keys: IKey[][] = [
   ['C'],
   ['Db'],
   ['D'],
@@ -70,7 +70,7 @@ export const keysOptions: { value: string; label: string }[] = [
   }
 ]
 
-export function findNextKey(fromKey: string, steps: 1 | -1): string {
+export function findNextKey(fromKey: string, steps: 1 | -1): IKey {
   const index = keys.findIndex(key =>
     key.some(keyVariant => keyVariant === fromKey)
   )

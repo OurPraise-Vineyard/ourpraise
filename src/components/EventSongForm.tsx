@@ -1,9 +1,9 @@
 import React from 'react'
 
-import FlexGrow from '@components/FlexGrow'
-import Form from '@components/Form'
+import FlexGrow from '@blocks/FlexGrow'
+import Form from '@blocks/Form'
+import SaveButton from '@blocks/form/SaveButton'
 import Modal from '@components/Modal'
-import SaveButton from '@components/form/SaveButton'
 import SelectField from '@components/form/SelectField'
 import TextArea from '@components/form/Textarea'
 import useEventSongForm from '@hooks/forms/useEventSongForm'
@@ -31,7 +31,7 @@ export default function EventSongForm({
   }
 
   return (
-    <Modal title="Edit song" narrow onClose={onClose} show={show}>
+    <Modal title="Edit song" onClose={onClose} show={show}>
       <Form onSubmit={handleSubmit}>
         <TextArea
           onChange={value => setField('comment', value)}

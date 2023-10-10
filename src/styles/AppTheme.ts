@@ -44,7 +44,10 @@ const AppTheme = {
 
   zIndex: {
     contextMenu: 1000,
-    backdrop: 999
+    contextMenuBackdrop: 999,
+    errors: 2000,
+    modal: 1500,
+    modalBackdrop: 1499
   },
 
   transitions: {
