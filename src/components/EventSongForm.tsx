@@ -1,8 +1,8 @@
 import React from 'react'
 
-import FlexGrow from '@blocks/FlexGrow'
+import Block from '@blocks/Block'
+import Button from '@blocks/Button'
 import Form from '@blocks/Form'
-import SaveButton from '@blocks/form/SaveButton'
 import Modal from '@components/Modal'
 import SelectField from '@components/form/SelectField'
 import TextArea from '@components/form/Textarea'
@@ -45,10 +45,10 @@ export default function EventSongForm({
           options={keysOptions}
           title="Key"
         />
-        <FlexGrow />
-        <SaveButton type="submit">
+        <Block grow />
+        <Button buttonStyle="primary" type="submit">
           {saving ? 'Saving...' : 'Add song'}
-        </SaveButton>
+        </Button>
       </Form>
     </Modal>
   )

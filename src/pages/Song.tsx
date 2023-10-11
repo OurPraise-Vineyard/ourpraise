@@ -3,8 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import editIcon from '@assets/edit.svg'
 import { fetchSong } from '@backend/songs'
-import FlexGrow from '@blocks/FlexGrow'
-import FlexRow from '@blocks/FlexRow'
+import Block from '@blocks/Block'
 import IconButton from '@blocks/IconButton'
 import ToolbarButton from '@blocks/ToolbarButton'
 import EllipsisText from '@blocks/text/EllipsisText'
@@ -51,17 +50,17 @@ function Song({ data: song }: { data: ISong }) {
           songKey={transposeKey}
         />
       )}
-      <FlexRow gap margin="16px 0 32px">
-        <FlexGrow>
+      <Block flex="row" gap="12px" margin="16px 0 32px">
+        <Block grow>
           <Title>{song.title}</Title>
           <EllipsisText width="30vw">{song.authors}</EllipsisText>
-        </FlexGrow>
+        </Block>
         {isAdmin && (
           <ToolbarButton onClick={() => setShowEventsDialog(true)}>
             Add to event
           </ToolbarButton>
         )}
-        <FlexRow centered gap>
+        <Block flex="row" align="center" gap="12px">
           <KeySwitcher
             transposeKey={transposeKey}
             setTransposeKey={setTransposeKey}
@@ -70,9 +69,9 @@ function Song({ data: song }: { data: ISong }) {
             showChords={showChords}
           />
           {isAdmin && <IconButton edge icon={editIcon} onClick={handleEdit} />}
-        </FlexRow>
-      </FlexRow>
-      <Monospace>{formattedBody}</Monospace>
+        </Block>
+      </Block>
+      <Monospace padding="0 0 64px">{formattedBody}</Monospace>
     </>
   )
 }

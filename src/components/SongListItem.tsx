@@ -1,8 +1,8 @@
 import React from 'react'
 
 import moreIcon from '@assets/more-vertical.svg'
+import Block from '@blocks/Block'
 import Comment from '@blocks/EventComment'
-import FlexGrow from '@blocks/FlexGrow'
 import IconButton from '@blocks/IconButton'
 import SongListItemAuthors from '@blocks/SongListItemAuthors'
 import SongListItemBody from '@blocks/SongListItemBody'
@@ -31,10 +31,10 @@ export default function SongListItem({
   return (
     <SongListItemContainer>
       <SongListItemHeader>
-        <FlexGrow>
+        <Block grow>
           <SongListItemTitle>{title}</SongListItemTitle>
           <SongListItemAuthors>{authors}</SongListItemAuthors>
-        </FlexGrow>
+        </Block>
         {formattedKey && <SongListItemKey>{formattedKey}</SongListItemKey>}
         <IconButton icon={moreIcon} onClick={onOpenMenu} />
       </SongListItemHeader>

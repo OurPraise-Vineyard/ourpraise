@@ -9,11 +9,14 @@ import {
   removeEventSong,
   saveEventSong
 } from '@backend/events'
+import Block from '@blocks/Block'
 import Comment from '@blocks/EventComment'
 import EventSongsBulletList from '@blocks/EventSongsBulletList'
 import IconButton from '@blocks/IconButton'
+import Link from '@blocks/Link'
 import Tag from '@blocks/Tag'
 import Toolbar from '@blocks/Toolbar'
+import Paragraph from '@blocks/text/Paragraph'
 import Title from '@blocks/text/Title'
 import ContextMenu from '@components/ContextMenu'
 import EventSongForm from '@components/EventSongForm'
@@ -158,6 +161,20 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           onOpenMenu={handleOpenMenu(song)}
         />
       ))}
+      {event.songs.length === 0 && (
+        <Block
+          print="hide"
+          flex="column"
+          align="center"
+          margin="32px auto 0"
+          width="350px"
+        >
+          <Paragraph>No songs added yet. Click below to add some.</Paragraph>
+          <Link to="/songs" color="ctaPrimary">
+            Add songs
+          </Link>
+        </Block>
+      )}
     </div>
   )
 }

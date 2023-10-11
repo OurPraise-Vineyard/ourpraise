@@ -19,7 +19,9 @@ const AppTheme = {
     subtleButtonBackground: '#efefef',
     subtleButtonBorder: '#ddd',
     breaker: '#ddd',
-    chipBackground: '#e0e0e0'
+    chipBackground: '#e0e0e0',
+    ctaPrimary: '#6fa7db',
+    ctaDanger: '#ff0000'
   },
 
   fontWeights: {

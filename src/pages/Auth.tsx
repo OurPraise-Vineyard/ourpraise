@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import Container from '@blocks/AuthContainer'
 import Form from '@blocks/AuthFormWrapper'
 import Logo from '@blocks/AuthLogo'
-import SaveButton from '@blocks/form/SaveButton'
+import Button from '@blocks/Button'
 import TextField from '@components/form/TextField'
 import useAuthForm from '@hooks/forms/useAuthForm'
 import useAuth from '@hooks/useAuth'
@@ -88,9 +88,9 @@ export default function Auth() {
               password
               title="Repeat password"
             />
-            <SaveButton type="submit">
+            <Button buttonStyle="primary" type="submit">
               {loading ? 'Please wait...' : 'Register'}
-            </SaveButton>
+            </Button>
           </>
         ) : (
           <>
@@ -108,9 +108,9 @@ export default function Auth() {
               password
               title="Password"
             />
-            <SaveButton type="submit" disabled={loading}>
+            <Button buttonStyle="primary" type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
-            </SaveButton>
+            </Button>
           </>
         )}
       </Form>

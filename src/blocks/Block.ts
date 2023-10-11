@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import blockBase from '@styles/blockBase'
+
 export default styled.div`
-  flex: 1 0 auto;
+  ${blockBase}
 `

@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { buttonBase } from '@blocks/ButtonBase'
+import Button, { IButtonProps } from '@blocks/Button'
 
-export default styled(Link).attrs({
-  color: 'primary'
-})`
-  ${buttonBase}
+type ToolbarLinkButtonProps = IButtonProps & { to: string }
+export default styled(Button).attrs({
+  as: Link,
+  buttonStyle: 'primary'
+})<ToolbarLinkButtonProps>`
   margin: 0;
   text-decoration: none;
   height: ${props => props.theme.sizes.toolbarHeight};

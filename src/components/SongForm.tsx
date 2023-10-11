@@ -2,11 +2,9 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { deleteSong } from '@backend/songs'
-import FlexGrow from '@blocks/FlexGrow'
-import FlexRow from '@blocks/FlexRow'
+import Block from '@blocks/Block'
+import Button from '@blocks/Button'
 import Form from '@blocks/Form'
-import DeleteButton from '@blocks/form/DeleteButton'
-import SaveButton from '@blocks/form/SaveButton'
 import Title from '@blocks/text/Title'
 import SelectField from '@components/form/SelectField'
 import TextField from '@components/form/TextField'
@@ -72,17 +70,26 @@ export default function SongForm({
         title="Body"
         onChange={value => setField('body', value)}
       />
-      <FlexRow>
-        <SaveButton width={canDelete ? '250px' : undefined} type="submit">
+      <Block flex="row">
+        <Button
+          buttonStyle="primary"
+          width={canDelete ? '250px' : undefined}
+          type="submit"
+        >
           Save
-        </SaveButton>
-        <FlexGrow />
+        </Button>
+        <Block grow />
         {canDelete && (
-          <DeleteButton width="250px" type="button" onClick={handleDelete}>
+          <Button
+            buttonStyle="danger"
+            width="250px"
+            type="button"
+            onClick={handleDelete}
+          >
             Delete
-          </DeleteButton>
+          </Button>
         )}
-      </FlexRow>
+      </Block>
     </Form>
   )
 }

@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components'
 
+import blockBase, { IBlockBaseProps } from '@styles/blockBase'
+
 const colorSchemes = {
   default: css`
     background: #f0f0f0;
@@ -7,12 +9,12 @@ const colorSchemes = {
     border: 1px solid #dedede;
   `,
   primary: css`
-    background: #6fa7db;
+    background: ${props => props.theme.colors.ctaPrimary};
     color: white;
     border: 1px solid #689dcf;
   `,
   danger: css`
-    background: #ff0000;
+    background: ${props => props.theme.colors.ctaDanger};
     color: white;
     border: 1px solid #e30000;
   `,
@@ -23,15 +25,12 @@ const colorSchemes = {
   `
 }
 
-export const buttonBaseHover = css`
-  filter: brightness(1.05);
-`
+export type IButtonProps = IBlockBaseProps & {
+  buttonStyle?: keyof typeof colorSchemes
+}
 
-export const buttonBase = css<{
-  fullWidth?: boolean
-  color?: keyof typeof colorSchemes
-  width?: string
-}>`
+export default styled.button<IButtonProps>`
+  ${blockBase}
   cursor: pointer;
   font-size: ${props => props.theme.fontSizes.regular};
   transition: all 0.2s ease-out;
@@ -40,15 +39,9 @@ export const buttonBase = css<{
   border: 0;
   margin: 0 0 8px;
   display: block;
-  ${props => colorSchemes[props.color || 'default']}
-
-  width: ${props => props.width || (props.fullWidth ? '100%' : 'auto')};
+  ${props => colorSchemes[props.buttonStyle || 'default']}
 
   :hover {
-    ${buttonBaseHover}
+    filter: brightness(1.05);
   }
-`
-
-export default styled.button`
-  ${buttonBase}
 `

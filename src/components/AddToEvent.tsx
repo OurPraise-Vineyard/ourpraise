@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
 import { IEventsData, addSongToEvent, fetchEvents } from '@backend/events'
+import Block from '@blocks/Block'
+import Button from '@blocks/Button'
 import Center from '@blocks/Center'
-import FlexGrow from '@blocks/FlexGrow'
 import Form from '@blocks/Form'
 import ScrollContainer from '@blocks/ScrollContainer'
-import SaveButton from '@blocks/form/SaveButton'
 import CompactListItem from '@components/CompactListItem'
 import Modal from '@components/Modal'
 import SelectField from '@components/form/SelectField'
@@ -58,7 +58,7 @@ export default function AddToEvent({
 
   return (
     <Modal title="Add song to event" onClose={onClose} show={show}>
-      <FlexGrow>
+      <Block grow>
         <ScrollContainer>
           {status === 'succeeded' &&
             events?.upcoming.map(event => (
@@ -75,7 +75,7 @@ export default function AddToEvent({
           )}
           {status === 'loading' && <Center>Loading events...</Center>}
         </ScrollContainer>
-      </FlexGrow>
+      </Block>
       {!!selectedEvent && (
         <div>
           <Form onSubmit={handleAddSong}>
@@ -91,9 +91,9 @@ export default function AddToEvent({
               options={keysOptions}
               title="Key"
             />
-            <SaveButton type="submit">
+            <Button type="submit" buttonStyle="primary">
               {saving ? 'Saving...' : 'Add song'}
-            </SaveButton>
+            </Button>
           </Form>
         </div>
       )}
