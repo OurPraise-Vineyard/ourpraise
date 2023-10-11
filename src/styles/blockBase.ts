@@ -37,7 +37,7 @@ export type IBlockBaseProps = {
 }
 
 function getDisplay(props: IBlockBaseProps, isPrint = false) {
-  const display = props.flex ? 'flex' : 'initial'
+  const display = props.flex ? 'flex' : 'block'
 
   if (isPrint) {
     switch (props.print) {
@@ -76,7 +76,11 @@ export default css<IBlockBaseProps>`
     props.fadeIn ? `${fadeIn} 0.2s ease-out 0.2s both` : 'none'};
   gap: ${props => props.gap || '0'};
 
-  @media print {
-    display: ${props => getDisplay(props, true)};
-  }
+  ${props =>
+    !!props.print &&
+    css`
+      @media print {
+        display: ${getDisplay(props, true)};
+      }
+    `}
 `
