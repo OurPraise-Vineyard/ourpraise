@@ -47,7 +47,7 @@ export default function EventSongForm({
         />
         <Block grow />
         <Button buttonStyle="primary" type="submit">
-          {saving ? 'Saving...' : 'Add song'}
+          {saving ? 'Saving...' : 'Save song details'}
         </Button>
       </Form>
     </Modal>

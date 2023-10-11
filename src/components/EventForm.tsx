@@ -15,11 +15,13 @@ import useErrors from '@hooks/useErrors'
 export default function EventForm({
   event,
   onSubmit,
-  heading
+  heading,
+  saving
 }: {
   event?: IEvent
   onSubmit: (options: IEventForm) => void
   heading: string
+  saving: boolean
 }) {
   const { user } = useAuth()
   const [{ title, comment, date, songs }, setField] = useEventForm(event)
@@ -70,7 +72,7 @@ export default function EventForm({
           width={canDelete ? '250px' : undefined}
           type="submit"
         >
-          Save
+          {saving ? 'Saving...' : 'Save'}
         </Button>
         <Block grow />
         {canDelete && (
