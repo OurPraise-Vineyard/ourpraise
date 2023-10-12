@@ -25,7 +25,7 @@ const colorSchemes = {
 }
 
 export type IButtonProps = IBlockBaseProps & {
-  buttonStyle?: keyof typeof colorSchemes
+  $buttonStyle?: keyof typeof colorSchemes
 }
 
 export default styled.button<IButtonProps>`
@@ -38,9 +38,9 @@ export default styled.button<IButtonProps>`
   border: 0;
   margin: 0 0 8px;
   display: block;
-  ${props => colorSchemes[props.buttonStyle || 'default']}
+  ${props => colorSchemes[props.$buttonStyle || 'default']}
 
-  :hover {
+  &:hover {
     filter: brightness(1.05);
   }
 `

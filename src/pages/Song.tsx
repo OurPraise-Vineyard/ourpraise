@@ -49,17 +49,17 @@ function Song({ data: song }: { data: ISong }) {
           songKey={transposeKey}
         />
       )}
-      <Block flex="row" gap="12px" margin="16px 0 32px">
-        <Block grow>
+      <Block $flex="row" $gap="12px" $margin="16px 0 32px">
+        <Block $grow>
           <Title>{song.title}</Title>
-          <EllipsisText width="30vw">{song.authors}</EllipsisText>
+          <EllipsisText $width="30vw">{song.authors}</EllipsisText>
         </Block>
         {isAdmin && (
           <ToolbarButton onClick={() => setShowEventsDialog(true)}>
             Add to event
           </ToolbarButton>
         )}
-        <Block flex="row" align="center" gap="12px">
+        <Block $flex="row" $align="center" $gap="12px">
           <KeySwitcher
             transposeKey={transposeKey}
             setTransposeKey={setTransposeKey}
@@ -67,10 +67,12 @@ function Song({ data: song }: { data: ISong }) {
             onToggleChords={handleToggleChords}
             showChords={showChords}
           />
-          {isAdmin && <IconButton edge icon={editIcon} onClick={handleEdit} />}
+          {isAdmin && (
+            <IconButton $edge $icon={editIcon} onClick={handleEdit} />
+          )}
         </Block>
       </Block>
-      <Monospace padding="0 0 64px">{formattedBody}</Monospace>
+      <Monospace $padding="0 0 64px">{formattedBody}</Monospace>
     </>
   )
 }

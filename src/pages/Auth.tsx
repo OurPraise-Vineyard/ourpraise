@@ -87,7 +87,7 @@ export default function Auth() {
               password
               title="Repeat password"
             />
-            <Button buttonStyle="primary" type="submit">
+            <Button $buttonStyle="primary" type="submit">
               {loading ? 'Please wait...' : 'Register'}
             </Button>
           </>
@@ -107,7 +107,7 @@ export default function Auth() {
               password
               title="Password"
             />
-            <Button buttonStyle="primary" type="submit" disabled={loading}>
+            <Button $buttonStyle="primary" type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </Button>
           </>

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 
-export default styled.div<{ fullscreen?: boolean }>`
+export default styled.div<{ $fullscreen?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,7 +9,7 @@ export default styled.div<{ fullscreen?: boolean }>`
   text-align: center;
 
   ${props =>
-    props.fullscreen &&
+    props.$fullscreen &&
     css`
       position: absolute;
       height: 100vh;

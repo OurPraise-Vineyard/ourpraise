@@ -8,7 +8,7 @@ export default function Layout({ noFadeIn = false }) {
   return (
     <main>
       <Nav />
-      <Page noFadeIn={noFadeIn} key={noFadeIn ? undefined : pathname}>
+      <Page $noFadeIn={noFadeIn} key={noFadeIn ? undefined : pathname}>
         <Outlet />
       </Page>
     </main>

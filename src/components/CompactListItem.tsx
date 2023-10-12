@@ -21,22 +21,22 @@ export default function CompactListItem({
 }: CompactListItemProps) {
   if (to) {
     return (
-      <CompactListItemLink highlight={highlight} to={to}>
-        <EllipsisText color="text" maxWidth="45%">
+      <CompactListItemLink $highlight={highlight} to={to}>
+        <EllipsisText color="text" $maxWidth="45%">
           {primary}
         </EllipsisText>
-        <EllipsisText color="textFaded" maxWidth="45%">
+        <EllipsisText color="textFaded" $maxWidth="45%">
           {secondary}
         </EllipsisText>
       </CompactListItemLink>
     )
   } else if (onClick) {
     return (
-      <CompactListItemButton highlight={highlight} onClick={onClick}>
-        <EllipsisText color="text" maxWidth="45%">
+      <CompactListItemButton $highlight={highlight} onClick={onClick}>
+        <EllipsisText color="text" $maxWidth="45%">
           {primary}
         </EllipsisText>
-        <EllipsisText color="textFaded" maxWidth="45%">
+        <EllipsisText color="textFaded" $maxWidth="45%">
           {secondary}
         </EllipsisText>
       </CompactListItemButton>

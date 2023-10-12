@@ -10,7 +10,11 @@ After this, you can download a copy of the production Firestore, using the appro
 
 Also make sure you have `firebase-tools` installed globally and authorized. See install instructions [here](https://www.npmjs.com/package/firebase-tools).
 
-When all is set up, you may run the `npm start` command to start the dev server and Firebase emulators simultanously.
+When all is set up, you may run the following commands to start the dev server, type checking and Firebase emulators simultanously:
+
+- `npm run dev-server`
+- `npm run emulators`
+- `npm run watch-types`
 
 ## Setting up a development environment
 

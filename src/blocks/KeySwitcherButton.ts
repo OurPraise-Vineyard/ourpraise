@@ -14,9 +14,9 @@ const icons = {
 }
 
 export default styled.button.attrs({ tabIndex: -1 })<{
-  icon: keyof typeof icons
+  $icon: keyof typeof icons
 }>`
-  background-image: url(${props => icons[props.icon]});
+  background-image: url(${props => icons[props.$icon]});
   background-size: 90% 90%;
   background-position: center;
   background-color: transparent;

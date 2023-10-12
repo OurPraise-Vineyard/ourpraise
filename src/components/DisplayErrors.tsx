@@ -11,7 +11,7 @@ export default function DisplayErrors() {
         <ErrorSnackbar
           key={error.id}
           style={{ bottom: index * 48 + 8 }}
-          unmounted={!!error.removed}
+          $unmounted={!!error.removed}
         >
           {error.message}
         </ErrorSnackbar>

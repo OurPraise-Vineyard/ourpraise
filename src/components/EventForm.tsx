@@ -65,19 +65,15 @@ export default function EventForm({
         title="Set comments"
         onChange={value => setField('comment', value)}
       />
-      <Block flex="row">
-        <Button
-          buttonStyle="primary"
-          width={canDelete ? '250px' : undefined}
-          type="submit"
-        >
+      <Block $flex="row">
+        <Button $buttonStyle="primary" $width="250px" type="submit">
           {saving ? 'Saving...' : 'Save'}
         </Button>
-        <Block grow />
+        <Block $grow />
         {canDelete && (
           <Button
-            buttonStyle="danger"
-            width="250px"
+            $buttonStyle="danger"
+            $width="250px"
             type="button"
             onClick={handleDelete}
           >

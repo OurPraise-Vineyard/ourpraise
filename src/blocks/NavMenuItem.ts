@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, NavLinkProps } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 
 const itemAnimation = keyframes`
@@ -13,11 +13,11 @@ const itemAnimation = keyframes`
   }
 `
 
-export default styled(NavLink)`
+export default styled(NavLink)<NavLinkProps>`
   position: relative;
   color: white;
 
-  ::before {
+  &::before {
     content: '';
     position: absolute;
     bottom: -2px;
@@ -30,8 +30,8 @@ export default styled(NavLink)`
       right 0.2s linear;
   }
 
-  :hover {
-    ::before {
+  &:hover {
+    &::before {
       animation: ${itemAnimation} 0.2s;
       right: 0;
       left: 0;
@@ -39,7 +39,7 @@ export default styled(NavLink)`
   }
 
   &.active {
-    ::before {
+    &::before {
       left: 0;
       animation: ${itemAnimation} 0.2s;
     }

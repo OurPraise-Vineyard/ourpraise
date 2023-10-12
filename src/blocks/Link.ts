@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, LinkProps } from 'react-router-dom'
 import styled from 'styled-components'
-import blockBase from 'styles/blockBase'
+import blockBase, { IBlockBaseProps } from 'styles/blockBase'
 
-export default styled(Link)`
+export default styled(Link)<IBlockBaseProps & LinkProps>`
   ${blockBase}
   cursor: pointer;
   color: ${props => props.color || 'black'};

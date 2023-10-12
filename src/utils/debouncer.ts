@@ -9,7 +9,7 @@ export function createDebouncer(interval: number) {
     const callNow = immediate
 
     clearTimeout(timeout)
-    timeout = setTimeout(later, interval)
+    timeout = window.setTimeout(later, interval)
 
     if (callNow) cb()
   }

@@ -34,7 +34,7 @@ export default function SelectField({
         value={value}
         name={name}
         onChange={e => onChange(e.target.value)}
-        noTitle={!title}
+        $noTitle={!title}
       >
         {options.map(option => (
           <option

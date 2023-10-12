@@ -57,7 +57,7 @@ export default function AddToEvent({
 
   return (
     <Modal title="Add song to event" onClose={onClose} show={show}>
-      <Block grow>
+      <Block $grow>
         <ScrollContainer>
           {status === 'succeeded' &&
             events?.upcoming.map(event => (
@@ -90,7 +90,7 @@ export default function AddToEvent({
               options={keysOptions}
               title="Key"
             />
-            <Button type="submit" buttonStyle="primary">
+            <Button type="submit" $buttonStyle="primary">
               {saving ? 'Saving...' : 'Add song'}
             </Button>
           </Form>

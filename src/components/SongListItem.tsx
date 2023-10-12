@@ -30,12 +30,12 @@ export default function SongListItem({
   return (
     <SongListItemContainer>
       <SongListItemHeader>
-        <Block grow>
+        <Block $grow>
           <SongListItemTitle>{title}</SongListItemTitle>
           <SongListItemAuthors>{authors}</SongListItemAuthors>
         </Block>
         {formattedKey && <SongListItemKey>{formattedKey}</SongListItemKey>}
-        <IconButton icon={moreIcon} onClick={onOpenMenu} />
+        <IconButton $icon={moreIcon} onClick={onOpenMenu} />
       </SongListItemHeader>
       {comment && <Comment>{comment}</Comment>}
       {body.map((part, index) => (

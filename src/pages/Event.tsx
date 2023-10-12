@@ -140,8 +140,8 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
       <Toolbar>
         <Title>{event.title}</Title>
         <Tag>{eventDate}</Tag>
-        <IconButton icon={editIcon} onClick={() => navigate('edit')} />
-        <IconButton icon={downloadIcon} onClick={() => window.print()} />
+        <IconButton $icon={editIcon} onClick={() => navigate('edit')} />
+        <IconButton $icon={downloadIcon} onClick={() => window.print()} />
       </Toolbar>
       {!!event.comment && <Comment>{event.comment}</Comment>}
       <EventSongsBulletList>
@@ -162,11 +162,11 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
       ))}
       {event.songs.length === 0 && (
         <Block
-          print="hide"
-          flex="column"
-          align="center"
-          margin="32px auto 0"
-          width="350px"
+          $print="hide"
+          $flex="column"
+          $align="center"
+          $margin="32px auto 0"
+          $width="350px"
         >
           <Paragraph>No songs added yet. Click below to add some.</Paragraph>
           <Link to="/songs" color="ctaPrimary">

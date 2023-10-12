@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
 export default styled.div<{
-  extraSpacingTop?: boolean
-  horizontalPadding?: boolean
+  $extraSpacingTop?: boolean
+  $horizontalPadding?: boolean
 }>`
   display: flex;
-  margin: ${props => (props.extraSpacingTop ? '24px' : '0')} 0 0;
-  padding: 8px ${props => (props.horizontalPadding ? '20px' : '0')};
+  margin: ${props => (props.$extraSpacingTop ? '24px' : '0')} 0 0;
+  padding: 8px ${props => (props.$horizontalPadding ? '20px' : '0')};
   align-items: center;
   justify-content: flex-end;
   height: calc(${props => props.theme.sizes.toolbarHeight} + 16px);

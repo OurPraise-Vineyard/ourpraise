@@ -31,7 +31,7 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
       </Toolbar>
       {upcoming.map(renderEventItem)}
       {upcoming.length === 0 && <Paragraph>No upcoming events</Paragraph>}
-      <Toolbar extraSpacingTop>
+      <Toolbar $extraSpacingTop>
         <Title>Past events</Title>
       </Toolbar>
       {past.map(renderEventItem)}

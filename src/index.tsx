@@ -25,7 +25,7 @@ function App() {
   const { user, ready } = useAuth()
 
   if (!ready) {
-    return <Center fullscreen>Loading...</Center>
+    return <Center $fullscreen>Loading...</Center>
   }
 
   if (!user) {

@@ -24,6 +24,7 @@
     "noUnusedLocals": false,
     "types": ["jest"]
   },
+  "extends": "@tsconfig/vite-react/tsconfig.json",
   "include": ["./src"],
   "exclude": ["node_modules", "build"]
 }

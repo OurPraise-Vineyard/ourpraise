@@ -28,7 +28,7 @@ export default function KeySwitcher({
   return (
     <KeySwitcherContainer>
       <KeySwitcherButton
-        icon={showChords ? 'checked' : 'unchecked'}
+        $icon={showChords ? 'checked' : 'unchecked'}
         onClick={onToggleChords}
       />
       <KeySwitcherSelect
@@ -43,17 +43,17 @@ export default function KeySwitcher({
         ))}
       </KeySwitcherSelect>
       <KeySwitcherButton
-        icon="increase"
+        $icon="increase"
         onClick={handleSwitch(1)}
         disabled={!showChords}
       />
       <KeySwitcherButton
-        icon="decrease"
+        $icon="decrease"
         onClick={handleSwitch(-1)}
         disabled={!showChords}
       />
       <KeySwitcherButton
-        icon="reset"
+        $icon="reset"
         onClick={onResetTranspose}
         disabled={!showChords}
       />

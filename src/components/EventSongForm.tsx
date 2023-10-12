@@ -44,8 +44,8 @@ export default function EventSongForm({
           options={keysOptions}
           title="Key"
         />
-        <Block grow />
-        <Button buttonStyle="primary" type="submit">
+        <Block $grow />
+        <Button $buttonStyle="primary" type="submit">
           {saving ? 'Saving...' : 'Save song details'}
         </Button>
       </Form>

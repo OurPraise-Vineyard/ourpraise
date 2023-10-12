@@ -33,7 +33,7 @@ export default function TextArea({
         value={value}
         name={name}
         onChange={e => onChange(e.target.value)}
-        size={size}
+        $size={size}
       />
     </FieldContainer>
   )

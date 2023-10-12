@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export default styled.div<{ show: boolean }>`
+export default styled.div<{ $show: boolean }>`
   position: fixed;
   z-index: ${props => props.theme.zIndex.modal};
   left: 50%;
@@ -17,7 +17,7 @@ export default styled.div<{ show: boolean }>`
   display: flex;
   flex-direction: column;
 
-  opacity: ${props => (props.show ? 1 : 0)};
-  top: ${props => (props.show ? '50%' : 'calc(50% + 20px)')};
-  pointer-events: ${props => (props.show ? 'all' : 'none')};
+  opacity: ${props => (props.$show ? 1 : 0)};
+  top: ${props => (props.$show ? '50%' : 'calc(50% + 20px)')};
+  pointer-events: ${props => (props.$show ? 'all' : 'none')};
 `

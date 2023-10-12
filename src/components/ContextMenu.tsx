@@ -37,7 +37,7 @@ export default function ContextMenu({
   return (
     <>
       <InvisibleBackdrop onClick={onClose} />
-      <ContextMenuContainer left={modifiedLeft} top={modifiedTop}>
+      <ContextMenuContainer $left={modifiedLeft} $top={modifiedTop}>
         {items.map((item, index) => (
           <ContextMenuItem onClick={item.onClick} key={index}>
             {item.label}

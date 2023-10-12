@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import blockBase from 'styles/blockBase'
+import blockBase, { IBlockBaseProps } from 'styles/blockBase'
 
-export default styled.div`
+export default styled.div<IBlockBaseProps>`
   ${blockBase}
   font-family: 'Oxygen Mono', monospace;
   white-space: pre;

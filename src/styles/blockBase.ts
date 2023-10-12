@@ -19,27 +19,27 @@ const fadeIn = keyframes`
 `
 
 export type IBlockBaseProps = {
-  margin?: string
-  padding?: string
-  height?: string
-  width?: string
-  maxWidth?: string
-  maxHeight?: string
-  color?: keyof typeof AppTheme.colors
-  backgroundColor?: keyof typeof AppTheme.colors
-  flex?: 'column' | 'row'
-  align?: keyof typeof aligns
-  grow?: boolean
-  fadeIn?: boolean
-  gap?: string
-  print?: 'show' | 'hide'
+  $margin?: string
+  $padding?: string
+  $height?: string
+  $width?: string
+  $maxWidth?: string
+  $maxHeight?: string
+  $color?: keyof typeof AppTheme.colors
+  $backgroundColor?: keyof typeof AppTheme.colors
+  $flex?: 'column' | 'row'
+  $align?: keyof typeof aligns
+  $grow?: boolean
+  $fadeIn?: boolean
+  $gap?: string
+  $print?: 'show' | 'hide'
 }
 
 function getDisplay(props: IBlockBaseProps, isPrint = false) {
-  const display = props.flex ? 'flex' : 'block'
+  const display = props.$flex ? 'flex' : 'block'
 
   if (isPrint) {
-    switch (props.print) {
+    switch (props.$print) {
       case 'hide':
         return 'none'
       case 'show':
@@ -48,7 +48,7 @@ function getDisplay(props: IBlockBaseProps, isPrint = false) {
     }
   }
 
-  switch (props.print) {
+  switch (props.$print) {
     case 'show':
       return 'none'
     case 'hide':
@@ -58,25 +58,25 @@ function getDisplay(props: IBlockBaseProps, isPrint = false) {
 }
 
 export default css<IBlockBaseProps>`
-  margin: ${props => props.margin || ''};
-  padding: ${props => props.padding || ''};
-  height: ${props => props.height || ''};
-  width: ${props => props.width || ''};
-  max-width: ${props => props.maxWidth || ''};
-  max-height: ${props => props.maxHeight || ''};
-  color: ${props => (props.color ? props.theme.colors[props.color] : '')};
+  margin: ${props => props.$margin || ''};
+  padding: ${props => props.$padding || ''};
+  height: ${props => props.$height || ''};
+  width: ${props => props.$width || ''};
+  max-width: ${props => props.$maxWidth || ''};
+  max-height: ${props => props.$maxHeight || ''};
+  color: ${props => (props.$color ? props.theme.colors[props.$color] : '')};
   background-color: ${props =>
-    props.backgroundColor ? props.theme.colors[props.backgroundColor] : ''};
+    props.$backgroundColor ? props.theme.colors[props.$backgroundColor] : ''};
   display: ${props => getDisplay(props)};
-  flex-direction: ${props => props.flex};
-  align-items: ${props => (props.align ? aligns[props.align] : 'flex-start')};
-  flex: ${props => (props.grow ? '1 0 auto' : '')};
+  flex-direction: ${props => props.$flex};
+  align-items: ${props => (props.$align ? aligns[props.$align] : 'flex-start')};
+  flex: ${props => (props.$grow ? '1 0 auto' : '')};
   animation: ${props =>
-    props.fadeIn ? `${fadeIn} 0.2s ease-out 0.2s both` : 'none'};
-  gap: ${props => props.gap || '0'};
+    props.$fadeIn ? `${fadeIn} 0.2s ease-out 0.2s both` : 'none'};
+  gap: ${props => props.$gap || '0'};
 
   ${props =>
-    !!props.print &&
+    !!props.$print &&
     css`
       @media print {
         display: ${getDisplay(props, true)};

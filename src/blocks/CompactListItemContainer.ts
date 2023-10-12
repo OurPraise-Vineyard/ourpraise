@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, LinkProps } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
-const wrapperStyles = css<{ highlight?: boolean }>`
+type Props = { $highlight?: boolean }
+const wrapperStyles = css<Props>`
   width: 100%;
   display: flex;
   align-items: center;
@@ -16,10 +17,15 @@ const wrapperStyles = css<{ highlight?: boolean }>`
   z-index: 2;
   border: 0;
   background-color: ${props =>
-    props.highlight ? props.theme.colors.backgroundHover : 'transparent'};
+    props.$highlight ? props.theme.colors.backgroundHover : 'transparent'};
   cursor: pointer;
+  color: ${props => props.theme.colors.text};
 
-  :hover {
+  &:visited {
+    color: ${props => props.theme.colors.text};
+  }
+
+  &:hover {
     background-color: ${props => props.theme.colors.backgroundHover};
     transition: background-color 0.1s ease-in;
   }
@@ -29,9 +35,9 @@ const wrapperStyles = css<{ highlight?: boolean }>`
   }
 `
 
-export const CompactListItemLink = styled(Link)`
+export const CompactListItemLink = styled(Link)<Props & LinkProps>`
   ${wrapperStyles}
 `
-export const CompactListItemButton = styled.button`
+export const CompactListItemButton = styled.button<Props>`
   ${wrapperStyles}
 `

@@ -1,11 +1,11 @@
 import Button, { IButtonProps } from 'blocks/Button'
-import { Link } from 'react-router-dom'
+import { Link, LinkProps } from 'react-router-dom'
 import styled from 'styled-components'
 
-type ToolbarLinkButtonProps = IButtonProps & { to: string }
+type ToolbarLinkButtonProps = IButtonProps & LinkProps
 export default styled(Button).attrs({
   as: Link,
-  buttonStyle: 'primary'
+  $buttonStyle: 'primary'
 })<ToolbarLinkButtonProps>`
   margin: 0;
   text-decoration: none;

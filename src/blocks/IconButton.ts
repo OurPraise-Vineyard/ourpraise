@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-export default styled.button<{ icon: string; edge?: boolean }>`
+export default styled.button<{ $icon: string; $edge?: boolean }>`
   background-color: transparent;
-  background-image: url(${props => props.icon});
+  background-image: url(${props => props.$icon});
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px 20px;
@@ -13,7 +13,7 @@ export default styled.button<{ icon: string; edge?: boolean }>`
   transition: background-color 0.2s ease-out;
   cursor: pointer;
 
-  margin-right: ${props => (props.edge ? '-12px' : 0)};
+  margin-right: ${props => (props.$edge ? '-12px' : 0)};
 
   &:hover {
     background-color: ${props => props.theme.colors.backgroundHover};

@@ -31,11 +31,11 @@ export default function Modal({ onClose, show, children, title }: ModalProps) {
 
   return (
     <>
-      <Backdrop visible={show} disabled={!show} onClick={onClose} />
-      <ModalContainer show={show} onClick={handleStopPropagate}>
-        <Toolbar horizontalPadding>
+      <Backdrop $visible={show} $disabled={!show} onClick={onClose} />
+      <ModalContainer $show={show} onClick={handleStopPropagate}>
+        <Toolbar $horizontalPadding>
           {!!title && <Title>{title}</Title>}
-          <IconButton edge icon={xIcon} onClick={onClose} />
+          <IconButton $edge $icon={xIcon} onClick={onClose} />
         </Toolbar>
         <ModalContent>{children}</ModalContent>
       </ModalContainer>
