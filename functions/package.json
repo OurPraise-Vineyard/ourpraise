@@ -21,6 +21,7 @@
     "firebase-functions": "^4.4.1"
   },
   "devDependencies": {
+    "eslint-config-react-app": "^7.0.1",
     "firebase-functions-test": "^0.2.3"
   },
   "private": true
