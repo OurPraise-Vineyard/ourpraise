@@ -1,18 +1,15 @@
+import { fetchSongs } from 'backend/songs'
+import Center from 'blocks/Center'
+import Toolbar from 'blocks/Toolbar'
+import ToolbarLinkButton from 'blocks/ToolbarLinkButton'
+import Title from 'blocks/text/Title'
+import CompactListItem from 'components/CompactListItem'
+import SearchSongs from 'components/SearchSongs'
+import withFetch, { IWithFetchProps } from 'components/withFetch'
+import useAuth from 'hooks/useAuth'
+import { useDocumentTitle } from 'hooks/useDocumentTitle'
+import useSearchSongs from 'hooks/useSearchSongs'
 import React, { useState } from 'react'
-
-import CompactListItem from '@components/CompactListItem'
-import SearchSongs from '@components/SearchSongs'
-import withFetch, { IWithFetchProps } from '@components/withFetch'
-
-import Center from '@blocks/Center'
-import Toolbar from '@blocks/Toolbar'
-import ToolbarLinkButton from '@blocks/ToolbarLinkButton'
-import Title from '@blocks/text/Title'
-
-import { fetchSongs } from '@backend/songs'
-import useAuth from '@hooks/useAuth'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import useSearchSongs from '@hooks/useSearchSongs'
 
 function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
   useDocumentTitle('Songs')

@@ -1,6 +1,5 @@
+import searchIcon from 'assets/search.svg'
 import styled from 'styled-components'
-
-import searchIcon from '@assets/search.svg'
 
 export default styled.div`
   padding: 10px 20px;

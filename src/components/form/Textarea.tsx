@@ -1,8 +1,7 @@
+import FieldContainer from 'blocks/form/FieldContainer'
+import FieldLabel from 'blocks/form/FieldLabel'
+import TextAreaInput from 'blocks/form/TextAreaInput'
 import React from 'react'
-
-import FieldContainer from '@blocks/form/FieldContainer'
-import FieldLabel from '@blocks/form/FieldLabel'
-import TextAreaInput from '@blocks/form/TextAreaInput'
 
 interface TextAreaProps {
   title?: string

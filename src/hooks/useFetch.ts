@@ -1,6 +1,5 @@
+import useErrors from 'hooks/useErrors'
 import { useCallback, useEffect, useState } from 'react'
-
-import useErrors from '@hooks/useErrors'
 
 export type IFetchCreatorParams = Record<string, unknown>
 

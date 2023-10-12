@@ -1,6 +1,5 @@
+import ButtonBase, { IButtonProps } from 'blocks/Button'
 import styled from 'styled-components'
-
-import ButtonBase, { IButtonProps } from '@blocks/Button'
 
 export default styled(ButtonBase).attrs({
   buttonStyle: 'primary'

@@ -1,10 +1,9 @@
+import checked from 'assets/check-square.svg'
+import decrease from 'assets/decrease.svg'
+import increase from 'assets/increase.svg'
+import reset from 'assets/reset.svg'
+import unchecked from 'assets/square.svg'
 import styled from 'styled-components'
-
-import checked from '@assets/check-square.svg'
-import decrease from '@assets/decrease.svg'
-import increase from '@assets/increase.svg'
-import reset from '@assets/reset.svg'
-import unchecked from '@assets/square.svg'
 
 const icons = {
   increase,

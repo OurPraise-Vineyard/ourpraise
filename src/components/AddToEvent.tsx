@@ -1,21 +1,18 @@
+import { IEventsData, addSongToEvent, fetchEvents } from 'backend/events'
+import Block from 'blocks/Block'
+import Button from 'blocks/Button'
+import Center from 'blocks/Center'
+import Form from 'blocks/Form'
+import ScrollContainer from 'blocks/ScrollContainer'
+import CompactListItem from 'components/CompactListItem'
+import Modal from 'components/Modal'
+import SelectField from 'components/form/SelectField'
+import TextArea from 'components/form/Textarea'
+import useErrors from 'hooks/useErrors'
+import useFetch from 'hooks/useFetch'
 import React, { useEffect, useState } from 'react'
-
-import CompactListItem from '@components/CompactListItem'
-import Modal from '@components/Modal'
-import SelectField from '@components/form/SelectField'
-import TextArea from '@components/form/Textarea'
-
-import Block from '@blocks/Block'
-import Button from '@blocks/Button'
-import Center from '@blocks/Center'
-import Form from '@blocks/Form'
-import ScrollContainer from '@blocks/ScrollContainer'
-
-import { IEventsData, addSongToEvent, fetchEvents } from '@backend/events'
-import useErrors from '@hooks/useErrors'
-import useFetch from '@hooks/useFetch'
-import { keysOptions } from '@utils/chords'
-import { formatDate } from '@utils/date'
+import { keysOptions } from 'utils/chords'
+import { formatDate } from 'utils/date'
 
 type AddToEventProps = {
   songId: IDocId

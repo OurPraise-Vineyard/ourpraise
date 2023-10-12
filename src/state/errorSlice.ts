@@ -1,5 +1,6 @@
+import { AppDispatch, RootState } from 'state/store'
+
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { AppDispatch, RootState } from '@state/store'
 
 export interface DisplayError {
   message: string

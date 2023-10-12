@@ -1,9 +1,8 @@
+import InvisibleBackdrop from 'blocks/Backdrop'
+import ContextMenuContainer from 'blocks/ContextMenuContainer'
+import ContextMenuItem from 'blocks/ContextMenuItem'
 import React, { useEffect, useMemo } from 'react'
 import { useTheme } from 'styled-components'
-
-import InvisibleBackdrop from '@blocks/Backdrop'
-import ContextMenuContainer from '@blocks/ContextMenuContainer'
-import ContextMenuItem from '@blocks/ContextMenuItem'
 
 type ContextMenuProps = {
   items: { label: string; onClick: React.MouseEventHandler }[]

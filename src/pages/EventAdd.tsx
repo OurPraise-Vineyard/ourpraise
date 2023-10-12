@@ -1,11 +1,9 @@
+import { createEvent } from 'backend/events'
+import EventForm from 'components/EventForm'
+import { useDocumentTitle } from 'hooks/useDocumentTitle'
+import useErrors from 'hooks/useErrors'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
-import EventForm from '@components/EventForm'
-
-import { createEvent } from '@backend/events'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import useErrors from '@hooks/useErrors'
 
 export default function AddEvent() {
   const navigate = useNavigate()

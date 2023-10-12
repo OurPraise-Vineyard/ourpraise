@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components'
-
-import blockBase, { IBlockBaseProps } from '@styles/blockBase'
+import blockBase, { IBlockBaseProps } from 'styles/blockBase'
 
 const colorSchemes = {
   default: css`

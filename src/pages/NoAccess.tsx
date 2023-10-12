@@ -1,8 +1,6 @@
+import Center from 'blocks/Center'
+import { useDocumentTitle } from 'hooks/useDocumentTitle'
 import React from 'react'
-
-import Center from '@blocks/Center'
-
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
 
 export default function NoAccessView() {
   useDocumentTitle()

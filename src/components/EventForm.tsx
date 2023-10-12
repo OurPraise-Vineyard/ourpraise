@@ -1,18 +1,15 @@
+import { deleteEvent } from 'backend/events'
+import Block from 'blocks/Block'
+import Button from 'blocks/Button'
+import Form from 'blocks/Form'
+import Title from 'blocks/text/Title'
+import TextField from 'components/form/TextField'
+import TextArea from 'components/form/Textarea'
+import useEventForm from 'hooks/forms/useEventForm'
+import useAuth from 'hooks/useAuth'
+import useErrors from 'hooks/useErrors'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-
-import TextField from '@components/form/TextField'
-import TextArea from '@components/form/Textarea'
-
-import Block from '@blocks/Block'
-import Button from '@blocks/Button'
-import Form from '@blocks/Form'
-import Title from '@blocks/text/Title'
-
-import { deleteEvent } from '@backend/events'
-import useEventForm from '@hooks/forms/useEventForm'
-import useAuth from '@hooks/useAuth'
-import useErrors from '@hooks/useErrors'
 
 export default function EventForm({
   event,

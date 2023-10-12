@@ -1,16 +1,13 @@
+import NavContainer from 'blocks/NavContainer'
+import NavContent from 'blocks/NavContent'
+import NavLogo from 'blocks/NavLogo'
+import NavMenu from 'blocks/NavMenu'
+import NavMenuItem from 'blocks/NavMenuItem'
+import NavUsername from 'blocks/NavUsername'
+import ContextMenu from 'components/ContextMenu'
+import useAuth from 'hooks/useAuth'
+import useContextMenuState from 'hooks/useContextMenuState'
 import React, { useMemo } from 'react'
-
-import ContextMenu from '@components/ContextMenu'
-
-import NavContainer from '@blocks/NavContainer'
-import NavContent from '@blocks/NavContent'
-import NavLogo from '@blocks/NavLogo'
-import NavMenu from '@blocks/NavMenu'
-import NavMenuItem from '@blocks/NavMenuItem'
-import NavUsername from '@blocks/NavUsername'
-
-import useAuth from '@hooks/useAuth'
-import useContextMenuState from '@hooks/useContextMenuState'
 
 export default function Nav() {
   const { user } = useAuth()

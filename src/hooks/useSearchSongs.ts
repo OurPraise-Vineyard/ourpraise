@@ -1,7 +1,6 @@
+import { fetchSearchQuery } from 'backend/songs'
+import useErrors from 'hooks/useErrors'
 import { useEffect, useState } from 'react'
-
-import { fetchSearchQuery } from '@backend/songs'
-import useErrors from '@hooks/useErrors'
 
 export default function useSearchSongs(query: string): [FetchStatus, ISong[]] {
   const [hits, setHits] = useState<ISong[]>([])

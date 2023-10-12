@@ -1,7 +1,8 @@
-import Backend from '@lib/backend'
+import Backend from 'lib/backend'
+import { AppDispatch } from 'state/store'
+
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { AppDispatch } from '@state/store'
 
 export const signIn = createAsyncThunk<
   IUser,

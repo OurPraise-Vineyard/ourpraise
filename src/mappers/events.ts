@@ -1,5 +1,5 @@
-import { keysOptions, transposeSong } from '@utils/chords'
-import pruneObject from '@utils/pruneObject'
+import { keysOptions, transposeSong } from 'utils/chords'
+import pruneObject from 'utils/pruneObject'
 
 export function mapCollectionToEvents(docs: ICollection): IEvent[] {
   return docs.map(mapDocToEvent)
