@@ -1,5 +1,6 @@
-import Form from 'blocks/Form'
 import styled, { keyframes } from 'styled-components'
+
+import Form from '@blocks/Form'
 
 const transitionIn = keyframes`
   0% {

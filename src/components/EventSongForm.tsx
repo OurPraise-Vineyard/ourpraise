@@ -1,12 +1,15 @@
-import Block from 'blocks/Block'
-import Button from 'blocks/Button'
-import Form from 'blocks/Form'
-import Modal from 'components/Modal'
-import SelectField from 'components/form/SelectField'
-import TextArea from 'components/form/Textarea'
-import useEventSongForm from 'hooks/forms/useEventSongForm'
 import React from 'react'
-import { keysOptions } from 'utils/chords'
+
+import Modal from '@components/Modal'
+import SelectField from '@components/form/SelectField'
+import TextArea from '@components/form/Textarea'
+
+import Block from '@blocks/Block'
+import Button from '@blocks/Button'
+import Form from '@blocks/Form'
+
+import useEventSongForm from '@hooks/forms/useEventSongForm'
+import { keysOptions } from '@utils/chords'
 
 type EventSongFormProps = {
   eventSong: IEventSong

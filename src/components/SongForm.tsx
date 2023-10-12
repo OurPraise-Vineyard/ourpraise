@@ -1,16 +1,19 @@
-import { deleteSong } from 'backend/songs'
-import Block from 'blocks/Block'
-import Button from 'blocks/Button'
-import Form from 'blocks/Form'
-import Title from 'blocks/text/Title'
-import SelectField from 'components/form/SelectField'
-import TextField from 'components/form/TextField'
-import TextArea from 'components/form/Textarea'
-import useSongForm from 'hooks/forms/useSongForm'
-import useErrors from 'hooks/useErrors'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { keysOptions } from 'utils/chords'
+
+import SelectField from '@components/form/SelectField'
+import TextField from '@components/form/TextField'
+import TextArea from '@components/form/Textarea'
+
+import Block from '@blocks/Block'
+import Button from '@blocks/Button'
+import Form from '@blocks/Form'
+import Title from '@blocks/text/Title'
+
+import { deleteSong } from '@backend/songs'
+import useSongForm from '@hooks/forms/useSongForm'
+import useErrors from '@hooks/useErrors'
+import { keysOptions } from '@utils/chords'
 
 export default function SongForm({
   song,

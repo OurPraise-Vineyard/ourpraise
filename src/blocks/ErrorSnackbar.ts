@@ -1,5 +1,6 @@
-import FadeIn from 'blocks/FadeIn'
 import styled from 'styled-components'
+
+import FadeIn from '@blocks/FadeIn'
 
 export default styled(FadeIn)<{ $unmounted: boolean }>`
   background-color: #f00;

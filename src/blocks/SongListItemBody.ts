@@ -1,5 +1,6 @@
-import Monospace from 'blocks/text/Monospace'
 import styled from 'styled-components'
+
+import Monospace from '@blocks/text/Monospace'
 
 export default styled(Monospace)`
   margin: 20px 0;

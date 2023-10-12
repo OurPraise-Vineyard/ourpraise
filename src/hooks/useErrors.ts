@@ -1,6 +1,7 @@
-import { useAppDispatch, useAppSelector } from 'hooks/state'
 import { useCallback } from 'react'
-import { pushError } from 'state/errorSlice'
+
+import { useAppDispatch, useAppSelector } from '@hooks/state'
+import { pushError } from '@state/errorSlice'
 
 export default function useErrors() {
   const dispatch = useAppDispatch()

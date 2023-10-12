@@ -1,14 +1,16 @@
-import moreIcon from 'assets/more-vertical.svg'
-import Block from 'blocks/Block'
-import Comment from 'blocks/EventComment'
-import IconButton from 'blocks/IconButton'
-import SongListItemAuthors from 'blocks/SongListItemAuthors'
-import SongListItemBody from 'blocks/SongListItemBody'
-import SongListItemContainer from 'blocks/SongListItemContainer'
-import SongListItemHeader from 'blocks/SongListItemHeader'
-import SongListItemKey from 'blocks/SongListItemKey'
-import SongListItemTitle from 'blocks/SongListItemTitle'
 import React from 'react'
+
+import Block from '@blocks/Block'
+import Comment from '@blocks/EventComment'
+import IconButton from '@blocks/IconButton'
+import SongListItemAuthors from '@blocks/SongListItemAuthors'
+import SongListItemBody from '@blocks/SongListItemBody'
+import SongListItemContainer from '@blocks/SongListItemContainer'
+import SongListItemHeader from '@blocks/SongListItemHeader'
+import SongListItemKey from '@blocks/SongListItemKey'
+import SongListItemTitle from '@blocks/SongListItemTitle'
+
+import moreIcon from '@assets/more-vertical.svg'
 
 type SongListItemProps = {
   formattedKey?: string

@@ -1,5 +1,6 @@
-import Page from 'blocks/Page'
 import styled from 'styled-components'
+
+import Page from '@blocks/Page'
 
 export default styled(Page)`
   display: grid;

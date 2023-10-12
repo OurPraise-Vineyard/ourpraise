@@ -1,9 +1,10 @@
+import React from 'react'
+
 import {
   CompactListItemButton,
   CompactListItemLink
-} from 'blocks/CompactListItemContainer'
-import EllipsisText from 'blocks/text/EllipsisText'
-import React from 'react'
+} from '@blocks/CompactListItemContainer'
+import EllipsisText from '@blocks/text/EllipsisText'
 
 type CompactListItemProps = {
   primary?: string

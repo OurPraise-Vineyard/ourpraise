@@ -1,8 +1,10 @@
-import KeySwitcherButton from 'blocks/KeySwitcherButton'
-import KeySwitcherContainer from 'blocks/KeySwitcherContainer'
-import KeySwitcherSelect from 'blocks/KeySwitcherSelect'
 import React from 'react'
-import { findNextKey, keysOptions } from 'utils/chords'
+
+import KeySwitcherButton from '@blocks/KeySwitcherButton'
+import KeySwitcherContainer from '@blocks/KeySwitcherContainer'
+import KeySwitcherSelect from '@blocks/KeySwitcherSelect'
+
+import { findNextKey, keysOptions } from '@utils/chords'
 
 type KeySwitcherProps = {
   transposeKey: IKey

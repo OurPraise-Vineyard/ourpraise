@@ -1,6 +1,8 @@
-import ErrorSnackbar from 'blocks/ErrorSnackbar'
-import useErrors from 'hooks/useErrors'
 import React from 'react'
+
+import ErrorSnackbar from '@blocks/ErrorSnackbar'
+
+import useErrors from '@hooks/useErrors'
 
 export default function DisplayErrors() {
   const { errors } = useErrors()

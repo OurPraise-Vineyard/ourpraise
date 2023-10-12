@@ -1,6 +1,7 @@
-import Button, { IButtonProps } from 'blocks/Button'
 import { Link, LinkProps } from 'react-router-dom'
 import styled from 'styled-components'
+
+import Button, { IButtonProps } from '@blocks/Button'
 
 type ToolbarLinkButtonProps = IButtonProps & LinkProps
 export default styled(Button).attrs({

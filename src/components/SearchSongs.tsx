@@ -1,7 +1,9 @@
-import SearchInput from 'blocks/SearchInput'
-import SearchInputWrapper from 'blocks/SearchInputWrapper'
 import React, { useEffect, useState } from 'react'
-import { createDebouncer } from 'utils/debouncer'
+
+import SearchInput from '@blocks/SearchInput'
+import SearchInputWrapper from '@blocks/SearchInputWrapper'
+
+import { createDebouncer } from '@utils/debouncer'
 
 const debounce = createDebouncer(1000)
 

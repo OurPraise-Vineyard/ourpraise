@@ -1,10 +1,10 @@
-import Backend from 'lib/backend'
+import Backend from '@lib/backend'
 import {
   mapCollectionToSongs,
   mapDocToSong,
   mapSearchHitsToSongs,
   mapSongFormToSong
-} from 'mappers/songs'
+} from '@mappers/songs'
 
 export function fetchSong(songId: IDocId): Promise<ISong> {
   return Backend.getDoc(`songs/${songId}`).then(mapDocToSong)

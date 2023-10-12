@@ -1,4 +1,4 @@
-import useForm from 'hooks/forms/useForm'
+import useForm from '@hooks/forms/useForm'
 
 const defaultSongForm: IEventSongForm = {
   comment: '',

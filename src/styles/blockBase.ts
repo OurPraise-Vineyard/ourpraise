@@ -1,5 +1,6 @@
 import { css, keyframes } from 'styled-components'
-import AppTheme from 'styles/AppTheme'
+
+import AppTheme from '@styles/AppTheme'
 
 const aligns = {
   center: 'center',

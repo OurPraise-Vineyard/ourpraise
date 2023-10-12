@@ -1,7 +1,13 @@
-import { useAppDispatch, useAppSelector } from 'hooks/state'
-import useErrors from 'hooks/useErrors'
 import { useCallback, useEffect, useMemo } from 'react'
-import { createAccount, initializeUser, signIn, signOut } from 'state/authSlice'
+
+import { useAppDispatch, useAppSelector } from '@hooks/state'
+import useErrors from '@hooks/useErrors'
+import {
+  createAccount,
+  initializeUser,
+  signIn,
+  signOut
+} from '@state/authSlice'
 
 type IAuthHook = {
   user: IUser | null

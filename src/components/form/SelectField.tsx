@@ -1,7 +1,8 @@
-import FieldContainer from 'blocks/form/FieldContainer'
-import FieldLabel from 'blocks/form/FieldLabel'
-import SelectFieldInput from 'blocks/form/SelectFieldInput'
 import React from 'react'
+
+import FieldContainer from '@blocks/form/FieldContainer'
+import FieldLabel from '@blocks/form/FieldLabel'
+import SelectFieldInput from '@blocks/form/SelectFieldInput'
 
 export interface SelectItem {
   label?: string

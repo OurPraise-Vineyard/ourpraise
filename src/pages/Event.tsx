@@ -1,30 +1,33 @@
-import downloadIcon from 'assets/download.svg'
-import editIcon from 'assets/edit.svg'
+import React, { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import ContextMenu from '@components/ContextMenu'
+import EventSongForm from '@components/EventSongForm'
+import SongListItem from '@components/SongListItem'
+import withFetch, { IWithFetchProps } from '@components/withFetch'
+
+import Block from '@blocks/Block'
+import Comment from '@blocks/EventComment'
+import EventSongsBulletList from '@blocks/EventSongsBulletList'
+import IconButton from '@blocks/IconButton'
+import Link from '@blocks/Link'
+import Tag from '@blocks/Tag'
+import Toolbar from '@blocks/Toolbar'
+import Paragraph from '@blocks/text/Paragraph'
+import Title from '@blocks/text/Title'
+
+import downloadIcon from '@assets/download.svg'
+import editIcon from '@assets/edit.svg'
 import {
   fetchEvent,
   moveEventSong,
   removeEventSong,
   saveEventSong
-} from 'backend/events'
-import Block from 'blocks/Block'
-import Comment from 'blocks/EventComment'
-import EventSongsBulletList from 'blocks/EventSongsBulletList'
-import IconButton from 'blocks/IconButton'
-import Link from 'blocks/Link'
-import Tag from 'blocks/Tag'
-import Toolbar from 'blocks/Toolbar'
-import Paragraph from 'blocks/text/Paragraph'
-import Title from 'blocks/text/Title'
-import ContextMenu from 'components/ContextMenu'
-import EventSongForm from 'components/EventSongForm'
-import SongListItem from 'components/SongListItem'
-import withFetch, { IWithFetchProps } from 'components/withFetch'
-import useContextMenuState from 'hooks/useContextMenuState'
-import { useDocumentTitle } from 'hooks/useDocumentTitle'
-import useErrors from 'hooks/useErrors'
-import React, { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { formatDate } from 'utils/date'
+} from '@backend/events'
+import useContextMenuState from '@hooks/useContextMenuState'
+import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import useErrors from '@hooks/useErrors'
+import { formatDate } from '@utils/date'
 
 function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
   useDocumentTitle(event.title)

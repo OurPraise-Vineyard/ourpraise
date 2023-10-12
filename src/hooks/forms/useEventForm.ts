@@ -1,6 +1,7 @@
 import dateFormat from 'dateformat'
 import { useCallback, useReducer } from 'react'
-import { nextWeekday } from 'utils/date'
+
+import { nextWeekday } from '@utils/date'
 
 type Action = {
   key: string
