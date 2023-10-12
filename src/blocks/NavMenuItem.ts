@@ -25,7 +25,9 @@ export default styled(NavLink)`
     right: 0;
     background-color: white;
     height: 1px;
-    transition: left 0.2s linear, right 0.2s linear;
+    transition:
+      left 0.2s linear,
+      right 0.2s linear;
   }
 
   :hover {

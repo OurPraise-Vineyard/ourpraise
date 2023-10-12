@@ -11,7 +11,9 @@ export default styled.div<{ show: boolean }>`
   background-color: white;
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: 4px;
-  transition: top 0.2s ease-out, opacity 0.2s ease-out;
+  transition:
+    top 0.2s ease-out,
+    opacity 0.2s ease-out;
   display: flex;
   flex-direction: column;
 
