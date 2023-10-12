@@ -5,13 +5,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'react-app'
-  ],
-  rules: {
-    semi: ['error', 'never'],
-    'jsx-quotes': ['error', 'prefer-double'],
-    quotes: ['error', 'single'],
-    'no-extra-semi': 0,
-    '@typescript-eslint/no-extra-semi': 0
-  }
+    'react-app',
+    'prettier'
+  ]
 }

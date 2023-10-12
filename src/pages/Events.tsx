@@ -1,12 +1,14 @@
 import React from 'react'
 
-import { IEventsData, fetchEvents } from '@backend/events'
+import CompactListItem from '@components/CompactListItem'
+import withFetch from '@components/withFetch'
+
 import Toolbar from '@blocks/Toolbar'
 import ToolbarLinkButton from '@blocks/ToolbarLinkButton'
 import Paragraph from '@blocks/text/Paragraph'
 import Title from '@blocks/text/Title'
-import CompactListItem from '@components/CompactListItem'
-import withFetch from '@components/withFetch'
+
+import { IEventsData, fetchEvents } from '@backend/events'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { formatDate } from '@utils/date'
 

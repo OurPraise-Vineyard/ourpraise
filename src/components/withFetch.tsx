@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import Center from '@blocks/Center'
 import FadeIn from '@blocks/FadeIn'
+
 import useFetch, { IFetchCreatorParams } from '@hooks/useFetch'
 
 export type IWithFetchProps<T> = { data: T; onTriggerFetch: () => void }

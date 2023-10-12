@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import SearchInput from '@blocks/SearchInput'
 import SearchInputWrapper from '@blocks/SearchInputWrapper'
+
 import { createDebouncer } from '@utils/debouncer'
 
 const debounce = createDebouncer(1000)
