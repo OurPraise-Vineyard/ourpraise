@@ -24,6 +24,7 @@ import {
   removeEventSong,
   saveEventSong
 } from '@backend/events'
+import useAuth from '@hooks/useAuth'
 import useContextMenuState from '@hooks/useContextMenuState'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useErrors from '@hooks/useErrors'
@@ -38,6 +39,8 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
   const [editSong, setEditSong] = useState<boolean>(false)
   const [savingSong, setSavingSong] = useState<boolean>(false)
   const { pushError } = useErrors()
+  const { user } = useAuth()
+  const isAdmin = user?.role === 'admin'
 
   async function handleSaveEventSong(form: IEventSongForm) {
     try {
@@ -143,7 +146,9 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
       <Toolbar>
         <Title>{event.title}</Title>
         <Tag>{eventDate}</Tag>
-        <IconButton $icon={editIcon} onClick={() => navigate('edit')} />
+        {isAdmin && (
+          <IconButton $icon={editIcon} onClick={() => navigate('edit')} />
+        )}
         <IconButton $icon={downloadIcon} onClick={() => window.print()} />
       </Toolbar>
       {!!event.comment && <Comment>{event.comment}</Comment>}
@@ -160,7 +165,7 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           body={song.body}
           formattedKey={song.formattedKey}
           comment={song.comment}
-          onOpenMenu={handleOpenMenu(song)}
+          onOpenMenu={isAdmin ? handleOpenMenu(song) : undefined}
         />
       ))}
       {event.songs.length === 0 && (

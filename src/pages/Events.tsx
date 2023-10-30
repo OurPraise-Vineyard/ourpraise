@@ -9,6 +9,7 @@ import Paragraph from '@blocks/text/Paragraph'
 import Title from '@blocks/text/Title'
 
 import { IEventsData, fetchEvents } from '@backend/events'
+import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { formatDate } from '@utils/date'
 
@@ -25,12 +26,16 @@ function renderEventItem(event: IEvent): JSX.Element {
 
 function Events({ data: { upcoming, past } }: { data: IEventsData }) {
   useDocumentTitle('Events')
+  const { user } = useAuth()
+  const isAdmin = user?.role === 'admin'
 
   return (
     <div>
       <Toolbar>
         <Title>Upcoming events</Title>
-        <ToolbarLinkButton to="/events/add">Add new event</ToolbarLinkButton>
+        {isAdmin && (
+          <ToolbarLinkButton to="/events/add">Add new event</ToolbarLinkButton>
+        )}
       </Toolbar>
       {upcoming.map(renderEventItem)}
       {upcoming.length === 0 && <Paragraph>No upcoming events</Paragraph>}

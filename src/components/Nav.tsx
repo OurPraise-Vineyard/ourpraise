@@ -44,12 +44,8 @@ export default function Nav() {
             {user ? user.displayName || user.email : ''}
           </NavUsername>
           <NavMenu>
-            {user?.role === 'admin' && (
-              <>
-                <NavMenuItem to="/events">Events</NavMenuItem>
-                <NavMenuItem to="/songs">Songs</NavMenuItem>
-              </>
-            )}
+            <NavMenuItem to="/events">Events</NavMenuItem>
+            <NavMenuItem to="/songs">Songs</NavMenuItem>
           </NavMenu>
         </NavContent>
       </NavContainer>
