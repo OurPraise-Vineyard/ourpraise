@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { css, useTheme } from 'styled-components'
 
 import AddToEvent from '@components/AddToEvent'
 import KeySwitcher from '@components/KeySwitcher'
@@ -19,6 +20,7 @@ import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useFormattedSongBody from '@hooks/useFormattedSongBody'
 
 function Song({ data: song }: { data: ISong }) {
+  const theme = useTheme()
   const { songId } = useParams()
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
   const [showChords, setShowChords] = useState(true)
@@ -55,7 +57,9 @@ function Song({ data: song }: { data: ISong }) {
       <Block $flex="row" $gap="12px" $margin="16px 0 32px">
         <Block $grow>
           <Title>{song.title}</Title>
-          <EllipsisText $width="30vw">{song.authors}</EllipsisText>
+          <EllipsisText $width={`calc(0.4 * ${theme.sizes.pageWidth})`}>
+            {song.authors}
+          </EllipsisText>
         </Block>
         {isAdmin && (
           <ToolbarButton onClick={() => setShowEventsDialog(true)}>

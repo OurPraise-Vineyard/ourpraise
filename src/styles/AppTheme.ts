@@ -41,7 +41,8 @@ const AppTheme = {
   sizes: {
     toolbarHeight: '50px',
     contextMenuWidth: 150,
-    contextMenuItemHeight: 40
+    contextMenuItemHeight: 40,
+    pageWidth: '960px'
   },
 
   zIndex: {
