@@ -19,7 +19,7 @@
     "dev-server": "vite",
     "emulators": "firebase emulators:start --import ./firestore-import",
     "format": "prettier . --write",
-    "build": "npm run type-check && vite build",
+    "build": "vite build",
     "watch-types": "tsc --noEmit --watch",
     "type-check": "tsc --noEmit",
     "test": "npm run type-check && jest",
