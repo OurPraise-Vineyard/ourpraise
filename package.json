@@ -22,8 +22,8 @@
     "build": "npm run type-check && vite build",
     "watch-types": "tsc --noEmit --watch",
     "type-check": "tsc --noEmit",
-    "test": "npm run type-check && react-scripts test",
-    "deploy": "npm run build && firebase deploy",
+    "test": "npm run type-check && jest",
+    "deploy": "npm run test && npm run build && firebase deploy",
     "serve": "vite preview",
     "lint": "eslint ."
   },
@@ -59,6 +59,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
+    "ts-jest": "^29.1.1",
     "typescript": "^5.2.2",
     "vite": "^4.4.11",
     "vite-plugin-eslint": "^1.8.1",

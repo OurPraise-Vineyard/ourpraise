@@ -40,6 +40,10 @@ The app is built with Typescript and React. You must abide to a certain structur
 - _utils_: Contains a few handy utility functions
 - _index.tsx_: Entry point for the app. Contains state providers and the router
 
+## Deploying a new version
+
+To deploy a new version of the code base, simply run `npm run deploy`. This will run unit tests, build the front end and deploy to Firebase.
+
 # API
 
 To integrate with OurPraise, you need to use the public API. The API is available at `https://europe-west1-ourpraise-fb.cloudfunctions.net/api/ENDPOINT`. Each endpoint is documented briefly below.

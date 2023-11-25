@@ -56,3 +56,27 @@ test('find key below', () => {
 test('correct number of key options', () => {
   expect(keysOptions.length).toEqual(13)
 })
+
+test('transpose chords in parentheses', () => {
+  expect(
+    transposeSong(
+      `(F#) E   B       F#
+Han er god hver en dag`,
+      'B',
+      'Db'
+    )
+  ).toStrictEqual(`(Ab) Gb  Db      Ab
+Han er god hver en dag`)
+})
+
+test('distribute spaces when transposing chords in parentheses', () => {
+  expect(
+    transposeSong(
+      `(F#) E   B       F#
+Han er god hver en dag`,
+      'B',
+      'C'
+    )
+  ).toStrictEqual(`(G)  F   C       G
+Han er god hver en dag`)
+})

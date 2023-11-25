@@ -82,8 +82,24 @@ export function transposeSong(
   fromKey: IKey | null,
   toKey: string
 ): string {
+  const modifiedBody = body
+    .replace(/\(/g, '{{START_PAREN}} ')
+    .replace(/\)/g, ' {{END_PAREN}}')
+
+  let transposedBody
+
   if (fromKey === null) {
-    return Transposer.transpose(body).toKey(toKey).toString()
+    transposedBody = Transposer.transpose(modifiedBody).toKey(toKey).toString()
+  } else {
+    transposedBody = Transposer.transpose(modifiedBody)
+      .fromKey(fromKey)
+      .toKey(toKey)
+      .toString()
   }
-  return Transposer.transpose(body).fromKey(fromKey).toKey(toKey).toString()
+
+  return transposedBody
+    .replace(/{{START_PAREN}}\s/g, '(')
+    .replace(/(\s*)\s{{END_PAREN}}/g, (match, p1) => {
+      return ')' + p1
+    })
 }
