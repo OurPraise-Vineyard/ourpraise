@@ -44,13 +44,13 @@ export default function Auth() {
         return
       }
 
-      if (await createUser(email, password, name)) {
+      if (await createUser(email.toLowerCase(), password, name)) {
         navigate('/')
       } else {
         setLoading(false)
       }
     } else {
-      if (!(await signIn(email, password))) {
+      if (!(await signIn(email.toLowerCase(), password))) {
         setLoading(false)
       }
     }
