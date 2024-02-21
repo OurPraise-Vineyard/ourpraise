@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import TextField from '@components/form/TextField'
 import TextArea from '@components/form/Textarea'
+import SelectField from '@components/form/SelectField'
 
 import Block from '@blocks/Block'
 import Button from '@blocks/Button'
@@ -26,14 +27,14 @@ export default function EventForm({
   saving: boolean
 }) {
   const { user } = useAuth()
-  const [{ title, comment, date, songs }, setField] = useEventForm(event)
+  const [{ title, comment, date, songs, group }, setField] = useEventForm(event)
   const navigate = useNavigate()
   const { pushError } = useErrors()
   const canDelete = !!(event && event.id)
 
   const handleSave = async e => {
     e.preventDefault()
-    onSubmit({ title, date, songs, comment, owner: user?.email || '' })
+    onSubmit({ title, date, songs, comment, owner: user?.email || '', group })
   }
 
   const handleDelete = async () => {
@@ -57,12 +58,23 @@ export default function EventForm({
         title="Title"
         onChange={value => setField('title', value)}
       />
-      <TextField
-        value={date}
-        type="date"
-        title="Date"
-        onChange={value => setField('date', value)}
-      />
+      <Block $flex="row">
+        <TextField
+          value={date}
+          type="date"
+          title="Date"
+          onChange={value => setField('date', value)}
+        />
+        <SelectField
+          value={group}
+          title="Group"
+          onChange={value => setField('group', value)}
+          options={[
+            { value: 'aav', label: 'Aarhus Vineyard' },
+            { value: 'rov', label: 'Roskilde Vineyard' },
+          ]}
+        />
+      </Block>
       <TextArea
         value={comment}
         title="Set comments"

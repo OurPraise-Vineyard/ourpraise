@@ -18,6 +18,7 @@ type IEventSongForm = {
 type IEvent = {
   title: string
   date: string
+  group: string
   songs: Array<IEventSong>
   id: IDocId
   comment: string
@@ -28,6 +29,7 @@ type IEvent = {
 type IEventForm = {
   title: string
   date: string
+  group: string
   songs: Array<IEventSong>
   id?: IDocId
   comment: string
