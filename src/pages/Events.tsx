@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import CompactListItem from '@components/CompactListItem'
 import withFetch from '@components/withFetch'
@@ -12,6 +12,7 @@ import { IEventsData, fetchEvents } from '@backend/events'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { formatDate } from '@utils/date'
+import SelectField from '@components/form/SelectField'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
@@ -28,21 +29,33 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
   useDocumentTitle('Events')
   const { user } = useAuth()
   const isAdmin = user?.role === 'admin'
+  const [activeGroup, setActiveGroup] = useState<string>(localStorage.getItem('event_group') || '');
+
+  const upcomingFiltered = upcoming.filter(e => e.group === activeGroup);
+  const pastFiltered = past.filter(e => e.group === activeGroup);
 
   return (
     <div>
       <Toolbar>
         <Title>Upcoming events</Title>
+        <SelectField
+          value={activeGroup}
+          onChange={setActiveGroup}
+          options={[
+            { value: 'aav', label: 'Aarhus Vineyard' },
+            { value: 'rov', label: 'Roskilde Vineyard' },
+          ]}
+        />
         {isAdmin && (
           <ToolbarLinkButton to="/events/add">Add new event</ToolbarLinkButton>
         )}
       </Toolbar>
-      {upcoming.map(renderEventItem)}
-      {upcoming.length === 0 && <Paragraph>No upcoming events</Paragraph>}
+      {upcomingFiltered.map(renderEventItem)}
+      {upcomingFiltered.length === 0 && <Paragraph>No upcoming events</Paragraph>}
       <Toolbar $extraSpacingTop>
         <Title>Past events</Title>
       </Toolbar>
-      {past.map(renderEventItem)}
+      {pastFiltered.map(renderEventItem)}
     </div>
   )
 }
