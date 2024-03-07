@@ -12,7 +12,7 @@ const defaultEventForm: IEventForm = {
   title: '',
   comment: '',
   date: dateFormat(nextWeekday(7), 'yyyy-mm-dd'),
-  group: localStorage.getItem('event_group') || '',
+  location: localStorage.getItem('event_location') || 'aav',
   songs: [],
   owner: ''
 }
@@ -31,7 +31,7 @@ export default function useEventForm(
 
   const setField = useCallback(
     (key: keyof IEventForm, value: unknown) => {
-      if (key === 'group') localStorage.setItem('event_group', value as string)
+      if (key === 'location') localStorage.setItem('event_location', value as string)
       dispatch({ key, value })
     },
     [dispatch]

@@ -27,14 +27,14 @@ export default function EventForm({
   saving: boolean
 }) {
   const { user } = useAuth()
-  const [{ title, comment, date, songs, group }, setField] = useEventForm(event)
+  const [{ title, comment, date, songs, location = 'aav' }, setField] = useEventForm(event)
   const navigate = useNavigate()
   const { pushError } = useErrors()
   const canDelete = !!(event && event.id)
 
   const handleSave = async e => {
     e.preventDefault()
-    onSubmit({ title, date, songs, comment, owner: user?.email || '', group })
+    onSubmit({ title, date, songs, comment, owner: user?.email || '', location })
   }
 
   const handleDelete = async () => {
@@ -66,9 +66,9 @@ export default function EventForm({
           onChange={value => setField('date', value)}
         />
         <SelectField
-          value={group}
-          title="Group"
-          onChange={value => setField('group', value)}
+          value={location}
+          title="Lokation"
+          onChange={value => setField('location', value)}
           options={[
             { value: 'aav', label: 'Aarhus Vineyard' },
             { value: 'rov', label: 'Roskilde Vineyard' },

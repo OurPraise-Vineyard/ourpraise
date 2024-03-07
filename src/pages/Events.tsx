@@ -29,18 +29,18 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
   useDocumentTitle('Events')
   const { user } = useAuth()
   const isAdmin = user?.role === 'admin'
-  const [activeGroup, setActiveGroup] = useState<string>(localStorage.getItem('event_group') || '');
+  const [activeLocation, setActiveLocation] = useState<string>(localStorage.getItem('event_location') || 'aav');
 
-  const upcomingFiltered = upcoming.filter(e => e.group === activeGroup);
-  const pastFiltered = past.filter(e => e.group === activeGroup);
+  const upcomingFiltered = upcoming.filter(e => e.location === activeLocation);
+  const pastFiltered = past.filter(e => e.location === activeLocation);
 
   return (
     <div>
       <Toolbar>
         <Title>Upcoming events</Title>
         <SelectField
-          value={activeGroup}
-          onChange={setActiveGroup}
+          value={activeLocation}
+          onChange={setActiveLocation}
           options={[
             { value: 'aav', label: 'Aarhus Vineyard' },
             { value: 'rov', label: 'Roskilde Vineyard' },
