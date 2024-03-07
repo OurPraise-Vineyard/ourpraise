@@ -5,7 +5,7 @@ export default styled.div<{ $show: boolean }>`
   z-index: ${props => props.theme.zIndex.modal};
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
+  width: 500px;
   max-width: 90vw;
   height: 600px;
   background-color: white;
