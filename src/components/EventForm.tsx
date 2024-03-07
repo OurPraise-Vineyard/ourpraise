@@ -69,19 +69,23 @@ export default function EventForm({
         title="Title"
         onChange={value => setField('title', value)}
       />
-      <Block $flex="row">
-        <TextField
-          value={date}
-          type="date"
-          title="Date"
-          onChange={value => setField('date', value)}
-        />
-        <SelectField
-          value={location}
-          title="Location"
-          onChange={value => setField('location', value)}
-          options={locations}
-        />
+      <Block $flex="row" $gap="12px">
+        <Block $grow>
+          <TextField
+            value={date}
+            type="date"
+            title="Date"
+            onChange={value => setField('date', value)}
+          />
+        </Block>
+        <Block $grow>
+          <SelectField
+            value={location}
+            title="Location"
+            onChange={value => setField('location', value)}
+            options={locations}
+          />
+        </Block>
       </Block>
       <TextArea
         value={comment}

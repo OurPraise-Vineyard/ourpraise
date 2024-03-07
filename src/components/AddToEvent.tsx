@@ -70,7 +70,7 @@ export default function AddToEvent({
         onChange={setLocation}
         options={locations}
       />
-      <Block $grow>
+      <Block $grow $margin="12px 0 0">
         <ScrollContainer>
           {status === 'succeeded' &&
             eventsFiltered?.map(event => (
