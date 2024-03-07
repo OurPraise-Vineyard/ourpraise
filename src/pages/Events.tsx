@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import CompactListItem from '@components/CompactListItem'
+import SelectField from '@components/form/SelectField'
 import withFetch from '@components/withFetch'
 
 import Toolbar from '@blocks/Toolbar'
@@ -12,7 +13,6 @@ import { IEventsData, fetchEvents } from '@backend/events'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { formatDate } from '@utils/date'
-import SelectField from '@components/form/SelectField'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
@@ -29,10 +29,12 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
   useDocumentTitle('Events')
   const { user } = useAuth()
   const isAdmin = user?.role === 'admin'
-  const [activeLocation, setActiveLocation] = useState<string>(localStorage.getItem('event_location') || 'aav');
+  const [activeLocation, setActiveLocation] = useState<string>(
+    localStorage.getItem('event_location') || 'aav'
+  )
 
-  const upcomingFiltered = upcoming.filter(e => e.location === activeLocation);
-  const pastFiltered = past.filter(e => e.location === activeLocation);
+  const upcomingFiltered = upcoming.filter(e => e.location === activeLocation)
+  const pastFiltered = past.filter(e => e.location === activeLocation)
 
   return (
     <div>
@@ -43,7 +45,7 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
           onChange={setActiveLocation}
           options={[
             { value: 'aav', label: 'Aarhus Vineyard' },
-            { value: 'rov', label: 'Roskilde Vineyard' },
+            { value: 'rov', label: 'Roskilde Vineyard' }
           ]}
         />
         {isAdmin && (
@@ -51,7 +53,9 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
         )}
       </Toolbar>
       {upcomingFiltered.map(renderEventItem)}
-      {upcomingFiltered.length === 0 && <Paragraph>No upcoming events</Paragraph>}
+      {upcomingFiltered.length === 0 && (
+        <Paragraph>No upcoming events</Paragraph>
+      )}
       <Toolbar $extraSpacingTop>
         <Title>Past events</Title>
       </Toolbar>

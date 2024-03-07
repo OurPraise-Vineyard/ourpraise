@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import SelectField from '@components/form/SelectField'
 import TextField from '@components/form/TextField'
 import TextArea from '@components/form/Textarea'
-import SelectField from '@components/form/SelectField'
 
 import Block from '@blocks/Block'
 import Button from '@blocks/Button'
@@ -27,14 +27,22 @@ export default function EventForm({
   saving: boolean
 }) {
   const { user } = useAuth()
-  const [{ title, comment, date, songs, location = 'aav' }, setField] = useEventForm(event)
+  const [{ title, comment, date, songs, location = 'aav' }, setField] =
+    useEventForm(event)
   const navigate = useNavigate()
   const { pushError } = useErrors()
   const canDelete = !!(event && event.id)
 
   const handleSave = async e => {
     e.preventDefault()
-    onSubmit({ title, date, songs, comment, owner: user?.email || '', location })
+    onSubmit({
+      title,
+      date,
+      songs,
+      comment,
+      owner: user?.email || '',
+      location
+    })
   }
 
   const handleDelete = async () => {
@@ -71,7 +79,7 @@ export default function EventForm({
           onChange={value => setField('location', value)}
           options={[
             { value: 'aav', label: 'Aarhus Vineyard' },
-            { value: 'rov', label: 'Roskilde Vineyard' },
+            { value: 'rov', label: 'Roskilde Vineyard' }
           ]}
         />
       </Block>

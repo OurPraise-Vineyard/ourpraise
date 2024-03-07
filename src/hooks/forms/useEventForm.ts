@@ -31,7 +31,9 @@ export default function useEventForm(
 
   const setField = useCallback(
     (key: keyof IEventForm, value: unknown) => {
-      if (key === 'location') localStorage.setItem('event_location', value as string)
+      if (key === 'location') {
+        localStorage.setItem('event_location', value as string)
+      }
       dispatch({ key, value })
     },
     [dispatch]
