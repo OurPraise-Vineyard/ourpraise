@@ -15,6 +15,7 @@ export function mapDocToEvent(doc: IDoc): IEvent {
     id: doc.id,
     owner: event.owner,
     title: event.title,
+    location: event.location,
     songs: (event.songs as Array<IEventSong>).map(
       (songDoc: IEventSong): IEventSong => ({
         id: songDoc.id,
