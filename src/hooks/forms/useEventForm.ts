@@ -1,22 +1,22 @@
 import dateFormat from 'dateformat'
 import { useCallback, useReducer } from 'react'
 
-import { nextWeekday } from '@utils/date'
 import { locations } from '@hooks/useSavedLocation'
+import { nextWeekday } from '@utils/date'
 
 type Action = {
   key: string
   value: unknown
 }
 
-const defaultEventForm: IEventForm = {
+const defaultEventForm = (): IEventForm => ({
   title: '',
   comment: '',
   date: dateFormat(nextWeekday(7), 'yyyy-mm-dd'),
   location: localStorage.getItem('event_location') || locations[0].value,
   songs: [],
   owner: ''
-}
+})
 
 const reducer = (state: IEventForm, action: Action) => {
   return {
@@ -28,7 +28,7 @@ const reducer = (state: IEventForm, action: Action) => {
 export default function useEventForm(
   event?: IEventForm
 ): IFormHookState<IEventForm> {
-  const [form, dispatch] = useReducer(reducer, event || defaultEventForm)
+  const [form, dispatch] = useReducer(reducer, event || defaultEventForm())
 
   const setField = useCallback(
     (key: keyof IEventForm, value: unknown) => {
