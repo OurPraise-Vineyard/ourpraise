@@ -35,6 +35,8 @@ export default function AddToEvent({
   const [comment, setComment] = useState<string>('')
   const [transposeKey, setTransposeKey] = useState<IKey>(songKey)
   const [saving, setSaving] = useState<boolean>(false)
+  const [activeLocation, setActiveLocation] = useState<string>(localStorage.getItem('event_location') || 'aav');
+  const eventsFiltered = events?.upcoming.filter(e => e.location === activeLocation);
 
   useEffect(() => {
     setTransposeKey(songKey)
@@ -60,10 +62,18 @@ export default function AddToEvent({
 
   return (
     <Modal title="Add song to event" onClose={onClose} show={show}>
+      <SelectField
+        value={activeLocation}
+        onChange={setActiveLocation}
+        options={[
+          { value: 'aav', label: 'Aarhus Vineyard' },
+          { value: 'rov', label: 'Roskilde Vineyard' },
+        ]}
+      />
       <Block $grow>
         <ScrollContainer>
           {status === 'succeeded' &&
-            events?.upcoming.map(event => (
+            eventsFiltered?.map(event => (
               <CompactListItem
                 key={event.id}
                 onClick={() => setSelectedEvent(event.id)}
