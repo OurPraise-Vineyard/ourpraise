@@ -7,7 +7,7 @@ export const locations = [
 
 export function useSavedLocation() {
   const [location, setLocation] = useState(
-    localStorage.getItem('event_location') || locations[0].value
+    localStorage.getItem('event_location') ?? locations[0].value
   )
 
   const handleStorageChange = useCallback((event: StorageEvent) => {
@@ -26,7 +26,7 @@ export function useSavedLocation() {
     return () => {
       window.removeEventListener('storage', handleStorageChange)
     }
-  }, [])
+  }, [handleStorageChange])
 
   return [location, setLocation]
 }
