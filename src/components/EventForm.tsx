@@ -67,7 +67,7 @@ export default function EventForm({
         />
         <SelectField
           value={location}
-          title="Lokation"
+          title="Location"
           onChange={value => setField('location', value)}
           options={[
             { value: 'aav', label: 'Aarhus Vineyard' },
