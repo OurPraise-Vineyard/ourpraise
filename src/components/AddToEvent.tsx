@@ -14,9 +14,9 @@ import ScrollContainer from '@blocks/ScrollContainer'
 import { IEventsData, addSongToEvent, fetchEvents } from '@backend/events'
 import useErrors from '@hooks/useErrors'
 import useFetch from '@hooks/useFetch'
+import { locations, useSavedLocation } from '@hooks/useSavedLocation'
 import { keysOptions } from '@utils/chords'
 import { formatDate } from '@utils/date'
-import { locations, useSavedLocation } from '@hooks/useSavedLocation'
 
 type AddToEventProps = {
   songId: IDocId
@@ -37,7 +37,9 @@ export default function AddToEvent({
   const [transposeKey, setTransposeKey] = useState<IKey>(songKey)
   const [saving, setSaving] = useState<boolean>(false)
   const [location, setLocation] = useSavedLocation()
-  const eventsFiltered = events?.upcoming.filter(e => e.location === location)
+  const eventsFiltered = events?.upcoming.filter(e =>
+    e.location ? e.location === location : location === locations[0].value
+  )
 
   useEffect(() => {
     setTransposeKey(songKey)

@@ -12,8 +12,8 @@ import Title from '@blocks/text/Title'
 import { IEventsData, fetchEvents } from '@backend/events'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import { locations, useSavedLocation } from '@hooks/useSavedLocation'
 import { formatDate } from '@utils/date'
-import { useSavedLocation, locations } from '@hooks/useSavedLocation'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
@@ -32,8 +32,12 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
   const isAdmin = user?.role === 'admin'
   const [location, setLocation] = useSavedLocation()
 
-  const upcomingFiltered = upcoming.filter(e => e.location === location)
-  const pastFiltered = past.filter(e => e.location === location)
+  const upcomingFiltered = upcoming.filter(e =>
+    e.location ? e.location === location : location === locations[0].value
+  )
+  const pastFiltered = past.filter(e =>
+    e.location ? e.location === location : location === locations[0].value
+  )
 
   return (
     <div>
