@@ -14,6 +14,7 @@ import { deleteEvent } from '@backend/events'
 import useEventForm from '@hooks/forms/useEventForm'
 import useAuth from '@hooks/useAuth'
 import useErrors from '@hooks/useErrors'
+import { locations } from '@hooks/useSavedLocation'
 
 export default function EventForm({
   event,
