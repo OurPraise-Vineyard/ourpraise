@@ -27,8 +27,10 @@ export default function EventForm({
   saving: boolean
 }) {
   const { user } = useAuth()
-  const [{ title, comment, date, songs, location = 'aav' }, setField] =
-    useEventForm(event)
+  const [
+    { title, comment, date, songs, location = locations[0].value },
+    setField
+  ] = useEventForm(event)
   const navigate = useNavigate()
   const { pushError } = useErrors()
   const canDelete = !!(event && event.id)
@@ -77,10 +79,7 @@ export default function EventForm({
           value={location}
           title="Location"
           onChange={value => setField('location', value)}
-          options={[
-            { value: 'aav', label: 'Aarhus Vineyard' },
-            { value: 'rov', label: 'Roskilde Vineyard' }
-          ]}
+          options={locations}
         />
       </Block>
       <TextArea
