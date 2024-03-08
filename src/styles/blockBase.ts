@@ -1,4 +1,4 @@
-import { RuleSet, css, keyframes } from 'styled-components'
+import { css, keyframes } from 'styled-components'
 
 import AppTheme from '@styles/AppTheme'
 
