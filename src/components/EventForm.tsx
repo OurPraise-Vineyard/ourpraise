@@ -44,7 +44,7 @@ export default function EventForm({
       songs,
       comment,
       owner: user?.email || '',
-      location: locations[0].value
+      location: location ?? locations[0].value
     })
   }
 

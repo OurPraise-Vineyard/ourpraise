@@ -1,7 +1,7 @@
 import dateFormat from 'dateformat'
 import { useCallback, useReducer } from 'react'
 
-import { locations } from '@hooks/useSavedLocation'
+import { getLatestLocation } from '@hooks/useSavedLocation'
 import { nextWeekday } from '@utils/date'
 
 type Action = {
@@ -13,7 +13,7 @@ const defaultEventForm = (): IEventForm => ({
   title: '',
   comment: '',
   date: dateFormat(nextWeekday(7), 'yyyy-mm-dd'),
-  location: localStorage.getItem('event_location') || locations[0].value,
+  location: getLatestLocation(),
   songs: [],
   owner: ''
 })

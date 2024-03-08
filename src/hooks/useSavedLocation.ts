@@ -5,13 +5,15 @@ export const locations = [
   { value: 'rov', label: 'Roskilde Vineyard' }
 ]
 
+export const getLatestLocation = () => {
+  return localStorage.getItem('event_location') ?? locations[0].value
+}
+
 export function useSavedLocation(): [
   string,
   React.Dispatch<React.SetStateAction<string>>
 ] {
-  const [location, setLocation] = useState(
-    localStorage.getItem('event_location') ?? locations[0].value
-  )
+  const [location, setLocation] = useState(() => getLatestLocation())
 
   const handleStorageChange = useCallback((event: StorageEvent) => {
     if (event.key === 'event_location' && event.newValue) {
