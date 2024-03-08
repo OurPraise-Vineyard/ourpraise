@@ -5,7 +5,10 @@ export const locations = [
   { value: 'rov', label: 'Roskilde Vineyard' }
 ]
 
-export function useSavedLocation() {
+export function useSavedLocation(): [
+  string,
+  React.Dispatch<React.SetStateAction<string>>
+] {
   const [location, setLocation] = useState(
     localStorage.getItem('event_location') ?? locations[0].value
   )
