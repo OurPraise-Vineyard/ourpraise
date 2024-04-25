@@ -34,6 +34,8 @@ exports.getEvent = async id => {
   return {
     id,
     title: doc.data().title,
+    date: doc.data().date,
+    location: doc.data().location ?? null,
     songs
   }
 }

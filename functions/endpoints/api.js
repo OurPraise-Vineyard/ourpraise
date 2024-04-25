@@ -62,9 +62,27 @@ app.get('/event', (req, res) => {
 })
 
 app.get('/events', (req, res) => {
-  db.collection('events')
-    .orderBy('date', 'desc')
-    .limit(20)
+  const { limit, location } = req.query
+
+  let limitInt = 20
+  if (limit) {
+    try {
+      limitInt = parseInt(limit)
+      if (isNaN(limitInt)) throw new Error()
+    } catch (e) {
+      res.status(400).json({
+        status: 400,
+        error: 'Limit must be a number'
+      })
+    }
+  }
+
+  let query = db.collection('events').orderBy('date', 'desc')
+
+  if (location) query = query.where('location', '==', location)
+
+  query
+    .limit(Math.min(limitInt, 100))
     .get()
     .then(snap =>
       snap.docs.map(doc => {
@@ -73,6 +91,7 @@ app.get('/events', (req, res) => {
           id: doc.id,
           title: ev.title,
           date: ev.date,
+          location: ev.location ?? null,
           songs: ev.songs.length
         }
       })
