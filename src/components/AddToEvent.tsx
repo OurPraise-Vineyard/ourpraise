@@ -60,44 +60,44 @@ export default function AddToEvent({
 
   return (
     <Modal title="Add song to event" onClose={onClose} show={show}>
-      <SelectField
-        value={location}
-        onChange={setLocation}
-        options={locations}
-      />
-      <div className="mt-3 flex-grow">
-        <div className="overflow-y-auto">
-          {status === 'succeeded' &&
-            eventsFiltered?.map(event => (
-              <div
-                onClick={() => setSelectedEvent(event.id)}
-                key={event.id}
-                className={classNames(
-                  'flex cursor-pointer justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100',
-                  {
-                    'bg-gray-100': event.id === selectedEvent
-                  }
-                )}
-              >
-                <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                  {event.title}
-                </p>
-                <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
-                  {formatDate(event.date)}
-                </p>
-              </div>
-            ))}
-          {status === 'succeeded' && events?.upcoming.length === 0 && (
-            <p className="text-center">No upcoming events.</p>
-          )}
-          {status === 'loading' && (
-            <p className="text-center">Loading events...</p>
-          )}
+      <div className="flex flex-grow flex-col gap-3">
+        <SelectField
+          value={location}
+          onChange={setLocation}
+          options={locations}
+        />
+        <div className="flex-grow">
+          <div className="overflow-y-auto">
+            {status === 'succeeded' &&
+              eventsFiltered?.map(event => (
+                <div
+                  onClick={() => setSelectedEvent(event.id)}
+                  key={event.id}
+                  className={classNames(
+                    'flex cursor-pointer justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100',
+                    {
+                      'bg-gray-100': event.id === selectedEvent
+                    }
+                  )}
+                >
+                  <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                    {event.title}
+                  </p>
+                  <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
+                    {formatDate(event.date)}
+                  </p>
+                </div>
+              ))}
+            {status === 'succeeded' && events?.upcoming.length === 0 && (
+              <p className="text-center">No upcoming events.</p>
+            )}
+            {status === 'loading' && (
+              <p className="text-center">Loading events...</p>
+            )}
+          </div>
         </div>
-      </div>
-      {!!selectedEvent && (
-        <div>
-          <form onSubmit={handleAddSong}>
+        {!!selectedEvent && (
+          <form onSubmit={handleAddSong} className="flex flex-col gap-3">
             <TextareaField
               onChange={setComment}
               value={comment}
@@ -114,8 +114,8 @@ export default function AddToEvent({
               {saving ? 'Saving...' : 'Add song'}
             </Button>
           </form>
-        </div>
-      )}
+        )}
+      </div>
     </Modal>
   )
 }

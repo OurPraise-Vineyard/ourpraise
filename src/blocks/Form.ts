@@ -1,8 +1,0 @@
-import styled from 'styled-components'
-
-export default styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  flex: 1 0 auto;
-`

@@ -18,8 +18,6 @@ import Songs from '@pages/Songs'
 import DisplayErrors from '@components/DisplayErrors'
 import Layout from '@components/Layout'
 
-import Center from '@blocks/Center'
-
 import useAuth from '@hooks/useAuth'
 import store from '@state/store'
 import AppTheme from '@styles/AppTheme'
@@ -30,7 +28,11 @@ function App() {
   const { user, ready } = useAuth()
 
   if (!ready) {
-    return <Center $fullscreen>Loading...</Center>
+    return (
+      <p className="flex h-screen w-screen items-center justify-center">
+        Loading...
+      </p>
+    )
   }
 
   if (!user) {

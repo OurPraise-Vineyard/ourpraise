@@ -1,4 +1,9 @@
-import { pageTitleStyles, toolbarStyles } from '@common-styles'
+import {
+  ellipsisTextStyles,
+  pageTitleStyles,
+  toolbarStyles
+} from '@common-styles'
+import classNames from 'classnames'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -49,12 +54,12 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
               key={song.id}
               className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
             >
-              <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+              <p className={classNames(ellipsisTextStyles, 'w-1/2')}>
                 {song.title || (
                   <span className="italic text-red-500">Missing title</span>
                 )}
               </p>
-              <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
+              <p className={ellipsisTextStyles}>
                 {song.authors || (
                   <span className="italic text-red-500">Missing authors</span>
                 )}
