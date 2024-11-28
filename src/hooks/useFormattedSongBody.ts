@@ -15,10 +15,9 @@ export default function useFormattedSongBody(
       if (showChords) {
         if (songKey && transposeKey) {
           setBody(
-            transposeSong(
-              songBody.replace(/^\/\//gm, '  '),
-              songKey,
-              transposeKey
+            transposeSong(songBody, songKey, transposeKey).replace(
+              /^\/\//gm,
+              '  '
             )
           )
         } else {

@@ -17,7 +17,6 @@ import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useFormattedSongBody from '@hooks/useFormattedSongBody'
 
 function Song({ data: song }: { data: ISong }) {
-  const theme = useTheme()
   const { songId } = useParams()
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
   const [showChords, setShowChords] = useState(true)

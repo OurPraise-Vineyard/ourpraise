@@ -50,10 +50,14 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
               className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
             >
               <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                {song.title}
+                {song.title || (
+                  <span className="italic text-red-500">Missing title</span>
+                )}
               </p>
               <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
-                {song.authors}
+                {song.authors || (
+                  <span className="italic text-red-500">Missing authors</span>
+                )}
               </p>
             </Link>
           ))}

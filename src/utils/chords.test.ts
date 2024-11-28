@@ -1,18 +1,18 @@
 import { findNextKey, keysOptions, transposeSong } from './chords'
 
-const songF = `Dm7 Bb
+const songF = `// Dm7 Bb
 We say these dry bones, dry bones
-F C
+// F C
 They will live again`
 
-const songGb = `Ebm7 Cb
+const songGb = `// Ebm7 Cb
 We say these dry bones, dry bones
-Gb Db
+// Gb Db
 They will live again`
 
-const songD = `Bm7 G
+const songD = `// Bm7 G
 We say these dry bones, dry bones
-D A
+// D A
 They will live again`
 
 test('work without specified key', () => {
@@ -31,14 +31,14 @@ test('only transpose chords', () => {
   expect(
     transposeSong(
       `[Chorus]
-A G#-F#
-This should not be changed`,
+// A G#-F#
+A line should not be changed`,
       'A',
       'G'
     )
   ).toStrictEqual(`[Chorus]
-G F#-E
-This should not be changed`)
+// G F#-E
+A line should not be changed`)
 })
 
 test('find key above', () => {
@@ -60,23 +60,23 @@ test('correct number of key options', () => {
 test('transpose chords in parentheses', () => {
   expect(
     transposeSong(
-      `(F#) E   B       F#
+      `// (F#) E   B       F#
 Han er god hver en dag`,
       'B',
       'Db'
     )
-  ).toStrictEqual(`(Ab) Gb  Db      Ab
+  ).toStrictEqual(`// (Ab) Gb  Db      Ab
 Han er god hver en dag`)
 })
 
 test('distribute spaces when transposing chords in parentheses', () => {
   expect(
     transposeSong(
-      `(F#) E   B       F#
+      `// (F#) E   B       F#
 Han er god hver en dag`,
       'B',
       'C'
     )
-  ).toStrictEqual(`(G)  F   C       G
+  ).toStrictEqual(`// (G)  F   C       G
 Han er god hver en dag`)
 })
