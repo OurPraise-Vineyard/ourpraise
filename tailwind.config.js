@@ -14,6 +14,9 @@ module.exports = {
       },
       height: {
         toolbar: '3rem'
+      },
+      fontFamily: {
+        mono: ['Oxygen Mono', 'monospace']
       }
     },
     fontFamily: {

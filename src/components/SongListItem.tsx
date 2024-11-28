@@ -1,8 +1,9 @@
 import React from 'react'
 
+import IconButton from '@components/IconButton'
+
 import Block from '@blocks/Block'
 import Comment from '@blocks/EventComment'
-import IconButton from '@blocks/IconButton'
 import SongListItemAuthors from '@blocks/SongListItemAuthors'
 import SongListItemBody from '@blocks/SongListItemBody'
 import SongListItemContainer from '@blocks/SongListItemContainer'

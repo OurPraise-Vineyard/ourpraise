@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 
+import IconButton from '@components/IconButton'
+
 import Backdrop from '@blocks/Backdrop'
-import IconButton from '@blocks/IconButton'
 import ModalContainer from '@blocks/ModalContainer'
 import ModalContent from '@blocks/ModalContent'
 import Toolbar from '@blocks/Toolbar'

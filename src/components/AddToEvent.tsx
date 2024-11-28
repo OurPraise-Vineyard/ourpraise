@@ -1,7 +1,7 @@
+import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 
 import Button from '@components/Button'
-import CompactListItem from '@components/CompactListItem'
 import Modal from '@components/Modal'
 import SelectField from '@components/form/SelectField'
 import TextArea from '@components/form/Textarea'
@@ -74,13 +74,23 @@ export default function AddToEvent({
         <ScrollContainer>
           {status === 'succeeded' &&
             eventsFiltered?.map(event => (
-              <CompactListItem
-                key={event.id}
+              <div
                 onClick={() => setSelectedEvent(event.id)}
-                primary={event.title}
-                secondary={formatDate(event.date)}
-                highlight={event.id === selectedEvent}
-              />
+                key={event.id}
+                className={classNames(
+                  'flex cursor-pointer justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100',
+                  {
+                    'bg-gray-100': event.id === selectedEvent
+                  }
+                )}
+              >
+                <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                  {event.title}
+                </p>
+                <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
+                  {formatDate(event.date)}
+                </p>
+              </div>
             ))}
           {status === 'succeeded' && events?.upcoming.length === 0 && (
             <Center>No upcoming events.</Center>
@@ -103,7 +113,7 @@ export default function AddToEvent({
               options={keysOptions}
               title="Key"
             />
-            <Button type="submit" $buttonStyle="primary">
+            <Button type="submit" variant="primary">
               {saving ? 'Saving...' : 'Add song'}
             </Button>
           </Form>

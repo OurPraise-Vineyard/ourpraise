@@ -1,20 +1,21 @@
+import { pageTitleStyles } from '@common-styles'
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import Button from '@components/Button'
 import ContextMenu from '@components/ContextMenu'
 import EventSongForm from '@components/EventSongForm'
+import IconButton from '@components/IconButton'
 import SongListItem from '@components/SongListItem'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
 
 import Block from '@blocks/Block'
 import Comment from '@blocks/EventComment'
 import EventSongsBulletList from '@blocks/EventSongsBulletList'
-import IconButton from '@blocks/IconButton'
 import Link from '@blocks/Link'
 import Tag from '@blocks/Tag'
 import Toolbar from '@blocks/Toolbar'
 import Paragraph from '@blocks/text/Paragraph'
-import Title from '@blocks/text/Title'
 
 import downloadIcon from '@assets/download.svg'
 import editIcon from '@assets/edit.svg'
@@ -144,12 +145,20 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
         />
       )}
       <Toolbar>
-        <Title>{event.title}</Title>
+        <h2 className={pageTitleStyles}>{event.title}</h2>
         <Tag>{eventDate}</Tag>
         {isAdmin && (
-          <IconButton $icon={editIcon} onClick={() => navigate('edit')} />
+          <IconButton
+            icon={editIcon}
+            onClick={() => navigate('edit')}
+            className="flex-shrink-0"
+          />
         )}
-        <IconButton $icon={downloadIcon} onClick={() => window.print()} />
+        <IconButton
+          icon={downloadIcon}
+          onClick={() => window.print()}
+          className="flex-shrink-0"
+        />
       </Toolbar>
       {!!event.comment && <Comment>{event.comment}</Comment>}
       <EventSongsBulletList>
@@ -177,9 +186,9 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           $width="350px"
         >
           <Paragraph>No songs added yet. Click below to add some.</Paragraph>
-          <Link to="/songs" color="ctaPrimary">
+          <Button type="link" to="/songs" variant="primary">
             Add songs
-          </Link>
+          </Button>
         </Block>
       )}
     </div>

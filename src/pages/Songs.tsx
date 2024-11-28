@@ -1,13 +1,12 @@
+import { pageTitleStyles, toolbarStyles } from '@common-styles'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-import CompactListItem from '@components/CompactListItem'
+import Button from '@components/Button'
 import SearchSongs from '@components/SearchSongs'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
 
 import Center from '@blocks/Center'
-import Toolbar from '@blocks/Toolbar'
-import ToolbarLinkButton from '@blocks/ToolbarLinkButton'
-import Title from '@blocks/text/Title'
 
 import { fetchSongs } from '@backend/songs'
 import useAuth from '@hooks/useAuth'
@@ -24,24 +23,39 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
 
   return (
     <div>
-      <Toolbar>
-        <Title>{query ? `Search results for "${query}"` : 'All songs'}</Title>
+      <div className={toolbarStyles}>
+        <h2 className={pageTitleStyles}>
+          {query ? `Search results for "${query}"` : 'All songs'}
+        </h2>
         <SearchSongs onSearch={setQuery} />
         {user?.role === 'admin' && (
-          <ToolbarLinkButton to="/songs/add">Add new song</ToolbarLinkButton>
+          <Button
+            type="link"
+            to="/songs/add"
+            variant="primary"
+            className="h-toolbar"
+          >
+            Add new song
+          </Button>
         )}
-      </Toolbar>
+      </div>
       {searchStatus === 'loading' ? (
         <Center>Loading...</Center>
       ) : (
         <div>
           {items.map(song => (
-            <CompactListItem
-              key={song.id}
+            <Link
               to={`/songs/${song.id}`}
-              primary={song.title}
-              secondary={song.authors}
-            />
+              key={song.id}
+              className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
+            >
+              <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                {song.title}
+              </p>
+              <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
+                {song.authors}
+              </p>
+            </Link>
           ))}
         </div>
       )}

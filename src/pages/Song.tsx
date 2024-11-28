@@ -1,17 +1,15 @@
+import { ellipsisTextStyles, pageTitleStyles } from '@common-styles'
+import classNames from 'classnames'
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { css, useTheme } from 'styled-components'
+import { useTheme } from 'styled-components'
 
 import AddToEvent from '@components/AddToEvent'
+import IconButton from '@components/IconButton'
 import KeySwitcher from '@components/KeySwitcher'
 import withFetch from '@components/withFetch'
 
-import Block from '@blocks/Block'
-import IconButton from '@blocks/IconButton'
 import ToolbarButton from '@blocks/ToolbarButton'
-import EllipsisText from '@blocks/text/EllipsisText'
-import Monospace from '@blocks/text/Monospace'
-import Title from '@blocks/text/Title'
 
 import editIcon from '@assets/edit.svg'
 import { fetchSong } from '@backend/songs'
@@ -54,19 +52,19 @@ function Song({ data: song }: { data: ISong }) {
           songKey={transposeKey}
         />
       )}
-      <Block $flex="row" $gap="12px" $margin="16px 0 32px">
-        <Block $grow>
-          <Title>{song.title}</Title>
-          <EllipsisText $width={`calc(0.4 * ${theme.sizes.pageWidth})`}>
+      <div className="mb-8 mt-4 flex items-center gap-3">
+        <div className="flex-grow">
+          <h2 className={pageTitleStyles}>{song.title}</h2>
+          <p className={classNames(ellipsisTextStyles, 'text-lg')}>
             {song.authors}
-          </EllipsisText>
-        </Block>
+          </p>
+        </div>
         {isAdmin && (
           <ToolbarButton onClick={() => setShowEventsDialog(true)}>
             Add to event
           </ToolbarButton>
         )}
-        <Block $flex="row" $align="center" $gap="12px">
+        <div className="flex items-center gap-3">
           <KeySwitcher
             transposeKey={transposeKey}
             setTransposeKey={setTransposeKey}
@@ -74,12 +72,12 @@ function Song({ data: song }: { data: ISong }) {
             onToggleChords={handleToggleChords}
             showChords={showChords}
           />
-          {isAdmin && (
-            <IconButton $edge $icon={editIcon} onClick={handleEdit} />
-          )}
-        </Block>
-      </Block>
-      <Monospace $padding="0 0 64px">{formattedBody}</Monospace>
+          {isAdmin && <IconButton edge icon={editIcon} onClick={handleEdit} />}
+        </div>
+      </div>
+      <p className="whitespace-pre pb-16 font-mono text-base">
+        {formattedBody}
+      </p>
     </>
   )
 }

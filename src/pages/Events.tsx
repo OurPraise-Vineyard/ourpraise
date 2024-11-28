@@ -1,4 +1,4 @@
-import { pageTitle } from '@common-styles'
+import { pageTitleStyles, toolbarStyles } from '@common-styles'
 import classNames from 'classnames'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -45,8 +45,10 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
 
   return (
     <div>
-      <div className="flex items-center justify-end gap-4 border-b border-b-gray-300 py-2">
-        <h2 className={classNames(pageTitle, 'flex-grow')}>Upcoming events</h2>
+      <div className={toolbarStyles}>
+        <h2 className={classNames(pageTitleStyles, 'flex-grow')}>
+          Upcoming events
+        </h2>
         <SelectField
           value={location}
           onChange={setLocation}
@@ -70,7 +72,7 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
       )}
       <h2
         className={classNames(
-          pageTitle,
+          pageTitleStyles,
           'mt-5 border-b border-b-gray-300 py-2'
         )}
       >

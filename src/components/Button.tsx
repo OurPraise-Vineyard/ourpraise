@@ -10,7 +10,7 @@ const colorSchemes = {
 }
 
 const buttonStyles =
-  'cursor-pointer text-lg/none transition-all duration-200 ease-out p-2.5 rounded border-0 flex items-center text-center justify-center'
+  'cursor-pointer text-lg/none transition-all duration-200 ease-out py-2.5 px-5 rounded border-0 flex items-center text-center justify-center'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: keyof typeof colorSchemes
