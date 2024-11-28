@@ -11,7 +11,13 @@ module.exports = {
       },
       animation: {
         teleportIn: 'teleportIn 0.2s ease-out 0.2s both'
+      },
+      height: {
+        toolbar: '3rem'
       }
+    },
+    fontFamily: {
+      sans: ['Abel', 'sans-serif']
     }
   },
   plugins: []

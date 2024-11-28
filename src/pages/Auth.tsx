@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import Button from '@components/Button'
 import { TextField } from '@components/FormFields'
 
-import Button from '@blocks/Button'
 import Logo from '@blocks/Logo'
 
 import useAuthForm from '@hooks/forms/useAuthForm'
@@ -91,7 +91,7 @@ export default function Auth() {
               type="password"
               title="Repeat password"
             />
-            <Button $buttonStyle="primary" type="submit">
+            <Button variant="primary" type="submit">
               {loading ? 'Please wait...' : 'Register'}
             </Button>
           </>
@@ -111,7 +111,7 @@ export default function Auth() {
               type="password"
               title="Password"
             />
-            <Button $buttonStyle="primary" type="submit" disabled={loading}>
+            <Button variant="primary" type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </Button>
           </>

@@ -20,7 +20,7 @@ export interface SelectItem {
 }
 
 const fieldStyles =
-  'block w-full border-none bg-transparent font-sans text-sm/3 focus:outline-none'
+  'block w-full border-none bg-transparent font-sans text-lg/none focus:outline-none'
 
 const textFieldSizes = {
   small: 'min-h-10',
@@ -48,7 +48,7 @@ export function SelectField({
         value={value}
         name={name}
         onChange={e => onChange(e.target.value)}
-        className={classNames(fieldStyles, className)}
+        className={fieldStyles}
         autoFocus={autoFocus}
         required={required}
         disabled={disabled}
