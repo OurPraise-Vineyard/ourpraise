@@ -4,8 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '@components/Button'
 import { TextField } from '@components/FormFields'
 
-import Logo from '@blocks/Logo'
-
+import logo from '@assets/logo_light.svg'
 import useAuthForm from '@hooks/forms/useAuthForm'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
@@ -56,7 +55,11 @@ export default function Auth() {
 
   return (
     <div className="absolute left-0 top-0 h-screen w-screen bg-black">
-      <Logo className="mx-auto my-9 block h-16" />
+      <img
+        src={logo}
+        alt="OurPraise Logo"
+        className="mx-auto my-9 block h-16"
+      />
       <form
         onSubmit={handleSubmit}
         className="animate-teleportIn relative mx-auto mt-32 flex w-96 max-w-full flex-grow flex-col gap-4 p-5"

@@ -1,4 +1,4 @@
-import { pageTitleStyles } from '@common-styles'
+import { pageTitleStyles, toolbarStyles } from '@common-styles'
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,14 +8,6 @@ import EventSongForm from '@components/EventSongForm'
 import IconButton from '@components/IconButton'
 import SongListItem from '@components/SongListItem'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
-
-import Block from '@blocks/Block'
-import Comment from '@blocks/EventComment'
-import EventSongsBulletList from '@blocks/EventSongsBulletList'
-import Link from '@blocks/Link'
-import Tag from '@blocks/Tag'
-import Toolbar from '@blocks/Toolbar'
-import Paragraph from '@blocks/text/Paragraph'
 
 import downloadIcon from '@assets/download.svg'
 import editIcon from '@assets/edit.svg'
@@ -144,9 +136,11 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           saving={savingSong}
         />
       )}
-      <Toolbar>
+      <div className={toolbarStyles}>
         <h2 className={pageTitleStyles}>{event.title}</h2>
-        <Tag>{eventDate}</Tag>
+        <span className="flex-grow-0 whitespace-nowrap rounded-md bg-gray-200 px-2 py-1 text-base print:bg-transparent print:p-0 print:text-xl print:text-gray-500">
+          {eventDate}
+        </span>
         {isAdmin && (
           <IconButton
             icon={editIcon}
@@ -159,13 +153,17 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           onClick={() => window.print()}
           className="flex-shrink-0"
         />
-      </Toolbar>
-      {!!event.comment && <Comment>{event.comment}</Comment>}
-      <EventSongsBulletList>
+      </div>
+      {!!event.comment && (
+        <p className="mt-2 whitespace-pre text-lg print:m-4 print:rounded-lg print:border print:border-gray-400 print:p-2">
+          {event.comment}
+        </p>
+      )}
+      <ul className="hidden break-after-page py-2 pl-10 text-lg print:block">
         {event.songs.map(song => (
           <li key={song.id}>{song.title}</li>
         ))}
-      </EventSongsBulletList>
+      </ul>
       {event.songs.map((song, i) => (
         <SongListItem
           key={song.id}
@@ -178,18 +176,14 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
         />
       ))}
       {event.songs.length === 0 && (
-        <Block
-          $print="hide"
-          $flex="column"
-          $align="center"
-          $margin="32px auto 0"
-          $width="350px"
-        >
-          <Paragraph>No songs added yet. Click below to add some.</Paragraph>
+        <div className="mx-auto mt-8 flex flex-col items-center print:hidden">
+          <p className="text-lg">
+            No songs added yet. Click below to add some.
+          </p>
           <Button type="link" to="/songs" variant="primary">
             Add songs
           </Button>
-        </Block>
+        </div>
       )}
     </div>
   )

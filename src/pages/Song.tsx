@@ -5,11 +5,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 
 import AddToEvent from '@components/AddToEvent'
+import Button from '@components/Button'
 import IconButton from '@components/IconButton'
 import KeySwitcher from '@components/KeySwitcher'
 import withFetch from '@components/withFetch'
-
-import ToolbarButton from '@blocks/ToolbarButton'
 
 import editIcon from '@assets/edit.svg'
 import { fetchSong } from '@backend/songs'
@@ -60,9 +59,12 @@ function Song({ data: song }: { data: ISong }) {
           </p>
         </div>
         {isAdmin && (
-          <ToolbarButton onClick={() => setShowEventsDialog(true)}>
+          <Button
+            className="h-toolbar"
+            onClick={() => setShowEventsDialog(true)}
+          >
             Add to event
-          </ToolbarButton>
+          </Button>
         )}
         <div className="flex items-center gap-3">
           <KeySwitcher

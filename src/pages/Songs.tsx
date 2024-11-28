@@ -6,8 +6,6 @@ import Button from '@components/Button'
 import SearchSongs from '@components/SearchSongs'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
 
-import Center from '@blocks/Center'
-
 import { fetchSongs } from '@backend/songs'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
@@ -40,7 +38,9 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
         )}
       </div>
       {searchStatus === 'loading' ? (
-        <Center>Loading...</Center>
+        <div className="flex h-full w-full items-center justify-center">
+          Loading...
+        </div>
       ) : (
         <div>
           {items.map(song => (
