@@ -18,13 +18,18 @@ module.exports = {
         fadeIn: 'fadeIn 0.5s ease-in-out forwards'
       },
       height: {
-        toolbar: '3rem'
+        toolbar: '3rem',
+        modal: '600px'
       },
       fontFamily: {
         mono: ['Oxygen Mono', 'monospace']
       },
       width: {
-        page: '960px'
+        page: '960px',
+        modal: '500px'
+      },
+      maxWidth: {
+        modal: '90vw'
       }
     },
     fontFamily: {
