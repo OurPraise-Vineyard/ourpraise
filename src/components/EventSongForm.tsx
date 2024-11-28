@@ -2,14 +2,11 @@ import React from 'react'
 
 import Button from '@components/Button'
 import Modal from '@components/Modal'
-import SelectField from '@components/form/SelectField'
-import TextArea from '@components/form/Textarea'
-
-import Block from '@blocks/Block'
-import Form from '@blocks/Form'
 
 import useEventSongForm from '@hooks/forms/useEventSongForm'
 import { keysOptions } from '@utils/chords'
+
+import { SelectField, TextareaField } from './FormFields'
 
 type EventSongFormProps = {
   eventSong: IEventSong
@@ -34,8 +31,8 @@ export default function EventSongForm({
 
   return (
     <Modal title="Edit song" onClose={onClose} show={show}>
-      <Form onSubmit={handleSubmit}>
-        <TextArea
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <TextareaField
           onChange={value => setField('comment', value)}
           value={form.comment}
           title="Comment"
@@ -47,11 +44,11 @@ export default function EventSongForm({
           options={keysOptions}
           title="Key"
         />
-        <Block $grow />
-        <Button $buttonStyle="primary" type="submit">
+        <span className="flex-grow" />
+        <Button variant="primary" type="submit">
           {saving ? 'Saving...' : 'Save song details'}
         </Button>
-      </Form>
+      </form>
     </Modal>
   )
 }

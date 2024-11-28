@@ -1,3 +1,4 @@
+import { pageTitleStyles } from '@common-styles'
 import React, { useEffect } from 'react'
 
 import IconButton from '@components/IconButton'
@@ -6,7 +7,6 @@ import Backdrop from '@blocks/Backdrop'
 import ModalContainer from '@blocks/ModalContainer'
 import ModalContent from '@blocks/ModalContent'
 import Toolbar from '@blocks/Toolbar'
-import Title from '@blocks/text/Title'
 
 import xIcon from '@assets/x.svg'
 
@@ -37,8 +37,8 @@ export default function Modal({ onClose, show, children, title }: ModalProps) {
       <Backdrop $visible={show} $disabled={!show} onClick={onClose} />
       <ModalContainer $show={show} onClick={handleStopPropagate}>
         <Toolbar $horizontalPadding>
-          {!!title && <Title>{title}</Title>}
-          <IconButton $edge $icon={xIcon} onClick={onClose} />
+          {!!title && <p className={pageTitleStyles}>{title}</p>}
+          <IconButton edge icon={xIcon} onClick={onClose} />
         </Toolbar>
         <ModalContent>{children}</ModalContent>
       </ModalContainer>

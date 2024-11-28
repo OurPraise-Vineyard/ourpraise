@@ -5,7 +5,6 @@ import IconButton from '@components/IconButton'
 import Block from '@blocks/Block'
 import Comment from '@blocks/EventComment'
 import SongListItemAuthors from '@blocks/SongListItemAuthors'
-import SongListItemBody from '@blocks/SongListItemBody'
 import SongListItemContainer from '@blocks/SongListItemContainer'
 import SongListItemHeader from '@blocks/SongListItemHeader'
 import SongListItemKey from '@blocks/SongListItemKey'
@@ -38,11 +37,16 @@ export default function SongListItem({
           <SongListItemAuthors>{authors}</SongListItemAuthors>
         </Block>
         {formattedKey && <SongListItemKey>{formattedKey}</SongListItemKey>}
-        {!!onOpenMenu && <IconButton $icon={moreIcon} onClick={onOpenMenu} />}
+        {!!onOpenMenu && <IconButton icon={moreIcon} onClick={onOpenMenu} />}
       </SongListItemHeader>
       {comment && <Comment>{comment}</Comment>}
       {body.map((part, index) => (
-        <SongListItemBody key={index}>{part}</SongListItemBody>
+        <p
+          className="m-0 h-0 overflow-hidden font-mono print:my-5 print:h-auto print:break-inside-avoid-page print:overflow-auto"
+          key={index}
+        >
+          {part}
+        </p>
       ))}
     </SongListItemContainer>
   )

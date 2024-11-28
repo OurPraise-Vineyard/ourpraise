@@ -3,13 +3,6 @@ import React, { useEffect, useState } from 'react'
 
 import Button from '@components/Button'
 import Modal from '@components/Modal'
-import SelectField from '@components/form/SelectField'
-import TextArea from '@components/form/Textarea'
-
-import Block from '@blocks/Block'
-import Center from '@blocks/Center'
-import Form from '@blocks/Form'
-import ScrollContainer from '@blocks/ScrollContainer'
 
 import { IEventsData, addSongToEvent, fetchEvents } from '@backend/events'
 import useErrors from '@hooks/useErrors'
@@ -17,6 +10,8 @@ import useFetch from '@hooks/useFetch'
 import { locations, useSavedLocation } from '@hooks/useSavedLocation'
 import { keysOptions } from '@utils/chords'
 import { formatDate } from '@utils/date'
+
+import { SelectField, TextareaField } from './FormFields'
 
 type AddToEventProps = {
   songId: IDocId
@@ -70,8 +65,8 @@ export default function AddToEvent({
         onChange={setLocation}
         options={locations}
       />
-      <Block $grow $margin="12px 0 0">
-        <ScrollContainer>
+      <div className="mt-3 flex-grow">
+        <div className="overflow-y-auto">
           {status === 'succeeded' &&
             eventsFiltered?.map(event => (
               <div
@@ -93,15 +88,17 @@ export default function AddToEvent({
               </div>
             ))}
           {status === 'succeeded' && events?.upcoming.length === 0 && (
-            <Center>No upcoming events.</Center>
+            <p className="text-center">No upcoming events.</p>
           )}
-          {status === 'loading' && <Center>Loading events...</Center>}
-        </ScrollContainer>
-      </Block>
+          {status === 'loading' && (
+            <p className="text-center">Loading events...</p>
+          )}
+        </div>
+      </div>
       {!!selectedEvent && (
         <div>
-          <Form onSubmit={handleAddSong}>
-            <TextArea
+          <form onSubmit={handleAddSong}>
+            <TextareaField
               onChange={setComment}
               value={comment}
               title="Comment"
@@ -116,7 +113,7 @@ export default function AddToEvent({
             <Button type="submit" variant="primary">
               {saving ? 'Saving...' : 'Add song'}
             </Button>
-          </Form>
+          </form>
         </div>
       )}
     </Modal>

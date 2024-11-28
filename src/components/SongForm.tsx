@@ -1,19 +1,15 @@
+import { pageTitleStyles } from '@common-styles'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@components/Button'
-import SelectField from '@components/form/SelectField'
-import TextField from '@components/form/TextField'
-import TextArea from '@components/form/Textarea'
-
-import Block from '@blocks/Block'
-import Form from '@blocks/Form'
-import Title from '@blocks/text/Title'
 
 import { deleteSong } from '@backend/songs'
 import useSongForm from '@hooks/forms/useSongForm'
 import useErrors from '@hooks/useErrors'
 import { keysOptions } from '@utils/chords'
+
+import { SelectField, TextField, TextareaField } from './FormFields'
 
 export default function SongForm({
   song,
@@ -48,8 +44,8 @@ export default function SongForm({
   }
 
   return (
-    <Form onSubmit={handleSave}>
-      <Title>{heading}</Title>
+    <form className="flex flex-col gap-4" onSubmit={handleSave}>
+      <h2 className={pageTitleStyles}>{heading}</h2>
       <TextField
         value={title}
         title="Title"
@@ -66,28 +62,22 @@ export default function SongForm({
         onChange={value => setField('key', value)}
         options={keysOptions}
       />
-      <TextArea
+      <TextareaField
         size="large"
         value={body}
         title="Body"
         onChange={value => setField('body', value)}
       />
-      <Block $flex="row">
-        <Button $buttonStyle="primary" $width="250px" type="submit">
+      <div className="flex justify-between">
+        <Button variant="primary" type="submit">
           Save
         </Button>
-        <Block $grow />
         {canDelete && (
-          <Button
-            $buttonStyle="danger"
-            $width="250px"
-            type="button"
-            onClick={handleDelete}
-          >
+          <Button variant="danger" type="button" onClick={handleDelete}>
             Delete
           </Button>
         )}
-      </Block>
-    </Form>
+      </div>
+    </form>
   )
 }
