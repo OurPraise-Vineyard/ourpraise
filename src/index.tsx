@@ -23,7 +23,8 @@ import Center from '@blocks/Center'
 import useAuth from '@hooks/useAuth'
 import store from '@state/store'
 import AppTheme from '@styles/AppTheme'
-import GlobalStyle from '@styles/GlobalStyle'
+
+import './index.css'
 
 function App() {
   const { user, ready } = useAuth()
@@ -67,7 +68,6 @@ function App() {
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={AppTheme}>
-      <GlobalStyle />
       <Provider store={store}>
         <BrowserRouter>
           <App />

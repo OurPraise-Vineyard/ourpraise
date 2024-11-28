@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import TextField from '@components/form/TextField'
+import { TextField } from '@components/FormFields'
 
-import Container from '@blocks/AuthContainer'
-import Form from '@blocks/AuthFormWrapper'
-import Logo from '@blocks/AuthLogo'
 import Button from '@blocks/Button'
+import Logo from '@blocks/Logo'
 
 import useAuthForm from '@hooks/forms/useAuthForm'
 import useAuth from '@hooks/useAuth'
@@ -57,9 +55,12 @@ export default function Auth() {
   }
 
   return (
-    <Container>
-      <Logo />
-      <Form onSubmit={handleSubmit}>
+    <div className="absolute left-0 top-0 h-screen w-screen bg-black">
+      <Logo className="mx-auto my-9 block h-16" />
+      <form
+        onSubmit={handleSubmit}
+        className="animate-teleportIn relative mx-auto mt-32 flex w-96 max-w-full flex-grow flex-col gap-4 p-5"
+      >
         {isRegister ? (
           <>
             <TextField
@@ -80,14 +81,14 @@ export default function Auth() {
               onChange={value => setField('password', value)}
               value={password}
               name="password"
-              password
+              type="password"
               title="Password"
             />
             <TextField
               onChange={value => setField('repeatPassword', value)}
               value={repeatPassword}
               name="repeatPassword"
-              password
+              type="password"
               title="Repeat password"
             />
             <Button $buttonStyle="primary" type="submit">
@@ -107,7 +108,7 @@ export default function Auth() {
               onChange={value => setField('password', value)}
               value={password}
               name="password"
-              password
+              type="password"
               title="Password"
             />
             <Button $buttonStyle="primary" type="submit" disabled={loading}>
@@ -115,7 +116,7 @@ export default function Auth() {
             </Button>
           </>
         )}
-      </Form>
-    </Container>
+      </form>
+    </div>
   )
 }
