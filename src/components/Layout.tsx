@@ -1,8 +1,7 @@
+import classNames from 'classnames'
 import React, { Outlet, useLocation } from 'react-router-dom'
 
 import Nav from '@components/Nav'
-
-import Page from '@blocks/Page'
 
 export default function Layout({ noFadeIn = false }) {
   const { pathname } = useLocation()
@@ -10,9 +9,15 @@ export default function Layout({ noFadeIn = false }) {
   return (
     <main>
       <Nav />
-      <Page $noFadeIn={noFadeIn} key={noFadeIn ? undefined : pathname}>
+      <div
+        className={classNames(
+          'w-page mx-auto max-w-full p-5',
+          !noFadeIn && 'animate-fadeIn'
+        )}
+        key={noFadeIn ? undefined : pathname}
+      >
         <Outlet />
-      </Page>
+      </div>
     </main>
   )
 }

@@ -1,16 +1,14 @@
 import React, { useMemo } from 'react'
+import { NavLink } from 'react-router-dom'
 
 import ContextMenu from '@components/ContextMenu'
 
-import NavContainer from '@blocks/NavContainer'
-import NavContent from '@blocks/NavContent'
-import NavLogo from '@blocks/NavLogo'
-import NavMenu from '@blocks/NavMenu'
-import NavMenuItem from '@blocks/NavMenuItem'
-import NavUsername from '@blocks/NavUsername'
-
+import logo from '@assets/logo_light.svg'
 import useAuth from '@hooks/useAuth'
 import useContextMenuState from '@hooks/useContextMenuState'
+
+const navLinkStyles = ({ isActive }) =>
+  `border-b text-white hover:border-b-white ${isActive ? 'border-b-white' : 'border-b-transparent'}`
 
 export default function Nav() {
   const { user } = useAuth()
@@ -37,18 +35,31 @@ export default function Nav() {
           onClose={menu.onClose}
         />
       )}
-      <NavContainer>
-        <NavContent>
-          <NavLogo />
-          <NavUsername onClick={menu.onOpen}>
+      <div className="bg-black shadow-md print:hidden">
+        <div className="w-page mx-auto flex items-center p-5">
+          <div className="flex-grow">
+            <img
+              src={logo}
+              alt="OurPraise Logo"
+              className="col-start-1 mb-1 h-10"
+            />
+            <ul className="flex gap-5">
+              <NavLink className={navLinkStyles} to="/events">
+                Events
+              </NavLink>
+              <NavLink className={navLinkStyles} to="/songs">
+                Songs
+              </NavLink>
+            </ul>
+          </div>
+          <p
+            className="cursor-pointer text-lg text-white"
+            onClick={menu.onOpen}
+          >
             {user ? user.displayName || user.email : ''}
-          </NavUsername>
-          <NavMenu>
-            <NavMenuItem to="/events">Events</NavMenuItem>
-            <NavMenuItem to="/songs">Songs</NavMenuItem>
-          </NavMenu>
-        </NavContent>
-      </NavContainer>
+          </p>
+        </div>
+      </div>
     </>
   )
 }

@@ -5,18 +5,26 @@ module.exports = {
     extend: {
       keyframes: {
         teleportIn: {
-          '0%': { transform: 'scaleX(0.97)', opacity: 0, top: '1.25rem' },
-          '100%': { transform: 'scaleX(1)', opacity: 1, top: '0px' }
+          '0%': { transform: 'scaleX(0.97) translateY(1.25rem)', opacity: 0 },
+          '100%': { transform: 'scaleX(1) translateY(0)', opacity: 1 }
+        },
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 }
         }
       },
       animation: {
-        teleportIn: 'teleportIn 0.2s ease-out 0.2s both'
+        teleportIn: 'teleportIn 0.2s ease-out 0.2s both',
+        fadeIn: 'fadeIn 0.5s ease-in-out forwards'
       },
       height: {
         toolbar: '3rem'
       },
       fontFamily: {
         mono: ['Oxygen Mono', 'monospace']
+      },
+      width: {
+        page: '960px'
       }
     },
     fontFamily: {

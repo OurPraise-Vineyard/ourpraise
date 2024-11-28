@@ -1,10 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { useTheme } from 'styled-components'
 
-import InvisibleBackdrop from '@blocks/Backdrop'
-import ContextMenuContainer from '@blocks/ContextMenuContainer'
-import ContextMenuItem from '@blocks/ContextMenuItem'
-
 type ContextMenuProps = {
   items: { label: string; onClick: React.MouseEventHandler }[]
   top: number
@@ -37,14 +33,27 @@ export default function ContextMenu({
 
   return (
     <>
-      <InvisibleBackdrop onClick={onClose} />
-      <ContextMenuContainer $left={modifiedLeft} $top={modifiedTop}>
+      <div
+        className="animate-fadeIn fixed bottom-0 left-0 right-0 top-0 z-20 bg-black bg-opacity-10"
+        onClick={onClose}
+      />
+      <div
+        className="animate-teleportIn fixed z-30 flex w-40 flex-col overflow-hidden rounded-md shadow-md"
+        style={{
+          top: modifiedTop,
+          left: modifiedLeft
+        }}
+      >
         {items.map((item, index) => (
-          <ContextMenuItem onClick={item.onClick} key={index}>
+          <button
+            className="h-10 cursor-pointer border-b border-b-gray-300 bg-white px-5 transition-colors duration-200 ease-out last:border-none hover:bg-gray-100"
+            onClick={item.onClick}
+            key={index}
+          >
             {item.label}
-          </ContextMenuItem>
+          </button>
         ))}
-      </ContextMenuContainer>
+      </div>
     </>
   )
 }
