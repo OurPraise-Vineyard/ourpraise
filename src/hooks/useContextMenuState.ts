@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useReducer } from 'react'
-import { useTheme } from 'styled-components'
+
+const contextMenuWidth = 160
 
 type ContextMenuState = {
   top: number
@@ -29,9 +30,6 @@ const defaultState: ContextMenuState = {
 
 export default function useContextMenuState(): ContextMenuHookValue {
   const [state, dispatch] = useReducer(reducer, defaultState)
-  const {
-    sizes: { contextMenuWidth }
-  } = useTheme()
 
   const setPosition = useCallback(
     (left, top) => dispatch({ top: top + 15, left }),

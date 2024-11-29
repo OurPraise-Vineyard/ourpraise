@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
 
 import Auth from '@pages/Auth'
 import ViewEvent from '@pages/Event'
@@ -20,7 +19,6 @@ import Layout from '@components/Layout'
 
 import useAuth from '@hooks/useAuth'
 import store from '@state/store'
-import AppTheme from '@styles/AppTheme'
 
 import './index.css'
 
@@ -69,14 +67,12 @@ function App() {
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={AppTheme}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-          <DisplayErrors />
-        </BrowserRouter>
-      </Provider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+        <DisplayErrors />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )

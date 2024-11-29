@@ -1,21 +1,19 @@
 import React, { useEffect, useMemo } from 'react'
-import { useTheme } from 'styled-components'
 
-type ContextMenuProps = {
-  items: { label: string; onClick: React.MouseEventHandler }[]
-  top: number
-  left: number
-  onClose: () => void
-}
+const contextMenuWidth = 160
+const contextMenuItemHeight = 40
+
 export default function ContextMenu({
   items,
   top,
   left,
   onClose
-}: ContextMenuProps) {
-  const {
-    sizes: { contextMenuWidth, contextMenuItemHeight }
-  } = useTheme()
+}: {
+  items: { label: string; onClick: React.MouseEventHandler }[]
+  top: number
+  left: number
+  onClose: () => void
+}) {
   const contextMenuHeight = contextMenuItemHeight * items.length
   const modifiedTop = useMemo(
     () => Math.max(0, Math.min(window.innerHeight - contextMenuHeight, top)),
