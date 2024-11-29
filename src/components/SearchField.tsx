@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react'
 import searchIcon from '@assets/search.svg'
 import { createDebouncer } from '@utils/debouncer'
 
-const debounce = createDebouncer(1000)
+const debounce = createDebouncer(200)
 
 interface SearchBarProps {
   onSearch: (query: string) => void
   inputRef?: React.Ref<HTMLInputElement>
 }
 
-export default function SearchSongs({ onSearch, inputRef }: SearchBarProps) {
+export default function SearchField({ onSearch, inputRef }: SearchBarProps) {
   const [query, setQuery] = useState('')
 
   useEffect(() => {
