@@ -1,4 +1,5 @@
 import { pageTitleStyles, toolbarStyles } from '@common-styles'
+import classNames from 'classnames'
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -136,7 +137,7 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           saving={savingSong}
         />
       )}
-      <div className={toolbarStyles}>
+      <div className={classNames(toolbarStyles, 'print:pb-4')}>
         <h2 className={pageTitleStyles}>{event.title}</h2>
         <span className="flex-grow-0 whitespace-nowrap rounded-md bg-gray-200 px-2 py-1 text-base print:bg-transparent print:p-0 print:text-xl print:text-gray-500">
           {eventDate}
@@ -159,7 +160,7 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           {event.comment}
         </p>
       )}
-      <ul className="hidden break-after-page py-2 pl-10 text-lg print:block">
+      <ul className="mt-5 hidden list-disc break-after-page py-2 pl-10 text-xl print:block">
         {event.songs.map(song => (
           <li key={song.id}>{song.title}</li>
         ))}

@@ -31,10 +31,13 @@ export function mergeSongEventSong(
   eventSong: IEventSong
 ): IEventSong {
   const body = transposeSong(
-    song.body.replace(/^\/\//gm, '  ').replace(/\n\s+?\n/g, '\n\n'),
+    song.body,
     song.key,
     eventSong.transposeKey || song.key
-  ).split('\n\n')
+  )
+    .replace(/^\/\//gm, '  ')
+    .replace(/\n\s+?\n/g, '\n\n')
+    .split('\n\n')
 
   const songKey = eventSong.transposeKey || song.key
   const formattedKey = keysOptions.find(key => key.value === songKey)?.label
