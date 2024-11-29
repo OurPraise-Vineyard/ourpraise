@@ -9,6 +9,7 @@ import AddEvent from '@pages/EventAdd'
 import EditEvent from '@pages/EventEdit'
 import Events from '@pages/Events'
 import NoAccessView from '@pages/NoAccess'
+import PrintEvent from '@pages/PrintEvent'
 import ViewSong from '@pages/Song'
 import AddSong from '@pages/SongAdd'
 import EditSong from '@pages/SongEdit'
@@ -51,6 +52,7 @@ function App() {
         )}
         <Route path="/songs/:songId" element={<ViewSong />} />
         <Route path="/songs" element={<Songs />} />
+        <Route path="/events/:eventId/print" element={<PrintEvent />} />
         <Route path="/events/:eventId" element={<ViewEvent />} />
         <Route path="/events" element={<Events />} />
       </Route>

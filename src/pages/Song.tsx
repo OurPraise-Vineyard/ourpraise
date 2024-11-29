@@ -50,12 +50,13 @@ function Song({ data: song }: { data: ISong }) {
         />
       )}
       <div className="mb-8 mt-4 flex items-center gap-3">
-        <div className="flex-grow">
+        <div className="w-1/2">
           <h2 className={pageTitleStyles}>{song.title}</h2>
           <p className={classNames(ellipsisTextStyles, 'text-lg')}>
             {song.authors}
           </p>
         </div>
+        <span className="flex-grow" />
         {isAdmin && (
           <Button
             className="h-toolbar"
@@ -64,7 +65,7 @@ function Song({ data: song }: { data: ISong }) {
             Add to event
           </Button>
         )}
-        <div className="flex items-center gap-3">
+        <div className="flex w-min flex-shrink-0 items-center gap-3">
           <KeySwitcher
             transposeKey={transposeKey}
             setTransposeKey={setTransposeKey}
@@ -72,7 +73,13 @@ function Song({ data: song }: { data: ISong }) {
             onToggleChords={handleToggleChords}
             showChords={showChords}
           />
-          {isAdmin && <IconButton edge icon={editIcon} onClick={handleEdit} />}
+          {isAdmin && (
+            <IconButton
+              icon={editIcon}
+              onClick={handleEdit}
+              className="flex-shrink-0"
+            />
+          )}
         </div>
       </div>
       <p className="whitespace-pre pb-16 font-mono text-base">

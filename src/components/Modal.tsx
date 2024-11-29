@@ -53,7 +53,7 @@ export default function Modal({ onClose, show, children, title }: ModalProps) {
       >
         <div className={classNames(toolbarStyles, 'px-5')}>
           {!!title && <p className={pageTitleStyles}>{title}</p>}
-          <IconButton edge icon={xIcon} onClick={onClose} />
+          <IconButton icon={xIcon} onClick={onClose} />
         </div>
         <div className="relative flex flex-grow flex-col p-5">{children}</div>
       </div>
