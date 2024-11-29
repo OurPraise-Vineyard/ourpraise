@@ -4,7 +4,7 @@ import {
   toolbarStyles
 } from '@common-styles'
 import classNames from 'classnames'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import { useMemo } from 'react'
 
 import Button from '@components/Button'

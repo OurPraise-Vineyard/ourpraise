@@ -1,6 +1,7 @@
 import { pageTitleStyles, toolbarStyles } from '@common-styles'
 import classNames from 'classnames'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
+import * as React from 'react';
 
 import IconButton from '@components/IconButton'
 

@@ -1,6 +1,5 @@
 import { pageTitleStyles, toolbarStyles } from '@common-styles'
 import classNames from 'classnames'
-import React from 'react'
 import { Link } from 'react-router'
 
 import Button from '@components/Button'

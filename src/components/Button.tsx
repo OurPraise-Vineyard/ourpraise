@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react'
+import { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react';
 import { Link } from 'react-router'
 
 const colorSchemes = {

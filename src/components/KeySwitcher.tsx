@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { ButtonHTMLAttributes } from 'react'
+import { ButtonHTMLAttributes } from 'react';
 
 import checked from '@assets/check-square.svg'
 import decrease from '@assets/decrease.svg'

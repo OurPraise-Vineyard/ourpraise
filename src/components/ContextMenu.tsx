@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react';
+import * as React from 'react';
 
 const contextMenuWidth = 160
 const contextMenuItemHeight = 40

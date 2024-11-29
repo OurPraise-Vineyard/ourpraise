@@ -1,4 +1,4 @@
-import React from 'react'
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
@@ -69,12 +69,12 @@ function App() {
 
 const root = createRoot(document.getElementById('root')!)
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <App />
         <DisplayErrors />
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  </StrictMode>
 )
