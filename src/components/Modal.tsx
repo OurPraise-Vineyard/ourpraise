@@ -1,11 +1,8 @@
+import { pageTitleStyles, toolbarStyles } from '@common-styles'
+import classNames from 'classnames'
 import React, { useEffect } from 'react'
 
-import Backdrop from '@blocks/Backdrop'
-import IconButton from '@blocks/IconButton'
-import ModalContainer from '@blocks/ModalContainer'
-import ModalContent from '@blocks/ModalContent'
-import Toolbar from '@blocks/Toolbar'
-import Title from '@blocks/text/Title'
+import IconButton from '@components/IconButton'
 
 import xIcon from '@assets/x.svg'
 
@@ -33,14 +30,33 @@ export default function Modal({ onClose, show, children, title }: ModalProps) {
 
   return (
     <>
-      <Backdrop $visible={show} $disabled={!show} onClick={onClose} />
-      <ModalContainer $show={show} onClick={handleStopPropagate}>
-        <Toolbar $horizontalPadding>
-          {!!title && <Title>{title}</Title>}
-          <IconButton $edge $icon={xIcon} onClick={onClose} />
-        </Toolbar>
-        <ModalContent>{children}</ModalContent>
-      </ModalContainer>
+      <div
+        className={classNames(
+          'fixed bottom-0 left-0 right-0 top-0 z-20 bg-black bg-opacity-10 transition-opacity duration-200 ease-out',
+          {
+            'pointer-events-none opacity-0': !show,
+            'pointer-events-all opacity-100': show
+          }
+        )}
+        onClick={onClose}
+      />
+      <div
+        className={classNames(
+          'w-modal max-w-modal h-modal fixed left-1/2 z-40 flex -translate-x-1/2 flex-col rounded-md bg-white shadow-md transition-all duration-200 ease-out',
+          {
+            'translate-y-5': !show,
+            'pointer-events-none': !show,
+            'opacity-0': !show
+          }
+        )}
+        onClick={handleStopPropagate}
+      >
+        <div className={classNames(toolbarStyles, 'px-5')}>
+          {!!title && <p className={pageTitleStyles}>{title}</p>}
+          <IconButton icon={xIcon} onClick={onClose} />
+        </div>
+        <div className="relative flex flex-grow flex-col p-5">{children}</div>
+      </div>
     </>
   )
 }

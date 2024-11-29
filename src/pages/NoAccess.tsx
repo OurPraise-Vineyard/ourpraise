@@ -1,10 +1,12 @@
 import React from 'react'
 
-import Center from '@blocks/Center'
-
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 
 export default function NoAccessView() {
   useDocumentTitle()
-  return <Center>You do not have access to view this site.</Center>
+  return (
+    <div className="flex h-full w-full items-center justify-center text-center">
+      You do not have access to view this site.
+    </div>
+  )
 }

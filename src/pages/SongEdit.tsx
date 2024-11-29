@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 
 import SongForm from '@components/SongForm'
 import withFetch, { IWithFetchProps } from '@components/withFetch'

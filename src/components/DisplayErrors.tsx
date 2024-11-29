@@ -1,6 +1,5 @@
+import classNames from 'classnames'
 import React from 'react'
-
-import ErrorSnackbar from '@blocks/ErrorSnackbar'
 
 import useErrors from '@hooks/useErrors'
 
@@ -10,13 +9,19 @@ export default function DisplayErrors() {
   return (
     <>
       {errors.map((error, index) => (
-        <ErrorSnackbar
+        <div
+          className={classNames(
+            'animate-fadeIn z-50items-center fixed left-1/2 flex h-10 -translate-x-1/2 justify-center rounded bg-red-500 p-2.5 text-white transition-all duration-200 ease-out',
+            {
+              'opacity-0': error.removed,
+              'h-0': error.removed
+            }
+          )}
           key={error.id}
           style={{ bottom: index * 48 + 8 }}
-          $unmounted={!!error.removed}
         >
           {error.message}
-        </ErrorSnackbar>
+        </div>
       ))}
     </>
   )

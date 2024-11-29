@@ -77,29 +77,36 @@ export function findNextKey(fromKey: string, steps: 1 | -1): IKey {
   return keys[(index + steps + keys.length) % keys.length][0]
 }
 
+function transposeLine(
+  line: string,
+  fromKey: IKey | null,
+  toKey: IKey
+): string {
+  if (fromKey === null) {
+    return Transposer.transpose(line).toKey(toKey).toString()
+  } else {
+    return Transposer.transpose(line).fromKey(fromKey).toKey(toKey).toString()
+  }
+}
+
 export function transposeSong(
   body: string,
   fromKey: IKey | null,
-  toKey: string
+  toKey: IKey
 ): string {
-  const modifiedBody = body
+  return body
     .replace(/\(/g, '{{START_PAREN}} ')
     .replace(/\)/g, ' {{END_PAREN}}')
-
-  let transposedBody
-
-  if (fromKey === null) {
-    transposedBody = Transposer.transpose(modifiedBody).toKey(toKey).toString()
-  } else {
-    transposedBody = Transposer.transpose(modifiedBody)
-      .fromKey(fromKey)
-      .toKey(toKey)
-      .toString()
-  }
-
-  return transposedBody
+    .split('\n')
+    .map(line => {
+      if (line.startsWith('//')) {
+        return transposeLine(line, fromKey, toKey)
+      }
+      return line
+    })
+    .join('\n')
     .replace(/{{START_PAREN}}\s/g, '(')
-    .replace(/(\s*)\s{{END_PAREN}}/g, (match, p1) => {
+    .replace(/(\s*)\s{{END_PAREN}}/g, (_, p1) => {
       return ')' + p1
     })
 }

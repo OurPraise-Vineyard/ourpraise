@@ -28,8 +28,7 @@ The app is built with Typescript and React. You must abide to a certain structur
 
 - _assets_: Contains fonts and svg files
 - _backend_: Contains helper functions for most database interactions
-- _blocks_: Contains styled components (No JSX!)
-- _components_: Contains React components that consume styled components (No styled components declared here!)
+- _components_: Contains reusable React components
 - _hooks_: Contains hooks for backend interactions and component states
 - _lib_: Contains wrappers for third party libraries such as Firebase and Algolia. Makes maintanance easier and decreases coupling to these libraries
 - _mappers_: Contains mappers use when fetching or pushing data to the backend

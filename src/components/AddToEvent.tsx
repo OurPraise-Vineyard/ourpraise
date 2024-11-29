@@ -1,15 +1,8 @@
+import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 
-import CompactListItem from '@components/CompactListItem'
+import Button from '@components/Button'
 import Modal from '@components/Modal'
-import SelectField from '@components/form/SelectField'
-import TextArea from '@components/form/Textarea'
-
-import Block from '@blocks/Block'
-import Button from '@blocks/Button'
-import Center from '@blocks/Center'
-import Form from '@blocks/Form'
-import ScrollContainer from '@blocks/ScrollContainer'
 
 import { IEventsData, addSongToEvent, fetchEvents } from '@backend/events'
 import useErrors from '@hooks/useErrors'
@@ -17,6 +10,8 @@ import useFetch from '@hooks/useFetch'
 import { locations, useSavedLocation } from '@hooks/useSavedLocation'
 import { keysOptions } from '@utils/chords'
 import { formatDate } from '@utils/date'
+
+import { SelectField, TextareaField } from './FormFields'
 
 type AddToEventProps = {
   songId: IDocId
@@ -65,33 +60,45 @@ export default function AddToEvent({
 
   return (
     <Modal title="Add song to event" onClose={onClose} show={show}>
-      <SelectField
-        value={location}
-        onChange={setLocation}
-        options={locations}
-      />
-      <Block $grow $margin="12px 0 0">
-        <ScrollContainer>
-          {status === 'succeeded' &&
-            eventsFiltered?.map(event => (
-              <CompactListItem
-                key={event.id}
-                onClick={() => setSelectedEvent(event.id)}
-                primary={event.title}
-                secondary={formatDate(event.date)}
-                highlight={event.id === selectedEvent}
-              />
-            ))}
-          {status === 'succeeded' && events?.upcoming.length === 0 && (
-            <Center>No upcoming events.</Center>
-          )}
-          {status === 'loading' && <Center>Loading events...</Center>}
-        </ScrollContainer>
-      </Block>
-      {!!selectedEvent && (
-        <div>
-          <Form onSubmit={handleAddSong}>
-            <TextArea
+      <div className="flex flex-grow flex-col gap-3">
+        <SelectField
+          value={location}
+          onChange={setLocation}
+          options={locations}
+        />
+        <div className="flex-grow">
+          <div className="overflow-y-auto">
+            {status === 'succeeded' &&
+              eventsFiltered?.map(event => (
+                <div
+                  onClick={() => setSelectedEvent(event.id)}
+                  key={event.id}
+                  className={classNames(
+                    'flex cursor-pointer justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100',
+                    {
+                      'bg-gray-100': event.id === selectedEvent
+                    }
+                  )}
+                >
+                  <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                    {event.title}
+                  </p>
+                  <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
+                    {formatDate(event.date)}
+                  </p>
+                </div>
+              ))}
+            {status === 'succeeded' && events?.upcoming.length === 0 && (
+              <p className="text-center">No upcoming events.</p>
+            )}
+            {status === 'loading' && (
+              <p className="text-center">Loading events...</p>
+            )}
+          </div>
+        </div>
+        {!!selectedEvent && (
+          <form onSubmit={handleAddSong} className="flex flex-col gap-3">
+            <TextareaField
               onChange={setComment}
               value={comment}
               title="Comment"
@@ -103,12 +110,12 @@ export default function AddToEvent({
               options={keysOptions}
               title="Key"
             />
-            <Button type="submit" $buttonStyle="primary">
+            <Button type="submit" variant="primary">
               {saving ? 'Saving...' : 'Add song'}
             </Button>
-          </Form>
-        </div>
-      )}
+          </form>
+        )}
+      </div>
     </Modal>
   )
 }

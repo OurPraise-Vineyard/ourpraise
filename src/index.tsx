@@ -1,8 +1,7 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { ThemeProvider } from 'styled-components'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 
 import Auth from '@pages/Auth'
 import ViewEvent from '@pages/Event'
@@ -10,6 +9,7 @@ import AddEvent from '@pages/EventAdd'
 import EditEvent from '@pages/EventEdit'
 import Events from '@pages/Events'
 import NoAccessView from '@pages/NoAccess'
+import PrintEvent from '@pages/PrintEvent'
 import ViewSong from '@pages/Song'
 import AddSong from '@pages/SongAdd'
 import EditSong from '@pages/SongEdit'
@@ -18,18 +18,20 @@ import Songs from '@pages/Songs'
 import DisplayErrors from '@components/DisplayErrors'
 import Layout from '@components/Layout'
 
-import Center from '@blocks/Center'
-
 import useAuth from '@hooks/useAuth'
 import store from '@state/store'
-import AppTheme from '@styles/AppTheme'
-import GlobalStyle from '@styles/GlobalStyle'
+
+import './index.css'
 
 function App() {
   const { user, ready } = useAuth()
 
   if (!ready) {
-    return <Center $fullscreen>Loading...</Center>
+    return (
+      <p className="flex h-screen w-screen items-center justify-center">
+        Loading...
+      </p>
+    )
   }
 
   if (!user) {
@@ -50,6 +52,7 @@ function App() {
         )}
         <Route path="/songs/:songId" element={<ViewSong />} />
         <Route path="/songs" element={<Songs />} />
+        <Route path="/events/:eventId/print" element={<PrintEvent />} />
         <Route path="/events/:eventId" element={<ViewEvent />} />
         <Route path="/events" element={<Events />} />
       </Route>
@@ -64,17 +67,14 @@ function App() {
   )
 }
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root')!)
+root.render(
   <React.StrictMode>
-    <ThemeProvider theme={AppTheme}>
-      <GlobalStyle />
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-          <DisplayErrors />
-        </BrowserRouter>
-      </Provider>
-    </ThemeProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+        <DisplayErrors />
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>
 )

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 
-import TextField from '@components/form/TextField'
+import Button from '@components/Button'
+import { TextField } from '@components/FormFields'
 
-import Container from '@blocks/AuthContainer'
-import Form from '@blocks/AuthFormWrapper'
-import Logo from '@blocks/AuthLogo'
-import Button from '@blocks/Button'
-
+import logo from '@assets/logo_light.svg'
 import useAuthForm from '@hooks/forms/useAuthForm'
 import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
@@ -57,9 +54,16 @@ export default function Auth() {
   }
 
   return (
-    <Container>
-      <Logo />
-      <Form onSubmit={handleSubmit}>
+    <div className="absolute left-0 top-0 h-screen w-screen bg-black">
+      <img
+        src={logo}
+        alt="OurPraise Logo"
+        className="mx-auto my-9 block h-16"
+      />
+      <form
+        onSubmit={handleSubmit}
+        className="animate-teleportIn relative mx-auto mt-32 flex w-96 max-w-full flex-grow flex-col gap-4 p-5"
+      >
         {isRegister ? (
           <>
             <TextField
@@ -80,17 +84,17 @@ export default function Auth() {
               onChange={value => setField('password', value)}
               value={password}
               name="password"
-              password
+              type="password"
               title="Password"
             />
             <TextField
               onChange={value => setField('repeatPassword', value)}
               value={repeatPassword}
               name="repeatPassword"
-              password
+              type="password"
               title="Repeat password"
             />
-            <Button $buttonStyle="primary" type="submit">
+            <Button variant="primary" type="submit">
               {loading ? 'Please wait...' : 'Register'}
             </Button>
           </>
@@ -107,15 +111,15 @@ export default function Auth() {
               onChange={value => setField('password', value)}
               value={password}
               name="password"
-              password
+              type="password"
               title="Password"
             />
-            <Button $buttonStyle="primary" type="submit" disabled={loading}>
+            <Button variant="primary" type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </Button>
           </>
         )}
-      </Form>
-    </Container>
+      </form>
+    </div>
   )
 }

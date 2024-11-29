@@ -1,23 +1,21 @@
+import {
+  ellipsisTextStyles,
+  pageTitleStyles,
+  toolbarStyles
+} from '@common-styles'
+import classNames from 'classnames'
 import React, { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 
+import Button from '@components/Button'
 import ContextMenu from '@components/ContextMenu'
 import EventSongForm from '@components/EventSongForm'
-import SongListItem from '@components/SongListItem'
+import IconButton from '@components/IconButton'
 import withFetch, { IWithFetchProps } from '@components/withFetch'
-
-import Block from '@blocks/Block'
-import Comment from '@blocks/EventComment'
-import EventSongsBulletList from '@blocks/EventSongsBulletList'
-import IconButton from '@blocks/IconButton'
-import Link from '@blocks/Link'
-import Tag from '@blocks/Tag'
-import Toolbar from '@blocks/Toolbar'
-import Paragraph from '@blocks/text/Paragraph'
-import Title from '@blocks/text/Title'
 
 import downloadIcon from '@assets/download.svg'
 import editIcon from '@assets/edit.svg'
+import moreIcon from '@assets/more-vertical.svg'
 import {
   fetchEvent,
   moveEventSong,
@@ -143,44 +141,69 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           saving={savingSong}
         />
       )}
-      <Toolbar>
-        <Title>{event.title}</Title>
-        <Tag>{eventDate}</Tag>
+      <div className={toolbarStyles}>
+        <h2 className={pageTitleStyles}>{event.title}</h2>
+        <span className="flex-grow-0 whitespace-nowrap rounded-md bg-gray-200 px-2 py-1 text-base">
+          {eventDate}
+        </span>
         {isAdmin && (
-          <IconButton $icon={editIcon} onClick={() => navigate('edit')} />
+          <IconButton
+            icon={editIcon}
+            onClick={() => navigate('edit')}
+            className="flex-shrink-0"
+          />
         )}
-        <IconButton $icon={downloadIcon} onClick={() => window.print()} />
-      </Toolbar>
-      {!!event.comment && <Comment>{event.comment}</Comment>}
-      <EventSongsBulletList>
-        {event.songs.map(song => (
-          <li key={song.id}>{song.title}</li>
-        ))}
-      </EventSongsBulletList>
-      {event.songs.map((song, i) => (
-        <SongListItem
-          key={song.id}
-          title={song.title || ''}
-          authors={song.authors || ''}
-          body={song.body}
-          formattedKey={song.formattedKey}
-          comment={song.comment}
-          onOpenMenu={isAdmin ? handleOpenMenu(song) : undefined}
+        <IconButton
+          icon={downloadIcon}
+          onClick={() => navigate('print')}
+          className="flex-shrink-0"
         />
+      </div>
+      {!!event.comment && (
+        <p className="mt-2 whitespace-pre text-lg">{event.comment}</p>
+      )}
+      {event.songs.map(song => (
+        <div className="my-8 border-b border-b-gray-300 pb-8" key={song.id}>
+          <div className="flex w-full items-center gap-2">
+            <div className="w-0 flex-grow">
+              <Link
+                className={classNames(ellipsisTextStyles, 'text-lg')}
+                to={`/songs/${song.id}`}
+              >
+                {song.title}
+              </Link>
+              <p
+                className={classNames(
+                  ellipsisTextStyles,
+                  'text-lg text-gray-400'
+                )}
+              >
+                {song.authors}
+              </p>
+            </div>
+            {song.formattedKey && (
+              <div className="rounded-3xl bg-gray-100 px-3 py-2">
+                {song.formattedKey}
+              </div>
+            )}
+            {isAdmin && (
+              <IconButton icon={moreIcon} onClick={handleOpenMenu(song)} />
+            )}
+          </div>
+          {song.comment && (
+            <p className="mt-2 whitespace-pre text-base">{song.comment}</p>
+          )}
+        </div>
       ))}
       {event.songs.length === 0 && (
-        <Block
-          $print="hide"
-          $flex="column"
-          $align="center"
-          $margin="32px auto 0"
-          $width="350px"
-        >
-          <Paragraph>No songs added yet. Click below to add some.</Paragraph>
-          <Link to="/songs" color="ctaPrimary">
+        <div className="mx-auto mt-8 flex flex-col items-center">
+          <p className="text-lg">
+            No songs added yet. Click below to add some.
+          </p>
+          <Button type="link" to="/songs" variant="primary">
             Add songs
-          </Link>
-        </Block>
+          </Button>
+        </div>
       )}
     </div>
   )

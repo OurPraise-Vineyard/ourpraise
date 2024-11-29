@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import { pageTitleStyles, toolbarStyles } from '@common-styles'
+import classNames from 'classnames'
+import React from 'react'
+import { Link } from 'react-router'
 
-import CompactListItem from '@components/CompactListItem'
-import SelectField from '@components/form/SelectField'
+import Button from '@components/Button'
+import { SelectField } from '@components/FormFields'
 import withFetch from '@components/withFetch'
-
-import Toolbar from '@blocks/Toolbar'
-import ToolbarLinkButton from '@blocks/ToolbarLinkButton'
-import Paragraph from '@blocks/text/Paragraph'
-import Title from '@blocks/text/Title'
 
 import { IEventsData, fetchEvents } from '@backend/events'
 import useAuth from '@hooks/useAuth'
@@ -17,12 +15,18 @@ import { formatDate } from '@utils/date'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
-    <CompactListItem
-      key={event.id}
+    <Link
       to={`/events/${event.id}`}
-      primary={event.title}
-      secondary={formatDate(event.date)}
-    />
+      key={event.id}
+      className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
+    >
+      <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+        {event.title}
+      </p>
+      <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
+        {formatDate(event.date)}
+      </p>
+    </Link>
   )
 }
 
@@ -41,24 +45,39 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
 
   return (
     <div>
-      <Toolbar>
-        <Title>Upcoming events</Title>
+      <div className={toolbarStyles}>
+        <h2 className={classNames(pageTitleStyles, 'flex-grow')}>
+          Upcoming events
+        </h2>
         <SelectField
           value={location}
           onChange={setLocation}
           options={locations}
+          className="h-toolbar flex items-center"
         />
         {isAdmin && (
-          <ToolbarLinkButton to="/events/add">Add new event</ToolbarLinkButton>
+          <Button
+            type="link"
+            to="/events/add"
+            className="h-toolbar"
+            variant="primary"
+          >
+            Add new event
+          </Button>
         )}
-      </Toolbar>
+      </div>
       {upcomingFiltered.map(renderEventItem)}
       {upcomingFiltered.length === 0 && (
-        <Paragraph>No upcoming events</Paragraph>
+        <p className="pb-2 text-lg">No upcoming events</p>
       )}
-      <Toolbar $extraSpacingTop>
-        <Title>Past events</Title>
-      </Toolbar>
+      <h2
+        className={classNames(
+          pageTitleStyles,
+          'mt-5 border-b border-b-gray-300 py-2'
+        )}
+      >
+        Past events
+      </h2>
       {pastFiltered.map(renderEventItem)}
     </div>
   )

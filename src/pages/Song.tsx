@@ -1,17 +1,13 @@
+import { ellipsisTextStyles, pageTitleStyles } from '@common-styles'
+import classNames from 'classnames'
 import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { css, useTheme } from 'styled-components'
+import { useNavigate, useParams } from 'react-router'
 
 import AddToEvent from '@components/AddToEvent'
+import Button from '@components/Button'
+import IconButton from '@components/IconButton'
 import KeySwitcher from '@components/KeySwitcher'
 import withFetch from '@components/withFetch'
-
-import Block from '@blocks/Block'
-import IconButton from '@blocks/IconButton'
-import ToolbarButton from '@blocks/ToolbarButton'
-import EllipsisText from '@blocks/text/EllipsisText'
-import Monospace from '@blocks/text/Monospace'
-import Title from '@blocks/text/Title'
 
 import editIcon from '@assets/edit.svg'
 import { fetchSong } from '@backend/songs'
@@ -20,7 +16,6 @@ import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useFormattedSongBody from '@hooks/useFormattedSongBody'
 
 function Song({ data: song }: { data: ISong }) {
-  const theme = useTheme()
   const { songId } = useParams()
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
   const [showChords, setShowChords] = useState(true)
@@ -54,19 +49,23 @@ function Song({ data: song }: { data: ISong }) {
           songKey={transposeKey}
         />
       )}
-      <Block $flex="row" $gap="12px" $margin="16px 0 32px">
-        <Block $grow>
-          <Title>{song.title}</Title>
-          <EllipsisText $width={`calc(0.4 * ${theme.sizes.pageWidth})`}>
+      <div className="mb-8 mt-4 flex items-center gap-3">
+        <div className="w-1/2">
+          <h2 className={pageTitleStyles}>{song.title}</h2>
+          <p className={classNames(ellipsisTextStyles, 'text-lg')}>
             {song.authors}
-          </EllipsisText>
-        </Block>
+          </p>
+        </div>
+        <span className="flex-grow" />
         {isAdmin && (
-          <ToolbarButton onClick={() => setShowEventsDialog(true)}>
+          <Button
+            className="h-toolbar"
+            onClick={() => setShowEventsDialog(true)}
+          >
             Add to event
-          </ToolbarButton>
+          </Button>
         )}
-        <Block $flex="row" $align="center" $gap="12px">
+        <div className="flex w-min flex-shrink-0 items-center gap-3">
           <KeySwitcher
             transposeKey={transposeKey}
             setTransposeKey={setTransposeKey}
@@ -75,11 +74,17 @@ function Song({ data: song }: { data: ISong }) {
             showChords={showChords}
           />
           {isAdmin && (
-            <IconButton $edge $icon={editIcon} onClick={handleEdit} />
+            <IconButton
+              icon={editIcon}
+              onClick={handleEdit}
+              className="flex-shrink-0"
+            />
           )}
-        </Block>
-      </Block>
-      <Monospace $padding="0 0 64px">{formattedBody}</Monospace>
+        </div>
+      </div>
+      <p className="whitespace-pre pb-16 font-mono text-base">
+        {formattedBody}
+      </p>
     </>
   )
 }

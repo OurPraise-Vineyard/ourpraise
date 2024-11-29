@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-
-import Center from '@blocks/Center'
-import FadeIn from '@blocks/FadeIn'
+import { useParams } from 'react-router'
 
 import useFetch, { IFetchCreatorParams } from '@hooks/useFetch'
 
@@ -28,13 +25,13 @@ export default function withFetch<Props, Data>(
           return <></>
         }
 
-        return <Center>Loading...</Center>
+        return <p className="text-center">Loading...</p>
       }
 
       return (
-        <FadeIn>
+        <div className="animate-fadeIn">
           <Comp data={data} onTriggerFetch={triggerFetch} {...props} />
-        </FadeIn>
+        </div>
       )
     }
   }

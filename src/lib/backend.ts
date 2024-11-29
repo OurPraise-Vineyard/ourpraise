@@ -1,5 +1,4 @@
 // Import the functions you need from the SDKs you need
-import algoliasearch from 'algoliasearch/lite'
 import { FirebaseError, initializeApp } from 'firebase/app'
 import {
   User,
@@ -36,12 +35,6 @@ const firebaseConfig = {
   messagingSenderId: '485823144275',
   appId: '1:485823144275:web:a6eae91b382d7ebefc41a6'
 }
-
-const algoliaClient = algoliasearch(
-  'BF560MHA8D',
-  '1d21dece723f3c5b40a8ae2faad53c0f'
-)
-const algoliaIndex = algoliaClient.initIndex('dev_ourpraise')
 
 // Initialize Firebase
 initializeApp(firebaseConfig)
@@ -266,14 +259,6 @@ const Backend = {
       throw new BackendError(
         mapFirebaseError(err, `Failed deleting document "${path}"`)
       )
-    }
-  },
-
-  async searchSongs(query: string): Promise<ISearchHit[]> {
-    try {
-      return algoliaIndex.search(query).then(({ hits }) => hits)
-    } catch (err) {
-      throw new BackendError(`Failed searching songs for "${query}"`)
     }
   },
 

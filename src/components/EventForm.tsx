@@ -1,20 +1,16 @@
+import { pageTitleStyles } from '@common-styles'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
-import SelectField from '@components/form/SelectField'
-import TextField from '@components/form/TextField'
-import TextArea from '@components/form/Textarea'
-
-import Block from '@blocks/Block'
-import Button from '@blocks/Button'
-import Form from '@blocks/Form'
-import Title from '@blocks/text/Title'
+import Button from '@components/Button'
 
 import { deleteEvent } from '@backend/events'
 import useEventForm from '@hooks/forms/useEventForm'
 import useAuth from '@hooks/useAuth'
 import useErrors from '@hooks/useErrors'
 import { locations } from '@hooks/useSavedLocation'
+
+import { SelectField, TextField, TextareaField } from './FormFields'
 
 export default function EventForm({
   event,
@@ -62,52 +58,45 @@ export default function EventForm({
   }
 
   return (
-    <Form onSubmit={handleSave}>
-      <Title>{heading}</Title>
+    <form className="flex flex-col gap-4" onSubmit={handleSave}>
+      <h2 className={pageTitleStyles}>{heading}</h2>
       <TextField
         value={title}
         title="Title"
         onChange={value => setField('title', value)}
       />
-      <Block $flex="row" $gap="12px">
-        <Block $grow>
-          <TextField
-            value={date}
-            type="date"
-            title="Date"
-            onChange={value => setField('date', value)}
-          />
-        </Block>
-        <Block $grow>
-          <SelectField
-            value={location}
-            title="Location"
-            onChange={value => setField('location', value)}
-            options={locations}
-          />
-        </Block>
-      </Block>
-      <TextArea
+      <div className="flex gap-3">
+        <TextField
+          value={date}
+          type="date"
+          title="Date"
+          onChange={value => setField('date', value)}
+          className="flex-grow"
+        />
+        <SelectField
+          value={location}
+          title="Location"
+          onChange={value => setField('location', value)}
+          options={locations}
+          className="flex-grow"
+        />
+      </div>
+      <TextareaField
         value={comment}
         title="Set comments"
         onChange={value => setField('comment', value)}
       />
-      <Block $flex="row">
-        <Button $buttonStyle="primary" $width="250px" type="submit">
+      <div className="flex justify-between">
+        <Button variant="primary" type="submit">
           {saving ? 'Saving...' : 'Save'}
         </Button>
-        <Block $grow />
+
         {canDelete && (
-          <Button
-            $buttonStyle="danger"
-            $width="250px"
-            type="button"
-            onClick={handleDelete}
-          >
+          <Button variant="danger" type="button" onClick={handleDelete}>
             Delete event
           </Button>
         )}
-      </Block>
-    </Form>
+      </div>
+    </form>
   )
 }

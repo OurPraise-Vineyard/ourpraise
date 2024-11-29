@@ -2,7 +2,6 @@ import Backend from '@lib/backend'
 import {
   mapCollectionToSongs,
   mapDocToSong,
-  mapSearchHitsToSongs,
   mapSongFormToSong
 } from '@mappers/songs'
 
@@ -16,10 +15,6 @@ export function fetchSongs(): Promise<ISong[]> {
     orderBy: 'title',
     sortDirection: 'asc'
   }).then(mapCollectionToSongs)
-}
-
-export function fetchSearchQuery(query: string): Promise<ISong[]> {
-  return Backend.searchSongs(query).then(mapSearchHitsToSongs)
 }
 
 export async function saveSong(form: ISongForm): Promise<void> {
