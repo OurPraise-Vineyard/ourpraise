@@ -15,6 +15,7 @@ type ISearchHit = {
 
 type IDoc = {
   id: IDocId
+  [key: string]: any
 }
 
 type ICollection = IDoc[]

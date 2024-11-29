@@ -1,4 +1,10 @@
-import Backend from '@lib/backend'
+import {
+  createDocument,
+  deleteDocument,
+  getCollection,
+  getDocument,
+  updateDocument
+} from '@lib/database'
 import {
   mapCollectionToSongs,
   mapDocToSong,
@@ -6,11 +12,11 @@ import {
 } from '@mappers/songs'
 
 export function fetchSong(songId: IDocId): Promise<ISong> {
-  return Backend.getDoc(`songs/${songId}`).then(mapDocToSong)
+  return getDocument(`songs/${songId}`).then(mapDocToSong)
 }
 
 export function fetchSongs(): Promise<ISong[]> {
-  return Backend.getCollection({
+  return getCollection({
     path: 'songs',
     orderBy: 'title',
     sortDirection: 'asc'
@@ -18,13 +24,13 @@ export function fetchSongs(): Promise<ISong[]> {
 }
 
 export async function saveSong(form: ISongForm): Promise<void> {
-  await Backend.setDoc(`songs/${form.id}`, mapSongFormToSong(form), {
+  await updateDocument(`songs/${form.id}`, mapSongFormToSong(form), {
     merge: true
   })
 }
 
 export async function createSong(form: ISongForm): Promise<IDocId> {
-  const doc = await Backend.createDoc('songs', {
+  const doc = await createDocument('songs', {
     ...mapSongFormToSong(form),
     createdAt: new Date().toISOString()
   })
@@ -33,5 +39,5 @@ export async function createSong(form: ISongForm): Promise<IDocId> {
 }
 
 export async function deleteSong(id: IDocId): Promise<void> {
-  await Backend.deleteDoc(`songs/${id}`)
+  await deleteDocument(`songs/${id}`)
 }

@@ -1,5 +1,12 @@
 import { fetchSong } from '@backend/songs'
-import Backend from '@lib/backend'
+import {
+  createDocument,
+  deleteDocument,
+  getAndUpdateDocument,
+  getCollection,
+  getDocument,
+  updateDocument
+} from '@lib/database'
 import {
   mapCollectionToEvents,
   mapDocToEvent,
@@ -12,7 +19,7 @@ import { getTime, todayTime } from '@utils/date'
 export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
 
 export async function fetchEvents(): Promise<IEventsData> {
-  const events = await Backend.getCollection({
+  const events = await getCollection({
     path: 'events',
     orderBy: 'date',
     sortDirection: 'desc'
@@ -37,7 +44,7 @@ export async function fetchEvents(): Promise<IEventsData> {
 }
 
 export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
-  const event = await Backend.getDoc(`events/${eventId}`).then(mapDocToEvent)
+  const event = await getDocument(`events/${eventId}`).then(mapDocToEvent)
 
   const songs: IEventSong[] = await Promise.all(
     event.songs.map(async eventSong => {
@@ -54,13 +61,13 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
 }
 
 export async function saveEvent(form: IEventForm): Promise<void> {
-  await Backend.setDoc(`events/${form.id}`, mapEventFormToEvent(form), {
+  await updateDocument(`events/${form.id}`, mapEventFormToEvent(form), {
     merge: true
   })
 }
 
 export async function createEvent(form: IEventForm): Promise<IDocId> {
-  const doc = await Backend.createDoc('events', {
+  const doc = await createDocument('events', {
     ...mapEventFormToEvent(form),
     createdAt: new Date().toISOString()
   })
@@ -69,11 +76,11 @@ export async function createEvent(form: IEventForm): Promise<IDocId> {
 }
 
 export async function deleteEvent(id: IDocId) {
-  await Backend.deleteDoc(`events/${id}`)
+  await deleteDocument(`events/${id}`)
 }
 
 export async function addSongToEvent(eventId: IDocId, songOptions: IEventSong) {
-  await Backend.getAndSetDoc(
+  await getAndUpdateDocument(
     `events/${eventId}`,
     (data: IDoc) => {
       const songs = (data as IEvent).songs
@@ -100,7 +107,7 @@ export async function addSongToEvent(eventId: IDocId, songOptions: IEventSong) {
 export async function saveEventSong(eventId: IDocId, form: IEventSongForm) {
   const eventSong = mapEventSongFormToEventSong(form)
 
-  await Backend.getAndSetDoc(
+  await getAndUpdateDocument(
     `events/${eventId}`,
     (data: IDoc) => {
       return {
@@ -122,7 +129,7 @@ export async function saveEventSong(eventId: IDocId, form: IEventSongForm) {
 }
 
 export async function removeEventSong(eventId: IDocId, removeId: IDocId) {
-  await Backend.getAndSetDoc(
+  await getAndUpdateDocument(
     `events/${eventId}`,
     (data: IDoc) => ({
       songs: (data as IEvent).songs.filter(song => song.id !== removeId)
@@ -139,7 +146,7 @@ export async function moveEventSong(
   steps: number
 ) {
   if (steps !== 0) {
-    await Backend.getAndSetDoc(
+    await getAndUpdateDocument(
       `events/${eventId}`,
       (data: IDoc) => {
         const songs = (data as IEvent).songs
