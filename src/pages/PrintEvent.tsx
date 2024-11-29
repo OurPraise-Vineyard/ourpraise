@@ -19,7 +19,8 @@ function PrintEventPage({ data: event }: IWithFetchProps<IEvent>) {
   const eventDate = useMemo(() => formatDate(event.date), [event.date])
 
   useEffect(() => {
-    setTimeout(() => window.print(), 500)
+    const t = setTimeout(() => window.print(), 500)
+    return () => clearTimeout(t)
   }, [])
 
   return (
@@ -96,7 +97,7 @@ function PrintEventPage({ data: event }: IWithFetchProps<IEvent>) {
           )}
           {song.body?.map((part, index) => (
             <p
-              className="my-5 break-inside-avoid-page whitespace-pre font-mono text-base/snug"
+              className="my-5 break-inside-avoid-page whitespace-pre font-mono text-sm/snug"
               key={index}
             >
               {part}
