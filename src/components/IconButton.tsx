@@ -1,13 +1,11 @@
 import classNames from 'classnames'
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes } from 'react'
 
 export default function IconButton({
   icon,
   className,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { icon: string }) {
-  console.log(icon)
-
   return (
     <button
       className={classNames(

@@ -1,21 +1,24 @@
 import { pageTitleStyles, toolbarStyles } from '@common-styles'
 import classNames from 'classnames'
-import { Link } from 'react-router'
 
 import Button from '@components/Button'
 import { SelectField } from '@components/FormFields'
-import withFetch from '@components/withFetch'
+import Page from '@components/Page'
 
-import { IEventsData, fetchEvents } from '@backend/events'
-import useAuth from '@hooks/useAuth'
+import { getAuthState, requireLoggedIn } from '@backend/auth'
+import { fetchEvents } from '@backend/events'
+import { IEventsData } from '@backend/events'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { locations, useSavedLocation } from '@hooks/useSavedLocation'
+import { createFileRoute } from '@tanstack/react-router'
+import { Link, getRouteApi } from '@tanstack/react-router'
 import { formatDate } from '@utils/date'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
     <Link
-      to={`/events/${event.id}`}
+      to="/events/$id"
+      params={{ id: event.id }}
       key={event.id}
       className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
     >
@@ -29,9 +32,11 @@ function renderEventItem(event: IEvent): JSX.Element {
   )
 }
 
-function Events({ data: { upcoming, past } }: { data: IEventsData }) {
+function Events() {
+  const { upcoming, past }: IEventsData =
+    getRouteApi('/_protected/').useLoaderData()
   useDocumentTitle('Events')
-  const { user } = useAuth()
+  const { user } = getAuthState()
   const isAdmin = user?.role === 'admin'
   const [location, setLocation] = useSavedLocation()
 
@@ -43,7 +48,7 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
   )
 
   return (
-    <div>
+    <Page>
       <div className={toolbarStyles}>
         <h2 className={classNames(pageTitleStyles, 'flex-grow')}>
           Upcoming events
@@ -52,7 +57,7 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
           value={location}
           onChange={setLocation}
           options={locations}
-          className="h-toolbar flex items-center"
+          className="flex h-toolbar items-center"
         />
         {isAdmin && (
           <Button
@@ -78,8 +83,12 @@ function Events({ data: { upcoming, past } }: { data: IEventsData }) {
         Past events
       </h2>
       {pastFiltered.map(renderEventItem)}
-    </div>
+    </Page>
   )
 }
 
-export default withFetch<INoProps, IEventsData>(fetchEvents)(Events)
+export const Route = createFileRoute('/_protected/')({
+  beforeLoad: requireLoggedIn,
+  loader: () => fetchEvents(),
+  component: Events
+})

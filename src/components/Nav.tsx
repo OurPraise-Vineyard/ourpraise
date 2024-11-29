@@ -1,28 +1,32 @@
-import { useMemo } from 'react';
-import { NavLink } from 'react-router'
+import router from '@router'
+import { useMemo } from 'react'
 
 import ContextMenu from '@components/ContextMenu'
 
 import logo from '@assets/logo_light.svg'
-import useAuth from '@hooks/useAuth'
+import { getAuthState, logout } from '@backend/auth'
 import useContextMenuState from '@hooks/useContextMenuState'
+import { Link } from '@tanstack/react-router'
 
-const navLinkStyles = ({ isActive }) =>
-  `border-b text-white hover:border-b-white ${isActive ? 'border-b-white' : 'border-b-transparent'}`
+const navLinkStyles =
+  'border-b text-white hover:border-b-white border-b-transparent'
+const linkActiveStyles = 'border-b-white'
 
 export default function Nav() {
-  const { user } = useAuth()
+  const { user } = getAuthState()
   const menu = useContextMenuState()
-  const { signOut } = useAuth()
 
   const menuItems = useMemo(
     () => [
       {
         label: 'Sign out',
-        onClick: signOut
+        onClick: async () => {
+          await logout()
+          router.history.push('/login')
+        }
       }
     ],
-    [signOut]
+    []
   )
 
   return (
@@ -36,7 +40,7 @@ export default function Nav() {
         />
       )}
       <div className="bg-black shadow-md print:hidden">
-        <div className="w-page mx-auto flex items-center p-5">
+        <div className="mx-auto flex w-page items-center p-5">
           <div className="flex-grow">
             <img
               src={logo}
@@ -44,12 +48,20 @@ export default function Nav() {
               className="col-start-1 mb-1 h-10"
             />
             <ul className="flex gap-5">
-              <NavLink className={navLinkStyles} to="/events">
+              <Link
+                className={navLinkStyles}
+                activeProps={{ className: linkActiveStyles }}
+                to="/"
+              >
                 Events
-              </NavLink>
-              <NavLink className={navLinkStyles} to="/songs">
+              </Link>
+              <Link
+                className={navLinkStyles}
+                activeProps={{ className: linkActiveStyles }}
+                to="/songs"
+              >
                 Songs
-              </NavLink>
+              </Link>
             </ul>
           </div>
           <p

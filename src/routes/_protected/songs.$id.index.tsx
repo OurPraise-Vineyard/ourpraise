@@ -1,34 +1,39 @@
 import { ellipsisTextStyles, pageTitleStyles } from '@common-styles'
 import classNames from 'classnames'
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router'
+import { useState } from 'react'
 
 import AddToEvent from '@components/AddToEvent'
 import Button from '@components/Button'
 import IconButton from '@components/IconButton'
 import KeySwitcher from '@components/KeySwitcher'
-import withFetch from '@components/withFetch'
+import Page from '@components/Page'
 
 import editIcon from '@assets/edit.svg'
+import { getAuthState, requireLoggedIn } from '@backend/auth'
 import { fetchSong } from '@backend/songs'
-import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useFormattedSongBody from '@hooks/useFormattedSongBody'
+import { createFileRoute } from '@tanstack/react-router'
+import { getRouteApi } from '@tanstack/react-router'
 
-function Song({ data: song }: { data: ISong }) {
-  const { songId } = useParams()
+function Song() {
+  const { useLoaderData, useNavigate } = getRouteApi('/_protected/songs/$id/')
+  const song = useLoaderData()
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
   const [showChords, setShowChords] = useState(true)
   const [showEventsDialog, setShowEventsDialog] = useState(false)
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user } = getAuthState()
   const formattedBody = useFormattedSongBody(song, showChords, transposeKey)
   useDocumentTitle(song.title)
 
   const isAdmin = user?.role === 'admin'
 
   function handleEdit() {
-    navigate(`/songs/${songId}/edit`)
+    navigate({
+      to: '/songs/$id/edit',
+      params: { id: song.id }
+    })
   }
 
   const handleResetTranspose = () => {
@@ -40,7 +45,7 @@ function Song({ data: song }: { data: ISong }) {
   }
 
   return (
-    <>
+    <Page>
       {isAdmin && (
         <AddToEvent
           show={showEventsDialog}
@@ -85,10 +90,12 @@ function Song({ data: song }: { data: ISong }) {
       <p className="whitespace-pre pb-16 font-mono text-base">
         {formattedBody}
       </p>
-    </>
+    </Page>
   )
 }
 
-export default withFetch<INoProps, ISong>(params =>
-  fetchSong(params.songId as string)
-)(Song)
+export const Route = createFileRoute('/_protected/songs/$id/')({
+  beforeLoad: requireLoggedIn,
+  loader: ({ params }) => fetchSong(params.id),
+  component: Song
+})

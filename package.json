@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@reduxjs/toolkit": "^2.4.0",
+    "@tanstack/react-router": "^1.85.0",
     "chord-transposer": "^3.0.9",
     "classnames": "^2.5.1",
     "dateformat": "^5.0.3",
@@ -12,8 +13,7 @@
     "fuse.js": "^7.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-redux": "^9.1.2",
-    "react-router": "^7.0.1"
+    "react-redux": "^9.1.2"
   },
   "scripts": {
     "dev-server": "vite",
@@ -40,6 +40,8 @@
     ]
   },
   "devDependencies": {
+    "@tanstack/router-devtools": "^1.85.0",
+    "@tanstack/router-plugin": "^1.84.4",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@tsconfig/vite-react": "^3.4.0",
     "@types/jest": "^29.5.14",

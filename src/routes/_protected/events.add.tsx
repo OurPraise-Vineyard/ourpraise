@@ -1,13 +1,16 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router'
+import { useState } from 'react'
 
 import EventForm from '@components/EventForm'
+import Page from '@components/Page'
 
+import { requireLoggedIn } from '@backend/auth'
 import { createEvent } from '@backend/events'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useErrors from '@hooks/useErrors'
+import { createFileRoute } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 
-export default function AddEvent() {
+function AddEvent() {
   const navigate = useNavigate()
   const { pushError } = useErrors()
   const [saving, setSaving] = useState<boolean>(false)
@@ -18,7 +21,10 @@ export default function AddEvent() {
       setSaving(true)
       const id: IDocId = await createEvent(options)
       if (id) {
-        navigate('/events/' + id)
+        navigate({
+          to: '/events/$id',
+          params: { id }
+        })
       }
     } catch (err) {
       pushError(err)
@@ -28,6 +34,13 @@ export default function AddEvent() {
   }
 
   return (
-    <EventForm onSubmit={handleSubmit} heading="Add event" saving={saving} />
+    <Page>
+      <EventForm onSubmit={handleSubmit} heading="Add event" saving={saving} />
+    </Page>
   )
 }
+
+export const Route = createFileRoute('/_protected/events/add')({
+  beforeLoad: requireLoggedIn,
+  component: AddEvent
+})

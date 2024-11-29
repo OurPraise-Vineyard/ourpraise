@@ -4,22 +4,23 @@ import {
   toolbarStyles
 } from '@common-styles'
 import classNames from 'classnames'
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router'
+import { useEffect, useState } from 'react'
 
 import Button from '@components/Button'
+import Page from '@components/Page'
 import SearchSongs from '@components/SearchField'
-import withFetch, { IWithFetchProps } from '@components/withFetch'
 
+import { getAuthState, requireLoggedIn } from '@backend/auth'
 import { fetchSongs } from '@backend/songs'
-import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import { Link, createFileRoute, getRouteApi } from '@tanstack/react-router'
 import { search } from '@utils/fuzzy'
 
-function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
+function Songs() {
+  const songs: ISong[] = getRouteApi('/_protected/songs/').useLoaderData()
   useDocumentTitle('Songs')
   const [query, setQuery] = useState<string>('')
-  const { user } = useAuth()
+  const { user } = getAuthState()
 
   const [filteredSongs, setFilteredSongs] = useState<ISong[]>([])
 
@@ -32,7 +33,7 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
   }, [songs, query])
 
   return (
-    <div>
+    <Page>
       <div className={toolbarStyles}>
         <h2 className={pageTitleStyles}>
           {query ? `Search results for "${query}"` : 'All songs'}
@@ -52,7 +53,8 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
 
       {filteredSongs.map(song => (
         <Link
-          to={`/songs/${song.id}`}
+          to="/songs/$id"
+          params={{ id: song.id }}
           key={song.id}
           className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
         >
@@ -68,8 +70,12 @@ function Songs({ data: songs }: IWithFetchProps<ISong[]>) {
           </p>
         </Link>
       ))}
-    </div>
+    </Page>
   )
 }
 
-export default withFetch<INoProps, ISong[]>(fetchSongs)(Songs)
+export const Route = createFileRoute('/_protected/songs/')({
+  beforeLoad: requireLoggedIn,
+  loader: () => fetchSongs(),
+  component: Songs
+})

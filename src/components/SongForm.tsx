@@ -1,11 +1,8 @@
 import { pageTitleStyles } from '@common-styles'
-import { useNavigate } from 'react-router'
 
 import Button from '@components/Button'
 
-import { deleteSong } from '@backend/songs'
 import useSongForm from '@hooks/forms/useSongForm'
-import useErrors from '@hooks/useErrors'
 import { keysOptions } from '@utils/chords'
 
 import { SelectField, TextField, TextareaField } from './FormFields'
@@ -13,33 +10,19 @@ import { SelectField, TextField, TextareaField } from './FormFields'
 export default function SongForm({
   song,
   onSubmit,
+  onDelete,
   heading
 }: {
   song?: ISong
   onSubmit: (options: ISongForm) => void
+  onDelete?: () => void
   heading: string
 }) {
   const [{ title, authors, body, key }, setField] = useSongForm(song)
-  const navigate = useNavigate()
-  const { pushError } = useErrors()
-  const canDelete = !!(song && song.id)
 
   const handleSave = async e => {
     e.preventDefault()
     onSubmit({ title, authors, body, key, id: undefined })
-  }
-
-  const handleDelete = async () => {
-    if (canDelete) {
-      if (window.confirm('Delete this song?')) {
-        try {
-          await deleteSong(song.id)
-          navigate('/songs')
-        } catch (err) {
-          pushError(err)
-        }
-      }
-    }
   }
 
   return (
@@ -71,8 +54,8 @@ export default function SongForm({
         <Button variant="primary" type="submit">
           Save
         </Button>
-        {canDelete && (
-          <Button variant="danger" type="button" onClick={handleDelete}>
+        {!!onDelete && (
+          <Button variant="danger" type="button" onClick={onDelete}>
             Delete
           </Button>
         )}

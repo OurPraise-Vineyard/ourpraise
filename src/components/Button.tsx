@@ -1,6 +1,7 @@
 import classNames from 'classnames'
-import { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react';
-import { Link } from 'react-router'
+import { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react'
+
+import { Link, LinkComponentProps } from '@tanstack/react-router'
 
 const colorSchemes = {
   default: 'bg-gray-200 text-black border border-gray-300 hover:bg-gray-300',
@@ -16,11 +17,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: keyof typeof colorSchemes
 }
 
-type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
-  variant?: keyof typeof colorSchemes
-  type: 'link'
-  to: string
-}
+type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> &
+  LinkComponentProps & {
+    variant?: keyof typeof colorSchemes
+    type: 'link'
+  }
 
 export default function Button({
   variant = 'default',

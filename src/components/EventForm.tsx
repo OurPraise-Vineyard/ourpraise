@@ -1,12 +1,9 @@
 import { pageTitleStyles } from '@common-styles'
-import { useNavigate } from 'react-router'
 
 import Button from '@components/Button'
 
-import { deleteEvent } from '@backend/events'
+import { getAuthState } from '@backend/auth'
 import useEventForm from '@hooks/forms/useEventForm'
-import useAuth from '@hooks/useAuth'
-import useErrors from '@hooks/useErrors'
 import { locations } from '@hooks/useSavedLocation'
 
 import { SelectField, TextField, TextareaField } from './FormFields'
@@ -14,22 +11,21 @@ import { SelectField, TextField, TextareaField } from './FormFields'
 export default function EventForm({
   event,
   onSubmit,
+  onDelete,
   heading,
   saving
 }: {
   event?: IEvent
   onSubmit: (options: IEventForm) => void
+  onDelete?: () => void
   heading: string
   saving: boolean
 }) {
-  const { user } = useAuth()
+  const { user } = getAuthState()
   const [
     { title, comment, date, songs, location = locations[0].value },
     setField
   ] = useEventForm(event)
-  const navigate = useNavigate()
-  const { pushError } = useErrors()
-  const canDelete = !!(event && event.id)
 
   const handleSave = async e => {
     e.preventDefault()
@@ -41,19 +37,6 @@ export default function EventForm({
       owner: user?.email || '',
       location: location ?? locations[0].value
     })
-  }
-
-  const handleDelete = async () => {
-    if (event) {
-      if (window.confirm('Delete this event?')) {
-        try {
-          await deleteEvent(event.id)
-          navigate('/events')
-        } catch (err) {
-          pushError(err)
-        }
-      }
-    }
   }
 
   return (
@@ -90,8 +73,8 @@ export default function EventForm({
           {saving ? 'Saving...' : 'Save'}
         </Button>
 
-        {canDelete && (
-          <Button variant="danger" type="button" onClick={handleDelete}>
+        {!!onDelete && (
+          <Button variant="danger" type="button" onClick={onDelete}>
             Delete event
           </Button>
         )}

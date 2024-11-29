@@ -4,17 +4,21 @@ import {
   toolbarStyles
 } from '@common-styles'
 import classNames from 'classnames'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 import { useMemo } from 'react'
 
 import Button from '@components/Button'
-import withFetch, { IWithFetchProps } from '@components/withFetch'
+import Page from '@components/Page'
 
+import { requireLoggedIn } from '@backend/auth'
 import { fetchEvent } from '@backend/events'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
+import { createFileRoute } from '@tanstack/react-router'
+import { getRouteApi } from '@tanstack/react-router'
 import { formatDate } from '@utils/date'
 
-function PrintEventPage({ data: event }: IWithFetchProps<IEvent>) {
+function PrintEvent() {
+  const event = getRouteApi('/_protected/events/$id/print').useLoaderData()
   useDocumentTitle(`Printing ${event.title}...`)
   const eventDate = useMemo(() => formatDate(event.date), [event.date])
 
@@ -24,7 +28,7 @@ function PrintEventPage({ data: event }: IWithFetchProps<IEvent>) {
   }, [])
 
   return (
-    <div>
+    <Page>
       <div
         className={classNames(
           toolbarStyles,
@@ -33,7 +37,8 @@ function PrintEventPage({ data: event }: IWithFetchProps<IEvent>) {
       >
         <Button
           type="link"
-          to={`/events/${event.id}`}
+          to="/events/$id"
+          params={{ id: event.id }}
           className="flex-shrink-0"
         >
           Cancel
@@ -105,10 +110,12 @@ function PrintEventPage({ data: event }: IWithFetchProps<IEvent>) {
           ))}
         </div>
       ))}
-    </div>
+    </Page>
   )
 }
 
-export default withFetch<INoProps, IEvent>(params =>
-  fetchEvent(params.eventId as string)
-)(PrintEventPage)
+export const Route = createFileRoute('/_protected/events/$id/print')({
+  beforeLoad: requireLoggedIn,
+  loader: ({ params }) => fetchEvent(params.id),
+  component: PrintEvent
+})

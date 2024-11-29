@@ -4,32 +4,34 @@ import {
   toolbarStyles
 } from '@common-styles'
 import classNames from 'classnames'
-import { useMemo, useState } from 'react';
-import * as React from 'react';
-import { Link, useNavigate } from 'react-router'
+import { useMemo, useState } from 'react'
+import * as React from 'react'
 
 import Button from '@components/Button'
 import ContextMenu from '@components/ContextMenu'
 import EventSongForm from '@components/EventSongForm'
 import IconButton from '@components/IconButton'
-import withFetch, { IWithFetchProps } from '@components/withFetch'
+import Page from '@components/Page'
 
 import downloadIcon from '@assets/download.svg'
 import editIcon from '@assets/edit.svg'
 import moreIcon from '@assets/more-vertical.svg'
+import { getAuthState, requireLoggedIn } from '@backend/auth'
 import {
   fetchEvent,
   moveEventSong,
   removeEventSong,
   saveEventSong
 } from '@backend/events'
-import useAuth from '@hooks/useAuth'
 import useContextMenuState from '@hooks/useContextMenuState'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useErrors from '@hooks/useErrors'
+import { Link, createFileRoute, getRouteApi } from '@tanstack/react-router'
 import { formatDate } from '@utils/date'
 
-function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
+function Event() {
+  const { useLoaderData, useNavigate } = getRouteApi('/_protected/events/$id/')
+  const event = useLoaderData()
   useDocumentTitle(event.title)
   const navigate = useNavigate()
   const eventDate = useMemo(() => formatDate(event.date), [event.date])
@@ -38,15 +40,24 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
   const [editSong, setEditSong] = useState<boolean>(false)
   const [savingSong, setSavingSong] = useState<boolean>(false)
   const { pushError } = useErrors()
-  const { user } = useAuth()
+
+  const { user } = getAuthState()
   const isAdmin = user?.role === 'admin'
+
+  function triggerReload() {
+    // This will trigger a reload of the page
+    navigate({
+      to: '/events/$id',
+      params: { id: event.id }
+    })
+  }
 
   async function handleSaveEventSong(form: IEventSongForm) {
     try {
       setSavingSong(true)
       await saveEventSong(event.id, form)
       setEditSong(false)
-      onTriggerFetch()
+      triggerReload()
     } catch (err) {
       pushError(err)
     } finally {
@@ -68,7 +79,7 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           if (selectedSong) {
             try {
               await moveEventSong(event.id, selectedSong.id, -1)
-              onTriggerFetch()
+              triggerReload()
             } catch (err) {
               pushError(err)
             } finally {
@@ -83,7 +94,7 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           if (selectedSong) {
             try {
               await moveEventSong(event.id, selectedSong.id, 1)
-              onTriggerFetch()
+              triggerReload()
             } catch (err) {
               pushError(err)
             } finally {
@@ -109,7 +120,7 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
               contextMenu.onClose()
               try {
                 await removeEventSong(event.id, selectedSong.id)
-                onTriggerFetch()
+                triggerReload()
               } catch (err) {
                 pushError(err)
               } finally {
@@ -120,11 +131,11 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
         }
       }
     ],
-    [contextMenu, selectedSong, event.id, pushError, onTriggerFetch]
+    [contextMenu, selectedSong, event.id, pushError, triggerReload]
   )
 
   return (
-    <div>
+    <Page>
       {contextMenu.show && (
         <ContextMenu
           items={contextMenuItems}
@@ -150,13 +161,23 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
         {isAdmin && (
           <IconButton
             icon={editIcon}
-            onClick={() => navigate('edit')}
+            onClick={() =>
+              navigate({
+                to: '/events/$id/edit',
+                params: { id: event.id }
+              })
+            }
             className="flex-shrink-0"
           />
         )}
         <IconButton
           icon={downloadIcon}
-          onClick={() => navigate('print')}
+          onClick={() =>
+            navigate({
+              to: '/events/$id/print',
+              params: { id: event.id }
+            })
+          }
           className="flex-shrink-0"
         />
       </div>
@@ -169,7 +190,8 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
             <div className="w-0 flex-grow">
               <Link
                 className={classNames(ellipsisTextStyles, 'text-lg')}
-                to={`/songs/${song.id}`}
+                to="/songs/$id"
+                params={{ id: song.id }}
               >
                 {song.title}
               </Link>
@@ -206,10 +228,12 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
           </Button>
         </div>
       )}
-    </div>
+    </Page>
   )
 }
 
-export default withFetch<INoProps, IEvent>(params =>
-  fetchEvent(params.eventId as string)
-)(EventPage)
+export const Route = createFileRoute('/_protected/events/$id/')({
+  beforeLoad: requireLoggedIn,
+  loader: ({ params }) => fetchEvent(params.id),
+  component: Event
+})

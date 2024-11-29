@@ -1,29 +1,40 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router'
+import router from '@router'
+import { useEffect, useState } from 'react'
 
 import Button from '@components/Button'
 import { TextField } from '@components/FormFields'
 
 import logo from '@assets/logo_light.svg'
+import { login } from '@backend/auth'
 import useAuthForm from '@hooks/forms/useAuthForm'
-import useAuth from '@hooks/useAuth'
 import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import useErrors from '@hooks/useErrors'
-import getSearchParam from '@utils/getSearchParam'
+import {
+  createFileRoute,
+  getRouteApi,
+  useLocation
+} from '@tanstack/react-router'
 
-export default function Auth() {
+type AuthSearchParams = {
+  redirect: string
+  email?: string
+}
+
+function Auth() {
+  const { useNavigate, useSearch } = getRouteApi('/login')
+  const search: AuthSearchParams = useSearch()
+
   const isRegister = useLocation().pathname.startsWith('/register')
   const [{ email, name, password, repeatPassword, isInvite }, setField] =
     useAuthForm()
   const [loading, setLoading] = useState(false)
-  const { createUser, signIn } = useAuth()
   const { pushError } = useErrors()
   const navigate = useNavigate()
   useDocumentTitle(isRegister ? 'Register' : 'Login')
 
   useEffect(() => {
     if (isRegister && window.location.search) {
-      const email = getSearchParam('email')
+      const email = search.email
 
       if (email) {
         setField('email', email)
@@ -41,13 +52,17 @@ export default function Auth() {
         return
       }
 
-      if (await createUser(email.toLowerCase(), password, name)) {
-        navigate('/')
-      } else {
-        setLoading(false)
-      }
+      // if (await createUser(email.toLowerCase(), password, name)) {
+      //   navigate({
+      //     to: '/'
+      //   })
+      // } else {
+      //   setLoading(false)
+      // }
     } else {
-      if (!(await signIn(email.toLowerCase(), password))) {
+      if (await login(email.toLowerCase(), password)) {
+        router.history.push(search.redirect)
+      } else {
         setLoading(false)
       }
     }
@@ -62,7 +77,7 @@ export default function Auth() {
       />
       <form
         onSubmit={handleSubmit}
-        className="animate-teleportIn relative mx-auto mt-32 flex w-96 max-w-full flex-grow flex-col gap-4 p-5"
+        className="relative mx-auto mt-32 flex w-96 max-w-full flex-grow animate-teleportIn flex-col gap-4 p-5"
       >
         {isRegister ? (
           <>
@@ -123,3 +138,13 @@ export default function Auth() {
     </div>
   )
 }
+
+export const Route = createFileRoute('/login')({
+  validateSearch: (search: Record<string, unknown>): AuthSearchParams => {
+    return {
+      redirect: typeof search.redirect === 'string' ? search.redirect : '/',
+      email: typeof search.email === 'string' ? search.email : ''
+    }
+  },
+  component: Auth
+})

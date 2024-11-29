@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import auth from '@state/authSlice'
 import errors from '@state/errorSlice'
 
 const store = configureStore({
   reducer: {
-    auth,
     errors
   }
 })
