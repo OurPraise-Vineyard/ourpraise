@@ -6,6 +6,8 @@ export default function IconButton({
   className,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { icon: string }) {
+  console.log(icon)
+
   return (
     <button
       className={classNames(
@@ -14,7 +16,7 @@ export default function IconButton({
       )}
       style={{
         backgroundSize: '20px 20px',
-        backgroundImage: `url(${icon})`
+        backgroundImage: `url("${icon}")`
       }}
       {...props}
     />

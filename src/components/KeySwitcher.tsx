@@ -34,7 +34,7 @@ function KeySwitcherButton({
         !disabled && 'hover:bg-black/10'
       )}
       style={{
-        backgroundImage: `url(${icons[icon]})`,
+        backgroundImage: `url("${icons[icon]}")`,
         backgroundSize: '90% 90%',
         backgroundPosition: 'center'
       }}
@@ -65,7 +65,7 @@ export default function KeySwitcher({
   }
 
   return (
-    <div className="h-toolbar flex items-center rounded-md border border-gray-400 p-4">
+    <div className="flex h-toolbar items-center rounded-md border border-gray-400 p-4">
       <KeySwitcherButton
         icon={showChords ? 'checked' : 'unchecked'}
         onClick={onToggleChords}
