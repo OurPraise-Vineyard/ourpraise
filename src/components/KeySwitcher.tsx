@@ -1,10 +1,47 @@
-import React from 'react'
+import classNames from 'classnames'
+import React, { ButtonHTMLAttributes } from 'react'
 
-import KeySwitcherButton from '@blocks/KeySwitcherButton'
-import KeySwitcherContainer from '@blocks/KeySwitcherContainer'
-import KeySwitcherSelect from '@blocks/KeySwitcherSelect'
-
+import checked from '@assets/check-square.svg'
+import decrease from '@assets/decrease.svg'
+import increase from '@assets/increase.svg'
+import reset from '@assets/reset.svg'
+import unchecked from '@assets/square.svg'
 import { findNextKey, keysOptions } from '@utils/chords'
+
+const icons = {
+  increase,
+  decrease,
+  reset,
+  checked,
+  unchecked
+}
+
+function KeySwitcherButton({
+  icon,
+  disabled,
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement> & {
+  icon: keyof typeof icons
+  disabled?: boolean
+}) {
+  return (
+    <button
+      tabIndex={-1}
+      disabled={disabled}
+      className={classNames(
+        'h-5 w-5 flex-shrink-0 cursor-pointer rounded-full border-none bg-transparent p-1 transition-all duration-200 ease-out focus:border-0 focus:outline-0',
+        disabled && 'cursor-default opacity-50',
+        !disabled && 'hover:bg-black/10'
+      )}
+      style={{
+        backgroundImage: `url(${icons[icon]})`,
+        backgroundSize: '90% 90%',
+        backgroundPosition: 'center'
+      }}
+      {...props}
+    />
+  )
+}
 
 type KeySwitcherProps = {
   transposeKey: IKey
@@ -28,12 +65,16 @@ export default function KeySwitcher({
   }
 
   return (
-    <KeySwitcherContainer>
+    <div className="h-toolbar flex items-center rounded-md border border-gray-400 p-4">
       <KeySwitcherButton
-        $icon={showChords ? 'checked' : 'unchecked'}
+        icon={showChords ? 'checked' : 'unchecked'}
         onClick={onToggleChords}
       />
-      <KeySwitcherSelect
+      <select
+        className={classNames(
+          'mx-1 flex-1 appearance-none border-0 bg-transparent text-right text-lg transition-opacity duration-200 ease-out focus:outline-0',
+          !showChords && 'opacity-50'
+        )}
         value={transposeKey || ''}
         onChange={handleSelect}
         disabled={!showChords}
@@ -43,22 +84,22 @@ export default function KeySwitcher({
             {label}
           </option>
         ))}
-      </KeySwitcherSelect>
+      </select>
       <KeySwitcherButton
-        $icon="increase"
+        icon="increase"
         onClick={handleSwitch(1)}
         disabled={!showChords}
       />
       <KeySwitcherButton
-        $icon="decrease"
+        icon="decrease"
         onClick={handleSwitch(-1)}
         disabled={!showChords}
       />
       <KeySwitcherButton
-        $icon="reset"
+        icon="reset"
         onClick={onResetTranspose}
         disabled={!showChords}
       />
-    </KeySwitcherContainer>
+    </div>
   )
 }
