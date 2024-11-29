@@ -5,7 +5,7 @@ import {
 } from '@common-styles'
 import classNames from 'classnames'
 import React, { useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 
 import Button from '@components/Button'
 import ContextMenu from '@components/ContextMenu'

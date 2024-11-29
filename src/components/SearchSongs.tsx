@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import SearchInput from '@blocks/SearchInput'
-
 import searchIcon from '@assets/search.svg'
 import { createDebouncer } from '@utils/debouncer'
 

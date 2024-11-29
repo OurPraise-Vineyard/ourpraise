@@ -5,7 +5,7 @@ import {
 } from '@common-styles'
 import classNames from 'classnames'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import Button from '@components/Button'
 import SearchSongs from '@components/SearchSongs'

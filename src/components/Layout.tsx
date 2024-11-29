@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { Outlet, useLocation } from 'react-router-dom'
+import React, { Outlet, useLocation } from 'react-router'
 
 import Nav from '@components/Nav'
 

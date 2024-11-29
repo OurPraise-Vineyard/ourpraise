@@ -1,7 +1,7 @@
 import { ellipsisTextStyles, pageTitleStyles } from '@common-styles'
 import classNames from 'classnames'
 import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 
 import AddToEvent from '@components/AddToEvent'
 import Button from '@components/Button'

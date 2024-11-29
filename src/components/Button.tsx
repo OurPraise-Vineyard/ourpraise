@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React, { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 const colorSchemes = {
   default: 'bg-gray-200 text-black border border-gray-300 hover:bg-gray-300',
