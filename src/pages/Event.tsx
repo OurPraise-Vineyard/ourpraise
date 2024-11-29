@@ -5,7 +5,7 @@ import {
 } from '@common-styles'
 import classNames from 'classnames'
 import React, { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import Button from '@components/Button'
 import ContextMenu from '@components/ContextMenu'
@@ -166,9 +166,12 @@ function EventPage({ data: event, onTriggerFetch }: IWithFetchProps<IEvent>) {
         <div className="my-8 border-b border-b-gray-300 pb-8" key={song.id}>
           <div className="flex w-full items-center gap-2">
             <div className="w-0 flex-grow">
-              <p className={classNames(ellipsisTextStyles, 'text-lg')}>
+              <Link
+                className={classNames(ellipsisTextStyles, 'text-lg')}
+                to={`/songs/${song.id}`}
+              >
                 {song.title}
-              </p>
+              </Link>
               <p
                 className={classNames(
                   ellipsisTextStyles,
