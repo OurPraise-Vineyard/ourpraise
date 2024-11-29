@@ -106,7 +106,7 @@ export function transposeSong(
     })
     .join('\n')
     .replace(/{{START_PAREN}}\s/g, '(')
-    .replace(/(\s*)\s{{END_PAREN}}/g, (match, p1) => {
+    .replace(/(\s*)\s{{END_PAREN}}/g, (_, p1) => {
       return ')' + p1
     })
 }

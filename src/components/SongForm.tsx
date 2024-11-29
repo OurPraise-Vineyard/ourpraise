@@ -30,7 +30,7 @@ export default function SongForm({
     onSubmit({ title, authors, body, key, id: undefined })
   }
 
-  const handleDelete = async e => {
+  const handleDelete = async () => {
     if (canDelete) {
       if (window.confirm('Delete this song?')) {
         try {
