@@ -30,7 +30,6 @@ type IEvent = {
 type IEventForm = {
   title: string
   date: string
-  location: string
   id?: IDocId
   comment: string
 }

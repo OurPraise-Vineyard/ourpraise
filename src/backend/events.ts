@@ -7,8 +7,10 @@ import {
   getDocument,
   updateDocument
 } from '~/lib/database'
+import { ICollection, IDoc, IDocId } from '~/types/backend'
 import { formatKey, transposeAndFormatSong } from '~/utils/chords'
 import { formatDate, getTime, todayTime } from '~/utils/date'
+import { getLatestLocation } from '~/utils/location'
 import pruneObject from '~/utils/pruneObject'
 
 import { getAuthState } from './auth'
@@ -18,6 +20,7 @@ export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
 export async function fetchEvents(): Promise<IEventsData> {
   const events = await getCollection({
     path: 'events',
+    where: ['location', '==', getLatestLocation()],
     orderBy: 'date',
     sortDirection: 'desc'
   }).then((events: ICollection): IEvent[] =>
@@ -94,7 +97,6 @@ export async function saveEvent(form: IEventForm): Promise<void> {
     await updateDocument(`events/${form.id}`, {
       title: form.title,
       date: form.date,
-      location: form.location,
       comment: form.comment
     })
   }
@@ -102,11 +104,12 @@ export async function saveEvent(form: IEventForm): Promise<void> {
 
 export async function createEvent(form: IEventForm): Promise<IDocId> {
   const user = getAuthState().user
+  const location = getLatestLocation()
 
   const doc = await createDocument('events', {
     title: form.title,
     date: form.date,
-    location: form.location,
+    location,
     comment: form.comment,
     songs: [],
     owner: user?.email,

@@ -5,6 +5,7 @@ import {
   getDocument,
   updateDocument
 } from '~/lib/database'
+import { IDocId } from '~/types/backend'
 
 export function fetchSong(songId: IDocId): Promise<ISong> {
   return getDocument(`songs/${songId}`).then(song => ({

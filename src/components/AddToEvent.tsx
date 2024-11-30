@@ -5,12 +5,11 @@ import { useForm } from 'react-hook-form'
 import { IEventsData, addSongToEvent, fetchEvents } from '~/backend/events'
 import Button from '~/components/Button'
 import Modal from '~/components/Modal'
-import { locations, useSavedLocation } from '~/hooks/useSavedLocation'
+import { FetchStatus, IDocId } from '~/types/backend'
 import { keysOptions } from '~/utils/chords'
 import { formatDate } from '~/utils/date'
 
 import { SelectField, TextareaField } from './FormFields'
-import Selector from './Selector'
 
 type FormState = {
   comment: string
@@ -32,10 +31,6 @@ export default function AddToEvent({
   const [events, setEvents] = useState<IEventsData['upcoming'] | null>(null)
   const [selectedEvent, setSelectedEvent] = useState<IDocId>('')
   const [saving, setSaving] = useState<boolean>(false)
-  const [location, setLocation] = useSavedLocation()
-  const eventsFiltered = events?.filter(e =>
-    e.location ? e.location === location : location === locations[0].value
-  )
   const [error, setError] = useState<string | null>(null)
   const { register, handleSubmit, reset } = useForm<FormState>()
 
@@ -78,15 +73,10 @@ export default function AddToEvent({
   return (
     <Modal title="Add song to event" onClose={onClose} show={show}>
       <div className="flex flex-grow flex-col gap-3">
-        <Selector
-          value={location}
-          onChange={loc => setLocation(loc.value as string)}
-          options={locations}
-        />
         <div className="flex-grow">
           <div className="overflow-y-auto">
             {fetchStatus === 'succeeded' &&
-              eventsFiltered?.map(event => (
+              events?.map(event => (
                 <div
                   onClick={() => setSelectedEvent(event.id)}
                   key={event.id}

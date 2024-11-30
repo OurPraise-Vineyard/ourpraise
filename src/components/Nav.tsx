@@ -7,6 +7,7 @@ import { getAuthState, logout } from '~/backend/auth'
 import ContextMenu from '~/components/ContextMenu'
 import useContextMenuState from '~/hooks/useContextMenuState'
 import router from '~/router'
+import { getLatestLocationLabel } from '~/utils/location'
 
 const navLinkStyles =
   'border-b text-white hover:border-b-white border-b-transparent'
@@ -15,6 +16,7 @@ const linkActiveStyles = 'border-b-white'
 export default function Nav() {
   const { user } = getAuthState()
   const menu = useContextMenuState()
+  const location = getLatestLocationLabel()
 
   const menuItems = useMemo(
     () => [
@@ -64,12 +66,12 @@ export default function Nav() {
               </Link>
             </ul>
           </div>
-          <p
-            className="cursor-pointer text-lg text-white"
-            onClick={menu.onOpen}
-          >
-            {user ? user.displayName || user.email : ''}
-          </p>
+          <div onClick={menu.onOpen} className="cursor-pointer text-right">
+            <p className="text-lg text-white">
+              {user ? user.displayName || user.email : ''}
+            </p>
+            <p className="text-md text-gray-400">{location}</p>
+          </div>
         </div>
       </div>
     </>

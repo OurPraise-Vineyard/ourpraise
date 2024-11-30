@@ -7,6 +7,7 @@ import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RoutePath } from '~/router'
+import { IDocId } from '~/types/backend'
 
 export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
   useDocumentTitle('Add song')

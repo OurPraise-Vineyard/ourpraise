@@ -4,9 +4,7 @@ import { fetchEvents } from '~/backend/events'
 import { IEventsData } from '~/backend/events'
 import Button from '~/components/Button'
 import Page from '~/components/Page'
-import Selector from '~/components/Selector'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
-import { locations, useSavedLocation } from '~/hooks/useSavedLocation'
 import { RoutePath } from '~/router'
 import { formatDate } from '~/utils/date'
 
@@ -33,25 +31,11 @@ export const loader = () => fetchEvents()
 export default function EventsPage({ routePath }: { routePath: RoutePath }) {
   const { upcoming, past }: IEventsData = getRouteApi(routePath).useLoaderData()
   useDocumentTitle('Events')
-  const [location, setLocation] = useSavedLocation()
-
-  const upcomingFiltered = upcoming.filter(e =>
-    e.location ? e.location === location : location === locations[0].value
-  )
-  const pastFiltered = past.filter(e =>
-    e.location ? e.location === location : location === locations[0].value
-  )
 
   return (
     <Page>
       <div className="flex items-center gap-4 border-b border-b-gray-300 py-4">
         <h2 className="text-title flex-grow font-bold">Upcoming events</h2>
-        <Selector
-          value={location}
-          onChange={loc => setLocation(loc.value as string)}
-          options={locations}
-          className="flex h-toolbar items-center"
-        />
         <Button
           type="link"
           to="/events/add"
@@ -61,14 +45,14 @@ export default function EventsPage({ routePath }: { routePath: RoutePath }) {
           Add new event
         </Button>
       </div>
-      {upcomingFiltered.map(renderEventItem)}
-      {upcomingFiltered.length === 0 && (
+      {upcoming.map(renderEventItem)}
+      {upcoming.length === 0 && (
         <p className="pb-2 text-lg">No upcoming events</p>
       )}
       <h2 className="text-title mt-5 flex-grow border-b border-b-gray-300 py-2 font-bold">
         Past events
       </h2>
-      {pastFiltered.map(renderEventItem)}
+      {past.map(renderEventItem)}
     </Page>
   )
 }

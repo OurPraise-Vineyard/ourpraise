@@ -1,5 +1,6 @@
 import {
   DocumentData,
+  QueryConstraint,
   QuerySnapshot,
   addDoc,
   collection,
@@ -11,8 +12,17 @@ import {
   orderBy,
   query,
   runTransaction,
-  setDoc
+  setDoc,
+  where
 } from 'firebase/firestore'
+
+import {
+  ICollection,
+  ICollectionQuery,
+  IDoc,
+  IDocCreate,
+  IDocUpdate
+} from '~/types/backend'
 
 import { BackendError } from './firebase'
 
@@ -29,21 +39,24 @@ function mapDocsId(snap: QuerySnapshot<DocumentData>): ICollection {
 
 export async function getCollection({
   path: collectionPath,
+  where: whereField,
   orderBy: orderByField,
-  sortDirection
+  sortDirection = 'asc'
 }: ICollectionQuery): Promise<ICollection> {
   try {
-    if (orderByField && sortDirection) {
-      return getDocs(
-        query(
-          collection(getFirestore(), collectionPath),
-          orderBy(orderByField, sortDirection)
-        )
-      ).then(docs => mapDocsId(docs))
+    const filters: QueryConstraint[] = []
+
+    if (whereField) {
+      filters.push(where(...whereField))
     }
-    return getDocs(query(collection(getFirestore(), collectionPath))).then(
-      docs => mapDocsId(docs)
-    )
+
+    if (orderByField) {
+      filters.push(orderBy(orderByField, sortDirection))
+    }
+
+    return getDocs(
+      query(collection(getFirestore(), collectionPath), ...filters)
+    ).then(docs => mapDocsId(docs))
   } catch (err) {
     throw new BackendError(err as string)
   }
