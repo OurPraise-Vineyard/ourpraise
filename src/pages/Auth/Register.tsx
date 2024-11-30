@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+
+import { getRouteApi, useLocation } from '@tanstack/react-router'
+
 import Button from '~/components/Button'
 import { HookTextField as TextField } from '~/components/FormFields'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
-import useErrors from '~/hooks/useErrors'
 import { RoutePath } from '~/router'
-
-import { getRouteApi, useLocation } from '@tanstack/react-router'
 
 type AuthSearchParams = {
   email: string
@@ -33,20 +33,20 @@ export default function Register({ routePath }: { routePath: RoutePath }) {
 
   const { register, handleSubmit } = useForm<RegisterForm>()
   const [loading, setLoading] = useState(false)
-  const { pushError } = useErrors()
+  const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
   useDocumentTitle('Register')
 
   const onSubmit = async ({ password, repeatPassword }: RegisterForm) => {
     setLoading(true)
     if (password !== repeatPassword) {
-      pushError('Passwords must match')
+      setError('Passwords must match')
       return
     }
 
     // if (await createUser(email.toLowerCase(), password, name)) {
     //   navigate({
-    //     to: '/'
+    //     to: '/events'
     //   })
     // } else {
     //   setLoading(false)
@@ -80,6 +80,8 @@ export default function Register({ routePath }: { routePath: RoutePath }) {
       <Button variant="primary" type="submit">
         {loading ? 'Please wait...' : 'Register'}
       </Button>
+
+      {error && <p className="text-sm text-red-500">{error}</p>}
     </form>
   )
 }

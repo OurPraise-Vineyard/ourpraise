@@ -6,11 +6,10 @@ import { createEvent } from '~/backend/events'
 import EventForm from '~/components/EventForm'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
-import useErrors from '~/hooks/useErrors'
 
 export default function AddEventPage() {
   const navigate = useNavigate()
-  const { pushError } = useErrors()
+  const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState<boolean>(false)
   useDocumentTitle('Add event')
 
@@ -24,8 +23,8 @@ export default function AddEventPage() {
           params: { id }
         })
       }
-    } catch (err) {
-      pushError(err)
+    } catch (err: any) {
+      setError(err.message)
     } finally {
       setSaving(false)
     }
@@ -34,6 +33,7 @@ export default function AddEventPage() {
   return (
     <Page>
       <EventForm onSubmit={handleSubmit} heading="Add event" saving={saving} />
+      {error && <div className="text-red-500">{error}</div>}
     </Page>
   )
 }

@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+
+import { getRouteApi } from '@tanstack/react-router'
+
 import { login } from '~/backend/auth'
 import Button from '~/components/Button'
 import { HookTextField as TextField } from '~/components/FormFields'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import router, { RoutePath } from '~/router'
-
-import { getRouteApi } from '@tanstack/react-router'
 
 type AuthSearchParams = {
   redirect: string
@@ -16,7 +17,7 @@ export function validateSearch(
   search: Record<string, unknown>
 ): AuthSearchParams {
   return {
-    redirect: typeof search.redirect === 'string' ? search.redirect : '/'
+    redirect: typeof search.redirect === 'string' ? search.redirect : '/events'
   }
 }
 
@@ -28,13 +29,15 @@ export default function Login({ routePath }: { routePath: RoutePath }) {
     password: string
   }>()
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   useDocumentTitle('Login')
 
   const onSubmit = async ({ email, password }) => {
     setLoading(true)
-    if (await login(email.toLowerCase(), password)) {
+    if ((await login(email.toLowerCase(), password)).status === 'loggedIn') {
       router.history.push(search.redirect)
     } else {
+      setError('Invalid email or password')
       setLoading(false)
     }
   }
@@ -57,6 +60,8 @@ export default function Login({ routePath }: { routePath: RoutePath }) {
       <Button variant="primary" type="submit" disabled={loading}>
         {loading ? 'Logging in...' : 'Login'}
       </Button>
+
+      {error && <p className="text-center text-red-500">{error}</p>}
     </form>
   )
 }

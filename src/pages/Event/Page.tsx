@@ -38,6 +38,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
   const [selectedSong, setSelectedSong] = useState<IEventSong | null>(null)
   const [editSong, setEditSong] = useState<boolean>(false)
   const [savingSong, setSavingSong] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   function triggerReload() {
     // This will trigger a reload of the page
@@ -53,8 +54,8 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
       await saveEventSong(event.id, form)
       setEditSong(false)
       triggerReload()
-    } catch (err) {
-      console.error(err)
+    } catch (err: any) {
+      setError(err.message)
     } finally {
       setSavingSong(false)
     }
@@ -75,8 +76,8 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
             try {
               await moveEventSong(event.id, selectedSong.id, -1)
               triggerReload()
-            } catch (err) {
-              console.error(err)
+            } catch (err: any) {
+              setError(err.message)
             } finally {
               contextMenu.onClose()
             }
@@ -90,8 +91,8 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
             try {
               await moveEventSong(event.id, selectedSong.id, 1)
               triggerReload()
-            } catch (err) {
-              console.error(err)
+            } catch (err: any) {
+              setError(err.message)
             } finally {
               contextMenu.onClose()
             }
@@ -116,8 +117,8 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
               try {
                 await removeEventSong(event.id, selectedSong.id)
                 triggerReload()
-              } catch (err) {
-                console.error(err)
+              } catch (err: any) {
+                setError(err.message)
               } finally {
                 contextMenu.onClose()
               }
@@ -126,7 +127,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
         }
       }
     ],
-    [contextMenu, selectedSong, event.id, console.error, triggerReload]
+    [contextMenu, selectedSong, event.id, setError, triggerReload]
   )
 
   return (

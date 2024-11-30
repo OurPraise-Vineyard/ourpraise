@@ -17,6 +17,7 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
   const navigate = useNavigate()
   const [saving, setSaving] = useState<boolean>(false)
   useDocumentTitle(`Edit event: "${event.title}"`)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async options => {
     try {
@@ -26,8 +27,8 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
         to: '/events/$id',
         params: { id: event.id }
       })
-    } catch (err) {
-      console.error(err)
+    } catch (err: any) {
+      setError(err.message)
     } finally {
       setSaving(false)
     }
@@ -41,8 +42,8 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
           navigate({
             to: '/events'
           })
-        } catch (err) {
-          console.error(err)
+        } catch (err: any) {
+          setError(err.message)
         }
       }
     }
@@ -57,6 +58,7 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
         saving={saving}
         onDelete={handleDelete}
       />
+      {error && <div className="text-red-500">{error}</div>}
     </Page>
   )
 }

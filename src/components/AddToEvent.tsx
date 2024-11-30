@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import * as React from 'react'
+
 import { IEventsData, addSongToEvent, fetchEvents } from '~/backend/events'
 import Button from '~/components/Button'
 import Modal from '~/components/Modal'
@@ -25,7 +26,6 @@ export default function AddToEvent({
   onClose
 }: AddToEventProps) {
   const [status, events] = useFetch<IEventsData>(fetchEvents)
-  const { pushError } = useErrors()
   const [selectedEvent, setSelectedEvent] = useState<IDocId>('')
   const [comment, setComment] = useState<string>('')
   const [transposeKey, setTransposeKey] = useState<IKey>(songKey)
@@ -34,6 +34,7 @@ export default function AddToEvent({
   const eventsFiltered = events?.upcoming.filter(e =>
     e.location ? e.location === location : location === locations[0].value
   )
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     setTransposeKey(songKey)
@@ -51,9 +52,9 @@ export default function AddToEvent({
       setSaving(false)
       setSelectedEvent('')
       setComment('')
-    } catch (err) {
+    } catch (err: any) {
       setSaving(false)
-      pushError(err)
+      setError(err.message)
     }
   }
 
@@ -114,6 +115,7 @@ export default function AddToEvent({
             </Button>
           </form>
         )}
+        {error && <p className="text-red-500">{error}</p>}
       </div>
     </Modal>
   )

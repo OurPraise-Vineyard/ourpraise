@@ -1,4 +1,6 @@
-import { createFileRoute, getRouteApi } from '@tanstack/react-router'
+import { useState } from 'react'
+
+import { getRouteApi } from '@tanstack/react-router'
 
 import { createSong } from '~/backend/songs'
 import Page from '~/components/Page'
@@ -9,6 +11,7 @@ import { RoutePath } from '~/router'
 export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
   useDocumentTitle('Add song')
   const navigate = getRouteApi(routePath).useNavigate()
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async options => {
     try {
@@ -19,14 +22,15 @@ export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
           params: { id }
         })
       }
-    } catch (err) {
-      console.error(err)
+    } catch (err: any) {
+      setError(err.message)
     }
   }
 
   return (
     <Page>
       <SongForm onSubmit={handleSubmit} heading="Add song" />
+      {error && <div className="text-red-500">{error}</div>}
     </Page>
   )
 }
