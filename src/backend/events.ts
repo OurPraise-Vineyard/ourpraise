@@ -74,7 +74,10 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
       return {
         id: eventSong.id,
         comment: eventSong.comment,
+        title: song.title,
+        authors: song.authors,
         body,
+        key: song.key,
         transposeKey: songKey,
         formattedKey: formatKey(songKey)
       }
