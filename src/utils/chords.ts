@@ -100,7 +100,7 @@ export function transposeSong(
     .split('\n')
     .map(line => {
       if (line.startsWith('//')) {
-        return transposeLine(line, fromKey, toKey)
+        return '//' + transposeLine(line.replace(/^\/\//, ''), fromKey, toKey)
       }
       return line
     })
