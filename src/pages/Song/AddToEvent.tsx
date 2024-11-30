@@ -10,7 +10,7 @@ import { IKey } from '~/types/models'
 import { keysOptions } from '~/utils/chords'
 import { formatDate } from '~/utils/date'
 
-import { SelectField, TextareaField } from './FormFields'
+import { SelectField, TextareaField } from '../../components/FormFields'
 
 type FormState = {
   comment: string

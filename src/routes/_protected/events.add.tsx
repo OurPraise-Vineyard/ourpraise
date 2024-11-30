@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { requireLoggedIn } from '~/backend/auth'
-import AddEventPage from '~/pages/Events/Add'
+import AddEventPage from '~/pages/Events/AddPage'
 
 export const Route = createFileRoute('/_protected/events/add')({
   beforeLoad: requireLoggedIn,

@@ -7,7 +7,7 @@ import { IEventSongForm } from '~/types/forms'
 import { IEventSong } from '~/types/models'
 import { keysOptions } from '~/utils/chords'
 
-import { SelectField, TextareaField } from './FormFields'
+import { SelectField, TextareaField } from '../../components/FormFields'
 
 export default function EventSongForm({
   eventSong,

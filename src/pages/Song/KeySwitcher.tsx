@@ -44,20 +44,19 @@ function KeySwitcherButton({
   )
 }
 
-type KeySwitcherProps = {
-  transposeKey: IKey
-  setTransposeKey: (key: IKey) => void
-  onResetTranspose: () => void
-  onToggleChords: () => void
-  showChords: boolean
-}
 export default function KeySwitcher({
   transposeKey = 'A',
   setTransposeKey,
   onResetTranspose,
   onToggleChords,
   showChords
-}: KeySwitcherProps) {
+}: {
+  transposeKey: IKey
+  setTransposeKey: (key: IKey) => void
+  onResetTranspose: () => void
+  onToggleChords: () => void
+  showChords: boolean
+}) {
   const handleSwitch = (movement: 1 | -1) => () => {
     setTransposeKey(findNextKey(transposeKey, movement))
   }
