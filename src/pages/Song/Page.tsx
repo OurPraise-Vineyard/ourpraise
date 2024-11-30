@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { getRouteApi } from '@tanstack/react-router'
 
 import editIcon from '~/assets/edit.svg'
-import { getAuthState } from '~/backend/auth'
 import { fetchSong } from '~/backend/songs'
 import AddToEvent from '~/components/AddToEvent'
 import Button from '~/components/Button'
@@ -11,8 +10,8 @@ import IconButton from '~/components/IconButton'
 import KeySwitcher from '~/components/KeySwitcher'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
-import useFormattedSongBody from '~/hooks/useFormattedSongBody'
 import { RoutePath } from '~/router'
+import { transposeAndFormatSong } from '~/utils/chords'
 
 export const loader = ({ params }) => fetchSong(params.id)
 
@@ -23,11 +22,22 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
   const [showChords, setShowChords] = useState(true)
   const [showEventsDialog, setShowEventsDialog] = useState(false)
   const navigate = useNavigate()
-  const { user } = getAuthState()
-  const formattedBody = useFormattedSongBody(song, showChords, transposeKey)
   useDocumentTitle(song.title)
 
-  const isAdmin = user?.role === 'admin'
+  const [formattedBody, setFormattedBody] = useState<string[]>([])
+
+  useEffect(() => {
+    if (song) {
+      setFormattedBody(
+        transposeAndFormatSong({
+          body: song.body,
+          fromKey: song.key,
+          toKey: transposeKey,
+          showChords
+        })
+      )
+    }
+  }, [song, transposeKey, showChords])
 
   function handleEdit() {
     navigate({
@@ -46,14 +56,12 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
 
   return (
     <Page>
-      {isAdmin && (
-        <AddToEvent
-          show={showEventsDialog}
-          onClose={() => setShowEventsDialog(false)}
-          songId={song.id}
-          songKey={transposeKey}
-        />
-      )}
+      <AddToEvent
+        show={showEventsDialog}
+        onClose={() => setShowEventsDialog(false)}
+        songId={song.id}
+        songKey={transposeKey}
+      />
       <div className="mb-8 mt-4 flex items-center gap-3">
         <div className="w-1/2">
           <h2 className="text-title font-bold">{song.title}</h2>
@@ -62,14 +70,9 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
           </p>
         </div>
         <span className="flex-grow" />
-        {isAdmin && (
-          <Button
-            className="h-toolbar"
-            onClick={() => setShowEventsDialog(true)}
-          >
-            Add to event
-          </Button>
-        )}
+        <Button className="h-toolbar" onClick={() => setShowEventsDialog(true)}>
+          Add to event
+        </Button>
         <div className="flex w-min flex-shrink-0 items-center gap-3">
           <KeySwitcher
             transposeKey={transposeKey}
@@ -78,18 +81,18 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
             onToggleChords={handleToggleChords}
             showChords={showChords}
           />
-          {isAdmin && (
-            <IconButton
-              icon={editIcon}
-              onClick={handleEdit}
-              className="flex-shrink-0"
-            />
-          )}
+          <IconButton
+            icon={editIcon}
+            onClick={handleEdit}
+            className="flex-shrink-0"
+          />
         </div>
       </div>
-      <p className="whitespace-pre pb-16 font-mono text-base">
-        {formattedBody}
-      </p>
+      {formattedBody.map((formattedBody, i) => (
+        <p key={i} className="my-5 whitespace-pre font-mono text-sm">
+          {formattedBody}
+        </p>
+      ))}
     </Page>
   )
 }

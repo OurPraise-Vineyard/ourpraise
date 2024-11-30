@@ -111,15 +111,32 @@ export function transposeSong(
     })
 }
 
-export function transposeAndFormatSong(
-  body: string,
-  fromKey: IKey | null,
-  toKey: IKey
-): string[] {
-  return transposeSong(body, fromKey, toKey)
-    .replace(/^\/\//gm, '  ')
-    .replace(/\n\s+?\n/g, '\n\n')
-    .split('\n\n')
+export function transposeAndFormatSong({
+  body,
+  fromKey,
+  toKey,
+  showChords
+}: {
+  body: string
+  fromKey?: IKey
+  toKey?: IKey
+  showChords?: boolean
+}): string[] {
+  if (showChords && fromKey && toKey) {
+    return transposeSong(body, fromKey, toKey)
+      .replace(/^\/\//gm, '  ')
+      .replace(/\n\s+?\n/g, '\n\n')
+      .split('\n\n')
+  } else {
+    return body
+      .split('\n')
+      .map(line => (line.trim() === '//' ? '' : line))
+      .filter(line => line.substr(0, 2) !== '//' || line.trim() === '//')
+      .join('\n')
+      .replace(/^\n+/g, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .split('\n\n')
+  }
 }
 
 export function formatKey(key: IKey): string {

@@ -64,7 +64,7 @@ export async function getDocument(path: string): Promise<IDoc> {
   throw new BackendError(`Document "${path}" does not exist.`)
 }
 
-export async function createDocument(path: string, value: IDoc) {
+export async function createDocument(path: string, value: IDocCreate) {
   try {
     return addDoc(collection(getFirestore(), path), value)
   } catch (err) {
@@ -74,14 +74,10 @@ export async function createDocument(path: string, value: IDoc) {
 
 export async function updateDocument(
   path: string,
-  value: IDoc,
-  options?: { merge?: boolean }
+  value: IDocUpdate
 ): Promise<void> {
   try {
-    if (options) {
-      return setDoc(doc(getFirestore(), path), value, options)
-    }
-    return setDoc(doc(getFirestore(), path), value)
+    return setDoc(doc(getFirestore(), path), value, { merge: true })
   } catch (err) {
     throw new BackendError(err as string)
   }

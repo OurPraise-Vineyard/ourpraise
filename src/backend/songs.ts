@@ -5,14 +5,15 @@ import {
   getDocument,
   updateDocument
 } from '~/lib/database'
-import {
-  mapCollectionToSongs,
-  mapDocToSong,
-  mapSongFormToSong
-} from '~/mappers/songs'
 
 export function fetchSong(songId: IDocId): Promise<ISong> {
-  return getDocument(`songs/${songId}`).then(mapDocToSong)
+  return getDocument(`songs/${songId}`).then(song => ({
+    authors: song.authors as string,
+    body: song.body as string,
+    id: song.id as string,
+    key: song.key as IKey,
+    title: song.title as string
+  }))
 }
 
 export function fetchSongs(): Promise<ISong[]> {
@@ -20,18 +21,32 @@ export function fetchSongs(): Promise<ISong[]> {
     path: 'songs',
     orderBy: 'title',
     sortDirection: 'asc'
-  }).then(mapCollectionToSongs)
+  }).then(songs =>
+    songs.map(song => ({
+      authors: song.authors as string,
+      body: song.body as string,
+      id: song.id as string,
+      key: song.key as IKey,
+      title: song.title as string
+    }))
+  )
 }
 
 export async function saveSong(form: ISongForm): Promise<void> {
-  await updateDocument(`songs/${form.id}`, mapSongFormToSong(form), {
-    merge: true
+  await updateDocument(`songs/${form.id}`, {
+    title: form.title,
+    authors: form.authors,
+    body: form.body,
+    key: form.key
   })
 }
 
 export async function createSong(form: ISongForm): Promise<IDocId> {
   const doc = await createDocument('songs', {
-    ...mapSongFormToSong(form),
+    title: form.title,
+    authors: form.authors,
+    body: form.body,
+    key: form.key,
     createdAt: new Date().toISOString()
   })
 

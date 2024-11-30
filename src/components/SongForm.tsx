@@ -1,5 +1,6 @@
+import { useForm } from 'react-hook-form'
+
 import Button from '~/components/Button'
-import useSongForm from '~/hooks/forms/useSongForm'
 import { keysOptions } from '~/utils/chords'
 
 import { SelectField, TextField, TextareaField } from './FormFields'
@@ -15,37 +16,33 @@ export default function SongForm({
   onDelete?: () => void
   heading: string
 }) {
-  const [{ title, authors, body, key }, setField] = useSongForm(song)
-
-  const handleSave = async e => {
-    e.preventDefault()
-    onSubmit({ title, authors, body, key, id: undefined })
-  }
+  const { register, handleSubmit } = useForm<ISongForm>()
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSave}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       <h2 className="text-title font-bold">{heading}</h2>
+      <input className="hidden" defaultValue={song?.id} {...register('id')} />
       <TextField
-        value={title}
         title="Title"
-        onChange={value => setField('title', value)}
+        fieldProps={register('title', { required: true })}
+        defaultValue={song?.title}
       />
       <TextField
-        value={authors}
         title="Authors"
-        onChange={value => setField('authors', value)}
+        fieldProps={register('authors', { required: true })}
+        defaultValue={song?.authors}
       />
       <SelectField
-        value={key}
         title="Song Key"
-        onChange={value => setField('key', value)}
         options={keysOptions}
+        fieldProps={register('key', { required: true })}
+        defaultValue={song?.key}
       />
       <TextareaField
         size="large"
-        value={body}
         title="Body"
-        onChange={value => setField('body', value)}
+        fieldProps={register('body', { required: true })}
+        defaultValue={song?.body}
       />
       <div className="flex justify-between">
         <Button variant="primary" type="submit">

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { getRouteApi, useLocation } from '@tanstack/react-router'
+import { getRouteApi } from '@tanstack/react-router'
 
 import Button from '~/components/Button'
-import { HookTextField as TextField } from '~/components/FormFields'
+import { TextField } from '~/components/FormFields'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RoutePath } from '~/router'
 

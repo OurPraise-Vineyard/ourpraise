@@ -1,5 +1,9 @@
 import classNames from 'classnames'
-import { InputHTMLAttributes } from 'react'
+import {
+  InputHTMLAttributes,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes
+} from 'react'
 
 interface FieldProps {
   className?: string
@@ -31,28 +35,19 @@ const textFieldSizes = {
 export function SelectField({
   className,
   title = '',
-  name = '',
-  onChange,
-  value,
-  autoFocus = false,
-  required = false,
-  disabled = false,
-  options = []
-}: FieldProps & {
+  options = [],
+  fieldProps,
+  ...props
+}: SelectHTMLAttributes<HTMLSelectElement> & {
   options: SelectItem[]
+  className?: string
+  title?: string
+  fieldProps: SelectHTMLAttributes<HTMLSelectElement>
 }) {
   return (
     <div className={classNames('rounded bg-gray-200 p-2', className)}>
       {!!title && <span className="text-sm/3">{title}</span>}
-      <select
-        value={value}
-        name={name}
-        onChange={e => onChange(e.target.value)}
-        className={fieldStyles}
-        autoFocus={autoFocus}
-        required={required}
-        disabled={disabled}
-      >
+      <select className={fieldStyles} {...props} {...fieldProps}>
         {options.map(option => (
           <option
             disabled={option.disabled}
@@ -70,65 +65,28 @@ export function SelectField({
 export function TextareaField({
   className,
   title = '',
-  name = '',
-  onChange,
-  value,
   size = 'medium',
-  autoFocus = false,
-  required = false,
-  disabled = false
-}: FieldProps & {
+  fieldProps,
+  ...props
+}: TextareaHTMLAttributes<HTMLTextAreaElement> & {
   size?: keyof typeof textFieldSizes
+  className?: string
+  title?: string
+  fieldProps: TextareaHTMLAttributes<HTMLTextAreaElement>
 }) {
   return (
     <div className={classNames('rounded bg-gray-200 p-2', className)}>
       {!!title && <span className="text-sm/3">{title}</span>}
       <textarea
-        value={value}
-        name={name}
-        onChange={e => onChange(e.target.value)}
         className={classNames(fieldStyles, textFieldSizes[size], className)}
-        autoFocus={autoFocus}
-        required={required}
-        disabled={disabled}
+        {...props}
+        {...fieldProps}
       />
     </div>
   )
 }
 
 export function TextField({
-  className,
-  title = '',
-  name = '',
-  onChange,
-  value,
-  type = 'text',
-  autoFocus = false,
-  required = false,
-  disabled = false,
-  ...props
-}: FieldProps & {
-  type?: 'text' | 'password' | 'date'
-}) {
-  return (
-    <div className={classNames('rounded bg-gray-200 p-2', className)}>
-      {!!title && <span className="text-sm/3">{title}</span>}
-      <input
-        value={value}
-        name={name}
-        type={type}
-        onChange={e => onChange(e.target.value)}
-        className={classNames(fieldStyles, className)}
-        autoFocus={autoFocus}
-        required={required}
-        disabled={disabled}
-        {...props}
-      />
-    </div>
-  )
-}
-
-export function HookTextField({
   className,
   title = '',
   type = 'text',

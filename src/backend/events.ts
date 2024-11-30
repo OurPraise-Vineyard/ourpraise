@@ -7,14 +7,11 @@ import {
   getDocument,
   updateDocument
 } from '~/lib/database'
-import {
-  mapCollectionToEvents,
-  mapDocToEvent,
-  mapEventFormToEvent,
-  mapEventSongFormToEventSong
-} from '~/mappers/events'
-import { formatKey, keysOptions, transposeAndFormatSong } from '~/utils/chords'
+import { formatKey, transposeAndFormatSong } from '~/utils/chords'
 import { formatDate, getTime, todayTime } from '~/utils/date'
+import pruneObject from '~/utils/pruneObject'
+
+import { getAuthState } from './auth'
 
 export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
 
@@ -23,7 +20,19 @@ export async function fetchEvents(): Promise<IEventsData> {
     path: 'events',
     orderBy: 'date',
     sortDirection: 'desc'
-  }).then(mapCollectionToEvents)
+  }).then((events: ICollection): IEvent[] =>
+    events.map(event => ({
+      comment: event.comment,
+      createdAt: event.createdAt,
+      date: event.date,
+      id: event.id,
+      owner: event.owner,
+      title: event.title,
+      location: event.location,
+      songs: [],
+      formattedDate: formatDate(event.date)
+    }))
+  )
 
   const upcoming: IEvent[] = []
   const past: IEvent[] = []
@@ -51,7 +60,11 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
       const song: ISong = await fetchSong(eventSong.id)
 
       const songKey = eventSong.transposeKey || song.key
-      const body = transposeAndFormatSong(song.body, song.key, songKey)
+      const body = transposeAndFormatSong({
+        body: song.body,
+        fromKey: song.key,
+        toKey: songKey
+      })
 
       return {
         ...song,
@@ -77,14 +90,26 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
 }
 
 export async function saveEvent(form: IEventForm): Promise<void> {
-  await updateDocument(`events/${form.id}`, mapEventFormToEvent(form), {
-    merge: true
-  })
+  if (form.id) {
+    await updateDocument(`events/${form.id}`, {
+      title: form.title,
+      date: form.date,
+      location: form.location,
+      comment: form.comment
+    })
+  }
 }
 
 export async function createEvent(form: IEventForm): Promise<IDocId> {
+  const user = getAuthState().user
+
   const doc = await createDocument('events', {
-    ...mapEventFormToEvent(form),
+    title: form.title,
+    date: form.date,
+    location: form.location,
+    comment: form.comment,
+    songs: [],
+    owner: user?.email,
     createdAt: new Date().toISOString()
   })
 
@@ -121,7 +146,11 @@ export async function addSongToEvent(eventId: IDocId, songOptions: IEventSong) {
 }
 
 export async function saveEventSong(eventId: IDocId, form: IEventSongForm) {
-  const eventSong = mapEventSongFormToEventSong(form)
+  const eventSong = pruneObject({
+    transposeKey: form.transposeKey,
+    comment: form.comment,
+    id: form.id
+  })
 
   await getAndUpdateDocument(
     `events/${eventId}`,

@@ -1,45 +1,52 @@
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+
 import Button from '~/components/Button'
 import Modal from '~/components/Modal'
-import useEventSongForm from '~/hooks/forms/useEventSongForm'
 import { keysOptions } from '~/utils/chords'
 
 import { SelectField, TextareaField } from './FormFields'
 
-type EventSongFormProps = {
-  eventSong: IEventSong
-  show: boolean
-  saving: boolean
-  onSubmit: (song: IEventSong) => void
-  onClose: () => void
-}
 export default function EventSongForm({
   eventSong,
   onSubmit,
   show,
   onClose,
   saving
-}: EventSongFormProps) {
-  const [form, setField] = useEventSongForm(eventSong, true)
+}: {
+  eventSong: IEventSong
+  show: boolean
+  saving: boolean
+  onSubmit: (song: IEventSong) => void
+  onClose: () => void
+}) {
+  const { register, handleSubmit, reset } = useForm<IEventSongForm>()
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    onSubmit(form)
-  }
+  useEffect(() => reset(), [eventSong.id, show])
 
   return (
     <Modal title="Edit song" onClose={onClose} show={show}>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-4"
+        onSubmit={handleSubmit(onSubmit)}
+        key={eventSong.id}
+      >
+        <input
+          className="hidden"
+          {...register('id')}
+          defaultValue={eventSong.id}
+        />
         <TextareaField
-          onChange={value => setField('comment', value)}
-          value={form.comment}
           title="Comment"
           size="small"
+          fieldProps={register('comment')}
+          defaultValue={eventSong.comment}
         />
         <SelectField
-          value={form.transposeKey}
-          onChange={value => setField('transposeKey', value)}
           options={keysOptions}
           title="Key"
+          fieldProps={register('transposeKey', { required: true })}
+          defaultValue={eventSong.transposeKey}
         />
         <span className="flex-grow" />
         <Button variant="primary" type="submit">

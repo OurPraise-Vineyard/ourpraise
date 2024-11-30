@@ -18,6 +18,9 @@ type IDoc = {
   [key: string]: any
 }
 
+type IDocCreate = Omit<IDoc, 'id'>
+type IDocUpdate = Omit<IDoc, 'id'>
+
 type ICollection = IDoc[]
 
 type IDocId = string

@@ -1,9 +1,14 @@
-import { getAuthState } from '~/backend/auth'
+import dateFormat from 'dateformat'
+import { useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+
 import Button from '~/components/Button'
-import useEventForm from '~/hooks/forms/useEventForm'
-import { locations } from '~/hooks/useSavedLocation'
+import { getLatestLocation, locations } from '~/hooks/useSavedLocation'
+import { nextWeekday } from '~/utils/date'
 
 import { SelectField, TextField, TextareaField } from './FormFields'
+
+const defaultDate = dateFormat(nextWeekday(7), 'yyyy-mm-dd')
 
 export default function EventForm({
   event,
@@ -18,52 +23,47 @@ export default function EventForm({
   heading: string
   saving: boolean
 }) {
-  const { user } = getAuthState()
-  const [
-    { title, comment, date, songs, location = locations[0].value },
-    setField
-  ] = useEventForm(event)
+  const latestLocation = useMemo(() => getLatestLocation(), [])
 
-  const handleSave = async e => {
-    e.preventDefault()
+  const { register, handleSubmit } = useForm<IEventForm>()
+
+  const onSave = async data => {
     onSubmit({
-      title,
-      date,
-      songs,
-      comment,
-      owner: user?.email || '',
-      location: location ?? locations[0].value
+      title: data.title,
+      date: data.date,
+      comment: data.comment,
+      location: data.location
     })
   }
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSave}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSave)}>
       <h2 className="text-title font-bold">{heading}</h2>
       <TextField
-        value={title}
         title="Title"
-        onChange={value => setField('title', value)}
+        defaultValue={event?.title}
+        fieldProps={register('title', { required: true })}
       />
       <div className="flex gap-3">
         <TextField
-          value={date}
           type="date"
           title="Date"
-          onChange={value => setField('date', value)}
           className="flex-grow"
+          defaultValue={event?.date || defaultDate}
+          fieldProps={register('date', { required: true })}
         />
         <SelectField
-          value={location}
           title="Location"
-          onChange={value => setField('location', value)}
           options={locations}
           className="flex-grow"
+          defaultValue={event?.location || latestLocation}
+          fieldProps={register('location', { required: true })}
         />
       </div>
       <TextareaField
-        value={comment}
         title="Set comments"
-        onChange={value => setField('comment', value)}
+        fieldProps={register('comment')}
+        defaultValue={event?.comment}
       />
       <div className="flex justify-between">
         <Button variant="primary" type="submit">
