@@ -1,7 +1,7 @@
 // Import the generated route tree
 import { createRouter } from '@tanstack/react-router'
 
-import { routeTree } from './routeTree.gen'
+import { FileRouteTypes, routeTree } from './routeTree.gen'
 
 // Create a new router instance
 const router = createRouter({ routeTree })
@@ -12,5 +12,7 @@ declare module '@tanstack/react-router' {
     router: typeof router
   }
 }
+
+export type RoutePath = FileRouteTypes['id']
 
 export default router

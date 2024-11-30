@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { InputHTMLAttributes } from 'react'
 
 interface FieldProps {
   className?: string
@@ -104,7 +105,8 @@ export function TextField({
   type = 'text',
   autoFocus = false,
   required = false,
-  disabled = false
+  disabled = false,
+  ...props
 }: FieldProps & {
   type?: 'text' | 'password' | 'date'
 }) {
@@ -120,6 +122,32 @@ export function TextField({
         autoFocus={autoFocus}
         required={required}
         disabled={disabled}
+        {...props}
+      />
+    </div>
+  )
+}
+
+export function HookTextField({
+  className,
+  title = '',
+  type = 'text',
+  fieldProps,
+  ...props
+}: InputHTMLAttributes<HTMLInputElement> & {
+  type?: 'text' | 'password' | 'date'
+  className?: string
+  title?: string
+  fieldProps: InputHTMLAttributes<HTMLInputElement>
+}) {
+  return (
+    <div className={classNames('rounded bg-gray-200 p-2', className)}>
+      {!!title && <span className="text-sm/3">{title}</span>}
+      <input
+        type={type}
+        className={classNames(fieldStyles, className)}
+        {...props}
+        {...fieldProps}
       />
     </div>
   )
