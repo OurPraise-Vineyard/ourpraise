@@ -1,13 +1,13 @@
 import {
   User,
-  createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  signOut,
-  updateProfile
+  signOut
 } from 'firebase/auth'
 import { doc, getDoc, getFirestore } from 'firebase/firestore'
+
+import { IUser, IUserMetadata } from '~/types/backend'
 
 import { BackendError } from './firebase'
 
@@ -18,34 +18,6 @@ function getUserMetadata(email: string): Promise<IUserMetadata> {
     }
     throw new BackendError(`Email ${email} not authorized`)
   })
-}
-
-export async function createUser({
-  email,
-  password,
-  displayName
-}: IRegisterForm): Promise<IUser> {
-  if (!displayName) {
-    throw new BackendError('Please provide a name for this account.')
-  }
-
-  try {
-    const userCred = await createUserWithEmailAndPassword(
-      getAuth(),
-      email,
-      password
-    )
-    await updateProfile(userCred.user, { displayName })
-    const meta = await getUserMetadata(email)
-
-    return {
-      email,
-      displayName,
-      role: meta.role
-    }
-  } catch (err) {
-    throw new BackendError(err as string)
-  }
 }
 
 export async function login(email: string, password: string): Promise<IUser> {

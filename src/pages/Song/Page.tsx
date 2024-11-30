@@ -11,6 +11,7 @@ import KeySwitcher from '~/components/KeySwitcher'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RouteLoader, RoutePath } from '~/router'
+import { IKey, ISong } from '~/types/models'
 import { transposeAndFormatSong } from '~/utils/chords'
 
 export const loader: RouteLoader = ({ params }) => fetchSong(params.id)

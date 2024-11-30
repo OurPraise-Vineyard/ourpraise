@@ -8,6 +8,7 @@ import Page from '~/components/Page'
 import SearchSongs from '~/components/SearchField'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RoutePath } from '~/router'
+import { ISong } from '~/types/models'
 import { search } from '~/utils/fuzzy'
 
 export const loader = () => fetchSongs()

@@ -8,6 +8,8 @@ import EventForm from '~/components/EventForm'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RouteLoader, RoutePath } from '~/router'
+import { IEventForm } from '~/types/forms'
+import { IEvent } from '~/types/models'
 
 export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
 

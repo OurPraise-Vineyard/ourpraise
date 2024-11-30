@@ -6,6 +6,8 @@ import {
   updateDocument
 } from '~/lib/database'
 import { IDocId } from '~/types/backend'
+import { ISongForm } from '~/types/forms'
+import { IKey, ISong } from '~/types/models'
 
 export function fetchSong(songId: IDocId): Promise<ISong> {
   return getDocument(`songs/${songId}`).then(song => ({

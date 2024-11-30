@@ -1,0 +1,23 @@
+import { IDocId } from './backend'
+import { IKey } from './models'
+
+export type ISongForm = {
+  id?: IDocId
+  key: IKey
+  title: string
+  authors: string
+  body: string
+}
+
+export type IEventSongForm = {
+  id: IDocId
+  transposeKey: IKey
+  comment: string
+}
+
+export type IEventForm = {
+  title: string
+  date: string
+  id?: IDocId
+  comment: string
+}

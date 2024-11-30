@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form'
 
 import Button from '~/components/Button'
 import Modal from '~/components/Modal'
+import { IEventSongForm } from '~/types/forms'
+import { IEventSong } from '~/types/models'
 import { keysOptions } from '~/utils/chords'
 
 import { SelectField, TextareaField } from './FormFields'

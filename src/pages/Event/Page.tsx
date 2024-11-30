@@ -20,6 +20,8 @@ import Page from '~/components/Page'
 import useContextMenuState from '~/hooks/useContextMenuState'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RouteLoader, RoutePath } from '~/router'
+import { IEventSongForm } from '~/types/forms'
+import { IEvent, IEventSong } from '~/types/models'
 
 export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
 

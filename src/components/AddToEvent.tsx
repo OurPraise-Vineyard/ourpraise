@@ -6,6 +6,7 @@ import { IEventsData, addSongToEvent, fetchEvents } from '~/backend/events'
 import Button from '~/components/Button'
 import Modal from '~/components/Modal'
 import { FetchStatus, IDocId } from '~/types/backend'
+import { IKey } from '~/types/models'
 import { keysOptions } from '~/utils/chords'
 import { formatDate } from '~/utils/date'
 

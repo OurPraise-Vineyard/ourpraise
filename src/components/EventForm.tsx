@@ -2,6 +2,8 @@ import dateFormat from 'dateformat'
 import { useForm } from 'react-hook-form'
 
 import Button from '~/components/Button'
+import { IEventForm } from '~/types/forms'
+import { IEvent } from '~/types/models'
 import { nextWeekday } from '~/utils/date'
 
 import { TextField, TextareaField } from './FormFields'

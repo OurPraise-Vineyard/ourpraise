@@ -1,4 +1,6 @@
-type IEventSong = {
+import { IDocId } from './backend'
+
+export interface IEventSong {
   id: IDocId
   transposeKey: IKey
   comment: string
@@ -9,13 +11,7 @@ type IEventSong = {
   formattedKey?: string
 }
 
-type IEventSongForm = {
-  id: IDocId
-  transposeKey: IKey
-  comment: string
-}
-
-type IEvent = {
+export interface IEvent {
   title: string
   date: string
   location?: string
@@ -27,9 +23,25 @@ type IEvent = {
   formattedDate: string
 }
 
-type IEventForm = {
+export interface ISong {
+  id: IDocId
+  key: IKey
   title: string
-  date: string
-  id?: IDocId
-  comment: string
+  authors: string
+  body: string
 }
+
+export type IKey =
+  | 'Ab'
+  | 'A'
+  | 'Bb'
+  | 'B'
+  | 'C'
+  | 'Db'
+  | 'D'
+  | 'Eb'
+  | 'E'
+  | 'F'
+  | 'F#'
+  | 'Gb'
+  | 'G'

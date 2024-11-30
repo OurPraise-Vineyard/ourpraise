@@ -7,6 +7,7 @@ import Button from '~/components/Button'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RouteLoader, RoutePath } from '~/router'
+import { IEvent } from '~/types/models'
 
 export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
 

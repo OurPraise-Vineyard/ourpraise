@@ -6,6 +6,7 @@ import Button from '~/components/Button'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RoutePath } from '~/router'
+import { IEvent } from '~/types/models'
 import { formatDate } from '~/utils/date'
 
 function renderEventItem(event: IEvent): JSX.Element {

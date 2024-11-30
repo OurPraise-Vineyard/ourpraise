@@ -8,6 +8,8 @@ import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RouteLoader, RoutePath } from '~/router'
+import { ISongForm } from '~/types/forms'
+import { ISong } from '~/types/models'
 
 export const loader: RouteLoader = ({ params }) => fetchSong(params.id)
 

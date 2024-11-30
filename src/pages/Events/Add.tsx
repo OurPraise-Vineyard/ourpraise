@@ -7,6 +7,7 @@ import EventForm from '~/components/EventForm'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { IDocId } from '~/types/backend'
+import { IEventForm } from '~/types/forms'
 
 export default function AddEventPage() {
   const navigate = useNavigate()
