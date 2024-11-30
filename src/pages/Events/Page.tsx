@@ -1,5 +1,7 @@
 import classNames from 'classnames'
-import { getAuthState, requireLoggedIn } from '~/backend/auth'
+
+import { Link, getRouteApi } from '@tanstack/react-router'
+
 import { fetchEvents } from '~/backend/events'
 import { IEventsData } from '~/backend/events'
 import { pageTitleStyles, toolbarStyles } from '~/common-styles'
@@ -8,10 +10,8 @@ import { SelectField } from '~/components/FormFields'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { locations, useSavedLocation } from '~/hooks/useSavedLocation'
+import { RoutePath } from '~/router'
 import { formatDate } from '~/utils/date'
-
-import { createFileRoute } from '@tanstack/react-router'
-import { Link, getRouteApi } from '@tanstack/react-router'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
@@ -31,12 +31,11 @@ function renderEventItem(event: IEvent): JSX.Element {
   )
 }
 
-function Events() {
-  const { upcoming, past }: IEventsData =
-    getRouteApi('/_protected/').useLoaderData()
+export const loader = () => fetchEvents()
+
+export default function EventsPage({ routePath }: { routePath: RoutePath }) {
+  const { upcoming, past }: IEventsData = getRouteApi(routePath).useLoaderData()
   useDocumentTitle('Events')
-  const { user } = getAuthState()
-  const isAdmin = user?.role === 'admin'
   const [location, setLocation] = useSavedLocation()
 
   const upcomingFiltered = upcoming.filter(e =>
@@ -58,16 +57,14 @@ function Events() {
           options={locations}
           className="flex h-toolbar items-center"
         />
-        {isAdmin && (
-          <Button
-            type="link"
-            to="/events/add"
-            className="h-toolbar"
-            variant="primary"
-          >
-            Add new event
-          </Button>
-        )}
+        <Button
+          type="link"
+          to="/events/add"
+          className="h-toolbar"
+          variant="primary"
+        >
+          Add new event
+        </Button>
       </div>
       {upcomingFiltered.map(renderEventItem)}
       {upcomingFiltered.length === 0 && (
@@ -85,9 +82,3 @@ function Events() {
     </Page>
   )
 }
-
-export const Route = createFileRoute('/_protected/')({
-  beforeLoad: requireLoggedIn,
-  loader: () => fetchEvents(),
-  component: Events
-})

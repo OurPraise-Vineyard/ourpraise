@@ -16,13 +16,7 @@
   "vueIndentScriptAndStyle": false,
   "printWidth": 80,
   "tabWidth": 2,
-  "importOrder": [
-    "^~/pages/(.*)$",
-    "^~/components/(.*)$",
-    "^@blocks/(.*)$",
-    "^@.*?/(.*)$",
-    "^[./]"
-  ],
+  "importOrder": ["^@.*?/(.*)$", "^~/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "plugins": [

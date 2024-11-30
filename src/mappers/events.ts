@@ -1,4 +1,4 @@
-import { keysOptions, transposeSong } from '~/utils/chords'
+import { formatDate } from '~/utils/date'
 import pruneObject from '~/utils/pruneObject'
 
 export function mapCollectionToEvents(docs: ICollection): IEvent[] {
@@ -22,32 +22,8 @@ export function mapDocToEvent(doc: IDoc): IEvent {
         transposeKey: songDoc.transposeKey as IKey,
         comment: songDoc.comment
       })
-    )
-  }
-}
-
-export function mergeSongEventSong(
-  song: ISong,
-  eventSong: IEventSong
-): IEventSong {
-  const body = transposeSong(
-    song.body,
-    song.key,
-    eventSong.transposeKey || song.key
-  )
-    .replace(/^\/\//gm, '  ')
-    .replace(/\n\s+?\n/g, '\n\n')
-    .split('\n\n')
-
-  const songKey = eventSong.transposeKey || song.key
-  const formattedKey = keysOptions.find(key => key.value === songKey)?.label
-
-  return {
-    ...song,
-    ...eventSong,
-    body,
-    transposeKey: songKey,
-    formattedKey
+    ),
+    formattedDate: formatDate(event.date)
   }
 }
 

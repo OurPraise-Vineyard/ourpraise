@@ -24,6 +24,7 @@ type IEvent = {
   comment: string
   createdAt: string
   owner: string
+  formattedDate: string
 }
 
 type IEventForm = {

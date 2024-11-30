@@ -110,3 +110,18 @@ export function transposeSong(
       return ')' + p1
     })
 }
+
+export function transposeAndFormatSong(
+  body: string,
+  fromKey: IKey | null,
+  toKey: IKey
+): string[] {
+  return transposeSong(body, fromKey, toKey)
+    .replace(/^\/\//gm, '  ')
+    .replace(/\n\s+?\n/g, '\n\n')
+    .split('\n\n')
+}
+
+export function formatKey(key: IKey): string {
+  return keysOptions.find(option => option.value === key)?.label || key
+}

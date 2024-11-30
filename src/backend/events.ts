@@ -11,10 +11,10 @@ import {
   mapCollectionToEvents,
   mapDocToEvent,
   mapEventFormToEvent,
-  mapEventSongFormToEventSong,
-  mergeSongEventSong
+  mapEventSongFormToEventSong
 } from '~/mappers/events'
-import { getTime, todayTime } from '~/utils/date'
+import { formatKey, keysOptions, transposeAndFormatSong } from '~/utils/chords'
+import { formatDate, getTime, todayTime } from '~/utils/date'
 
 export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
 
@@ -44,19 +44,35 @@ export async function fetchEvents(): Promise<IEventsData> {
 }
 
 export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
-  const event = await getDocument(`events/${eventId}`).then(mapDocToEvent)
+  const eventDoc = await getDocument(`events/${eventId}`)
 
   const songs: IEventSong[] = await Promise.all(
-    event.songs.map(async eventSong => {
+    eventDoc.songs.map(async (eventSong): Promise<IEventSong> => {
       const song: ISong = await fetchSong(eventSong.id)
 
-      return mergeSongEventSong(song, eventSong)
+      const songKey = eventSong.transposeKey || song.key
+      const body = transposeAndFormatSong(song.body, song.key, songKey)
+
+      return {
+        ...song,
+        ...eventSong,
+        body,
+        transposeKey: songKey,
+        formattedKey: formatKey(songKey)
+      }
     })
   )
 
   return {
-    ...event,
-    songs
+    comment: eventDoc.comment,
+    createdAt: eventDoc.createdAt,
+    date: eventDoc.date,
+    id: eventDoc.id,
+    owner: eventDoc.owner,
+    title: eventDoc.title,
+    location: eventDoc.location,
+    songs,
+    formattedDate: formatDate(eventDoc.date)
   }
 }
 

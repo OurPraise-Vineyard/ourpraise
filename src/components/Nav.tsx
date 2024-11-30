@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
+
+import { Link } from '@tanstack/react-router'
+
 import logo from '~/assets/logo_light.svg'
 import { getAuthState, logout } from '~/backend/auth'
 import ContextMenu from '~/components/ContextMenu'
 import useContextMenuState from '~/hooks/useContextMenuState'
 import router from '~/router'
-
-import { Link } from '@tanstack/react-router'
 
 const navLinkStyles =
   'border-b text-white hover:border-b-white border-b-transparent'
@@ -50,7 +51,7 @@ export default function Nav() {
               <Link
                 className={navLinkStyles}
                 activeProps={{ className: linkActiveStyles }}
-                to="/"
+                to="/events"
               >
                 Events
               </Link>
