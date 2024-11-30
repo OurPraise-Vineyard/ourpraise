@@ -1,10 +1,7 @@
-import classNames from 'classnames'
-
 import { Link, getRouteApi } from '@tanstack/react-router'
 
 import { fetchEvents } from '~/backend/events'
 import { IEventsData } from '~/backend/events'
-import { pageTitleStyles, toolbarStyles } from '~/common-styles'
 import Button from '~/components/Button'
 import { SelectField } from '~/components/FormFields'
 import Page from '~/components/Page'
@@ -47,10 +44,8 @@ export default function EventsPage({ routePath }: { routePath: RoutePath }) {
 
   return (
     <Page>
-      <div className={toolbarStyles}>
-        <h2 className={classNames(pageTitleStyles, 'flex-grow')}>
-          Upcoming events
-        </h2>
+      <div className="flex items-center gap-4 border-b border-b-gray-300 py-4">
+        <h2 className="text-title flex-grow font-bold">Upcoming events</h2>
         <SelectField
           value={location}
           onChange={setLocation}
@@ -70,12 +65,7 @@ export default function EventsPage({ routePath }: { routePath: RoutePath }) {
       {upcomingFiltered.length === 0 && (
         <p className="pb-2 text-lg">No upcoming events</p>
       )}
-      <h2
-        className={classNames(
-          pageTitleStyles,
-          'mt-5 border-b border-b-gray-300 py-2'
-        )}
-      >
+      <h2 className="text-title mt-5 flex-grow border-b border-b-gray-300 py-2 font-bold">
         Past events
       </h2>
       {pastFiltered.map(renderEventItem)}

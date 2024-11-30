@@ -1,15 +1,8 @@
-import classNames from 'classnames'
 import { useEffect } from 'react'
-import { useMemo } from 'react'
 
 import { getRouteApi } from '@tanstack/react-router'
 
 import { fetchEvent } from '~/backend/events'
-import {
-  ellipsisTextStyles,
-  pageTitleStyles,
-  toolbarStyles
-} from '~/common-styles'
 import Button from '~/components/Button'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
@@ -31,13 +24,8 @@ export default function PrintEventPage({
   }, [])
 
   return (
-    <Page>
-      <div
-        className={classNames(
-          toolbarStyles,
-          'justify-between border-b-0 pb-4 print:hidden'
-        )}
-      >
+    <Page noAnimation>
+      <div className="flex items-center justify-between gap-4 py-4 pb-4 print:hidden">
         <Button
           type="link"
           to="/events/$id"
@@ -55,8 +43,10 @@ export default function PrintEventPage({
           Print
         </Button>
       </div>
-      <div className={classNames(toolbarStyles, 'pb-4')}>
-        <h2 className={pageTitleStyles}>{event.title}</h2>
+      <div className="flex items-center gap-4 border-b border-b-gray-300 py-4 pb-2">
+        <h2 className="text-title flex-grow overflow-x-hidden text-ellipsis whitespace-nowrap font-bold">
+          {event.title}
+        </h2>
         <span className="flex-grow-0 whitespace-nowrap rounded-md p-0 text-xl text-gray-500">
           {event.formattedDate}
         </span>
@@ -78,17 +68,10 @@ export default function PrintEventPage({
         >
           <div className="flex w-full items-center gap-2 border-b border-b-gray-300 pb-2">
             <div className="w-0 flex-grow">
-              <p
-                className={classNames(ellipsisTextStyles, 'text-xl font-bold')}
-              >
+              <p className="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold">
                 {song.title}
               </p>
-              <p
-                className={classNames(
-                  ellipsisTextStyles,
-                  'text-lg text-gray-400'
-                )}
-              >
+              <p className="overflow-hidden text-ellipsis whitespace-nowrap text-lg text-gray-400">
                 {song.authors}
               </p>
             </div>

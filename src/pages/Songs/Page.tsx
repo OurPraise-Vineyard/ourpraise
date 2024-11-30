@@ -1,14 +1,8 @@
-import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 
 import { Link, getRouteApi } from '@tanstack/react-router'
 
 import { fetchSongs } from '~/backend/songs'
-import {
-  ellipsisTextStyles,
-  pageTitleStyles,
-  toolbarStyles
-} from '~/common-styles'
 import Button from '~/components/Button'
 import Page from '~/components/Page'
 import SearchSongs from '~/components/SearchField'
@@ -35,8 +29,8 @@ export default function SongsPage({ routePath }: { routePath: RoutePath }) {
 
   return (
     <Page>
-      <div className={toolbarStyles}>
-        <h2 className={pageTitleStyles}>
+      <div className="flex items-center gap-4 border-b border-b-gray-300 py-4">
+        <h2 className="text-title flex-grow font-bold">
           {query ? `Search results for "${query}"` : 'All songs'}
         </h2>
         <SearchSongs onSearch={setQuery} />
@@ -57,12 +51,12 @@ export default function SongsPage({ routePath }: { routePath: RoutePath }) {
           key={song.id}
           className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
         >
-          <p className={classNames(ellipsisTextStyles, 'w-1/2')}>
+          <p className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap">
             {song.title || (
               <span className="italic text-red-500">Missing title</span>
             )}
           </p>
-          <p className={ellipsisTextStyles}>
+          <p className="overflow-hidden text-ellipsis whitespace-nowrap">
             {song.authors || (
               <span className="italic text-red-500">Missing authors</span>
             )}

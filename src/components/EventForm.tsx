@@ -1,5 +1,4 @@
 import { getAuthState } from '~/backend/auth'
-import { pageTitleStyles } from '~/common-styles'
 import Button from '~/components/Button'
 import useEventForm from '~/hooks/forms/useEventForm'
 import { locations } from '~/hooks/useSavedLocation'
@@ -39,7 +38,7 @@ export default function EventForm({
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSave}>
-      <h2 className={pageTitleStyles}>{heading}</h2>
+      <h2 className="text-title font-bold">{heading}</h2>
       <TextField
         value={title}
         title="Title"

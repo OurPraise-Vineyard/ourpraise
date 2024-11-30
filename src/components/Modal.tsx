@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import { useEffect } from 'react'
 import * as React from 'react'
+
 import xIcon from '~/assets/x.svg'
-import { pageTitleStyles, toolbarStyles } from '~/common-styles'
 import IconButton from '~/components/IconButton'
 
 type ModalProps = {
@@ -50,8 +50,8 @@ export default function Modal({ onClose, show, children, title }: ModalProps) {
         )}
         onClick={handleStopPropagate}
       >
-        <div className={classNames(toolbarStyles, 'px-5')}>
-          {!!title && <p className={pageTitleStyles}>{title}</p>}
+        <div className="flex items-center gap-4 border-b border-b-gray-300 px-5 py-4">
+          {!!title && <p className="text-title flex-grow font-bold">{title}</p>}
           <IconButton icon={xIcon} onClick={onClose} />
         </div>
         <div className="relative flex flex-grow flex-col p-5">{children}</div>

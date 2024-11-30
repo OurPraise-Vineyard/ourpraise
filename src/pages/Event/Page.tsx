@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import { useMemo, useState } from 'react'
 import * as React from 'react'
 
@@ -13,11 +12,6 @@ import {
   removeEventSong,
   saveEventSong
 } from '~/backend/events'
-import {
-  ellipsisTextStyles,
-  pageTitleStyles,
-  toolbarStyles
-} from '~/common-styles'
 import Button from '~/components/Button'
 import ContextMenu from '~/components/ContextMenu'
 import EventSongForm from '~/components/EventSongForm'
@@ -38,7 +32,6 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
   const [selectedSong, setSelectedSong] = useState<IEventSong | null>(null)
   const [editSong, setEditSong] = useState<boolean>(false)
   const [savingSong, setSavingSong] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
 
   function triggerReload() {
     // This will trigger a reload of the page
@@ -55,7 +48,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
       setEditSong(false)
       triggerReload()
     } catch (err: any) {
-      setError(err.message)
+      console.error(err.message)
     } finally {
       setSavingSong(false)
     }
@@ -77,7 +70,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
               await moveEventSong(event.id, selectedSong.id, -1)
               triggerReload()
             } catch (err: any) {
-              setError(err.message)
+              console.error(err.message)
             } finally {
               contextMenu.onClose()
             }
@@ -92,7 +85,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
               await moveEventSong(event.id, selectedSong.id, 1)
               triggerReload()
             } catch (err: any) {
-              setError(err.message)
+              console.error(err.message)
             } finally {
               contextMenu.onClose()
             }
@@ -118,7 +111,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
                 await removeEventSong(event.id, selectedSong.id)
                 triggerReload()
               } catch (err: any) {
-                setError(err.message)
+                console.error(err.message)
               } finally {
                 contextMenu.onClose()
               }
@@ -127,7 +120,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
         }
       }
     ],
-    [contextMenu, selectedSong, event.id, setError, triggerReload]
+    [contextMenu, selectedSong, event.id, console.error, triggerReload]
   )
 
   return (
@@ -149,8 +142,10 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
           saving={savingSong}
         />
       )}
-      <div className={toolbarStyles}>
-        <h2 className={pageTitleStyles}>{event.title}</h2>
+      <div className="flex items-center gap-4 border-b border-b-gray-300 py-4">
+        <h2 className="text-title flex-grow overflow-x-hidden text-ellipsis whitespace-nowrap font-bold">
+          {event.title}
+        </h2>
         <span className="flex-grow-0 whitespace-nowrap rounded-md bg-gray-200 px-2 py-1 text-base">
           {event.formattedDate}
         </span>
@@ -189,18 +184,13 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
             <div className="flex w-full items-center gap-2">
               <div className="w-0 flex-grow">
                 <Link
-                  className={classNames(ellipsisTextStyles, 'text-lg')}
+                  className="overflow-hidden text-ellipsis whitespace-nowrap text-lg"
                   to="/songs/$id"
                   params={{ id: song.id }}
                 >
                   {song.title}
                 </Link>
-                <p
-                  className={classNames(
-                    ellipsisTextStyles,
-                    'text-lg text-gray-400'
-                  )}
-                >
+                <p className="overflow-hidden text-ellipsis whitespace-nowrap text-lg text-gray-400">
                   {song.authors}
                 </p>
               </div>

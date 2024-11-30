@@ -1,6 +1,19 @@
-export default function Page({ children }: { children: React.ReactNode }) {
+import classNames from 'classnames'
+
+export default function Page({
+  children,
+  noAnimation = false
+}: {
+  noAnimation?: boolean
+  children: React.ReactNode
+}) {
   return (
-    <div className="mx-auto w-page max-w-full animate-fadeIn p-5">
+    <div
+      className={classNames(
+        'mx-auto w-page max-w-full p-5',
+        !noAnimation && 'animate-fadeIn'
+      )}
+    >
       {children}
     </div>
   )

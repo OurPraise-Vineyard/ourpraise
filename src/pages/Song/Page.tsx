@@ -1,13 +1,10 @@
-import classNames from 'classnames'
 import { useState } from 'react'
 
-import { createFileRoute } from '@tanstack/react-router'
 import { getRouteApi } from '@tanstack/react-router'
 
 import editIcon from '~/assets/edit.svg'
-import { getAuthState, requireLoggedIn } from '~/backend/auth'
+import { getAuthState } from '~/backend/auth'
 import { fetchSong } from '~/backend/songs'
-import { ellipsisTextStyles, pageTitleStyles } from '~/common-styles'
 import AddToEvent from '~/components/AddToEvent'
 import Button from '~/components/Button'
 import IconButton from '~/components/IconButton'
@@ -59,8 +56,8 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
       )}
       <div className="mb-8 mt-4 flex items-center gap-3">
         <div className="w-1/2">
-          <h2 className={pageTitleStyles}>{song.title}</h2>
-          <p className={classNames(ellipsisTextStyles, 'text-lg')}>
+          <h2 className="text-title font-bold">{song.title}</h2>
+          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-lg">
             {song.authors}
           </p>
         </div>
