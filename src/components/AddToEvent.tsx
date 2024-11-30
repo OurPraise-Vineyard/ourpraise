@@ -1,56 +1,74 @@
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
-import * as React from 'react'
+import { useForm } from 'react-hook-form'
 
 import { IEventsData, addSongToEvent, fetchEvents } from '~/backend/events'
 import Button from '~/components/Button'
 import Modal from '~/components/Modal'
-import useFetch from '~/hooks/useFetch'
 import { locations, useSavedLocation } from '~/hooks/useSavedLocation'
 import { keysOptions } from '~/utils/chords'
 import { formatDate } from '~/utils/date'
 
 import { SelectField, TextareaField } from './FormFields'
+import Selector from './Selector'
 
-type AddToEventProps = {
-  songId: IDocId
-  songKey: IKey
-  show: boolean
-  onClose: () => void
+type FormState = {
+  comment: string
+  key: IKey
 }
+
 export default function AddToEvent({
   songId,
   songKey,
   show,
   onClose
-}: AddToEventProps) {
-  const [status, events] = useFetch<IEventsData>(fetchEvents)
+}: {
+  songId: IDocId
+  songKey: IKey
+  show: boolean
+  onClose: () => void
+}) {
+  const [fetchStatus, setFetchStatus] = useState<FetchStatus>('idle')
+  const [events, setEvents] = useState<IEventsData['upcoming'] | null>(null)
   const [selectedEvent, setSelectedEvent] = useState<IDocId>('')
-  const [comment, setComment] = useState<string>('')
-  const [transposeKey, setTransposeKey] = useState<IKey>(songKey)
   const [saving, setSaving] = useState<boolean>(false)
   const [location, setLocation] = useSavedLocation()
-  const eventsFiltered = events?.upcoming.filter(e =>
+  const eventsFiltered = events?.filter(e =>
     e.location ? e.location === location : location === locations[0].value
   )
   const [error, setError] = useState<string | null>(null)
+  const { register, handleSubmit, reset } = useForm<FormState>()
+
+  useEffect(() => reset(), [show])
 
   useEffect(() => {
-    setTransposeKey(songKey)
-  }, [songKey])
+    if (show && fetchStatus === 'idle') {
+      setFetchStatus('loading')
+      fetchEvents()
+        .then(data => {
+          if (data.upcoming.length > 0) {
+            setEvents(data.upcoming)
+          }
+          setFetchStatus('succeeded')
+        })
+        .catch(() => setFetchStatus('failed'))
+    }
+  }, [songId, show])
 
-  const handleAddSong = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const onAdd = async (form: FormState) => {
     try {
       if (!selectedEvent) {
         throw new Error('No event selected')
       }
       setSaving(true)
-      await addSongToEvent(selectedEvent, { id: songId, transposeKey, comment })
+      await addSongToEvent(selectedEvent, {
+        id: songId,
+        transposeKey: form.key,
+        comment: form.comment
+      })
       onClose()
       setSaving(false)
-      setSelectedEvent('')
-      setComment('')
+      reset()
     } catch (err: any) {
       setSaving(false)
       setError(err.message)
@@ -60,14 +78,14 @@ export default function AddToEvent({
   return (
     <Modal title="Add song to event" onClose={onClose} show={show}>
       <div className="flex flex-grow flex-col gap-3">
-        <SelectField
+        <Selector
           value={location}
-          onChange={setLocation}
+          onChange={loc => setLocation(loc.value as string)}
           options={locations}
         />
         <div className="flex-grow">
           <div className="overflow-y-auto">
-            {status === 'succeeded' &&
+            {fetchStatus === 'succeeded' &&
               eventsFiltered?.map(event => (
                 <div
                   onClick={() => setSelectedEvent(event.id)}
@@ -87,27 +105,31 @@ export default function AddToEvent({
                   </p>
                 </div>
               ))}
-            {status === 'succeeded' && events?.upcoming.length === 0 && (
+            {fetchStatus === 'succeeded' && events?.length === 0 && (
               <p className="text-center">No upcoming events.</p>
             )}
-            {status === 'loading' && (
+            {fetchStatus === 'loading' && (
               <p className="text-center">Loading events...</p>
+            )}
+            {fetchStatus === 'failed' && (
+              <p className="text-center text-red-500">
+                Failed to load events. Try again later.
+              </p>
             )}
           </div>
         </div>
         {!!selectedEvent && (
-          <form onSubmit={handleAddSong} className="flex flex-col gap-3">
+          <form onSubmit={handleSubmit(onAdd)} className="flex flex-col gap-3">
             <TextareaField
-              onChange={setComment}
-              value={comment}
               title="Comment"
               size="small"
+              fieldProps={register('comment')}
             />
             <SelectField
-              value={transposeKey}
-              onChange={setTransposeKey}
               options={keysOptions}
               title="Key"
+              defaultValue={songKey}
+              fieldProps={register('key')}
             />
             <Button type="submit" variant="primary">
               {saving ? 'Saving...' : 'Add song'}

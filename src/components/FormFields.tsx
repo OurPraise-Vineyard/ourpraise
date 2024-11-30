@@ -5,17 +5,6 @@ import {
   TextareaHTMLAttributes
 } from 'react'
 
-interface FieldProps {
-  className?: string
-  title?: string
-  name?: string
-  onChange: (string) => void
-  value: string
-  autoFocus?: boolean
-  required?: boolean
-  disabled?: boolean
-}
-
 export interface SelectItem {
   label?: string
   value: string | number

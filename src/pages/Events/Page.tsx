@@ -3,8 +3,8 @@ import { Link, getRouteApi } from '@tanstack/react-router'
 import { fetchEvents } from '~/backend/events'
 import { IEventsData } from '~/backend/events'
 import Button from '~/components/Button'
-import { SelectField } from '~/components/FormFields'
 import Page from '~/components/Page'
+import Selector from '~/components/Selector'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { locations, useSavedLocation } from '~/hooks/useSavedLocation'
 import { RoutePath } from '~/router'
@@ -46,9 +46,9 @@ export default function EventsPage({ routePath }: { routePath: RoutePath }) {
     <Page>
       <div className="flex items-center gap-4 border-b border-b-gray-300 py-4">
         <h2 className="text-title flex-grow font-bold">Upcoming events</h2>
-        <SelectField
+        <Selector
           value={location}
-          onChange={setLocation}
+          onChange={loc => setLocation(loc.value as string)}
           options={locations}
           className="flex h-toolbar items-center"
         />
