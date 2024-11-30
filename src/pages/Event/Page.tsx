@@ -19,9 +19,9 @@ import IconButton from '~/components/IconButton'
 import Page from '~/components/Page'
 import useContextMenuState from '~/hooks/useContextMenuState'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
-import { RoutePath } from '~/router'
+import { RouteLoader, RoutePath } from '~/router'
 
-export const loader = ({ params }) => fetchEvent(params.id)
+export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
 
 export default function EventPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)

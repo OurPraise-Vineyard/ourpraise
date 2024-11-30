@@ -14,7 +14,7 @@ export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
   const navigate = getRouteApi(routePath).useNavigate()
   const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async form => {
+  const handleSubmit = async (form: ISongForm) => {
     try {
       const id: IDocId = await createSong(form)
       if (id) {

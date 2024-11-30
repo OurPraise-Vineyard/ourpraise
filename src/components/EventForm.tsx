@@ -23,7 +23,7 @@ export default function EventForm({
 }) {
   const { register, handleSubmit } = useForm<IEventForm>()
 
-  const onSave = async data => {
+  const onSave = async (data: IEventForm) => {
     onSubmit({
       title: data.title,
       date: data.date,

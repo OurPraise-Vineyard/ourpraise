@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import * as React from 'react'
+
 import searchIcon from '~/assets/search.svg'
 import { createDebouncer } from '~/utils/debouncer'
 
@@ -17,7 +18,7 @@ export default function SearchField({ onSearch, inputRef }: SearchBarProps) {
     onSearch(query)
   }, [query, onSearch])
 
-  function debounceSearch(q) {
+  function debounceSearch(q: string) {
     debounce(() => setQuery(q), !q)
   }
 

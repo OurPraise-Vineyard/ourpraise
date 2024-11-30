@@ -1,7 +1,7 @@
+import { Outlet, createFileRoute } from '@tanstack/react-router'
+
 import { requireLoggedIn } from '~/backend/auth'
 import Nav from '~/components/Nav'
-
-import { Outlet, createFileRoute, useLocation } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: requireLoggedIn,

@@ -10,10 +10,10 @@ import IconButton from '~/components/IconButton'
 import KeySwitcher from '~/components/KeySwitcher'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
-import { RoutePath } from '~/router'
+import { RouteLoader, RoutePath } from '~/router'
 import { transposeAndFormatSong } from '~/utils/chords'
 
-export const loader = ({ params }) => fetchSong(params.id)
+export const loader: RouteLoader = ({ params }) => fetchSong(params.id)
 
 export default function SongPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)

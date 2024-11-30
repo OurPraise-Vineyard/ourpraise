@@ -7,9 +7,9 @@ import { saveEvent } from '~/backend/events'
 import EventForm from '~/components/EventForm'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
-import { RoutePath } from '~/router'
+import { RouteLoader, RoutePath } from '~/router'
 
-export const loader = ({ params }) => fetchEvent(params.id)
+export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
 
 export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)
@@ -19,7 +19,7 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
   useDocumentTitle(`Edit event: "${event.title}"`)
   const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async options => {
+  const handleSubmit = async (options: IEventForm) => {
     try {
       setSaving(true)
       await saveEvent({ ...options, id: event.id })

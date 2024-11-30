@@ -1,5 +1,6 @@
 import classNames from 'classnames'
-import { ButtonHTMLAttributes } from 'react'
+import { ButtonHTMLAttributes, ChangeEvent } from 'react'
+
 import checked from '~/assets/check-square.svg'
 import decrease from '~/assets/decrease.svg'
 import increase from '~/assets/increase.svg'
@@ -59,8 +60,8 @@ export default function KeySwitcher({
   const handleSwitch = (movement: 1 | -1) => () => {
     setTransposeKey(findNextKey(transposeKey, movement))
   }
-  const handleSelect = e => {
-    setTransposeKey(e.target.value)
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    setTransposeKey(e.target.value as IKey)
   }
 
   return (

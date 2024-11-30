@@ -1,7 +1,7 @@
 export function createDebouncer(interval: number) {
   let timeout: number
 
-  return function (this, cb: () => void, immediate = false) {
+  return function (this: any, cb: () => void, immediate = false) {
     const later = function () {
       if (!immediate) cb()
     }

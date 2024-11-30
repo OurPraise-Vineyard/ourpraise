@@ -6,9 +6,9 @@ import { fetchEvent } from '~/backend/events'
 import Button from '~/components/Button'
 import Page from '~/components/Page'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
-import { RoutePath } from '~/router'
+import { RouteLoader, RoutePath } from '~/router'
 
-export const loader = ({ params }) => fetchEvent(params.id)
+export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
 
 export default function PrintEventPage({
   routePath

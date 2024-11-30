@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-import { useEffect } from 'react'
-import * as React from 'react'
+import { ReactNode, useEffect } from 'react'
+import { MouseEvent } from 'react'
 
 import xIcon from '~/assets/x.svg'
 import IconButton from '~/components/IconButton'
@@ -8,7 +8,7 @@ import IconButton from '~/components/IconButton'
 type ModalProps = {
   onClose: () => void
   show: boolean
-  children: React.ReactNode
+  children: ReactNode
   title?: string
 }
 export default function Modal({ onClose, show, children, title }: ModalProps) {
@@ -23,7 +23,7 @@ export default function Modal({ onClose, show, children, title }: ModalProps) {
     [show]
   )
 
-  function handleStopPropagate(e) {
+  function handleStopPropagate(e: MouseEvent<HTMLDivElement>) {
     e.stopPropagation()
   }
 

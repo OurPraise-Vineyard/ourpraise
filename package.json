@@ -43,6 +43,7 @@
     "@tanstack/router-plugin": "^1.84.4",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@tsconfig/vite-react": "^3.4.0",
+    "@types/dateformat": "^5.0.2",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.1",
     "@types/react": "^18.3.12",

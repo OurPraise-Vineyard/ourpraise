@@ -14,7 +14,7 @@ export default function AddEventPage() {
   const [saving, setSaving] = useState<boolean>(false)
   useDocumentTitle('Add event')
 
-  const handleSubmit = async options => {
+  const handleSubmit = async (options: IEventForm) => {
     try {
       setSaving(true)
       const id: IDocId = await createEvent(options)

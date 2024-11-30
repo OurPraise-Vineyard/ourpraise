@@ -34,7 +34,7 @@ function mapFirebaseError(err: unknown, fallback: string) {
     return (err as BackendError).message
   }
 
-  const code = (err as FirebaseError).code
+  const code = (err as FirebaseError).code as keyof typeof firebaseErrors
 
   if (firebaseErrors[code]) {
     return firebaseErrors[code]

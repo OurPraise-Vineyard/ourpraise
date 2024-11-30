@@ -7,9 +7,9 @@ import { saveSong } from '~/backend/songs'
 import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
-import { RoutePath } from '~/router'
+import { RouteLoader, RoutePath } from '~/router'
 
-export const loader = ({ params }) => fetchSong(params.id)
+export const loader: RouteLoader = ({ params }) => fetchSong(params.id)
 
 export default function EditSongPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)
@@ -18,7 +18,7 @@ export default function EditSongPage({ routePath }: { routePath: RoutePath }) {
   useDocumentTitle(song ? `Edit song: "${song.title}"` : 'Edit song')
   const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async options => {
+  const handleSubmit = async (options: ISongForm) => {
     try {
       await saveSong({
         ...options,

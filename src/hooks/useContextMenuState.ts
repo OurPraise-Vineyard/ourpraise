@@ -15,7 +15,7 @@ type ContextMenuHookValue = ContextMenuState & {
   onClose: () => void
 }
 
-function reducer(state: ContextMenuState, update) {
+function reducer(state: ContextMenuState, update: Record<string, any>) {
   return {
     ...state,
     ...update
@@ -32,10 +32,10 @@ export default function useContextMenuState(): ContextMenuHookValue {
   const [state, dispatch] = useReducer(reducer, defaultState)
 
   const setPosition = useCallback(
-    (left, top) => dispatch({ top: top + 15, left }),
+    (left: number, top: number) => dispatch({ top: top + 15, left }),
     [dispatch]
   )
-  const setShow = useCallback(show => dispatch({ show }), [dispatch])
+  const setShow = useCallback((show: boolean) => dispatch({ show }), [dispatch])
   const onOpen = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()

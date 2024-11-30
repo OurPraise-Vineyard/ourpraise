@@ -59,7 +59,7 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
   const eventDoc = await getDocument(`events/${eventId}`)
 
   const songs: IEventSong[] = await Promise.all(
-    eventDoc.songs.map(async (eventSong): Promise<IEventSong> => {
+    eventDoc.songs.map(async (eventSong: IDoc): Promise<IEventSong> => {
       const song: ISong = await fetchSong(eventSong.id)
 
       const songKey = eventSong.transposeKey || song.key
@@ -70,8 +70,8 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
       })
 
       return {
-        ...song,
-        ...eventSong,
+        id: eventSong.id,
+        comment: eventSong.comment,
         body,
         transposeKey: songKey,
         formattedKey: formatKey(songKey)

@@ -14,5 +14,6 @@ declare module '@tanstack/react-router' {
 }
 
 export type RoutePath = FileRouteTypes['id']
+export type RouteLoader = ({}: { params: { id: string } }) => Promise<any>
 
 export default router
