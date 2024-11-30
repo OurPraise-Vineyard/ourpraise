@@ -1,18 +1,17 @@
-import { pageTitleStyles, toolbarStyles } from '@common-styles'
 import classNames from 'classnames'
+import { getAuthState, requireLoggedIn } from '~/backend/auth'
+import { fetchEvents } from '~/backend/events'
+import { IEventsData } from '~/backend/events'
+import { pageTitleStyles, toolbarStyles } from '~/common-styles'
+import Button from '~/components/Button'
+import { SelectField } from '~/components/FormFields'
+import Page from '~/components/Page'
+import { useDocumentTitle } from '~/hooks/useDocumentTitle'
+import { locations, useSavedLocation } from '~/hooks/useSavedLocation'
+import { formatDate } from '~/utils/date'
 
-import Button from '@components/Button'
-import { SelectField } from '@components/FormFields'
-import Page from '@components/Page'
-
-import { getAuthState, requireLoggedIn } from '@backend/auth'
-import { fetchEvents } from '@backend/events'
-import { IEventsData } from '@backend/events'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import { locations, useSavedLocation } from '@hooks/useSavedLocation'
 import { createFileRoute } from '@tanstack/react-router'
 import { Link, getRouteApi } from '@tanstack/react-router'
-import { formatDate } from '@utils/date'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (

@@ -1,16 +1,14 @@
 import classNames from 'classnames'
-import { useEffect, useState } from 'react';
-import * as React from 'react';
-
-import Button from '@components/Button'
-import Modal from '@components/Modal'
-
-import { IEventsData, addSongToEvent, fetchEvents } from '@backend/events'
-import useErrors from '@hooks/useErrors'
-import useFetch from '@hooks/useFetch'
-import { locations, useSavedLocation } from '@hooks/useSavedLocation'
-import { keysOptions } from '@utils/chords'
-import { formatDate } from '@utils/date'
+import { useEffect, useState } from 'react'
+import * as React from 'react'
+import { IEventsData, addSongToEvent, fetchEvents } from '~/backend/events'
+import Button from '~/components/Button'
+import Modal from '~/components/Modal'
+import useErrors from '~/hooks/useErrors'
+import useFetch from '~/hooks/useFetch'
+import { locations, useSavedLocation } from '~/hooks/useSavedLocation'
+import { keysOptions } from '~/utils/chords'
+import { formatDate } from '~/utils/date'
 
 import { SelectField, TextareaField } from './FormFields'
 

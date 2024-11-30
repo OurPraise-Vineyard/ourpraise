@@ -1,12 +1,11 @@
 import classNames from 'classnames'
-import { ButtonHTMLAttributes } from 'react';
-
-import checked from '@assets/check-square.svg'
-import decrease from '@assets/decrease.svg'
-import increase from '@assets/increase.svg'
-import reset from '@assets/reset.svg'
-import unchecked from '@assets/square.svg'
-import { findNextKey, keysOptions } from '@utils/chords'
+import { ButtonHTMLAttributes } from 'react'
+import checked from '~/assets/check-square.svg'
+import decrease from '~/assets/decrease.svg'
+import increase from '~/assets/increase.svg'
+import reset from '~/assets/reset.svg'
+import unchecked from '~/assets/square.svg'
+import { findNextKey, keysOptions } from '~/utils/chords'
 
 const icons = {
   increase,

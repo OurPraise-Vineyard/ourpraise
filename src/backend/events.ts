@@ -1,4 +1,4 @@
-import { fetchSong } from '@backend/songs'
+import { fetchSong } from '~/backend/songs'
 import {
   createDocument,
   deleteDocument,
@@ -6,15 +6,15 @@ import {
   getCollection,
   getDocument,
   updateDocument
-} from '@lib/database'
+} from '~/lib/database'
 import {
   mapCollectionToEvents,
   mapDocToEvent,
   mapEventFormToEvent,
   mapEventSongFormToEventSong,
   mergeSongEventSong
-} from '@mappers/events'
-import { getTime, todayTime } from '@utils/date'
+} from '~/mappers/events'
+import { getTime, todayTime } from '~/utils/date'
 
 export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
 

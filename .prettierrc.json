@@ -17,8 +17,8 @@
   "printWidth": 80,
   "tabWidth": 2,
   "importOrder": [
-    "^@pages/(.*)$",
-    "^@components/(.*)$",
+    "^~/pages/(.*)$",
+    "^~/components/(.*)$",
     "^@blocks/(.*)$",
     "^@.*?/(.*)$",
     "^[./]"

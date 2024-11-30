@@ -1,33 +1,32 @@
-import {
-  ellipsisTextStyles,
-  pageTitleStyles,
-  toolbarStyles
-} from '@common-styles'
 import classNames from 'classnames'
 import { useMemo, useState } from 'react'
 import * as React from 'react'
-
-import Button from '@components/Button'
-import ContextMenu from '@components/ContextMenu'
-import EventSongForm from '@components/EventSongForm'
-import IconButton from '@components/IconButton'
-import Page from '@components/Page'
-
-import downloadIcon from '@assets/download.svg'
-import editIcon from '@assets/edit.svg'
-import moreIcon from '@assets/more-vertical.svg'
-import { getAuthState, requireLoggedIn } from '@backend/auth'
+import downloadIcon from '~/assets/download.svg'
+import editIcon from '~/assets/edit.svg'
+import moreIcon from '~/assets/more-vertical.svg'
+import { getAuthState, requireLoggedIn } from '~/backend/auth'
 import {
   fetchEvent,
   moveEventSong,
   removeEventSong,
   saveEventSong
-} from '@backend/events'
-import useContextMenuState from '@hooks/useContextMenuState'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import useErrors from '@hooks/useErrors'
+} from '~/backend/events'
+import {
+  ellipsisTextStyles,
+  pageTitleStyles,
+  toolbarStyles
+} from '~/common-styles'
+import Button from '~/components/Button'
+import ContextMenu from '~/components/ContextMenu'
+import EventSongForm from '~/components/EventSongForm'
+import IconButton from '~/components/IconButton'
+import Page from '~/components/Page'
+import useContextMenuState from '~/hooks/useContextMenuState'
+import { useDocumentTitle } from '~/hooks/useDocumentTitle'
+import useErrors from '~/hooks/useErrors'
+import { formatDate } from '~/utils/date'
+
 import { Link, createFileRoute, getRouteApi } from '@tanstack/react-router'
-import { formatDate } from '@utils/date'
 
 function Event() {
   const { useLoaderData, useNavigate } = getRouteApi('/_protected/events/$id/')

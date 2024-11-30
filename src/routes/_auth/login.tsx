@@ -1,4 +1,4 @@
-import Login, { validateSearch } from '@pages/Auth/Login'
+import Login, { validateSearch } from '~/pages/Auth/Login'
 
 import { createFileRoute } from '@tanstack/react-router'
 

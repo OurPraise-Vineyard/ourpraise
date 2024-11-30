@@ -1,11 +1,9 @@
-import { pageTitleStyles, toolbarStyles } from '@common-styles'
 import classNames from 'classnames'
-import { useEffect } from 'react';
-import * as React from 'react';
-
-import IconButton from '@components/IconButton'
-
-import xIcon from '@assets/x.svg'
+import { useEffect } from 'react'
+import * as React from 'react'
+import xIcon from '~/assets/x.svg'
+import { pageTitleStyles, toolbarStyles } from '~/common-styles'
+import IconButton from '~/components/IconButton'
 
 type ModalProps = {
   onClose: () => void
@@ -43,7 +41,7 @@ export default function Modal({ onClose, show, children, title }: ModalProps) {
       />
       <div
         className={classNames(
-          'w-modal max-w-modal h-modal fixed left-1/2 z-40 flex -translate-x-1/2 flex-col rounded-md bg-white shadow-md transition-all duration-200 ease-out',
+          'fixed left-1/2 z-40 flex h-modal w-modal max-w-modal -translate-x-1/2 flex-col rounded-md bg-white shadow-md transition-all duration-200 ease-out',
           {
             'translate-y-5': !show,
             'pointer-events-none': !show,

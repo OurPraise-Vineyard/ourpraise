@@ -1,4 +1,5 @@
-import * as Auth from '@lib/auth'
+import * as Auth from '~/lib/auth'
+
 import { ParsedLocation, redirect } from '@tanstack/react-router'
 
 export interface IAuthState {

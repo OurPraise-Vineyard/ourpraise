@@ -1,11 +1,10 @@
-import router from '@router'
 import { useMemo } from 'react'
+import logo from '~/assets/logo_light.svg'
+import { getAuthState, logout } from '~/backend/auth'
+import ContextMenu from '~/components/ContextMenu'
+import useContextMenuState from '~/hooks/useContextMenuState'
+import router from '~/router'
 
-import ContextMenu from '@components/ContextMenu'
-
-import logo from '@assets/logo_light.svg'
-import { getAuthState, logout } from '@backend/auth'
-import useContextMenuState from '@hooks/useContextMenuState'
 import { Link } from '@tanstack/react-router'
 
 const navLinkStyles =

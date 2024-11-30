@@ -1,21 +1,20 @@
+import classNames from 'classnames'
+import { useEffect } from 'react'
+import { useMemo } from 'react'
+import { requireLoggedIn } from '~/backend/auth'
+import { fetchEvent } from '~/backend/events'
 import {
   ellipsisTextStyles,
   pageTitleStyles,
   toolbarStyles
-} from '@common-styles'
-import classNames from 'classnames'
-import { useEffect } from 'react'
-import { useMemo } from 'react'
+} from '~/common-styles'
+import Button from '~/components/Button'
+import Page from '~/components/Page'
+import { useDocumentTitle } from '~/hooks/useDocumentTitle'
+import { formatDate } from '~/utils/date'
 
-import Button from '@components/Button'
-import Page from '@components/Page'
-
-import { requireLoggedIn } from '@backend/auth'
-import { fetchEvent } from '@backend/events'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { createFileRoute } from '@tanstack/react-router'
 import { getRouteApi } from '@tanstack/react-router'
-import { formatDate } from '@utils/date'
 
 function PrintEvent() {
   const event = getRouteApi('/_protected/events/$id/print').useLoaderData()

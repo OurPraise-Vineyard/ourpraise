@@ -1,4 +1,5 @@
-import { initializeUser } from '@backend/auth'
+import { initializeUser } from '~/backend/auth'
+
 import { Outlet, createRootRoute } from '@tanstack/react-router'
 
 export const Route = createRootRoute({

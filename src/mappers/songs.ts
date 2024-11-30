@@ -1,4 +1,4 @@
-import pruneObject from '@utils/pruneObject'
+import pruneObject from '~/utils/pruneObject'
 
 export function mapDocToSong(doc: IDoc): ISong {
   const song = doc as ISong

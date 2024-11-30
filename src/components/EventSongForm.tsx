@@ -1,8 +1,7 @@
-import Button from '@components/Button'
-import Modal from '@components/Modal'
-
-import useEventSongForm from '@hooks/forms/useEventSongForm'
-import { keysOptions } from '@utils/chords'
+import Button from '~/components/Button'
+import Modal from '~/components/Modal'
+import useEventSongForm from '~/hooks/forms/useEventSongForm'
+import { keysOptions } from '~/utils/chords'
 
 import { SelectField, TextareaField } from './FormFields'
 

@@ -1,8 +1,7 @@
 import dateFormat from 'dateformat'
 import { useCallback, useReducer } from 'react'
-
-import { getLatestLocation } from '@hooks/useSavedLocation'
-import { nextWeekday } from '@utils/date'
+import { getLatestLocation } from '~/hooks/useSavedLocation'
+import { nextWeekday } from '~/utils/date'
 
 type Action = {
   key: string

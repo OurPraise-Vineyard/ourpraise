@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-
-import { transposeSong } from '@utils/chords'
+import { transposeSong } from '~/utils/chords'
 
 export default function useFormattedSongBody(
   song: ISong,

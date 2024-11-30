@@ -1,4 +1,5 @@
-import logo from '@assets/logo_light.svg'
+import logo from '~/assets/logo_light.svg'
+
 import { Outlet } from '@tanstack/react-router'
 
 export default function AuthLayout() {

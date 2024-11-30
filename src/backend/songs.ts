@@ -4,12 +4,12 @@ import {
   getCollection,
   getDocument,
   updateDocument
-} from '@lib/database'
+} from '~/lib/database'
 import {
   mapCollectionToSongs,
   mapDocToSong,
   mapSongFormToSong
-} from '@mappers/songs'
+} from '~/mappers/songs'
 
 export function fetchSong(songId: IDocId): Promise<ISong> {
   return getDocument(`songs/${songId}`).then(mapDocToSong)

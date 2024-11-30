@@ -1,9 +1,9 @@
-import Page from '@components/Page'
-import SongForm from '@components/SongForm'
+import { createSong } from '~/backend/songs'
+import Page from '~/components/Page'
+import SongForm from '~/components/SongForm'
+import { useDocumentTitle } from '~/hooks/useDocumentTitle'
+import useErrors from '~/hooks/useErrors'
 
-import { createSong } from '@backend/songs'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import useErrors from '@hooks/useErrors'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 function AddSong() {

@@ -1,9 +1,7 @@
-import { pageTitleStyles } from '@common-styles'
-
-import Button from '@components/Button'
-
-import useSongForm from '@hooks/forms/useSongForm'
-import { keysOptions } from '@utils/chords'
+import { pageTitleStyles } from '~/common-styles'
+import Button from '~/components/Button'
+import useSongForm from '~/hooks/forms/useSongForm'
+import { keysOptions } from '~/utils/chords'
 
 import { SelectField, TextField, TextareaField } from './FormFields'
 

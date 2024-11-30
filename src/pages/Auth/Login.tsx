@@ -1,12 +1,11 @@
-import router, { RoutePath } from '@router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { login } from '~/backend/auth'
+import Button from '~/components/Button'
+import { HookTextField as TextField } from '~/components/FormFields'
+import { useDocumentTitle } from '~/hooks/useDocumentTitle'
+import router, { RoutePath } from '~/router'
 
-import Button from '@components/Button'
-import { HookTextField as TextField } from '@components/FormFields'
-
-import { login } from '@backend/auth'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { getRouteApi } from '@tanstack/react-router'
 
 type AuthSearchParams = {

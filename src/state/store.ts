@@ -1,5 +1,6 @@
+import errors from '~/state/errorSlice'
+
 import { configureStore } from '@reduxjs/toolkit'
-import errors from '@state/errorSlice'
 
 const store = configureStore({
   reducer: {

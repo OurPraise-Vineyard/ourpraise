@@ -1,4 +1,4 @@
-import AuthLayout from '@pages/Auth/Layout'
+import AuthLayout from '~/pages/Auth/Layout'
 
 import { createFileRoute } from '@tanstack/react-router'
 

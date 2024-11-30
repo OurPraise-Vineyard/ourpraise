@@ -1,10 +1,8 @@
-import { pageTitleStyles } from '@common-styles'
-
-import Button from '@components/Button'
-
-import { getAuthState } from '@backend/auth'
-import useEventForm from '@hooks/forms/useEventForm'
-import { locations } from '@hooks/useSavedLocation'
+import { getAuthState } from '~/backend/auth'
+import { pageTitleStyles } from '~/common-styles'
+import Button from '~/components/Button'
+import useEventForm from '~/hooks/forms/useEventForm'
+import { locations } from '~/hooks/useSavedLocation'
 
 import { SelectField, TextField, TextareaField } from './FormFields'
 

@@ -1,11 +1,11 @@
-import Page from '@components/Page'
-import SongForm from '@components/SongForm'
+import { requireLoggedIn } from '~/backend/auth'
+import { deleteSong, fetchSong } from '~/backend/songs'
+import { saveSong } from '~/backend/songs'
+import Page from '~/components/Page'
+import SongForm from '~/components/SongForm'
+import { useDocumentTitle } from '~/hooks/useDocumentTitle'
+import useErrors from '~/hooks/useErrors'
 
-import { requireLoggedIn } from '@backend/auth'
-import { deleteSong, fetchSong } from '@backend/songs'
-import { saveSong } from '@backend/songs'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import useErrors from '@hooks/useErrors'
 import { createFileRoute } from '@tanstack/react-router'
 import { getRouteApi } from '@tanstack/react-router'
 

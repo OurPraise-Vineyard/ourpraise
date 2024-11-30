@@ -1,20 +1,19 @@
+import classNames from 'classnames'
+import { useEffect, useState } from 'react'
+import { getAuthState, requireLoggedIn } from '~/backend/auth'
+import { fetchSongs } from '~/backend/songs'
 import {
   ellipsisTextStyles,
   pageTitleStyles,
   toolbarStyles
-} from '@common-styles'
-import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+} from '~/common-styles'
+import Button from '~/components/Button'
+import Page from '~/components/Page'
+import SearchSongs from '~/components/SearchField'
+import { useDocumentTitle } from '~/hooks/useDocumentTitle'
+import { search } from '~/utils/fuzzy'
 
-import Button from '@components/Button'
-import Page from '@components/Page'
-import SearchSongs from '@components/SearchField'
-
-import { getAuthState, requireLoggedIn } from '@backend/auth'
-import { fetchSongs } from '@backend/songs'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
 import { Link, createFileRoute, getRouteApi } from '@tanstack/react-router'
-import { search } from '@utils/fuzzy'
 
 function Songs() {
   const songs: ISong[] = getRouteApi('/_protected/songs/').useLoaderData()

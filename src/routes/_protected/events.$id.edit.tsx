@@ -1,13 +1,12 @@
 import { useState } from 'react'
+import { requireLoggedIn } from '~/backend/auth'
+import { deleteEvent, fetchEvent } from '~/backend/events'
+import { saveEvent } from '~/backend/events'
+import EventForm from '~/components/EventForm'
+import Page from '~/components/Page'
+import { useDocumentTitle } from '~/hooks/useDocumentTitle'
+import useErrors from '~/hooks/useErrors'
 
-import EventForm from '@components/EventForm'
-import Page from '@components/Page'
-
-import { requireLoggedIn } from '@backend/auth'
-import { deleteEvent, fetchEvent } from '@backend/events'
-import { saveEvent } from '@backend/events'
-import { useDocumentTitle } from '@hooks/useDocumentTitle'
-import useErrors from '@hooks/useErrors'
 import { createFileRoute } from '@tanstack/react-router'
 import { getRouteApi } from '@tanstack/react-router'
 
