@@ -34,7 +34,7 @@ export default function EventForm({
   }
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSave)}>
+    <form className="flex flex-col gap-4 py-4" onSubmit={handleSubmit(onSave)}>
       <h2 className="text-title font-bold">{heading}</h2>
       <TextField
         title="Title"
