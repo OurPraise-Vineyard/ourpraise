@@ -1,5 +1,3 @@
-import { ParsedLocation, redirect } from '@tanstack/react-router'
-
 import * as Auth from '~/lib/auth'
 import { ILoginStatus, IUser } from '~/types/backend'
 
@@ -15,21 +13,6 @@ let authState: IAuthState = {
 
 export function getAuthState(): IAuthState {
   return authState
-}
-
-export async function requireLoggedIn({
-  location
-}: {
-  location: ParsedLocation
-}): Promise<void> {
-  if (authState.status !== 'loggedIn') {
-    throw redirect({
-      to: '/login',
-      search: {
-        redirect: location.href
-      }
-    })
-  }
 }
 
 export async function initializeUser(): Promise<IAuthState> {

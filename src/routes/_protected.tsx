@@ -1,10 +1,21 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
-import { requireLoggedIn } from '~/backend/auth'
+import { getAuthState } from '~/backend/auth'
 import Nav from '~/components/Nav'
 
 export const Route = createFileRoute('/_protected')({
-  beforeLoad: requireLoggedIn,
+  beforeLoad: () => {
+    const authState = getAuthState()
+
+    if (authState.status !== 'loggedIn') {
+      throw redirect({
+        to: '/login',
+        search: {
+          redirect: window.location.pathname
+        }
+      })
+    }
+  },
   component: Layout
 })
 
