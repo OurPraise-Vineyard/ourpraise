@@ -7,9 +7,9 @@ import moreIcon from '~/assets/more-vertical.svg'
 import { deleteSong, fetchSong } from '~/backend/songs'
 import Button from '~/components/Button'
 import IconButton from '~/components/IconButton'
+import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
-import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import AddToEvent from '~/pages/Song/AddToEvent'
 import { RouteLoader, RoutePath } from '~/router'
 import { IKey, ISong } from '~/types/models'
@@ -36,7 +36,6 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
   const [showEventsDialog, setShowEventsDialog] = useState(false)
   const navigate = useNavigate()
-  useDocumentTitle(song.title)
   const menu = usePopUpMenu()
   const keysOptions = useMemo(() => getKeyOptions(song.key), [song.key])
   const [added, setAdded] = useState(false)
@@ -90,6 +89,7 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
 
   return (
     <Page className="px-0 pt-0 sm:px-5">
+      <MetaTitle title={song.title} />
       <AddToEvent
         show={showEventsDialog}
         onClose={() => setShowEventsDialog(false)}

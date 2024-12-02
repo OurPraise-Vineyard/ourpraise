@@ -4,8 +4,8 @@ import { getRouteApi } from '@tanstack/react-router'
 
 import { fetchEvent } from '~/backend/events'
 import Button from '~/components/Button'
+import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RouteLoader, RoutePath } from '~/router'
 import { IEvent } from '~/types/models'
 
@@ -17,7 +17,6 @@ export default function PrintEventPage({
   routePath: RoutePath
 }) {
   const event: IEvent = getRouteApi(routePath).useLoaderData()
-  useDocumentTitle(`Printing ${event.title}...`)
 
   useEffect(() => {
     const t = setTimeout(() => window.print(), 500)
@@ -26,6 +25,7 @@ export default function PrintEventPage({
 
   return (
     <Page noAnimation>
+      <MetaTitle title={`Printing ${event.title}...`} />
       <div className="flex items-center justify-between gap-4 py-4 pb-4 print:hidden">
         <Button
           type="link"

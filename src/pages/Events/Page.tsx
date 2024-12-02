@@ -3,8 +3,8 @@ import { Link, getRouteApi } from '@tanstack/react-router'
 import { fetchEvents } from '~/backend/events'
 import { IEventsData } from '~/backend/events'
 import Button from '~/components/Button'
+import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RoutePath } from '~/router'
 import { IEvent } from '~/types/models'
 import { formatDate } from '~/utils/date'
@@ -31,10 +31,10 @@ export const loader = () => fetchEvents()
 
 export default function EventsPage({ routePath }: { routePath: RoutePath }) {
   const { upcoming, past }: IEventsData = getRouteApi(routePath).useLoaderData()
-  useDocumentTitle('Events')
 
   return (
     <Page>
+      <MetaTitle title="Events" />
       <div className="flex items-center justify-end gap-4">
         <Button
           type="link"

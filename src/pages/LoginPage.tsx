@@ -7,7 +7,7 @@ import logo from '~/assets/logo_light.svg'
 import { login } from '~/backend/auth'
 import Button from '~/components/Button'
 import { SelectField, TextField } from '~/components/FormFields'
-import { useDocumentTitle } from '~/hooks/useDocumentTitle'
+import MetaTitle from '~/components/MetaTitle'
 import router, { RoutePath } from '~/router'
 import {
   LocationValue,
@@ -40,7 +40,6 @@ export default function Login({ routePath }: { routePath: RoutePath }) {
   const { register, handleSubmit } = useForm<LoginForm>()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  useDocumentTitle('Login')
   const location = getLatestLocation()
 
   const onSubmit = async ({ email, password, location }: LoginForm) => {
@@ -56,6 +55,7 @@ export default function Login({ routePath }: { routePath: RoutePath }) {
 
   return (
     <div className="absolute left-0 top-0 h-screen w-screen bg-black">
+      <MetaTitle title="Login" />
       <img
         src={logo}
         alt="OurPraise Logo"

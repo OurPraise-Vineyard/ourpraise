@@ -4,9 +4,9 @@ import { getRouteApi } from '@tanstack/react-router'
 
 import { deleteSong, fetchSong } from '~/backend/songs'
 import { saveSong } from '~/backend/songs'
+import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
-import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RouteLoader, RoutePath } from '~/router'
 import { ISongForm } from '~/types/forms'
 import { ISong } from '~/types/models'
@@ -17,7 +17,6 @@ export default function EditSongPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)
   const navigate = useNavigate()
   const song: ISong = useLoaderData()
-  useDocumentTitle(song ? `Edit song: "${song.title}"` : 'Edit song')
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (options: ISongForm) => {
@@ -48,6 +47,7 @@ export default function EditSongPage({ routePath }: { routePath: RoutePath }) {
 
   return (
     <Page>
+      <MetaTitle title={song ? `Edit song: "${song.title}"` : 'Edit song'} />
       <SongForm
         song={song}
         onSubmit={handleSubmit}

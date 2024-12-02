@@ -3,15 +3,14 @@ import { useState } from 'react'
 import { getRouteApi } from '@tanstack/react-router'
 
 import { createSong } from '~/backend/songs'
+import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
-import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RoutePath } from '~/router'
 import { IDocId } from '~/types/backend'
 import { ISongForm } from '~/types/forms'
 
 export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
-  useDocumentTitle('Add song')
   const navigate = getRouteApi(routePath).useNavigate()
   const [error, setError] = useState<string | null>(null)
 
@@ -31,6 +30,7 @@ export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
 
   return (
     <Page>
+      <MetaTitle title="Add song" />
       <SongForm onSubmit={handleSubmit} heading="Add song" />
       {error && <div className="text-red-500">{error}</div>}
     </Page>

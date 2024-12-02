@@ -2,8 +2,6 @@ import { useState } from 'react'
 
 import { Link, getRouteApi } from '@tanstack/react-router'
 
-import downloadIcon from '~/assets/download.svg'
-import editIcon from '~/assets/edit.svg'
 import moreIcon from '~/assets/more-vertical.svg'
 import {
   deleteEvent,
@@ -14,9 +12,9 @@ import {
 } from '~/backend/events'
 import Button from '~/components/Button'
 import IconButton from '~/components/IconButton'
+import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
-import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import EventSongForm from '~/pages/Event/EventSongForm'
 import { RouteLoader, RoutePath } from '~/router'
 import { IEventSongForm } from '~/types/forms'
@@ -27,7 +25,6 @@ export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
 export default function EventPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)
   const event: IEvent = useLoaderData()
-  useDocumentTitle(event.title)
   const navigate = useNavigate()
   const [selectedSong, setSelectedSong] = useState<IEventSong | null>(null)
   const [editSong, setEditSong] = useState<boolean>(false)
@@ -154,6 +151,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
 
   return (
     <Page>
+      <MetaTitle title={event.title} />
       {selectedSong && (
         <EventSongForm
           eventSong={selectedSong}

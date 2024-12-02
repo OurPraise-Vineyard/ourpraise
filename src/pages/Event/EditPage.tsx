@@ -5,8 +5,8 @@ import { getRouteApi } from '@tanstack/react-router'
 import { deleteEvent, fetchEvent } from '~/backend/events'
 import { saveEvent } from '~/backend/events'
 import EventForm from '~/components/EventForm'
+import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import { RouteLoader, RoutePath } from '~/router'
 import { IEventForm } from '~/types/forms'
 import { IEvent } from '~/types/models'
@@ -18,7 +18,6 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
   const event: IEvent = useLoaderData()
   const navigate = useNavigate()
   const [saving, setSaving] = useState<boolean>(false)
-  useDocumentTitle(`Edit event: "${event.title}"`)
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (options: IEventForm) => {
@@ -53,6 +52,7 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
 
   return (
     <Page>
+      <MetaTitle title={`Edit event: {event.title}`} />
       <EventForm
         event={event}
         onSubmit={handleSubmit}

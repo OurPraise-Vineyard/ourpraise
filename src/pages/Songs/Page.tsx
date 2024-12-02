@@ -3,12 +3,10 @@ import { useEffect, useState } from 'react'
 
 import { Link, getRouteApi } from '@tanstack/react-router'
 
-import addIcon from '~/assets/plus-square.svg'
 import { fetchSongs } from '~/backend/songs'
 import Button from '~/components/Button'
-import IconButton from '~/components/IconButton'
+import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import SearchSongs from '~/pages/Songs/SearchField'
 import { RoutePath } from '~/router'
 import { ISong } from '~/types/models'
@@ -32,7 +30,6 @@ export default function SongsPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useSearch } = getRouteApi(routePath)
   const songs: ISong[] = useLoaderData()
   const { eventId, eventTitle } = useSearch() as SongsSearchParams
-  useDocumentTitle('Songs')
   const [query, setQuery] = useState<string>('')
 
   const [filteredSongs, setFilteredSongs] = useState<ISong[]>([])
@@ -47,6 +44,7 @@ export default function SongsPage({ routePath }: { routePath: RoutePath }) {
 
   return (
     <Page className="px-0 pt-0 sm:px-5">
+      <MetaTitle title="Songs" />
       {!!eventId && (
         <div
           className={classNames(
