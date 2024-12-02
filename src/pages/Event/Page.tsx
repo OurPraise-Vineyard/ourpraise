@@ -214,7 +214,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
           </div>
         ))}
       </div>
-      <div className="mx-auto mt-8 flex flex-col items-center gap-4">
+      <div className="mx-auto mb-8 mt-8 flex flex-col items-center gap-4">
         {event.songs.length === 0 && (
           <p className="text-lg">
             {event.isUpcoming ? 'No songs added yet.' : 'Event has no songs.'}

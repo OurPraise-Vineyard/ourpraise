@@ -8,7 +8,7 @@ export interface IBackendError {
 export type ICollectionQuery = {
   path: string
   orderBy?: string
-  where?: [string, WhereFilterOp, any]
+  where?: [string, WhereFilterOp, any][]
   sortDirection?: 'asc' | 'desc'
 }
 

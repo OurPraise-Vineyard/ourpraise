@@ -39,15 +39,17 @@ function mapDocsId(snap: QuerySnapshot<DocumentData>): ICollection {
 
 export async function getCollection({
   path: collectionPath,
-  where: whereField,
+  where: whereFields,
   orderBy: orderByField,
   sortDirection = 'asc'
 }: ICollectionQuery): Promise<ICollection> {
   try {
     const filters: QueryConstraint[] = []
 
-    if (whereField) {
-      filters.push(where(...whereField))
+    if (whereFields?.length) {
+      for (const whereField of whereFields) {
+        filters.push(where(...whereField))
+      }
     }
 
     if (orderByField) {

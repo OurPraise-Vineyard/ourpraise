@@ -1,13 +1,12 @@
 import { Link, getRouteApi } from '@tanstack/react-router'
 
-import { fetchEvents } from '~/backend/events'
+import { fetchRecentEvents } from '~/backend/events'
 import { IEventsData } from '~/backend/events'
 import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import { RoutePath } from '~/router'
 import { IEvent } from '~/types/models'
-import { formatDate } from '~/utils/date'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
@@ -21,13 +20,13 @@ function renderEventItem(event: IEvent): JSX.Element {
         {event.title}
       </p>
       <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
-        {formatDate(event.date)}
+        {event.formattedDate}
       </p>
     </Link>
   )
 }
 
-export const loader = () => fetchEvents()
+export const loader = () => fetchRecentEvents()
 
 export default function EventsPage({ routePath }: { routePath: RoutePath }) {
   const { upcoming, past }: IEventsData = getRouteApi(routePath).useLoaderData()

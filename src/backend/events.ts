@@ -11,7 +11,7 @@ import { ICollection, IDoc, IDocId } from '~/types/backend'
 import { IEventForm, IEventSongForm } from '~/types/forms'
 import { IEvent, IEventSong, ISong } from '~/types/models'
 import { formatKey, transposeAndFormatSong } from '~/utils/chords'
-import { formatDate, getTime, todayTime } from '~/utils/date'
+import { formatDate, getTime, lastMonth, todayTime } from '~/utils/date'
 import { getLatestLocation } from '~/utils/location'
 import pruneObject from '~/utils/pruneObject'
 
@@ -19,10 +19,13 @@ import { getAuthState } from './auth'
 
 export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
 
-export async function fetchEvents(): Promise<IEventsData> {
+export async function fetchRecentEvents(): Promise<IEventsData> {
   const events = await getCollection({
     path: 'events',
-    where: ['location', '==', getLatestLocation()],
+    where: [
+      ['location', '==', getLatestLocation()],
+      ['date', '>=', lastMonth().toISOString()]
+    ],
     orderBy: 'date',
     sortDirection: 'desc'
   }).then((events: ICollection): IEvent[] =>
@@ -56,6 +59,33 @@ export async function fetchEvents(): Promise<IEventsData> {
     upcoming,
     past
   }
+}
+
+export async function fetchUpcomingEvents(): Promise<IEvent[]> {
+  return await getCollection({
+    path: 'events',
+    where: [
+      ['location', '==', getLatestLocation()],
+      ['date', '>=', new Date().toISOString()]
+    ],
+    orderBy: 'date',
+    sortDirection: 'desc'
+  }).then((events: ICollection): IEvent[] =>
+    events
+      .filter(event => event.location === getLatestLocation())
+      .map(event => ({
+        comment: event.comment,
+        createdAt: event.createdAt,
+        date: event.date,
+        id: event.id,
+        owner: event.owner,
+        title: event.title,
+        location: event.location,
+        songs: [],
+        formattedDate: formatDate(event.date),
+        isUpcoming: getTime(event.date) >= todayTime()
+      }))
+  )
 }
 
 export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
