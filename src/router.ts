@@ -1,13 +1,16 @@
 // Import the generated route tree
 import { createRouter } from '@tanstack/react-router'
 
-import NotFoundPage from './pages/NotFound'
+import Loading from './components/Loading'
+import NotFoundPage from './components/NotFound'
 import { FileRouteTypes, routeTree } from './routeTree.gen'
 
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  defaultNotFoundComponent: NotFoundPage
+  defaultNotFoundComponent: NotFoundPage,
+  defaultPendingComponent: Loading,
+  defaultPendingMs: 500
 })
 
 // Register the router instance for type safety
