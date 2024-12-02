@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 
 import { IEventsData, addSongToEvent, fetchEvents } from '~/backend/events'
 import Button from '~/components/Button'
+import { useErrorPopUp } from '~/components/ErrorPopUp'
 import Modal from '~/components/Modal'
 import { FetchStatus, IDocId } from '~/types/backend'
 import { IKey } from '~/types/models'
@@ -38,9 +39,9 @@ export default function AddToEvent({
   const [events, setEvents] = useState<IEventsData['upcoming']>([])
   const [selectedEvent, setSelectedEvent] = useState<IDocId>('')
   const [saving, setSaving] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
   const { getValues, register, handleSubmit, reset } = useForm<FormState>()
   const keysOptions = useMemo(() => getKeyOptions(songKey), [songKey])
+  const errors = useErrorPopUp()
 
   useEffect(
     () => reset({ key: transposeKey, comment: getValues().comment }),
@@ -81,7 +82,8 @@ export default function AddToEvent({
       reset()
     } catch (err: any) {
       setSaving(false)
-      setError(err.message)
+      onClose()
+      errors.show(err.message)
     }
   }
 
@@ -141,7 +143,6 @@ export default function AddToEvent({
             </Button>
           </form>
         )}
-        {error && <p className="text-red-500">{error}</p>}
       </div>
     </Modal>
   )

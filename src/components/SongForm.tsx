@@ -1,3 +1,4 @@
+import { error } from 'console'
 import { useForm } from 'react-hook-form'
 
 import Button from '~/components/Button'
@@ -18,7 +19,11 @@ export default function SongForm({
   onDelete?: () => void
   heading: string
 }) {
-  const { register, handleSubmit } = useForm<ISongForm>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<ISongForm>()
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
@@ -28,23 +33,27 @@ export default function SongForm({
         title="Title"
         fieldProps={register('title', { required: true })}
         defaultValue={song?.title}
+        error={errors.title && 'Title is required'}
       />
       <TextField
         title="Authors"
         fieldProps={register('authors', { required: true })}
         defaultValue={song?.authors}
+        error={errors.authors && 'Authors are required'}
       />
       <SelectField
         title="Song Key"
         options={keysOptions}
         fieldProps={register('key', { required: true })}
         defaultValue={song?.key}
+        error={errors.key && 'Song key is required'}
       />
       <TextareaField
         size="large"
         title="Body"
         fieldProps={register('body', { required: true })}
         defaultValue={song?.body}
+        error={errors.body && 'Song body is required'}
       />
       <Button variant="primary" type="submit">
         Save

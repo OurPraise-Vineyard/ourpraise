@@ -22,7 +22,12 @@ export default function EventSongForm({
   onSubmit: (song: IEventSong) => void
   onClose: () => void
 }) {
-  const { register, handleSubmit, reset } = useForm<IEventSongForm>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<IEventSongForm>()
 
   useEffect(() => reset(), [eventSong.id, show])
 
@@ -49,6 +54,7 @@ export default function EventSongForm({
           title="Key"
           fieldProps={register('transposeKey', { required: true })}
           defaultValue={eventSong.transposeKey}
+          error={errors.transposeKey && 'Key is required'}
         />
         <span className="flex-grow" />
         <Button variant="primary" type="submit">

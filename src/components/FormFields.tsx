@@ -28,28 +28,33 @@ export function SelectField({
   title = '',
   options = [],
   fieldProps,
+  error,
   ...props
 }: SelectHTMLAttributes<HTMLSelectElement> & {
   options: SelectItem[]
   className?: string
   title?: string
   fieldProps: SelectHTMLAttributes<HTMLSelectElement>
+  error?: string
 }) {
   return (
-    <div className={classNames(fieldStyles, className)}>
-      {!!title && <span className="text-sm/3">{title}</span>}
-      <select className={inputStyles} {...props} {...fieldProps}>
-        {options.map(option => (
-          <option
-            disabled={option.disabled}
-            key={option.key || option.value}
-            value={option.value}
-          >
-            {option.label || option.value}
-          </option>
-        ))}
-      </select>
-    </div>
+    <>
+      <div className={classNames(fieldStyles, className)}>
+        {!!title && <span className="text-sm/3">{title}</span>}
+        <select className={inputStyles} {...props} {...fieldProps}>
+          {options.map(option => (
+            <option
+              disabled={option.disabled}
+              key={option.key || option.value}
+              value={option.value}
+            >
+              {option.label || option.value}
+            </option>
+          ))}
+        </select>
+      </div>
+      {error && <div className="text-red-500">{error}</div>}
+    </>
   )
 }
 
@@ -58,22 +63,27 @@ export function TextareaField({
   title = '',
   size = 'medium',
   fieldProps,
+  error,
   ...props
 }: TextareaHTMLAttributes<HTMLTextAreaElement> & {
   size?: keyof typeof textFieldSizes
   className?: string
   title?: string
   fieldProps: TextareaHTMLAttributes<HTMLTextAreaElement>
+  error?: string
 }) {
   return (
-    <div className={classNames(fieldStyles, className)}>
-      {!!title && <span className="text-sm/3">{title}</span>}
-      <textarea
-        className={classNames(inputStyles, textFieldSizes[size], className)}
-        {...props}
-        {...fieldProps}
-      />
-    </div>
+    <>
+      <div className={classNames(fieldStyles, className)}>
+        {!!title && <span className="text-sm/3">{title}</span>}
+        <textarea
+          className={classNames(inputStyles, textFieldSizes[size], className)}
+          {...props}
+          {...fieldProps}
+        />
+      </div>
+      {error && <div className="text-red-500">{error}</div>}
+    </>
   )
 }
 
@@ -82,22 +92,27 @@ export function TextField({
   title = '',
   type = 'text',
   fieldProps,
+  error,
   ...props
 }: InputHTMLAttributes<HTMLInputElement> & {
   type?: 'text' | 'password' | 'date'
   className?: string
   title?: string
   fieldProps: InputHTMLAttributes<HTMLInputElement>
+  error?: string
 }) {
   return (
-    <div className={classNames(fieldStyles, className)}>
-      {!!title && <span className="text-sm/3">{title}</span>}
-      <input
-        type={type}
-        className={classNames(inputStyles, className)}
-        {...props}
-        {...fieldProps}
-      />
-    </div>
+    <>
+      <div className={classNames(fieldStyles, className)}>
+        {!!title && <span className="text-sm/3">{title}</span>}
+        <input
+          type={type}
+          className={classNames(inputStyles, className)}
+          {...props}
+          {...fieldProps}
+        />
+      </div>
+      {error && <div className="text-red-500">{error}</div>}
+    </>
   )
 }

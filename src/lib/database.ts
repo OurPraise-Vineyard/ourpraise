@@ -58,7 +58,7 @@ export async function getCollection({
       query(collection(getFirestore(), collectionPath), ...filters)
     ).then(docs => mapDocsId(docs))
   } catch (err) {
-    throw new BackendError(err as string)
+    throw new BackendError(err as Error)
   }
 }
 
@@ -67,21 +67,21 @@ export async function getDocument(path: string): Promise<IDoc> {
   try {
     result = await getDoc(doc(getFirestore(), path))
   } catch (err) {
-    throw new BackendError(err as string)
+    throw new BackendError(err as Error)
   }
 
   if (result.exists()) {
     return mapDocId(result)
   }
 
-  throw new BackendError(`Document "${path}" does not exist.`)
+  throw new BackendError(new Error(`Document "${path}" does not exist.`))
 }
 
 export async function createDocument(path: string, value: IDocCreate) {
   try {
     return addDoc(collection(getFirestore(), path), value)
   } catch (err) {
-    throw new BackendError(err as string)
+    throw new BackendError(err as Error)
   }
 }
 
@@ -92,7 +92,7 @@ export async function updateDocument(
   try {
     return setDoc(doc(getFirestore(), path), value, { merge: true })
   } catch (err) {
-    throw new BackendError(err as string)
+    throw new BackendError(err as Error)
   }
 }
 
@@ -100,7 +100,7 @@ export async function deleteDocument(path: string) {
   try {
     return deleteDoc(doc(getFirestore(), path))
   } catch (err) {
-    throw new BackendError(err as string)
+    throw new BackendError(err as Error)
   }
 }
 
@@ -114,7 +114,7 @@ export async function getAndUpdateDocument(
       const docRef = doc(getFirestore(), path)
       const docData = await transaction.get(docRef)
       if (!docData.exists()) {
-        throw new BackendError(`Document "${path}" not found`)
+        throw new BackendError(new Error(`Document "${path}" not found`))
       }
       const oldData = mapDocId(docData)
       const newData = updater(oldData) as Partial<unknown>
@@ -128,6 +128,6 @@ export async function getAndUpdateDocument(
       }
     })
   } catch (err) {
-    throw new BackendError(err as string)
+    throw new BackendError(err as Error)
   }
 }

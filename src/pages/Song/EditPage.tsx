@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { getRouteApi } from '@tanstack/react-router'
+import { getRouteApi, notFound } from '@tanstack/react-router'
 
 import { deleteSong, fetchSong } from '~/backend/songs'
 import { saveSong } from '~/backend/songs'
@@ -11,7 +11,13 @@ import { RouteLoader, RoutePath } from '~/router'
 import { ISongForm } from '~/types/forms'
 import { ISong } from '~/types/models'
 
-export const loader: RouteLoader = ({ params }) => fetchSong(params.id)
+export const loader: RouteLoader = async ({ params }) => {
+  try {
+    return await fetchSong(params.id)
+  } catch {
+    throw notFound()
+  }
+}
 
 export default function EditSongPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)

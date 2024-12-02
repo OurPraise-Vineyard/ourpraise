@@ -24,7 +24,7 @@ export const validateSearch = (
   eventTitle: search.eventTitle as string
 })
 
-export const loader = () => fetchSongs()
+export const loader = async () => fetchSongs()
 
 export default function SongsPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useSearch } = getRouteApi(routePath)

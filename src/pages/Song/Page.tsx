@@ -1,11 +1,12 @@
 import classNames from 'classnames'
 import { useEffect, useMemo, useState } from 'react'
 
-import { getRouteApi } from '@tanstack/react-router'
+import { getRouteApi, notFound } from '@tanstack/react-router'
 
 import moreIcon from '~/assets/more-vertical.svg'
 import { deleteSong, fetchSong } from '~/backend/songs'
 import Button from '~/components/Button'
+import { useErrorPopUp } from '~/components/ErrorPopUp'
 import IconButton from '~/components/IconButton'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
@@ -27,7 +28,13 @@ export const validateSearch = (
   eventTitle: search.eventTitle as string
 })
 
-export const loader: RouteLoader = ({ params }) => fetchSong(params.id)
+export const loader: RouteLoader = async ({ params }) => {
+  try {
+    return await fetchSong(params.id)
+  } catch {
+    throw notFound()
+  }
+}
 
 export default function SongPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate, useSearch } = getRouteApi(routePath)
@@ -39,6 +46,7 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
   const menu = usePopUpMenu()
   const keysOptions = useMemo(() => getKeyOptions(song.key), [song.key])
   const [added, setAdded] = useState(false)
+  const errors = useErrorPopUp()
 
   const [formattedBody, setFormattedBody] = useState<string[]>([])
 
@@ -75,7 +83,7 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
               await deleteSong(song.id)
               navigate({ to: '/songs' })
             } catch (err: any) {
-              console.error(err.message)
+              errors.show(err.message)
             }
           }
         }

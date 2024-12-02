@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { getRouteApi } from '@tanstack/react-router'
+import { getRouteApi, notFound } from '@tanstack/react-router'
 
 import { deleteEvent, fetchEvent } from '~/backend/events'
 import { saveEvent } from '~/backend/events'
@@ -11,7 +11,13 @@ import { RouteLoader, RoutePath } from '~/router'
 import { IEventForm } from '~/types/forms'
 import { IEvent } from '~/types/models'
 
-export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
+export const loader: RouteLoader = async ({ params }) => {
+  try {
+    return await fetchEvent(params.id)
+  } catch {
+    throw notFound()
+  }
+}
 
 export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)

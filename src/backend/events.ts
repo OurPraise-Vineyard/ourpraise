@@ -136,7 +136,7 @@ export async function addSongToEvent(eventId: IDocId, songOptions: IEventSong) {
     (data: IDoc) => {
       const songs = (data as IEvent).songs
       if (songs.find(song => song.id === songOptions.id)) {
-        throw new Error('Song already added')
+        throw new Error('Song already added.')
       }
       return {
         songs: [

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { getRouteApi } from '@tanstack/react-router'
+import { getRouteApi, notFound } from '@tanstack/react-router'
 
 import { fetchEvent } from '~/backend/events'
 import Button from '~/components/Button'
@@ -9,7 +9,13 @@ import Page from '~/components/Page'
 import { RouteLoader, RoutePath } from '~/router'
 import { IEvent } from '~/types/models'
 
-export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
+export const loader: RouteLoader = async ({ params }) => {
+  try {
+    return await fetchEvent(params.id)
+  } catch {
+    throw notFound()
+  }
+}
 
 export default function PrintEventPage({
   routePath

@@ -16,7 +16,7 @@ function getUserMetadata(email: string): Promise<IUserMetadata> {
     if (doc.exists() && doc.data().role) {
       return doc.data() as IUserMetadata
     }
-    throw new BackendError(`Email ${email} not authorized`)
+    throw new BackendError(new Error(`Email ${email} not authorized`))
   })
 }
 
@@ -37,7 +37,7 @@ export async function login(email: string, password: string): Promise<IUser> {
       ...meta
     }
   } catch (err) {
-    throw new BackendError(err as string)
+    throw new BackendError(err as Error)
   }
 }
 
@@ -45,7 +45,7 @@ export async function logout() {
   try {
     return signOut(getAuth())
   } catch (err) {
-    throw new BackendError(err as string)
+    throw new BackendError(err as Error)
   }
 }
 
@@ -76,6 +76,6 @@ export async function initializeUser(): Promise<IUser | null> {
 
     return null
   } catch (err) {
-    throw new BackendError(err as string)
+    throw new BackendError(err as Error)
   }
 }

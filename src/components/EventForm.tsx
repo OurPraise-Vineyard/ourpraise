@@ -23,7 +23,11 @@ export default function EventForm({
   heading: string
   saving: boolean
 }) {
-  const { register, handleSubmit } = useForm<IEventForm>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<IEventForm>()
 
   const onSave = async (data: IEventForm) => {
     onSubmit({
@@ -40,6 +44,7 @@ export default function EventForm({
         title="Title"
         defaultValue={event?.title}
         fieldProps={register('title', { required: true })}
+        error={errors.title && 'Title is required'}
       />
       <TextField
         type="date"
@@ -47,6 +52,7 @@ export default function EventForm({
         className="flex-grow"
         defaultValue={event?.date || defaultDate}
         fieldProps={register('date', { required: true })}
+        error={errors.date && 'Date is required'}
       />
       <TextareaField
         title="Set comments"

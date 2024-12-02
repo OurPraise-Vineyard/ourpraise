@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Link, getRouteApi } from '@tanstack/react-router'
+import { Link, getRouteApi, notFound } from '@tanstack/react-router'
 
 import moreIcon from '~/assets/more-vertical.svg'
 import {
@@ -11,6 +11,7 @@ import {
   saveEventSong
 } from '~/backend/events'
 import Button from '~/components/Button'
+import { useErrorPopUp } from '~/components/ErrorPopUp'
 import IconButton from '~/components/IconButton'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
@@ -20,7 +21,13 @@ import { RouteLoader, RoutePath } from '~/router'
 import { IEventSongForm } from '~/types/forms'
 import { IEvent, IEventSong } from '~/types/models'
 
-export const loader: RouteLoader = ({ params }) => fetchEvent(params.id)
+export const loader: RouteLoader = async ({ params }) => {
+  try {
+    return await fetchEvent(params.id)
+  } catch {
+    throw notFound()
+  }
+}
 
 export default function EventPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)
@@ -30,6 +37,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
   const [editSong, setEditSong] = useState<boolean>(false)
   const [savingSong, setSavingSong] = useState<boolean>(false)
   const menu = usePopUpMenu()
+  const errors = useErrorPopUp()
 
   function triggerReload() {
     // This will trigger a reload of the page
@@ -46,7 +54,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
       setEditSong(false)
       triggerReload()
     } catch (err: any) {
-      console.error(err.message)
+      errors.show(err.message)
     } finally {
       setSavingSong(false)
     }
@@ -74,7 +82,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
                 to: '/events'
               })
             } catch (err: any) {
-              console.error(err.message)
+              errors.show(err.message)
             }
           }
         }
@@ -94,9 +102,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
                 await moveEventSong(event.id, selectedSong.id, -1)
                 triggerReload()
               } catch (err: any) {
-                console.error(err.message)
-              } finally {
-                menu.close()
+                errors.show(err.message)
               }
             }
           }
@@ -109,9 +115,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
                 await moveEventSong(event.id, selectedSong.id, 1)
                 triggerReload()
               } catch (err: any) {
-                console.error(err.message)
-              } finally {
-                menu.close()
+                errors.show(err.message)
               }
             }
           }
@@ -120,7 +124,6 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
           label: 'Edit options',
           onClick() {
             setEditSong(true)
-            menu.close()
           }
         },
         {
@@ -133,14 +136,11 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
                   `Remove "${selectedSong.title}" from this event?`
                 )
               ) {
-                menu.close()
                 try {
                   await removeEventSong(event.id, selectedSong.id)
                   triggerReload()
                 } catch (err: any) {
-                  console.error(err.message)
-                } finally {
-                  menu.close()
+                  errors.show(err.message)
                 }
               }
             }

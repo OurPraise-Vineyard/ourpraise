@@ -12,17 +12,6 @@ type ModalProps = {
   title?: string
 }
 export default function Modal({ onClose, show, children, title }: ModalProps) {
-  // useEffect(
-  //   function () {
-  //     if (show) {
-  //       document.body.style.overflow = 'hidden'
-  //     } else {
-  //       document.body.style.overflow = 'auto'
-  //     }
-  //   },
-  //   [show]
-  // )
-
   function handleStopPropagate(e: MouseEvent<HTMLDivElement>) {
     e.stopPropagation()
   }

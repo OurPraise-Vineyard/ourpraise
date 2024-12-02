@@ -25,29 +25,29 @@ const firebaseErrors = {
   'auth/email-already-in-use': 'Email already in use.',
   'auth/weak-password': 'Password should be at least six characters long.',
   'auth/wrong-password': 'Wrong password.',
-  'auth/user-not-found': 'User does not exist',
-  'permission-denied': 'You do not have permission to perform this action'
+  'auth/user-not-found': 'User does not exist.',
+  'permission-denied': 'You do not have permission to perform this action.'
 }
 
-function mapFirebaseError(err: unknown, fallback: string) {
-  if ((err as BackendError).name === 'BackendError') {
-    return (err as BackendError).message
+type firebaseErrorKey = keyof typeof firebaseErrors
+
+function mapFirebaseError(err: Error): string {
+  if (err.name === 'BackendError') {
+    return err.message
   }
 
-  const code = (err as FirebaseError).code as keyof typeof firebaseErrors
+  const code = (err as FirebaseError).code as firebaseErrorKey
 
   if (firebaseErrors[code]) {
-    return firebaseErrors[code]
+    return 'Error: ' + firebaseErrors[code]
   }
 
-  console.log('Could not map error: ' + code)
-  console.log(err)
-  return fallback
+  return 'Error: ' + (err.message || 'An error occurred.')
 }
 
 export class BackendError extends Error implements IBackendError {
-  constructor(message: string) {
-    super(mapFirebaseError(message, 'An error occurred'))
+  constructor(err: Error) {
+    super(mapFirebaseError(err))
     this.name = 'BackendError'
   }
 }

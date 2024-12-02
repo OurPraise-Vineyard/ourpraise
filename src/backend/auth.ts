@@ -26,8 +26,6 @@ export async function initializeUser(): Promise<IAuthState> {
 
     return authState
   } catch (err) {
-    console.error(err)
-
     return authState
   }
 }
@@ -36,33 +34,21 @@ export async function login(
   email: string,
   password: string
 ): Promise<IAuthState> {
-  try {
-    const user = await Auth.login(email, password)
-    authState = {
-      user,
-      status: 'loggedIn'
-    }
-
-    return authState
-  } catch (err) {
-    console.error(err)
-
-    return authState
+  const user = await Auth.login(email, password)
+  authState = {
+    user,
+    status: 'loggedIn'
   }
+
+  return authState
 }
 
 export async function logout(): Promise<IAuthState> {
-  try {
-    await Auth.logout()
-    authState = {
-      user: null,
-      status: 'loggedOut'
-    }
-
-    return authState
-  } catch (err) {
-    console.error(err)
-
-    return authState
+  await Auth.logout()
+  authState = {
+    user: null,
+    status: 'loggedOut'
   }
+
+  return authState
 }
