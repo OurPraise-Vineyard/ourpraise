@@ -27,9 +27,9 @@ export default function EventSongForm({
   useEffect(() => reset(), [eventSong.id, show])
 
   return (
-    <Modal title="Edit song" onClose={onClose} show={show}>
+    <Modal title="Edit song options" onClose={onClose} show={show}>
       <form
-        className="flex flex-col gap-4"
+        className="flex flex-grow flex-col gap-4"
         onSubmit={handleSubmit(onSubmit)}
         key={eventSong.id}
       >

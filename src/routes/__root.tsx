@@ -1,8 +1,13 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router'
 
 import { initializeUser } from '~/backend/auth'
+import PopUpMenuProvider from '~/components/PopUpMenu'
 
 export const Route = createRootRoute({
   beforeLoad: () => initializeUser(),
-  component: () => <Outlet />
+  component: () => (
+    <PopUpMenuProvider>
+      <Outlet />
+    </PopUpMenuProvider>
+  )
 })

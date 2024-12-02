@@ -22,7 +22,7 @@ export default function SongForm({
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-      <h2 className="text-title font-bold">{heading}</h2>
+      <h2 className="text-title mt-4 font-bold">{heading}</h2>
       <input className="hidden" defaultValue={song?.id} {...register('id')} />
       <TextField
         title="Title"
@@ -46,16 +46,9 @@ export default function SongForm({
         fieldProps={register('body', { required: true })}
         defaultValue={song?.body}
       />
-      <div className="flex justify-between">
-        <Button variant="primary" type="submit">
-          Save
-        </Button>
-        {!!onDelete && (
-          <Button variant="danger" type="button" onClick={onDelete}>
-            Delete
-          </Button>
-        )}
-      </div>
+      <Button variant="primary" type="submit">
+        Save
+      </Button>
     </form>
   )
 }

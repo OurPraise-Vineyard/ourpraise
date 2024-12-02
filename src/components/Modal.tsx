@@ -12,16 +12,16 @@ type ModalProps = {
   title?: string
 }
 export default function Modal({ onClose, show, children, title }: ModalProps) {
-  useEffect(
-    function () {
-      if (show) {
-        document.body.style.overflow = 'hidden'
-      } else {
-        document.body.style.overflow = 'auto'
-      }
-    },
-    [show]
-  )
+  // useEffect(
+  //   function () {
+  //     if (show) {
+  //       document.body.style.overflow = 'hidden'
+  //     } else {
+  //       document.body.style.overflow = 'auto'
+  //     }
+  //   },
+  //   [show]
+  // )
 
   function handleStopPropagate(e: MouseEvent<HTMLDivElement>) {
     e.stopPropagation()
@@ -31,7 +31,7 @@ export default function Modal({ onClose, show, children, title }: ModalProps) {
     <>
       <div
         className={classNames(
-          'fixed bottom-0 left-0 right-0 top-0 z-20 bg-black bg-opacity-10 transition-opacity duration-200 ease-out',
+          'fixed bottom-0 left-0 right-0 top-0 z-20 hidden bg-black bg-opacity-30 transition-opacity duration-200 ease-out sm:block',
           {
             'pointer-events-none opacity-0': !show,
             'pointer-events-all opacity-100': show
@@ -41,7 +41,7 @@ export default function Modal({ onClose, show, children, title }: ModalProps) {
       />
       <div
         className={classNames(
-          'fixed left-1/2 z-40 flex h-modal w-modal max-w-modal -translate-x-1/2 flex-col rounded-md bg-white shadow-md transition-all duration-200 ease-out',
+          'fixed left-0 top-0 z-40 flex h-screen w-screen flex-col bg-white transition-all duration-200 ease-out sm:left-1/2 sm:top-20 sm:h-modal sm:w-modal sm:max-w-modal sm:-translate-x-1/2 sm:rounded-md sm:shadow-md',
           {
             'translate-y-5': !show,
             'pointer-events-none': !show,

@@ -35,6 +35,9 @@ module.exports = {
       },
       fontSize: {
         title: defaultTheme.fontSize['2xl']
+      },
+      transitionProperty: {
+        'transform-opacity': 'transform, opacity'
       }
     },
     fontFamily: {

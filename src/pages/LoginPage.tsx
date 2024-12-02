@@ -70,16 +70,19 @@ export default function Login({ routePath }: { routePath: RoutePath }) {
           options={locations}
           fieldProps={register('location', { required: true })}
           defaultValue={location}
+          className="bg-white"
         />
         <TextField
           autoFocus
           title="Email"
           fieldProps={register('email', { required: true })}
+          className="bg-white"
         />
         <TextField
           type="password"
           title="Password"
           fieldProps={register('password', { required: true })}
+          className="bg-white"
         />
         <Button variant="primary" type="submit" disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}

@@ -21,6 +21,7 @@ export interface IEvent {
   createdAt: string
   owner: string
   formattedDate: string
+  isUpcoming: boolean
 }
 
 export interface ISong {

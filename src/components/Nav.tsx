@@ -1,13 +1,13 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import { Link } from '@tanstack/react-router'
 
 import logo from '~/assets/logo_light.svg'
 import { getAuthState, logout } from '~/backend/auth'
-import ContextMenu from '~/components/ContextMenu'
-import useContextMenuState from '~/hooks/useContextMenuState'
 import router from '~/router'
 import { getLatestLocationLabel } from '~/utils/location'
+
+import { usePopUpMenu } from './PopUpMenu'
 
 const navLinkStyles =
   'border-b text-white hover:border-b-white border-b-transparent'
@@ -15,11 +15,11 @@ const linkActiveStyles = 'border-b-white'
 
 export default function Nav() {
   const { user } = getAuthState()
-  const menu = useContextMenuState()
+  const menu = usePopUpMenu()
   const location = getLatestLocationLabel()
 
-  const menuItems = useMemo(
-    () => [
+  const openMenu = (e: React.MouseEvent<HTMLDivElement>) =>
+    menu.open(e, () => [
       {
         label: 'Sign out',
         onClick: async () => {
@@ -27,22 +27,12 @@ export default function Nav() {
           router.history.push('/login')
         }
       }
-    ],
-    []
-  )
+    ])
 
   return (
     <>
-      {menu.show && (
-        <ContextMenu
-          items={menuItems}
-          top={menu.top}
-          left={menu.left}
-          onClose={menu.onClose}
-        />
-      )}
       <div className="bg-black shadow-md print:hidden">
-        <div className="mx-auto flex w-page items-center p-5">
+        <div className="mx-auto flex w-full items-center p-5 lg:w-page">
           <div className="flex-grow">
             <img
               src={logo}
@@ -66,7 +56,7 @@ export default function Nav() {
               </Link>
             </ul>
           </div>
-          <div onClick={menu.onOpen} className="cursor-pointer text-right">
+          <div onClick={openMenu} className="cursor-pointer text-right">
             <p className="text-lg text-white">
               {user ? user.displayName || user.email : ''}
             </p>

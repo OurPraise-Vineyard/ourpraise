@@ -53,17 +53,9 @@ export default function EventForm({
         fieldProps={register('comment')}
         defaultValue={event?.comment}
       />
-      <div className="flex justify-between">
-        <Button variant="primary" type="submit">
-          {saving ? 'Saving...' : 'Save'}
-        </Button>
-
-        {!!onDelete && (
-          <Button variant="danger" type="button" onClick={onDelete}>
-            Delete event
-          </Button>
-        )}
-      </div>
+      <Button variant="primary" type="submit" className="w-full">
+        {saving ? 'Saving...' : 'Save'}
+      </Button>
     </form>
   )
 }

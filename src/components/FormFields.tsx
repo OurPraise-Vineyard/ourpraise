@@ -12,8 +12,10 @@ export interface SelectItem {
   disabled?: boolean
 }
 
-const fieldStyles =
+const inputStyles =
   'block w-full border-none bg-transparent font-sans text-lg/none focus:outline-none'
+
+const fieldStyles = 'rounded-md bg-slate-100 p-2'
 
 const textFieldSizes = {
   small: 'min-h-10',
@@ -34,9 +36,9 @@ export function SelectField({
   fieldProps: SelectHTMLAttributes<HTMLSelectElement>
 }) {
   return (
-    <div className={classNames('rounded bg-gray-200 p-2', className)}>
+    <div className={classNames(fieldStyles, className)}>
       {!!title && <span className="text-sm/3">{title}</span>}
-      <select className={fieldStyles} {...props} {...fieldProps}>
+      <select className={inputStyles} {...props} {...fieldProps}>
         {options.map(option => (
           <option
             disabled={option.disabled}
@@ -64,10 +66,10 @@ export function TextareaField({
   fieldProps: TextareaHTMLAttributes<HTMLTextAreaElement>
 }) {
   return (
-    <div className={classNames('rounded bg-gray-200 p-2', className)}>
+    <div className={classNames(fieldStyles, className)}>
       {!!title && <span className="text-sm/3">{title}</span>}
       <textarea
-        className={classNames(fieldStyles, textFieldSizes[size], className)}
+        className={classNames(inputStyles, textFieldSizes[size], className)}
         {...props}
         {...fieldProps}
       />
@@ -88,11 +90,11 @@ export function TextField({
   fieldProps: InputHTMLAttributes<HTMLInputElement>
 }) {
   return (
-    <div className={classNames('rounded bg-gray-200 p-2', className)}>
+    <div className={classNames(fieldStyles, className)}>
       {!!title && <span className="text-sm/3">{title}</span>}
       <input
         type={type}
-        className={classNames(fieldStyles, className)}
+        className={classNames(inputStyles, className)}
         {...props}
         {...fieldProps}
       />

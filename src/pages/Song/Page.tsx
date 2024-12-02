@@ -1,29 +1,45 @@
-import { useEffect, useState } from 'react'
+import classNames from 'classnames'
+import { useEffect, useMemo, useState } from 'react'
 
 import { getRouteApi } from '@tanstack/react-router'
 
-import editIcon from '~/assets/edit.svg'
-import { fetchSong } from '~/backend/songs'
+import moreIcon from '~/assets/more-vertical.svg'
+import { deleteSong, fetchSong } from '~/backend/songs'
 import Button from '~/components/Button'
 import IconButton from '~/components/IconButton'
 import Page from '~/components/Page'
+import { usePopUpMenu } from '~/components/PopUpMenu'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import AddToEvent from '~/pages/Song/AddToEvent'
-import KeySwitcher from '~/pages/Song/KeySwitcher'
 import { RouteLoader, RoutePath } from '~/router'
 import { IKey, ISong } from '~/types/models'
-import { transposeAndFormatSong } from '~/utils/chords'
+import { getKeyOptions, transposeAndFormatSong } from '~/utils/chords'
+
+type SongSearchParams = {
+  eventId?: string
+  eventTitle?: string
+}
+
+export const validateSearch = (
+  search: Record<string, string>
+): SongSearchParams => ({
+  eventId: search.eventId as string,
+  eventTitle: search.eventTitle as string
+})
 
 export const loader: RouteLoader = ({ params }) => fetchSong(params.id)
 
 export default function SongPage({ routePath }: { routePath: RoutePath }) {
-  const { useLoaderData, useNavigate } = getRouteApi(routePath)
+  const { useLoaderData, useNavigate, useSearch } = getRouteApi(routePath)
   const song: ISong = useLoaderData()
+  const { eventId, eventTitle } = useSearch() as SongSearchParams
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
-  const [showChords, setShowChords] = useState(true)
   const [showEventsDialog, setShowEventsDialog] = useState(false)
   const navigate = useNavigate()
   useDocumentTitle(song.title)
+  const menu = usePopUpMenu()
+  const keysOptions = useMemo(() => getKeyOptions(song.key), [song.key])
+  const [added, setAdded] = useState(false)
 
   const [formattedBody, setFormattedBody] = useState<string[]>([])
 
@@ -34,66 +50,119 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
           body: song.body,
           fromKey: song.key,
           toKey: transposeKey,
-          showChords
+          showChords: true
         })
       )
     }
-  }, [song, transposeKey, showChords])
+  }, [song, transposeKey])
 
-  function handleEdit() {
-    navigate({
-      to: '/songs/$id/edit',
-      params: { id: song.id }
-    })
-  }
-
-  const handleResetTranspose = () => {
-    setTransposeKey(song.key)
-  }
-
-  function handleToggleChords() {
-    setShowChords(!showChords)
+  function handleOpenMenu(e: React.MouseEvent<HTMLButtonElement>) {
+    return menu.open(e, () => [
+      {
+        label: 'Edit song',
+        onClick() {
+          navigate({
+            to: '/songs/$id/edit',
+            params: { id: song.id }
+          })
+        }
+      },
+      {
+        label: 'Delete song',
+        danger: true,
+        async onClick() {
+          if (window.confirm('Delete this song?')) {
+            try {
+              await deleteSong(song.id)
+              navigate({ to: '/songs' })
+            } catch (err: any) {
+              console.error(err.message)
+            }
+          }
+        }
+      },
+      {
+        label: 'Add to event',
+        onClick: () => setShowEventsDialog(true)
+      }
+    ])
   }
 
   return (
-    <Page>
+    <Page className="px-0 pt-0 sm:px-5">
       <AddToEvent
         show={showEventsDialog}
         onClose={() => setShowEventsDialog(false)}
         songId={song.id}
-        songKey={transposeKey}
+        transposeKey={transposeKey}
+        songKey={song.key}
+        eventId={eventId}
+        onAdded={() => setAdded(true)}
       />
-      <div className="mb-8 mt-4 flex items-center gap-3">
+      {!!eventId && (
+        <div
+          className={classNames(
+            'top-4 mb-3 flex w-full flex-col items-center gap-2 border-b p-5 text-lg sm:sticky sm:mt-8 sm:flex-row sm:rounded-full sm:border sm:shadow-md',
+            added && 'border-green-200 bg-green-50',
+            !added && 'border-slate-200 bg-slate-50'
+          )}
+        >
+          <div>
+            <span className="mr-1">
+              {added ? 'Song added to' : 'Adding songs to'}
+            </span>
+            <span className="font-bold">{eventTitle}</span>
+          </div>
+          <span className="flex-grow" />
+          {added ? (
+            <Button
+              className="h-toolbar"
+              type="link"
+              to="/songs"
+              search={{ eventId, eventTitle }}
+              variant="primary"
+            >
+              Add another song
+            </Button>
+          ) : (
+            <Button
+              className="h-toolbar"
+              onClick={() => setShowEventsDialog(true)}
+              variant="primary"
+            >
+              Add this song to event
+            </Button>
+          )}
+        </div>
+      )}
+      <div className="mb-4 mt-9 flex items-start gap-3 px-5 sm:px-0">
         <div className="w-1/2">
           <h2 className="text-title font-bold">{song.title}</h2>
-          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-lg">
-            {song.authors}
-          </p>
+          <p className="text-lg">{song.authors}</p>
         </div>
         <span className="flex-grow" />
-        <Button className="h-toolbar" onClick={() => setShowEventsDialog(true)}>
-          Add to event
-        </Button>
-        <div className="flex w-min flex-shrink-0 items-center gap-3">
-          <KeySwitcher
-            transposeKey={transposeKey}
-            setTransposeKey={setTransposeKey}
-            onResetTranspose={handleResetTranspose}
-            onToggleChords={handleToggleChords}
-            showChords={showChords}
-          />
-          <IconButton
-            icon={editIcon}
-            onClick={handleEdit}
-            className="flex-shrink-0"
-          />
+        <div className="flex items-center gap-3">
+          <select
+            className="cursor-pointer appearance-none rounded-full border border-slate-200 bg-slate-100 px-2.5 py-2.5 text-center text-lg transition-colors duration-200 ease-out hover:bg-slate-200 focus:outline-0 sm:px-5"
+            value={transposeKey || ''}
+            onChange={e => setTransposeKey(e.target.value as IKey)}
+          >
+            {keysOptions.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+          <IconButton icon={moreIcon} onClick={handleOpenMenu} />
         </div>
       </div>
-      {formattedBody.map((formattedBody, i) => (
-        <p key={i} className="my-5 whitespace-pre font-mono text-sm">
-          {formattedBody}
-        </p>
-      ))}
+      <div className="overflow-x-auto px-5 pb-5 sm:px-0">
+        {formattedBody.map((formattedBody, i) => (
+          <p key={i} className="my-5 whitespace-pre font-mono text-sm">
+            {formattedBody}
+          </p>
+        ))}
+      </div>
     </Page>
   )
 }

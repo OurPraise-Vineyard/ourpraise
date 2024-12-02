@@ -72,6 +72,22 @@ export const keysOptions: { value: string; label: string }[] = [
   }
 ]
 
+export function getKeyOptions(fromKey: IKey) {
+  const fromIndex = keys.findIndex(key =>
+    key.some(option => option === fromKey)
+  )
+  return keysOptions.map(keyOption => {
+    const index = keys.findIndex(key =>
+      key.some(key => key === keyOption.value)
+    )
+    const steps = index - fromIndex
+    return {
+      ...keyOption,
+      label: `${keyOption.label} ${steps !== 0 ? `(${steps > 0 ? '+' : ''}${steps})` : ''}`
+    }
+  })
+}
+
 export function findNextKey(fromKey: string, steps: 1 | -1): IKey {
   const index = keys.findIndex(key =>
     key.some(keyVariant => keyVariant === fromKey)

@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { IEventsData, addSongToEvent, fetchEvents } from '~/backend/events'
@@ -7,7 +7,7 @@ import Button from '~/components/Button'
 import Modal from '~/components/Modal'
 import { FetchStatus, IDocId } from '~/types/backend'
 import { IKey } from '~/types/models'
-import { keysOptions } from '~/utils/chords'
+import { getKeyOptions } from '~/utils/chords'
 import { formatDate } from '~/utils/date'
 
 import { SelectField, TextareaField } from '../../components/FormFields'
@@ -20,22 +20,32 @@ type FormState = {
 export default function AddToEvent({
   songId,
   songKey,
+  transposeKey,
   show,
-  onClose
+  onClose,
+  eventId,
+  onAdded
 }: {
   songId: IDocId
   songKey: IKey
+  transposeKey: IKey
   show: boolean
   onClose: () => void
+  eventId?: IDocId
+  onAdded: () => void
 }) {
   const [fetchStatus, setFetchStatus] = useState<FetchStatus>('idle')
-  const [events, setEvents] = useState<IEventsData['upcoming'] | null>(null)
+  const [events, setEvents] = useState<IEventsData['upcoming']>([])
   const [selectedEvent, setSelectedEvent] = useState<IDocId>('')
   const [saving, setSaving] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
-  const { register, handleSubmit, reset } = useForm<FormState>()
+  const { getValues, register, handleSubmit, reset } = useForm<FormState>()
+  const keysOptions = useMemo(() => getKeyOptions(songKey), [songKey])
 
-  useEffect(() => reset(), [show])
+  useEffect(
+    () => reset({ key: transposeKey, comment: getValues().comment }),
+    [transposeKey]
+  )
 
   useEffect(() => {
     if (show && fetchStatus === 'idle') {
@@ -44,6 +54,9 @@ export default function AddToEvent({
         .then(data => {
           if (data.upcoming.length > 0) {
             setEvents(data.upcoming)
+            if (eventId) {
+              setSelectedEvent(eventId)
+            }
           }
           setFetchStatus('succeeded')
         })
@@ -62,6 +75,7 @@ export default function AddToEvent({
         transposeKey: form.key,
         comment: form.comment
       })
+      onAdded()
       onClose()
       setSaving(false)
       reset()
@@ -82,9 +96,9 @@ export default function AddToEvent({
                   onClick={() => setSelectedEvent(event.id)}
                   key={event.id}
                   className={classNames(
-                    'flex cursor-pointer justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100',
+                    'flex cursor-pointer justify-between gap-4 border-b border-gray-300 p-2 text-lg last:border-b-0 hover:bg-gray-100',
                     {
-                      'bg-gray-100': event.id === selectedEvent
+                      'bg-blue-100': event.id === selectedEvent
                     }
                   )}
                 >
@@ -119,7 +133,7 @@ export default function AddToEvent({
             <SelectField
               options={keysOptions}
               title="Key"
-              defaultValue={songKey}
+              defaultValue={transposeKey}
               fieldProps={register('key')}
             />
             <Button type="submit" variant="primary">

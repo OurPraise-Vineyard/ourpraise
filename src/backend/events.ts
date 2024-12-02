@@ -35,7 +35,8 @@ export async function fetchEvents(): Promise<IEventsData> {
       title: event.title,
       location: event.location,
       songs: [],
-      formattedDate: formatDate(event.date)
+      formattedDate: formatDate(event.date),
+      isUpcoming: getTime(event.date) >= todayTime()
     }))
   )
 
@@ -93,7 +94,8 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
     title: eventDoc.title,
     location: eventDoc.location,
     songs,
-    formattedDate: formatDate(eventDoc.date)
+    formattedDate: formatDate(eventDoc.date),
+    isUpcoming: getTime(eventDoc.date) >= todayTime()
   }
 }
 

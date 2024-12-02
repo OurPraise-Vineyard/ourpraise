@@ -1,5 +1,4 @@
-import { useMemo, useState } from 'react'
-import * as React from 'react'
+import { useState } from 'react'
 
 import { Link, getRouteApi } from '@tanstack/react-router'
 
@@ -7,16 +6,16 @@ import downloadIcon from '~/assets/download.svg'
 import editIcon from '~/assets/edit.svg'
 import moreIcon from '~/assets/more-vertical.svg'
 import {
+  deleteEvent,
   fetchEvent,
   moveEventSong,
   removeEventSong,
   saveEventSong
 } from '~/backend/events'
 import Button from '~/components/Button'
-import ContextMenu from '~/components/ContextMenu'
 import IconButton from '~/components/IconButton'
 import Page from '~/components/Page'
-import useContextMenuState from '~/hooks/useContextMenuState'
+import { usePopUpMenu } from '~/components/PopUpMenu'
 import { useDocumentTitle } from '~/hooks/useDocumentTitle'
 import EventSongForm from '~/pages/Event/EventSongForm'
 import { RouteLoader, RoutePath } from '~/router'
@@ -30,10 +29,10 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
   const event: IEvent = useLoaderData()
   useDocumentTitle(event.title)
   const navigate = useNavigate()
-  const contextMenu = useContextMenuState()
   const [selectedSong, setSelectedSong] = useState<IEventSong | null>(null)
   const [editSong, setEditSong] = useState<boolean>(false)
   const [savingSong, setSavingSong] = useState<boolean>(false)
+  const menu = usePopUpMenu()
 
   function triggerReload() {
     // This will trigger a reload of the page
@@ -56,85 +55,105 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
     }
   }
 
-  const handleOpenMenu =
-    (song: IEventSong) => (e: React.MouseEvent<HTMLButtonElement>) => {
-      setSelectedSong(song)
-      contextMenu.onOpen(e)
-    }
-
-  const contextMenuItems = useMemo(
-    () => [
+  const handleOpenEventMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+    menu.open(e, () => [
       {
-        label: 'Move up',
-        async onClick() {
-          if (selectedSong) {
-            try {
-              await moveEventSong(event.id, selectedSong.id, -1)
-              triggerReload()
-            } catch (err: any) {
-              console.error(err.message)
-            } finally {
-              contextMenu.onClose()
-            }
-          }
-        }
-      },
-      {
-        label: 'Move down',
-        async onClick() {
-          if (selectedSong) {
-            try {
-              await moveEventSong(event.id, selectedSong.id, 1)
-              triggerReload()
-            } catch (err: any) {
-              console.error(err.message)
-            } finally {
-              contextMenu.onClose()
-            }
-          }
-        }
-      },
-      {
-        label: 'Edit options',
+        label: 'Edit event',
         onClick() {
-          setEditSong(true)
-          contextMenu.onClose()
+          navigate({
+            to: '/events/$id/edit',
+            params: { id: event.id }
+          })
         }
       },
       {
-        label: 'Remove song',
+        label: 'Delete event',
+        danger: true,
         async onClick() {
-          if (selectedSong) {
-            if (
-              window.confirm(`Remove "${selectedSong.title}" from this event?`)
-            ) {
-              contextMenu.onClose()
-              try {
-                await removeEventSong(event.id, selectedSong.id)
-                triggerReload()
-              } catch (err: any) {
-                console.error(err.message)
-              } finally {
-                contextMenu.onClose()
-              }
+          if (window.confirm('Delete this event?')) {
+            try {
+              await deleteEvent(event.id)
+              navigate({
+                to: '/events'
+              })
+            } catch (err: any) {
+              console.error(err.message)
             }
           }
         }
       }
-    ],
-    [contextMenu, selectedSong, event.id, console.error, triggerReload]
-  )
+    ])
+  }
+
+  const handleOpenSongMenu =
+    (selectedSong: IEventSong) => (e: React.MouseEvent<HTMLButtonElement>) => {
+      setSelectedSong(selectedSong)
+      menu.open(e, () => [
+        {
+          label: 'Move up',
+          async onClick() {
+            if (selectedSong) {
+              try {
+                await moveEventSong(event.id, selectedSong.id, -1)
+                triggerReload()
+              } catch (err: any) {
+                console.error(err.message)
+              } finally {
+                menu.close()
+              }
+            }
+          }
+        },
+        {
+          label: 'Move down',
+          async onClick() {
+            if (selectedSong) {
+              try {
+                await moveEventSong(event.id, selectedSong.id, 1)
+                triggerReload()
+              } catch (err: any) {
+                console.error(err.message)
+              } finally {
+                menu.close()
+              }
+            }
+          }
+        },
+        {
+          label: 'Edit options',
+          onClick() {
+            setEditSong(true)
+            menu.close()
+          }
+        },
+        {
+          label: 'Remove song',
+          danger: true,
+          async onClick() {
+            if (selectedSong) {
+              if (
+                window.confirm(
+                  `Remove "${selectedSong.title}" from this event?`
+                )
+              ) {
+                menu.close()
+                try {
+                  await removeEventSong(event.id, selectedSong.id)
+                  triggerReload()
+                } catch (err: any) {
+                  console.error(err.message)
+                } finally {
+                  menu.close()
+                }
+              }
+            }
+          }
+        }
+      ])
+    }
 
   return (
     <Page>
-      {contextMenu.show && (
-        <ContextMenu
-          items={contextMenuItems}
-          top={contextMenu.top}
-          left={contextMenu.left}
-          onClose={contextMenu.onClose}
-        />
-      )}
       {selectedSong && (
         <EventSongForm
           eventSong={selectedSong}
@@ -145,32 +164,20 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
         />
       )}
       <div className="flex items-center gap-4 border-b border-b-gray-300 py-4">
-        <h2 className="text-title flex-grow overflow-x-hidden text-ellipsis whitespace-nowrap font-bold">
-          {event.title}
-        </h2>
-        <span className="flex-grow-0 whitespace-nowrap rounded-md bg-gray-200 px-2 py-1 text-base">
-          {event.formattedDate}
-        </span>
-        <IconButton
-          icon={editIcon}
-          onClick={() =>
-            navigate({
-              to: '/events/$id/edit',
-              params: { id: event.id }
-            })
-          }
-          className="flex-shrink-0"
-        />
-        <IconButton
-          icon={downloadIcon}
-          onClick={() =>
-            navigate({
-              to: '/events/$id/print',
-              params: { id: event.id }
-            })
-          }
-          className="flex-shrink-0"
-        />
+        <div className="flex-grow">
+          <h2 className="text-title font-bold">{event.title}</h2>
+          <span className="text-lg">{event.formattedDate}</span>
+        </div>
+        <Button
+          type="link"
+          to="/events/$id/print"
+          params={{ id: event.id }}
+          variant="primary"
+          disabled={event.songs.length === 0}
+        >
+          Print
+        </Button>
+        <IconButton icon={moreIcon} onClick={handleOpenEventMenu} />
       </div>
       {!!event.comment && (
         <>
@@ -197,11 +204,11 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
                 </p>
               </div>
               {song.formattedKey && (
-                <div className="rounded-3xl bg-gray-100 px-3 py-2">
+                <div className="rounded-full bg-gray-100 px-3 py-2">
                   {song.formattedKey}
                 </div>
               )}
-              <IconButton icon={moreIcon} onClick={handleOpenMenu(song)} />
+              <IconButton icon={moreIcon} onClick={handleOpenSongMenu(song)} />
             </div>
             {song.comment && (
               <p className="mt-2 whitespace-pre text-base">{song.comment}</p>
@@ -209,16 +216,25 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
           </div>
         ))}
       </div>
-      {event.songs.length === 0 && (
-        <div className="mx-auto mt-8 flex flex-col items-center">
+      <div className="mx-auto mt-8 flex flex-col items-center gap-4">
+        {event.songs.length === 0 && (
           <p className="text-lg">
-            No songs added yet. Click below to add some.
+            {event.isUpcoming ? 'No songs added yet.' : 'Event has no songs.'}
           </p>
-          <Button type="link" to="/songs" variant="primary">
-            Add songs
+        )}
+        {event.isUpcoming && (
+          <Button
+            type="link"
+            to="/songs"
+            search={{ eventId: event.id, eventTitle: event.title }}
+            variant={event.songs.length === 0 ? 'primary' : 'default'}
+          >
+            {event.songs.length === 0
+              ? 'Add songs to this event'
+              : 'Add more songs to this event'}
           </Button>
-        </div>
-      )}
+        )}
+      </div>
     </Page>
   )
 }
