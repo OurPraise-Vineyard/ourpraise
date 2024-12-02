@@ -160,7 +160,10 @@ export async function deleteEvent(id: IDocId) {
   await deleteDocument(`events/${id}`)
 }
 
-export async function addSongToEvent(eventId: IDocId, songOptions: IEventSong) {
+export async function addSongToEvent(
+  eventId: IDocId,
+  songOptions: IEventSongForm
+) {
   await getAndUpdateDocument(
     `events/${eventId}`,
     (data: IDoc) => {

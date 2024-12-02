@@ -2,8 +2,9 @@ import { useState } from 'react'
 
 import { getRouteApi, notFound } from '@tanstack/react-router'
 
-import { deleteEvent, fetchEvent } from '~/backend/events'
+import { fetchEvent } from '~/backend/events'
 import { saveEvent } from '~/backend/events'
+import { useErrorPopUp } from '~/components/ErrorPopUp'
 import EventForm from '~/components/EventForm'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
@@ -24,7 +25,7 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
   const event: IEvent = useLoaderData()
   const navigate = useNavigate()
   const [saving, setSaving] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const errors = useErrorPopUp()
 
   const handleSubmit = async (options: IEventForm) => {
     try {
@@ -35,24 +36,9 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
         params: { id: event.id }
       })
     } catch (err: any) {
-      setError(err.message)
+      errors.show(err.message)
     } finally {
       setSaving(false)
-    }
-  }
-
-  const handleDelete = async () => {
-    if (event) {
-      if (window.confirm('Delete this event?')) {
-        try {
-          await deleteEvent(event.id)
-          navigate({
-            to: '/events'
-          })
-        } catch (err: any) {
-          setError(err.message)
-        }
-      }
     }
   }
 
@@ -64,9 +50,7 @@ export default function EditEventPage({ routePath }: { routePath: RoutePath }) {
         onSubmit={handleSubmit}
         heading="Edit event"
         saving={saving}
-        onDelete={handleDelete}
       />
-      {error && <div className="text-red-500">{error}</div>}
     </Page>
   )
 }

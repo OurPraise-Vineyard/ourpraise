@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
 import Button from '~/components/Button'
 import Modal from '~/components/Modal'
 import { IEventSongForm } from '~/types/forms'
 import { IEventSong } from '~/types/models'
-import { keysOptions } from '~/utils/chords'
+import { getKeyOptions } from '~/utils/chords'
 
 import { SelectField, TextareaField } from '../../components/FormFields'
 
@@ -19,7 +19,7 @@ export default function EventSongForm({
   eventSong: IEventSong
   show: boolean
   saving: boolean
-  onSubmit: (song: IEventSong) => void
+  onSubmit: (song: IEventSongForm) => void
   onClose: () => void
 }) {
   const {
@@ -29,7 +29,20 @@ export default function EventSongForm({
     formState: { errors }
   } = useForm<IEventSongForm>()
 
-  useEffect(() => reset(), [eventSong.id, show])
+  const keysOptions = useMemo(
+    () => getKeyOptions(eventSong.key),
+    [eventSong.key]
+  )
+
+  useEffect(
+    () =>
+      reset({
+        id: eventSong.id,
+        comment: eventSong.comment,
+        transposeKey: eventSong.transposeKey
+      }),
+    [eventSong.id, show]
+  )
 
   return (
     <Modal title="Edit song options" onClose={onClose} show={show}>

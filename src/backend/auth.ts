@@ -25,7 +25,7 @@ export async function initializeUser(): Promise<IAuthState> {
     }
 
     return authState
-  } catch (err) {
+  } catch {
     return authState
   }
 }

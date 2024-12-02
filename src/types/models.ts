@@ -4,11 +4,11 @@ export interface IEventSong {
   id: IDocId
   transposeKey: IKey
   comment: string
-  body?: Array<string>
-  title?: string
-  authors?: string
-  key?: IKey
-  formattedKey?: string
+  body: Array<string>
+  title: string
+  authors: string
+  key: IKey
+  formattedKey: string
 }
 
 export interface IEvent {

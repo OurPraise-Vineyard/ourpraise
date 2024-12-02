@@ -1,9 +1,8 @@
-import { useState } from 'react'
-
 import { getRouteApi, notFound } from '@tanstack/react-router'
 
-import { deleteSong, fetchSong } from '~/backend/songs'
+import { fetchSong } from '~/backend/songs'
 import { saveSong } from '~/backend/songs'
+import { useErrorPopUp } from '~/components/ErrorPopUp'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
@@ -23,7 +22,7 @@ export default function EditSongPage({ routePath }: { routePath: RoutePath }) {
   const { useLoaderData, useNavigate } = getRouteApi(routePath)
   const navigate = useNavigate()
   const song: ISong = useLoaderData()
-  const [error, setError] = useState<string | null>(null)
+  const errors = useErrorPopUp()
 
   const handleSubmit = async (options: ISongForm) => {
     try {
@@ -36,31 +35,14 @@ export default function EditSongPage({ routePath }: { routePath: RoutePath }) {
         params: { id: song.id }
       })
     } catch (err: any) {
-      setError(err.message)
-    }
-  }
-
-  const handleDelete = async () => {
-    if (window.confirm('Delete this song?')) {
-      try {
-        await deleteSong(song.id)
-        navigate({ to: '/songs' })
-      } catch (err: any) {
-        setError(err.message)
-      }
+      errors.show(err.message)
     }
   }
 
   return (
     <Page>
       <MetaTitle title={song ? `Edit song: "${song.title}"` : 'Edit song'} />
-      <SongForm
-        song={song}
-        onSubmit={handleSubmit}
-        heading="Edit song"
-        onDelete={handleDelete}
-      />
-      {error && <div className="text-red-500">{error}</div>}
+      <SongForm song={song} onSubmit={handleSubmit} heading="Edit song" />
     </Page>
   )
 }

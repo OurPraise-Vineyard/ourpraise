@@ -13,13 +13,11 @@ const defaultDate = dateFormat(nextWeekday(7), 'yyyy-mm-dd')
 export default function EventForm({
   event,
   onSubmit,
-  onDelete,
   heading,
   saving
 }: {
   event?: IEvent
   onSubmit: (options: IEventForm) => void
-  onDelete?: () => void
   heading: string
   saving: boolean
 }) {

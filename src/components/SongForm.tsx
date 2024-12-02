@@ -1,4 +1,3 @@
-import { error } from 'console'
 import { useForm } from 'react-hook-form'
 
 import Button from '~/components/Button'
@@ -11,12 +10,10 @@ import { SelectField, TextField, TextareaField } from './FormFields'
 export default function SongForm({
   song,
   onSubmit,
-  onDelete,
   heading
 }: {
   song?: ISong
   onSubmit: (options: ISongForm) => void
-  onDelete?: () => void
   heading: string
 }) {
   const {

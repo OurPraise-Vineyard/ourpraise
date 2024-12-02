@@ -1,8 +1,7 @@
-import { useState } from 'react'
-
 import { getRouteApi } from '@tanstack/react-router'
 
 import { createSong } from '~/backend/songs'
+import { useErrorPopUp } from '~/components/ErrorPopUp'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
@@ -12,7 +11,7 @@ import { ISongForm } from '~/types/forms'
 
 export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
   const navigate = getRouteApi(routePath).useNavigate()
-  const [error, setError] = useState<string | null>(null)
+  const errors = useErrorPopUp()
 
   const handleSubmit = async (form: ISongForm) => {
     try {
@@ -24,7 +23,7 @@ export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
         })
       }
     } catch (err: any) {
-      setError(err.message)
+      errors.show(err.message)
     }
   }
 
@@ -32,7 +31,6 @@ export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
     <Page>
       <MetaTitle title="Add song" />
       <SongForm onSubmit={handleSubmit} heading="Add song" />
-      {error && <div className="text-red-500">{error}</div>}
     </Page>
   )
 }

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 import { createEvent } from '~/backend/events'
+import { useErrorPopUp } from '~/components/ErrorPopUp'
 import EventForm from '~/components/EventForm'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
@@ -11,8 +12,8 @@ import { IEventForm } from '~/types/forms'
 
 export default function AddEventPage() {
   const navigate = useNavigate()
-  const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState<boolean>(false)
+  const errors = useErrorPopUp()
 
   const handleSubmit = async (options: IEventForm) => {
     try {
@@ -25,7 +26,7 @@ export default function AddEventPage() {
         })
       }
     } catch (err: any) {
-      setError(err.message)
+      errors.show(err.message)
     } finally {
       setSaving(false)
     }
@@ -35,7 +36,6 @@ export default function AddEventPage() {
     <Page>
       <MetaTitle title="Add event" />
       <EventForm onSubmit={handleSubmit} heading="Add event" saving={saving} />
-      {error && <div className="text-red-500">{error}</div>}
     </Page>
   )
 }

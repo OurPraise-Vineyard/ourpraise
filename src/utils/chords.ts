@@ -72,20 +72,27 @@ export const keysOptions: { value: string; label: string }[] = [
   }
 ]
 
-export function getKeyOptions(fromKey: IKey) {
+export function getKeyOptions(fromKey: IKey): typeof keysOptions {
   const fromIndex = keys.findIndex(key =>
     key.some(option => option === fromKey)
   )
-  return keysOptions.map(keyOption => {
-    const index = keys.findIndex(key =>
-      key.some(key => key === keyOption.value)
-    )
-    const steps = index - fromIndex
-    return {
-      ...keyOption,
-      label: `${keyOption.label} ${steps !== 0 ? `(${steps > 0 ? '+' : ''}${steps})` : ''}`
-    }
-  })
+  const result: typeof keysOptions = []
+
+  for (let i = fromIndex - 6; i < fromIndex + 6; i++) {
+    const index = (i + keys.length) % keys.length
+    const steps = i - fromIndex
+
+    keys[index].forEach(key => {
+      const keyOption = keysOptions.find(option => option.value === key)
+
+      result.push({
+        value: key,
+        label: `${keyOption?.label} ${steps !== 0 ? `(${steps > 0 ? '+' : ''}${steps})` : ''}`
+      })
+    })
+  }
+
+  return result
 }
 
 export function findNextKey(fromKey: string, steps: 1 | -1): IKey {

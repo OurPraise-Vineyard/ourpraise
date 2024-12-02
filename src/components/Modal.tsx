@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 import { MouseEvent } from 'react'
 
 import xIcon from '~/assets/x.svg'
