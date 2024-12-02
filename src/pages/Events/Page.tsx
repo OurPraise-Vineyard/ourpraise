@@ -44,14 +44,14 @@ export default function EventsPage({ routePath }: { routePath: RoutePath }) {
           Add new event
         </Button>
       </div>
-      <h2 className="text-title border-b border-b-gray-300 py-2 font-bold">
+      <h2 className="border-b border-b-gray-300 py-2 text-title font-bold">
         Upcoming events
       </h2>
       {upcoming.map(renderEventItem)}
       {upcoming.length === 0 && (
         <p className="pb-2 text-lg">No upcoming events</p>
       )}
-      <h2 className="text-title mt-5 border-b border-b-gray-300 py-2 font-bold">
+      <h2 className="mt-5 border-b border-b-gray-300 py-2 text-title font-bold">
         Past events
       </h2>
       {past.map(renderEventItem)}

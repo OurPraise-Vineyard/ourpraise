@@ -161,21 +161,23 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
           saving={savingSong}
         />
       )}
-      <div className="flex items-center gap-4 border-b border-b-gray-300 py-4">
+      <div className="flex items-start gap-4 border-b border-b-gray-300 py-4">
         <div className="flex-grow">
           <h2 className="text-title font-bold">{event.title}</h2>
           <span className="text-lg">{event.formattedDate}</span>
         </div>
-        <Button
-          type="link"
-          to="/events/$id/print"
-          params={{ id: event.id }}
-          variant="primary"
-          disabled={event.songs.length === 0}
-        >
-          Print
-        </Button>
-        <IconButton icon={moreIcon} onClick={handleOpenEventMenu} />
+        <div className="flex items-center gap-4">
+          <Button
+            type="link"
+            to="/events/$id/print"
+            params={{ id: event.id }}
+            variant="primary"
+            disabled={event.songs.length === 0}
+          >
+            Print
+          </Button>
+          <IconButton icon={moreIcon} onClick={handleOpenEventMenu} />
+        </div>
       </div>
       {!!event.comment && (
         <>

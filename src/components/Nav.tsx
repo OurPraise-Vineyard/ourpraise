@@ -30,40 +30,38 @@ export default function Nav() {
     ])
 
   return (
-    <>
-      <div className="bg-black shadow-md print:hidden">
-        <div className="mx-auto flex w-full items-center p-5 lg:w-page">
-          <div className="flex-grow">
-            <img
-              src={logo}
-              alt="OurPraise Logo"
-              className="col-start-1 mb-1 h-10"
-            />
-            <ul className="flex gap-5">
-              <Link
-                className={navLinkStyles}
-                activeProps={{ className: linkActiveStyles }}
-                to="/events"
-              >
-                Events
-              </Link>
-              <Link
-                className={navLinkStyles}
-                activeProps={{ className: linkActiveStyles }}
-                to="/songs"
-              >
-                Songs
-              </Link>
-            </ul>
-          </div>
-          <div onClick={openMenu} className="cursor-pointer text-right">
-            <p className="text-lg text-white">
-              {user ? user.displayName || user.email : ''}
-            </p>
-            <p className="text-md text-gray-400">{location}</p>
-          </div>
+    <div className="animate-fadeIn bg-black shadow-md print:hidden">
+      <div className="mx-auto flex w-full items-center p-5 lg:w-page">
+        <div className="flex-grow">
+          <img
+            src={logo}
+            alt="OurPraise Logo"
+            className="col-start-1 mb-1 h-10"
+          />
+          <ul className="flex gap-5">
+            <Link
+              className={navLinkStyles}
+              activeProps={{ className: linkActiveStyles }}
+              to="/events"
+            >
+              Events
+            </Link>
+            <Link
+              className={navLinkStyles}
+              activeProps={{ className: linkActiveStyles }}
+              to="/songs"
+            >
+              Songs
+            </Link>
+          </ul>
+        </div>
+        <div onClick={openMenu} className="cursor-pointer text-right">
+          <p className="text-lg text-white">
+            {user ? user.displayName || user.email : ''}
+          </p>
+          <p className="text-md text-gray-400">{location}</p>
         </div>
       </div>
-    </>
+    </div>
   )
 }
