@@ -47,3 +47,9 @@ export function nextWeekday(daynum: number): Date {
   now.setDate(now.getDate() + ((daynum + (7 - now.getDay())) % 7))
   return now
 }
+
+export function lastMonth(): Date {
+  const now = new Date()
+  now.setMonth(now.getMonth() - 1)
+  return now
+}

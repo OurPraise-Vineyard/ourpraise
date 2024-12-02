@@ -2,15 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@*": ["./src/*"],
-      "@public/*": ["./public/*"],
-      "@scripts/*": ["./scripts/*"]
+      "~/*": ["./src/*"]
     },
-    "target": "esnext",
-    "module": "commonjs",
+    "target": "ES2022",
+    "module": "ES2022",
     "moduleResolution": "node",
-    "jsx": "react",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "ES2022"],
     "strict": true,
     "noEmit": true,
     "allowJs": true,
@@ -18,16 +16,13 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-    "noImplicitAny": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
     "noImplicitOverride": true,
-    "noUnusedLocals": false,
-    "types": ["jest"]
+    "types": ["jest", "node", "react", "react-dom"]
   },
   "extends": "@tsconfig/vite-react/tsconfig.json",
   "include": ["./src"],

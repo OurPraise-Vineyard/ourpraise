@@ -1,5 +1,7 @@
 import { Transposer } from 'chord-transposer'
 
+import { IKey } from '~/types/models'
+
 const keys: IKey[][] = [
   ['C'],
   ['Db'],
@@ -70,6 +72,29 @@ export const keysOptions: { value: string; label: string }[] = [
   }
 ]
 
+export function getKeyOptions(fromKey: IKey): typeof keysOptions {
+  const fromIndex = keys.findIndex(key =>
+    key.some(option => option === fromKey)
+  )
+  const result: typeof keysOptions = []
+
+  for (let i = fromIndex - 6; i < fromIndex + 6; i++) {
+    const index = (i + keys.length) % keys.length
+    const steps = i - fromIndex
+
+    keys[index].forEach(key => {
+      const keyOption = keysOptions.find(option => option.value === key)
+
+      result.push({
+        value: key,
+        label: `${keyOption?.label} ${steps !== 0 ? `(${steps > 0 ? '+' : ''}${steps})` : ''}`
+      })
+    })
+  }
+
+  return result
+}
+
 export function findNextKey(fromKey: string, steps: 1 | -1): IKey {
   const index = keys.findIndex(key =>
     key.some(keyVariant => keyVariant === fromKey)
@@ -100,7 +125,7 @@ export function transposeSong(
     .split('\n')
     .map(line => {
       if (line.startsWith('//')) {
-        return transposeLine(line, fromKey, toKey)
+        return '//' + transposeLine(line.replace(/^\/\//, ''), fromKey, toKey)
       }
       return line
     })
@@ -109,4 +134,36 @@ export function transposeSong(
     .replace(/(\s*)\s{{END_PAREN}}/g, (_, p1) => {
       return ')' + p1
     })
+}
+
+export function transposeAndFormatSong({
+  body,
+  fromKey,
+  toKey,
+  showChords
+}: {
+  body: string
+  fromKey?: IKey
+  toKey?: IKey
+  showChords?: boolean
+}): string[] {
+  if (showChords && fromKey && toKey) {
+    return transposeSong(body, fromKey, toKey)
+      .replace(/^\/\//gm, '  ')
+      .replace(/\n\s+?\n/g, '\n\n')
+      .split('\n\n')
+  } else {
+    return body
+      .split('\n')
+      .map(line => (line.trim() === '//' ? '' : line))
+      .filter(line => line.substr(0, 2) !== '//' || line.trim() === '//')
+      .join('\n')
+      .replace(/^\n+/g, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .split('\n\n')
+  }
+}
+
+export function formatKey(key: IKey): string {
+  return keysOptions.find(option => option.value === key)?.label || key
 }

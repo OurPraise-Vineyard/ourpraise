@@ -1,16 +1,9 @@
 import classNames from 'classnames'
-import React from 'react'
-
-interface FieldProps {
-  className?: string
-  title?: string
-  name?: string
-  onChange: (string) => void
-  value: string
-  autoFocus?: boolean
-  required?: boolean
-  disabled?: boolean
-}
+import {
+  InputHTMLAttributes,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes
+} from 'react'
 
 export interface SelectItem {
   label?: string
@@ -19,8 +12,10 @@ export interface SelectItem {
   disabled?: boolean
 }
 
-const fieldStyles =
+const inputStyles =
   'block w-full border-none bg-transparent font-sans text-lg/none focus:outline-none'
+
+const fieldStyles = 'rounded-md bg-slate-100 p-2'
 
 const textFieldSizes = {
   small: 'min-h-10',
@@ -31,97 +26,93 @@ const textFieldSizes = {
 export function SelectField({
   className,
   title = '',
-  name = '',
-  onChange,
-  value,
-  autoFocus = false,
-  required = false,
-  disabled = false,
-  options = []
-}: FieldProps & {
+  options = [],
+  fieldProps,
+  error,
+  ...props
+}: SelectHTMLAttributes<HTMLSelectElement> & {
   options: SelectItem[]
+  className?: string
+  title?: string
+  fieldProps: SelectHTMLAttributes<HTMLSelectElement>
+  error?: string
 }) {
   return (
-    <div className={classNames('rounded bg-gray-200 p-2', className)}>
-      {!!title && <span className="text-sm/3">{title}</span>}
-      <select
-        value={value}
-        name={name}
-        onChange={e => onChange(e.target.value)}
-        className={fieldStyles}
-        autoFocus={autoFocus}
-        required={required}
-        disabled={disabled}
-      >
-        {options.map(option => (
-          <option
-            disabled={option.disabled}
-            key={option.key || option.value}
-            value={option.value}
-          >
-            {option.label || option.value}
-          </option>
-        ))}
-      </select>
-    </div>
+    <>
+      <div className={classNames(fieldStyles, className)}>
+        {!!title && <span className="text-sm/3">{title}</span>}
+        <select className={inputStyles} {...props} {...fieldProps}>
+          {options.map(option => (
+            <option
+              disabled={option.disabled}
+              key={option.key || option.value}
+              value={option.value}
+            >
+              {option.label || option.value}
+            </option>
+          ))}
+        </select>
+      </div>
+      {error && <div className="text-red-500">{error}</div>}
+    </>
   )
 }
 
 export function TextareaField({
   className,
   title = '',
-  name = '',
-  onChange,
-  value,
   size = 'medium',
-  autoFocus = false,
-  required = false,
-  disabled = false
-}: FieldProps & {
+  fieldProps,
+  error,
+  ...props
+}: TextareaHTMLAttributes<HTMLTextAreaElement> & {
   size?: keyof typeof textFieldSizes
+  className?: string
+  title?: string
+  fieldProps: TextareaHTMLAttributes<HTMLTextAreaElement>
+  error?: string
 }) {
   return (
-    <div className={classNames('rounded bg-gray-200 p-2', className)}>
-      {!!title && <span className="text-sm/3">{title}</span>}
-      <textarea
-        value={value}
-        name={name}
-        onChange={e => onChange(e.target.value)}
-        className={classNames(fieldStyles, textFieldSizes[size], className)}
-        autoFocus={autoFocus}
-        required={required}
-        disabled={disabled}
-      />
-    </div>
+    <>
+      <div className={classNames(fieldStyles, className)}>
+        {!!title && <span className="text-sm/3">{title}</span>}
+        <textarea
+          className={classNames(inputStyles, textFieldSizes[size], className)}
+          {...props}
+          {...fieldProps}
+        />
+      </div>
+      {error && <div className="text-red-500">{error}</div>}
+    </>
   )
 }
 
 export function TextField({
   className,
   title = '',
-  name = '',
-  onChange,
-  value,
   type = 'text',
-  autoFocus = false,
-  required = false,
-  disabled = false
-}: FieldProps & {
+  fieldProps,
+  error,
+  ...props
+}: InputHTMLAttributes<HTMLInputElement> & {
   type?: 'text' | 'password' | 'date'
+  className?: string
+  title?: string
+  fieldProps: InputHTMLAttributes<HTMLInputElement>
+  error?: string
 }) {
   return (
-    <div className={classNames('rounded bg-gray-200 p-2', className)}>
-      {!!title && <span className="text-sm/3">{title}</span>}
-      <input
-        value={value}
-        name={name}
-        type={type}
-        onChange={e => onChange(e.target.value)}
-        className={classNames(fieldStyles, className)}
-        autoFocus={autoFocus}
-        required={required}
-        disabled={disabled}
-      />
-    </div>
+    <>
+      <div className={classNames(fieldStyles, className)}>
+        {!!title && <span className="text-sm/3">{title}</span>}
+        <input
+          type={type}
+          className={classNames(inputStyles, className)}
+          {...props}
+          {...fieldProps}
+        />
+      </div>
+      {error && <div className="text-red-500">{error}</div>}
+    </>
   )
 }

@@ -1,31 +1,55 @@
-import Backend from '@lib/backend'
 import {
-  mapCollectionToSongs,
-  mapDocToSong,
-  mapSongFormToSong
-} from '@mappers/songs'
+  createDocument,
+  deleteDocument,
+  getCollection,
+  getDocument,
+  updateDocument
+} from '~/lib/database'
+import { IDocId } from '~/types/backend'
+import { ISongForm } from '~/types/forms'
+import { IKey, ISong } from '~/types/models'
 
 export function fetchSong(songId: IDocId): Promise<ISong> {
-  return Backend.getDoc(`songs/${songId}`).then(mapDocToSong)
+  return getDocument(`songs/${songId}`).then(song => ({
+    authors: song.authors as string,
+    body: song.body as string,
+    id: song.id as string,
+    key: song.key as IKey,
+    title: song.title as string
+  }))
 }
 
 export function fetchSongs(): Promise<ISong[]> {
-  return Backend.getCollection({
+  return getCollection({
     path: 'songs',
     orderBy: 'title',
     sortDirection: 'asc'
-  }).then(mapCollectionToSongs)
+  }).then(songs =>
+    songs.map(song => ({
+      authors: song.authors as string,
+      body: song.body as string,
+      id: song.id as string,
+      key: song.key as IKey,
+      title: song.title as string
+    }))
+  )
 }
 
 export async function saveSong(form: ISongForm): Promise<void> {
-  await Backend.setDoc(`songs/${form.id}`, mapSongFormToSong(form), {
-    merge: true
+  await updateDocument(`songs/${form.id}`, {
+    title: form.title,
+    authors: form.authors,
+    body: form.body,
+    key: form.key
   })
 }
 
 export async function createSong(form: ISongForm): Promise<IDocId> {
-  const doc = await Backend.createDoc('songs', {
-    ...mapSongFormToSong(form),
+  const doc = await createDocument('songs', {
+    title: form.title,
+    authors: form.authors,
+    body: form.body,
+    key: form.key,
     createdAt: new Date().toISOString()
   })
 
@@ -33,5 +57,5 @@ export async function createSong(form: ISongForm): Promise<IDocId> {
 }
 
 export async function deleteSong(id: IDocId): Promise<void> {
-  await Backend.deleteDoc(`songs/${id}`)
+  await deleteDocument(`songs/${id}`)
 }

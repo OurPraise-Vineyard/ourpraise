@@ -1,16 +1,14 @@
-import { pageTitleStyles } from '@common-styles'
-import React from 'react'
-import { useNavigate } from 'react-router'
+import dateFormat from 'dateformat'
+import { useForm } from 'react-hook-form'
 
-import Button from '@components/Button'
+import Button from '~/components/Button'
+import { IEventForm } from '~/types/forms'
+import { IEvent } from '~/types/models'
+import { nextWeekday } from '~/utils/date'
 
-import { deleteEvent } from '@backend/events'
-import useEventForm from '@hooks/forms/useEventForm'
-import useAuth from '@hooks/useAuth'
-import useErrors from '@hooks/useErrors'
-import { locations } from '@hooks/useSavedLocation'
+import { TextField, TextareaField } from './FormFields'
 
-import { SelectField, TextField, TextareaField } from './FormFields'
+const defaultDate = dateFormat(nextWeekday(7), 'yyyy-mm-dd')
 
 export default function EventForm({
   event,
@@ -23,80 +21,45 @@ export default function EventForm({
   heading: string
   saving: boolean
 }) {
-  const { user } = useAuth()
-  const [
-    { title, comment, date, songs, location = locations[0].value },
-    setField
-  ] = useEventForm(event)
-  const navigate = useNavigate()
-  const { pushError } = useErrors()
-  const canDelete = !!(event && event.id)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<IEventForm>()
 
-  const handleSave = async e => {
-    e.preventDefault()
+  const onSave = async (data: IEventForm) => {
     onSubmit({
-      title,
-      date,
-      songs,
-      comment,
-      owner: user?.email || '',
-      location: location ?? locations[0].value
+      title: data.title,
+      date: data.date,
+      comment: data.comment
     })
   }
 
-  const handleDelete = async () => {
-    if (event) {
-      if (window.confirm('Delete this event?')) {
-        try {
-          await deleteEvent(event.id)
-          navigate('/events')
-        } catch (err) {
-          pushError(err)
-        }
-      }
-    }
-  }
-
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSave}>
-      <h2 className={pageTitleStyles}>{heading}</h2>
+    <form className="flex flex-col gap-4 py-4" onSubmit={handleSubmit(onSave)}>
+      <h2 className="text-title font-bold">{heading}</h2>
       <TextField
-        value={title}
         title="Title"
-        onChange={value => setField('title', value)}
+        defaultValue={event?.title}
+        fieldProps={register('title', { required: true })}
+        error={errors.title && 'Title is required'}
       />
-      <div className="flex gap-3">
-        <TextField
-          value={date}
-          type="date"
-          title="Date"
-          onChange={value => setField('date', value)}
-          className="flex-grow"
-        />
-        <SelectField
-          value={location}
-          title="Location"
-          onChange={value => setField('location', value)}
-          options={locations}
-          className="flex-grow"
-        />
-      </div>
+      <TextField
+        type="date"
+        title="Date"
+        className="flex-grow"
+        defaultValue={event?.date || defaultDate}
+        fieldProps={register('date', { required: true })}
+        error={errors.date && 'Date is required'}
+      />
       <TextareaField
-        value={comment}
         title="Set comments"
-        onChange={value => setField('comment', value)}
+        fieldProps={register('comment')}
+        defaultValue={event?.comment}
       />
-      <div className="flex justify-between">
-        <Button variant="primary" type="submit">
-          {saving ? 'Saving...' : 'Save'}
-        </Button>
-
-        {canDelete && (
-          <Button variant="danger" type="button" onClick={handleDelete}>
-            Delete event
-          </Button>
-        )}
-      </div>
+      <Button variant="primary" type="submit" className="w-full">
+        {saving ? 'Saving...' : 'Save'}
+      </Button>
     </form>
   )
 }

@@ -31,3 +31,5 @@ ui-debug.log
 /firestore-import
 
 *.log
+
+*.gen.ts

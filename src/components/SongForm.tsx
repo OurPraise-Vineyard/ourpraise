@@ -1,13 +1,9 @@
-import { pageTitleStyles } from '@common-styles'
-import React from 'react'
-import { useNavigate } from 'react-router'
+import { useForm } from 'react-hook-form'
 
-import Button from '@components/Button'
-
-import { deleteSong } from '@backend/songs'
-import useSongForm from '@hooks/forms/useSongForm'
-import useErrors from '@hooks/useErrors'
-import { keysOptions } from '@utils/chords'
+import Button from '~/components/Button'
+import { ISongForm } from '~/types/forms'
+import { ISong } from '~/types/models'
+import { keysOptions } from '~/utils/chords'
 
 import { SelectField, TextField, TextareaField } from './FormFields'
 
@@ -20,64 +16,45 @@ export default function SongForm({
   onSubmit: (options: ISongForm) => void
   heading: string
 }) {
-  const [{ title, authors, body, key }, setField] = useSongForm(song)
-  const navigate = useNavigate()
-  const { pushError } = useErrors()
-  const canDelete = !!(song && song.id)
-
-  const handleSave = async e => {
-    e.preventDefault()
-    onSubmit({ title, authors, body, key, id: undefined })
-  }
-
-  const handleDelete = async () => {
-    if (canDelete) {
-      if (window.confirm('Delete this song?')) {
-        try {
-          await deleteSong(song.id)
-          navigate('/songs')
-        } catch (err) {
-          pushError(err)
-        }
-      }
-    }
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<ISongForm>()
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSave}>
-      <h2 className={pageTitleStyles}>{heading}</h2>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+      <h2 className="text-title mt-4 font-bold">{heading}</h2>
+      <input className="hidden" defaultValue={song?.id} {...register('id')} />
       <TextField
-        value={title}
         title="Title"
-        onChange={value => setField('title', value)}
+        fieldProps={register('title', { required: true })}
+        defaultValue={song?.title}
+        error={errors.title && 'Title is required'}
       />
       <TextField
-        value={authors}
         title="Authors"
-        onChange={value => setField('authors', value)}
+        fieldProps={register('authors', { required: true })}
+        defaultValue={song?.authors}
+        error={errors.authors && 'Authors are required'}
       />
       <SelectField
-        value={key}
         title="Song Key"
-        onChange={value => setField('key', value)}
         options={keysOptions}
+        fieldProps={register('key', { required: true })}
+        defaultValue={song?.key}
+        error={errors.key && 'Song key is required'}
       />
       <TextareaField
         size="large"
-        value={body}
         title="Body"
-        onChange={value => setField('body', value)}
+        fieldProps={register('body', { required: true })}
+        defaultValue={song?.body}
+        error={errors.body && 'Song body is required'}
       />
-      <div className="flex justify-between">
-        <Button variant="primary" type="submit">
-          Save
-        </Button>
-        {canDelete && (
-          <Button variant="danger" type="button" onClick={handleDelete}>
-            Delete
-          </Button>
-        )}
-      </div>
+      <Button variant="primary" type="submit">
+        Save
+      </Button>
     </form>
   )
 }

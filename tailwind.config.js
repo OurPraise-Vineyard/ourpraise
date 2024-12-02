@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
@@ -30,6 +32,12 @@ module.exports = {
       },
       maxWidth: {
         modal: '90vw'
+      },
+      fontSize: {
+        title: defaultTheme.fontSize['2xl']
+      },
+      transitionProperty: {
+        'transform-opacity': 'transform, opacity'
       }
     },
     fontFamily: {
