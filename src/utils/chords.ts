@@ -140,7 +140,7 @@ export function transposeAndFormatSong({
   body,
   fromKey,
   toKey,
-  showChords
+  showChords = true
 }: {
   body: string
   fromKey?: IKey
