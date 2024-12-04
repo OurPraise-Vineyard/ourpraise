@@ -5,20 +5,10 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from 'firebase/auth'
-import { doc, getDoc, getFirestore } from 'firebase/firestore'
 
-import { IUser, IUserMetadata } from '~/types/backend'
+import { IUser } from '~/types/backend'
 
 import { BackendError } from './firebase'
-
-function getUserMetadata(email: string): Promise<IUserMetadata> {
-  return getDoc(doc(getFirestore(), `users/${email}`)).then(doc => {
-    if (doc.exists() && doc.data().role) {
-      return doc.data() as IUserMetadata
-    }
-    throw new BackendError(new Error(`Email ${email} not authorized`))
-  })
-}
 
 export async function login(email: string, password: string): Promise<IUser> {
   try {
@@ -29,12 +19,9 @@ export async function login(email: string, password: string): Promise<IUser> {
     )
     const { displayName } = userCred.user
 
-    const meta = await getUserMetadata(email)
-
     return {
       email,
-      displayName: displayName || email,
-      ...meta
+      displayName: displayName || email.split('@')[0]
     }
   } catch (err) {
     throw new BackendError(err as Error)
@@ -65,12 +52,9 @@ export async function initializeUser(): Promise<IUser | null> {
     if (user && user.email) {
       const { displayName, email } = user
 
-      const meta = await getUserMetadata(email)
-
       return {
         email,
-        displayName: displayName || email,
-        ...meta
+        displayName: displayName || email.split('@')[0]
       }
     }
 

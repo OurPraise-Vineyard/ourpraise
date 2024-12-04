@@ -31,11 +31,7 @@ export type IDocId = string
 export type FetchStatus = 'idle' | 'loading' | 'failed' | 'succeeded'
 export type ILoginStatus = 'loggedIn' | 'loggedOut' | 'undetermined'
 
-export interface IUser extends IUserMetadata {
+export interface IUser {
   email: string
   displayName: string
-}
-
-export interface IUserMetadata {
-  role: 'user' | 'admin'
 }

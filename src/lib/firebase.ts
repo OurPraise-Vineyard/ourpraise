@@ -1,4 +1,5 @@
 import { FirebaseError, initializeApp } from 'firebase/app'
+import { connectAuthEmulator, getAuth } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
 import { IBackendError } from '~/types/backend'
@@ -18,6 +19,7 @@ initializeApp(firebaseConfig)
 
 if (window.location.hostname === 'localhost') {
   connectFirestoreEmulator(getFirestore(), 'localhost', 8080)
+  connectAuthEmulator(getAuth(), 'http://localhost:9099')
 }
 
 const firebaseErrors = {
