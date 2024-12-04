@@ -119,6 +119,10 @@ export function transposeSong(
   fromKey: IKey | null,
   toKey: IKey
 ): string {
+  if (fromKey === toKey) {
+    return body
+  }
+
   return body
     .replace(/\(/g, '{{START_PAREN}} ')
     .replace(/\)/g, ' {{END_PAREN}}')
