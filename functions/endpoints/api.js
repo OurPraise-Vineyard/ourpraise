@@ -17,7 +17,7 @@ app.get('/search', (req, res) => {
   const searchQuery = q.trim()
 
   if (!searchQuery) {
-    res.status(400).json({
+    return res.status(400).json({
       status: 400,
       error: 'Missing search query string'
     })
@@ -25,7 +25,10 @@ app.get('/search', (req, res) => {
 
   searchSongs(searchQuery).then(data => {
     res.json({
-      hits: data,
+      hits: data.map(hit => ({
+        ...hit,
+        id: hit.objectID
+      })),
       query: searchQuery
     })
   })
@@ -35,7 +38,7 @@ app.get('/song', (req, res) => {
   const { id } = req.query
 
   if (!id) {
-    res.status(400).json({
+    return res.status(400).json({
       status: 400,
       error: 'Missing song id in query'
     })
@@ -50,7 +53,7 @@ app.get('/event', (req, res) => {
   const { id } = req.query
 
   if (!id) {
-    res.status(400).json({
+    return res.status(400).json({
       status: 400,
       error: 'Missing event id in query'
     })
@@ -70,7 +73,7 @@ app.get('/events', (req, res) => {
       limitInt = parseInt(limit)
       if (isNaN(limitInt)) throw new Error()
     } catch (e) {
-      res.status(400).json({
+      return res.status(400).json({
         status: 400,
         error: 'Limit must be a number'
       })
