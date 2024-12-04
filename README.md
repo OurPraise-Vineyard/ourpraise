@@ -4,17 +4,28 @@ This project contains the source code for OurPraise, a web-based song database m
 
 # Getting started on local development
 
-After cloning, you need to install dependencies for both the app and cloud functions. To do this, simply run `npm run first-install`.
+## Prerequites
 
-After this, you can download a copy of the production Firestore, using the appropiate script (bash or cmd) inside the _scripts/_ directory. These scripts depend on `gcloud`, which needs to be installed and authorized. See install instructions [here](https://cloud.google.com/sdk/docs/install).
+- [Node.js](https://nodejs.org/en)
+- [Pnpm](https://pnpm.io/)
+- [Firebase CLI](https://firebase.google.com/docs/cli)
+- Access to ourpraise firebase instance
 
-Also make sure you have `firebase-tools` installed globally and authorized. See install instructions [here](https://www.npmjs.com/package/firebase-tools).
+## Installation
 
-When all is set up, you may run the following commands to start the dev server, type checking and Firebase emulators simultanously:
+```
+pnpm install
+cd functions
+pnpm install
+```
 
-- `npm run dev-server`
-- `npm run emulators`
-- `npm run watch-types`
+## Development
+
+- `pnpm dev`
+- `pnpm emulators`
+- `pnpm check`
+- `pnpm build`
+- `pnpm run deploy`
 
 ## Setting up a development environment
 
@@ -24,30 +35,20 @@ Additionally you should use [ESlint](https://marketplace.visualstudio.com/items?
 
 ## Getting to know the code base
 
-The app is built with Typescript and React. You must abide to a certain structure when contributing to the source code. Inside the _src/_ directory you will find the following files and top-level directories:
+This project uses and depends on:
 
-- _assets_: Contains fonts and svg files
-- _backend_: Contains helper functions for most database interactions
-- _components_: Contains reusable React components
-- _hooks_: Contains hooks for backend interactions and component states
-- _lib_: Contains wrappers for third party libraries such as Firebase and Algolia. Makes maintanance easier and decreases coupling to these libraries
-- _mappers_: Contains mappers use when fetching or pushing data to the backend
-- _pages_: Contains top-level components each representing a route. Same rules as components
-- _state_: Contains Redux global store and actions
-- _styles_: Contains global styles and style mixins
-- _types_: Contains type declarations for globally used types and interfaces
-- _utils_: Contains a few handy utility functions
-- _index.tsx_: Entry point for the app. Contains state providers and the router
-
-## Deploying a new version
-
-To deploy a new version of the code base, simply run `npm run deploy`. This will run unit tests, build the front end and deploy to Firebase.
+- Vite
+- React
+- Tailwind
+- Firebase
+- Tanstack Router
+- Typescript
 
 # API
 
-To integrate with OurPraise, you need to use the public API. The API is available at `https://europe-west1-ourpraise-fb.cloudfunctions.net/api/ENDPOINT`. Each endpoint is documented briefly below.
+To integrate with OurPraise, you need to use the public API. The API is available at `https://europe-west1-ourpraise-fb.cloudfunctions.net/api/{ENDPOINT}`. Each endpoint is documented briefly below.
 
-## `/song`
+## `GET /song`
 
 Get single song information for presentation:
 
@@ -71,7 +72,7 @@ _Example response:_
 }
 ```
 
-## `/event`
+## `GET /event`
 
 Get specific event with song information for presention:
 
@@ -103,7 +104,7 @@ _Example response:_
 ]
 ```
 
-## `/events`
+## `GET /events`
 
 Get all events with minimal information:
 
@@ -120,4 +121,24 @@ _Example response:_
     "songs": 5
   }
 ]
+```
+
+## `GET /search`
+
+Get all events with minimal information:
+
+`https://europe-west1-ourpraise-fb.cloudfunctions.net/api/search?q=SEARCH_QUERY`
+
+_Example response:_
+
+```json
+{
+  "hits": [
+    {
+      "id": "SONG_ID",
+      "title": "Good Good Father",
+      "authors": "Pat Barrett and Anthony Brown"
+    }
+  ]
+}
 ```

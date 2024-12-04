@@ -16,13 +16,11 @@
   },
   "scripts": {
     "dev": "vite",
-    "emulators": "firebase emulators:start --import ./firestore-import",
-    "format": "prettier . --write",
-    "build": "vite build",
+    "emulators": "firebase emulators:start --import ./emulators-data",
+    "build": "eslint . && tsc --noEmit && vite build",
     "check": "eslint . && tsc --noEmit",
     "test": "jest",
-    "deploy": "vite build && firebase deploy",
-    "serve": "vite preview"
+    "deploy": "eslint . && tsc --noEmit && vite build && firebase deploy"
   },
   "browserslist": {
     "production": [
