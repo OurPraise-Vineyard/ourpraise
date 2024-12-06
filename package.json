@@ -16,10 +16,11 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "eslint . && tsc --noEmit && vite build",
-    "check": "eslint . && tsc --noEmit",
+    "lint": "eslint .",
+    "build": "vite build",
+    "type-check": "tsc --noEmit",
     "test": "jest",
-    "deploy": "eslint . && tsc --noEmit && vite build && firebase deploy --only hosting"
+    "deploy": "firebase deploy --only hosting"
   },
   "browserslist": {
     "production": [
