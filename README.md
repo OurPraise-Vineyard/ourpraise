@@ -9,7 +9,7 @@ This project contains the source code for OurPraise, a web-based song database m
 - [Firebase CLI](https://firebase.google.com/docs/cli)
 - [Prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 - [ESlint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- Setup emulators as described [here](https://github.com/gustavgb/ourpraise-firebase)
+- Setup emulators as described [here](https://github.com/OurPraise-Vineyard/ourpraise-firebase)
 - Access to ourpraise firebase instance
 
 ## Installation
@@ -27,7 +27,7 @@ pnpm install
 
 ## Emulators and API Documentation
 
-To develop locally use the emulator suite as described [here](https://github.com/gustavgb/ourpraise-firebase). There you will also find the API documentation.
+To develop locally use the emulator suite as described [here](https://github.com/OurPraise-Vineyard/ourpraise-firebase). There you will also find the API documentation.
 
 ## Setting up a development environment
 
