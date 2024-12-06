@@ -4,7 +4,7 @@ This project contains the source code for OurPraise, a web-based song database m
 
 ## Prerequites
 
-- [Node.js](https://nodejs.org/en)
+- [Node.js 20](https://nodejs.org/en)
 - [Pnpm](https://pnpm.io/)
 - [Firebase CLI](https://firebase.google.com/docs/cli)
 - [Prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
