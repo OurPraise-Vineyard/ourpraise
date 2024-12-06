@@ -2,8 +2,6 @@
 
 This project contains the source code for OurPraise, a web-based song database made for churches to plan worship during sunday services.
 
-# Getting started on local development
-
 ## Prerequites
 
 - [Node.js](https://nodejs.org/en)
