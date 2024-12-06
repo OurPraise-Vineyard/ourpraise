@@ -9,23 +9,27 @@ This project contains the source code for OurPraise, a web-based song database m
 - [Node.js](https://nodejs.org/en)
 - [Pnpm](https://pnpm.io/)
 - [Firebase CLI](https://firebase.google.com/docs/cli)
+- [Prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESlint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- Setup emulators as described [here](https://github.com/gustavgb/ourpraise.firebase)
 - Access to ourpraise firebase instance
 
 ## Installation
 
 ```
 pnpm install
-cd functions
-pnpm install
 ```
 
 ## Development
 
 - `pnpm dev`
-- `pnpm emulators`
 - `pnpm check`
 - `pnpm build`
 - `pnpm run deploy`
+
+## Emulators and API Documentation
+
+To develop locally use the emulator suite as described [here](https://github.com/gustavgb/ourpraise.firebase). There you will also find the API documentation.
 
 ## Setting up a development environment
 
@@ -43,102 +47,3 @@ This project uses and depends on:
 - Firebase
 - Tanstack Router
 - Typescript
-
-# API
-
-To integrate with OurPraise, you need to use the public API. The API is available at `https://europe-west1-ourpraise-fb.cloudfunctions.net/api/{ENDPOINT}`. Each endpoint is documented briefly below.
-
-## `GET /song`
-
-Get single song information for presentation:
-
-`https://europe-west1-ourpraise-fb.cloudfunctions.net/api/song?id=SONG_ID`
-
-Song ID query parameter is required
-
-_Example response:_
-
-```json
-{
-  "id": "SONG_ID",
-  "title": "Good Good Father",
-  "authors": "Pat Barrett and Anthony Brown",
-  "slides": [
-    "I've heard a thousand stories \nof what they think You're like,\nbut I've heard the tender whisper\nof love in the dead of night\nYou tell me that You're pleased \nand that I'm never alone ",
-    "You're a good good Father, \nit's who You are,\nit's who You are,\nit's who You are",
-    "and I'm loved by You,\nit's who I am, \nit's who I am,\nit's who I am ",
-    "..."
-  ]
-}
-```
-
-## `GET /event`
-
-Get specific event with song information for presention:
-
-`https://europe-west1-ourpraise-fb.cloudfunctions.net/api/event?id=EVENT_ID`
-
-Event ID query parameter is required
-
-_Example response:_
-
-```json
-[
-  {
-    "id": "EVENT_ID",
-    "title": "Gudstjeneste",
-    "songs": [
-      {
-        "id": "SONG_ID",
-        "title": "Good Good Father",
-        "authors": "Pat Barrett and Anthony Brown",
-        "slides": [
-          "I've heard a thousand stories \nof what they think You're like,\nbut I've heard the tender whisper\nof love in the dead of night\nYou tell me that You're pleased \nand that I'm never alone ",
-          "You're a good good Father, \nit's who You are,\nit's who You are,\nit's who You are",
-          "and I'm loved by You,\nit's who I am, \nit's who I am,\nit's who I am ",
-          "..."
-        ]
-      }
-    ]
-  }
-]
-```
-
-## `GET /events`
-
-Get all events with minimal information:
-
-`https://europe-west1-ourpraise-fb.cloudfunctions.net/api/events`
-
-_Example response:_
-
-```json
-[
-  {
-    "id": "EVENT_ID",
-    "title": "Gudstjeneste",
-    "date": "2022-01-01",
-    "songs": 5
-  }
-]
-```
-
-## `GET /search`
-
-Get all events with minimal information:
-
-`https://europe-west1-ourpraise-fb.cloudfunctions.net/api/search?q=SEARCH_QUERY`
-
-_Example response:_
-
-```json
-{
-  "hits": [
-    {
-      "id": "SONG_ID",
-      "title": "Good Good Father",
-      "authors": "Pat Barrett and Anthony Brown"
-    }
-  ]
-}
-```
