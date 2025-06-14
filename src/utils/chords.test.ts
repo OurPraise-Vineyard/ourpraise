@@ -80,3 +80,11 @@ Han er god hver en dag`,
   ).toStrictEqual(`//(G)  F   C       G
 Han er god hver en dag`)
 })
+
+test('edge case: end parentheses should work', () => {
+  expect(
+    transposeSong(`//         A           (E)
+For Du er god, Du er god`, 'A', 'Ab')
+  ).toStrictEqual(`//         Ab          (Eb)
+For Du er god, Du er god`)
+})
