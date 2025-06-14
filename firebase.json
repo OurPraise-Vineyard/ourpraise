@@ -8,6 +8,6 @@
         "destination": "/index.html"
       }
     ],
-    "predeploy": ["pnpm run lint", "pnpm run type-check", "pnpm run build"]
+    "predeploy": ["pnpm run lint", "pnpm run type-check", "pnpm run test", "pnpm run build"]
   }
 }

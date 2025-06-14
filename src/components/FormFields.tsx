@@ -12,8 +12,12 @@ export interface SelectItem {
   disabled?: boolean
 }
 
-const inputStyles =
-  'block w-full border-none bg-transparent font-sans text-lg/none focus:outline-none'
+const fontStyles = {
+  'sans': 'font-sans text-lg/none',
+  'mono': 'font-mono text-sm'
+}
+const inputStyles = (font: keyof typeof fontStyles) => 
+  `block w-full border-none bg-transparent focus:outline-none ${fontStyles[font]}`
 
 const fieldStyles = 'rounded-md bg-slate-100 p-2'
 
@@ -41,7 +45,7 @@ export function SelectField({
     <>
       <div className={classNames(fieldStyles, className)}>
         {!!title && <span className="text-sm/3">{title}</span>}
-        <select className={inputStyles} {...props} {...fieldProps}>
+        <select className={inputStyles('sans')} {...props} {...fieldProps}>
           {options.map(option => (
             <option
               disabled={option.disabled}
@@ -77,7 +81,7 @@ export function TextareaField({
       <div className={classNames(fieldStyles, className)}>
         {!!title && <span className="text-sm/3">{title}</span>}
         <textarea
-          className={classNames(inputStyles, textFieldSizes[size], className)}
+          className={classNames(inputStyles('mono'), textFieldSizes[size], className)}
           {...props}
           {...fieldProps}
         />
@@ -107,7 +111,7 @@ export function TextField({
         {!!title && <span className="text-sm/3">{title}</span>}
         <input
           type={type}
-          className={classNames(inputStyles, className)}
+          className={classNames(inputStyles('sans'), className)}
           {...props}
           {...fieldProps}
         />
