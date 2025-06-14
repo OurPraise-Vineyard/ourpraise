@@ -31,7 +31,7 @@ export default function PrintEventPage({
 
   return (
     <Page noAnimation>
-      <MetaTitle title={`Printing ${event.title}...`} />
+      <MetaTitle title={event.title} />
       <div className="flex items-center justify-between gap-4 py-4 pb-4 print:hidden">
         <Button
           type="link"
