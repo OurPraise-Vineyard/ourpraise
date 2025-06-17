@@ -7,9 +7,9 @@ import {
   getDocument,
   updateDocument
 } from '~/lib/database'
-import { ICollection, IDoc, IDocId } from '~/types/backend'
-import { IEventForm, IEventSongForm } from '~/types/forms'
-import { IEvent, IEventSong, ISong } from '~/types/models'
+import type { ICollection, IDoc, IDocId } from '~/types/backend'
+import type { IEventForm, IEventSongForm } from '~/types/forms'
+import type { IEvent, IEventSong, ISong } from '~/types/models'
 import { formatKey, transposeAndFormatSong } from '~/utils/chords'
 import { formatDate, getTime, lastMonth, todayTime } from '~/utils/date'
 import { getLatestLocation } from '~/utils/location'

@@ -1,12 +1,12 @@
 import {
-  User,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut
 } from 'firebase/auth'
 
-import { IUser } from '~/types/backend'
+import type { User } from 'firebase/auth'
+import type { IUser } from '~/types/backend'
 
 import { BackendError } from './firebase'
 

@@ -7,8 +7,8 @@ import { useErrorPopUp } from '~/components/ErrorPopUp'
 import EventForm from '~/components/EventForm'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { IDocId } from '~/types/backend'
-import { IEventForm } from '~/types/forms'
+import type { IDocId } from '~/types/backend'
+import type { IEventForm } from '~/types/forms'
 
 export default function AddEventPage() {
   const navigate = useNavigate()

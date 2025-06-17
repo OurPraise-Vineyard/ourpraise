@@ -1,4 +1,4 @@
-import { WhereFilterOp } from 'firebase/firestore'
+import type { WhereFilterOp } from 'firebase/firestore'
 
 export interface IBackendError {
   message: string

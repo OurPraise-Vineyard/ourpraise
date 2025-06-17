@@ -16,7 +16,7 @@ import {
   where
 } from 'firebase/firestore'
 
-import {
+import type {
   ICollection,
   ICollectionQuery,
   IDoc,

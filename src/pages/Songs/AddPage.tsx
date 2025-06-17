@@ -5,9 +5,9 @@ import { useErrorPopUp } from '~/components/ErrorPopUp'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
-import { RoutePath } from '~/router'
-import { IDocId } from '~/types/backend'
-import { ISongForm } from '~/types/forms'
+import type { RoutePath } from '~/router'
+import type { IDocId } from '~/types/backend'
+import type { ISongForm } from '~/types/forms'
 
 export default function AddSongPage({ routePath }: { routePath: RoutePath }) {
   const navigate = getRouteApi(routePath).useNavigate()

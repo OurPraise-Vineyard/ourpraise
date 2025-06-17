@@ -2,7 +2,7 @@ import { FirebaseError, initializeApp } from 'firebase/app'
 import { connectAuthEmulator, getAuth } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
-import { IBackendError } from '~/types/backend'
+import type { IBackendError } from '~/types/backend'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

@@ -3,15 +3,15 @@ import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import {
-  IEventsData,
   addSongToEvent,
   fetchUpcomingEvents
 } from '~/backend/events'
+import type { IEventsData } from '~/backend/events'
 import Button from '~/components/Button'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import Modal from '~/components/Modal'
-import { FetchStatus, IDocId } from '~/types/backend'
-import { IKey } from '~/types/models'
+import type { FetchStatus, IDocId } from '~/types/backend'
+import type { IKey } from '~/types/models'
 import { getKeyOptions } from '~/utils/chords'
 
 import { SelectField, TextareaField } from '../../components/FormFields'

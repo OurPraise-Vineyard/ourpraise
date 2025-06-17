@@ -1,5 +1,5 @@
 import * as Auth from '~/lib/auth'
-import { ILoginStatus, IUser } from '~/types/backend'
+import type { ILoginStatus, IUser } from '~/types/backend'
 
 export interface IAuthState {
   user: IUser | null
