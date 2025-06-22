@@ -23,13 +23,13 @@ export default function SearchField({ onSearch, inputRef }: SearchBarProps) {
   }
 
   return (
-    <div className="flex h-toolbar w-full items-center rounded-md border px-4 py-2">
+    <div className="h-toolbar flex w-full items-center rounded-md border px-4 py-2">
       <div
         className="mr-2 h-4 w-4 bg-cover bg-center"
         style={{ backgroundImage: `url("${searchIcon}")` }}
       />
       <input
-        className="w-32 flex-grow border-none text-lg focus:outline-none"
+        className="w-32 grow border-none text-lg focus:outline-none"
         placeholder="Search"
         onChange={e => debounceSearch(e.target.value)}
         ref={inputRef}

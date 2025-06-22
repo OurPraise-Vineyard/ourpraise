@@ -23,7 +23,7 @@ export default defineConfig(() => {
         }
       }
     },
-    plugins: [TanStackRouterVite(), react(), viteTsconfigPaths(), tailwindcss()],
+    plugins: [TanStackRouterVite(), tailwindcss(), react(), viteTsconfigPaths()],
     manualChunks(id) {
       console.log(id)
       if (id.includes('node_modules')) {

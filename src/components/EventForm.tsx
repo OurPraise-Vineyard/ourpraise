@@ -2,8 +2,8 @@ import dateFormat from 'dateformat'
 import { useForm } from 'react-hook-form'
 
 import Button from '~/components/Button'
-import { IEventForm } from '~/types/forms'
-import { IEvent } from '~/types/models'
+import type { IEventForm } from '~/types/forms'
+import type { IEvent } from '~/types/models'
 import { nextWeekday } from '~/utils/date'
 
 import { TextField, TextareaField } from './FormFields'
@@ -47,7 +47,7 @@ export default function EventForm({
       <TextField
         type="date"
         title="Date"
-        className="flex-grow"
+        className="grow"
         defaultValue={event?.date || defaultDate}
         fieldProps={register('date', { required: true })}
         error={errors.date && 'Date is required'}

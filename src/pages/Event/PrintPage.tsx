@@ -6,8 +6,8 @@ import { fetchEvent } from '~/backend/events'
 import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { RouteLoader, RoutePath } from '~/router'
-import { IEvent } from '~/types/models'
+import type { RouteLoader, RoutePath } from '~/router'
+import type { IEvent } from '~/types/models'
 
 export const loader: RouteLoader = async ({ params }) => {
   try {
@@ -37,29 +37,29 @@ export default function PrintEventPage({
           type="link"
           to="/events/$id"
           params={{ id: event.id }}
-          className="flex-shrink-0"
+          className="shrink-0"
         >
           Cancel
         </Button>
         <Button
           type="button"
           onClick={() => window.print()}
-          className="flex-shrink-0"
+          className="shrink-0"
           variant="primary"
         >
           Print
         </Button>
       </div>
       <div className="flex items-center gap-4 border-b border-b-gray-300 py-4 pb-2">
-        <h2 className="text-title flex-grow overflow-x-hidden text-ellipsis whitespace-nowrap font-bold">
+        <h2 className="text-title grow overflow-x-hidden font-bold text-ellipsis whitespace-nowrap">
           {event.title}
         </h2>
-        <span className="flex-grow-0 whitespace-nowrap rounded-md p-0 text-xl text-gray-500">
+        <span className="grow-0 rounded-md p-0 text-xl whitespace-nowrap text-gray-500">
           {event.formattedDate}
         </span>
       </div>
       {!!event.comment && (
-        <p className="my-4 whitespace-pre rounded-lg border border-gray-400 p-2 text-lg">
+        <p className="my-4 rounded-lg border border-gray-400 p-2 text-lg whitespace-pre">
           {event.comment}
         </p>
       )}
@@ -74,11 +74,11 @@ export default function PrintEventPage({
           key={song.id}
         >
           <div className="flex w-full items-center gap-2 border-b border-b-gray-300 pb-2">
-            <div className="w-0 flex-grow">
-              <p className="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold">
+            <div className="w-0 grow">
+              <p className="overflow-hidden text-xl font-bold text-ellipsis whitespace-nowrap">
                 {song.title}
               </p>
-              <p className="overflow-hidden text-ellipsis whitespace-nowrap text-lg text-gray-400">
+              <p className="overflow-hidden text-lg text-ellipsis whitespace-nowrap text-gray-400">
                 {song.authors}
               </p>
             </div>
@@ -89,13 +89,13 @@ export default function PrintEventPage({
             )}
           </div>
           {song.comment && (
-            <p className="my-4 whitespace-pre rounded-lg border border-gray-400 p-2 text-base">
+            <p className="my-4 rounded-lg border border-gray-400 p-2 text-base whitespace-pre">
               {song.comment}
             </p>
           )}
           {song.body?.map((part, index) => (
             <p
-              className="my-5 break-inside-avoid-page whitespace-pre font-mono text-sm/snug"
+              className="my-5 break-inside-avoid-page font-mono text-sm/snug whitespace-pre"
               key={index}
             >
               {part}

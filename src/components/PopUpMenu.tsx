@@ -88,14 +88,15 @@ export default function PopUpMenuProvider({
       </PopUpMenuContext.Provider>
       <div
         className={classNames(
-          'pointer-events-none fixed bottom-0 left-0 right-0 top-0 z-20 bg-black bg-opacity-10 opacity-0 transition-opacity duration-200 ease-out',
+          'fixed top-0 right-0 bottom-0 left-0 z-20 bg-black/10 transition-opacity duration-200 ease-out',
+          { 'pointer-events-none opacity-0': !show },
           { 'pointer-events-auto opacity-100': show }
         )}
         onClick={close}
       />
       <div
         className={classNames(
-          'transition-transform-opacity fixed z-30 flex w-40 transform flex-col overflow-hidden rounded-md shadow-md duration-200 ease-out',
+          'transition-translate-opacity fixed z-30 flex w-40 flex-col overflow-hidden rounded-md shadow-md duration-200 ease-out',
           !show && 'pointer-events-none translate-y-5 scale-x-95 opacity-0',
           show && 'pointer-events-auto translate-y-0 scale-x-100 opacity-100'
         )}

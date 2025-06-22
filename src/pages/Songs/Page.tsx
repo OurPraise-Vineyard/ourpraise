@@ -8,8 +8,8 @@ import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SearchSongs from '~/pages/Songs/SearchField'
-import { RoutePath } from '~/router'
-import { ISong } from '~/types/models'
+import type { RoutePath } from '~/router'
+import type { ISong } from '~/types/models'
 import { search } from '~/utils/fuzzy'
 
 type SongsSearchParams = {
@@ -64,7 +64,7 @@ export default function SongsPage({ routePath }: { routePath: RoutePath }) {
             </Button>
           )}
         </div>
-        <h2 className="text-title mt-2 flex-grow border-b border-b-gray-300 py-4 font-bold">
+        <h2 className="text-title mt-2 grow border-b border-b-gray-300 py-4 font-bold">
           {query ? `Search results for "${query}"` : 'All songs'}
         </h2>
 
@@ -81,12 +81,12 @@ export default function SongsPage({ routePath }: { routePath: RoutePath }) {
           >
             <p className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap">
               {song.title || (
-                <span className="italic text-red-500">Missing title</span>
+                <span className="text-red-500 italic">Missing title</span>
               )}
             </p>
             <p className="overflow-hidden text-ellipsis whitespace-nowrap">
               {song.authors || (
-                <span className="italic text-red-500">Missing authors</span>
+                <span className="text-red-500 italic">Missing authors</span>
               )}
             </p>
           </Link>

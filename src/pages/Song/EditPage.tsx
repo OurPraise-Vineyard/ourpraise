@@ -6,9 +6,9 @@ import { useErrorPopUp } from '~/components/ErrorPopUp'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
-import { RouteLoader, RoutePath } from '~/router'
-import { ISongForm } from '~/types/forms'
-import { ISong } from '~/types/models'
+import type { RouteLoader, RoutePath } from '~/router'
+import type { ISongForm } from '~/types/forms'
+import type { ISong } from '~/types/models'
 
 export const loader: RouteLoader = async ({ params }) => {
   try {

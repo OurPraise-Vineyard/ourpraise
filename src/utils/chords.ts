@@ -1,6 +1,6 @@
 import { Transposer } from 'chord-transposer'
 
-import { IKey } from '~/types/models'
+import type { IKey } from '~/types/models'
 
 const keys: IKey[][] = [
   ['C'],

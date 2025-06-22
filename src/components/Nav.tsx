@@ -31,8 +31,8 @@ export default function Nav() {
 
   return (
     <div className="animate-fadeIn bg-black shadow-md print:hidden">
-      <div className="mx-auto flex w-full items-center p-5 lg:w-page">
-        <div className="flex-grow">
+      <div className="lg:w-page mx-auto flex w-full items-center p-5">
+        <div className="grow">
           <img
             src={logo}
             alt="OurPraise Logo"

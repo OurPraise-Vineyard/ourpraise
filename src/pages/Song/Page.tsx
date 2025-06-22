@@ -12,8 +12,8 @@ import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
 import AddToEvent from '~/pages/Song/AddToEvent'
-import { RouteLoader, RoutePath } from '~/router'
-import { IKey, ISong } from '~/types/models'
+import type { RouteLoader, RoutePath } from '~/router'
+import type { IKey, ISong } from '~/types/models'
 import { getKeyOptions, transposeAndFormatSong } from '~/utils/chords'
 
 type SongSearchParams = {
@@ -121,7 +121,7 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
             </span>
             <span className="font-bold">{eventTitle}</span>
           </div>
-          <span className="flex-grow" />
+          <span className="grow" />
           {added ? (
             <Button
               className="h-toolbar"
@@ -143,12 +143,12 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
           )}
         </div>
       )}
-      <div className="mb-4 mt-9 flex items-start gap-3 px-5 sm:px-0">
+      <div className="mt-9 mb-4 flex items-start gap-3 px-5 sm:px-0">
         <div className="w-1/2">
           <h2 className="text-title font-bold">{song.title}</h2>
           <p className="text-lg">{song.authors}</p>
         </div>
-        <span className="flex-grow" />
+        <span className="grow" />
         <div className="flex items-center gap-3">
           <select
             className="cursor-pointer appearance-none rounded-full border border-slate-200 bg-slate-100 px-2.5 py-2.5 text-center text-lg transition-colors duration-200 ease-out hover:bg-slate-200 focus:outline-0 sm:px-5"
@@ -166,7 +166,7 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
       </div>
       <div className="overflow-x-auto px-5 pb-5 sm:px-0">
         {formattedBody.map((formattedBody, i) => (
-          <p key={i} className="my-5 whitespace-pre font-mono text-sm">
+          <p key={i} className="my-5 font-mono text-sm whitespace-pre">
             {formattedBody}
           </p>
         ))}

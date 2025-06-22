@@ -1,7 +1,7 @@
 import classNames from 'classnames'
-import { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react'
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react'
 
-import { LinkComponentProps } from '@tanstack/react-router'
+import type { LinkComponentProps } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {

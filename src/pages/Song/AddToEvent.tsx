@@ -2,10 +2,7 @@ import classNames from 'classnames'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import {
-  addSongToEvent,
-  fetchUpcomingEvents
-} from '~/backend/events'
+import { addSongToEvent, fetchUpcomingEvents } from '~/backend/events'
 import type { IEventsData } from '~/backend/events'
 import Button from '~/components/Button'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
@@ -90,8 +87,8 @@ export default function AddToEvent({
 
   return (
     <Modal title="Add song to event" onClose={onClose} show={show}>
-      <div className="flex flex-grow flex-col gap-3">
-        <div className="flex-grow">
+      <div className="flex grow flex-col gap-3">
+        <div className="grow">
           <div className="overflow-y-auto">
             {fetchStatus === 'succeeded' &&
               events?.map(event => (

@@ -3,7 +3,7 @@ import { createRouter } from '@tanstack/react-router'
 
 import Loading from './components/Loading'
 import NotFoundPage from './components/NotFound'
-import { FileRouteTypes, routeTree } from './routeTree.gen'
+import { type FileRouteTypes, routeTree } from './routeTree.gen'
 
 // Create a new router instance
 const router = createRouter({

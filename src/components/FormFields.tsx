@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import {
+import type {
   InputHTMLAttributes,
   SelectHTMLAttributes,
   TextareaHTMLAttributes
@@ -13,10 +13,10 @@ export interface SelectItem {
 }
 
 const fontStyles = {
-  'sans': 'font-sans text-lg/none',
-  'mono': 'font-mono text-sm'
+  sans: 'font-sans text-lg/none',
+  mono: 'font-mono text-sm'
 }
-const inputStyles = (font: keyof typeof fontStyles) => 
+const inputStyles = (font: keyof typeof fontStyles) =>
   `block w-full border-none bg-transparent focus:outline-none ${fontStyles[font]}`
 
 const fieldStyles = 'rounded-md bg-slate-100 p-2'
@@ -81,7 +81,11 @@ export function TextareaField({
       <div className={classNames(fieldStyles, className)}>
         {!!title && <span className="text-sm/3">{title}</span>}
         <textarea
-          className={classNames(inputStyles('mono'), textFieldSizes[size], className)}
+          className={classNames(
+            inputStyles('mono'),
+            textFieldSizes[size],
+            className
+          )}
           {...props}
           {...fieldProps}
         />

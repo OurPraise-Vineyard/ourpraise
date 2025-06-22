@@ -1,7 +1,7 @@
 import classNames from 'classnames'
-import { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react'
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react'
 
-import { Link, LinkComponentProps } from '@tanstack/react-router'
+import { Link, type LinkComponentProps } from '@tanstack/react-router'
 
 const colorSchemes = {
   default: 'bg-slate-200 text-black border border-slate-300 hover:bg-slate-300',

@@ -1,4 +1,4 @@
-import { IDocId } from './backend'
+import type { IDocId } from './backend'
 
 export interface IEventSong {
   id: IDocId

@@ -8,9 +8,9 @@ import { useErrorPopUp } from '~/components/ErrorPopUp'
 import EventForm from '~/components/EventForm'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { RouteLoader, RoutePath } from '~/router'
-import { IEventForm } from '~/types/forms'
-import { IEvent } from '~/types/models'
+import type { RouteLoader, RoutePath } from '~/router'
+import type { IEventForm } from '~/types/forms'
+import type { IEvent } from '~/types/models'
 
 export const loader: RouteLoader = async ({ params }) => {
   try {

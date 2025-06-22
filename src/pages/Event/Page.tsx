@@ -17,9 +17,9 @@ import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
 import EventSongForm from '~/pages/Event/EventSongForm'
-import { RouteLoader, RoutePath } from '~/router'
-import { IEventSongForm } from '~/types/forms'
-import { IEvent, IEventSong } from '~/types/models'
+import type { RouteLoader, RoutePath } from '~/router'
+import type { IEventSongForm } from '~/types/forms'
+import type { IEvent, IEventSong } from '~/types/models'
 
 export const loader: RouteLoader = async ({ params }) => {
   try {
@@ -162,7 +162,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
         />
       )}
       <div className="flex items-start gap-4 border-b border-b-gray-300 py-4">
-        <div className="flex-grow">
+        <div className="grow">
           <h2 className="text-title font-bold">{event.title}</h2>
           <span className="text-lg">{event.formattedDate}</span>
         </div>
@@ -181,7 +181,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
       </div>
       {!!event.comment && (
         <>
-          <p className="mb-6 whitespace-pre py-2 text-lg">{event.comment}</p>
+          <p className="mb-6 py-2 text-lg whitespace-pre">{event.comment}</p>
           <p className="mt-4 border-b border-b-gray-300 pb-2 text-lg font-bold">
             Songs:
           </p>
@@ -191,15 +191,15 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
         {event.songs.map(song => (
           <div className="border-b border-b-gray-300 py-8" key={song.id}>
             <div className="flex w-full items-center gap-2">
-              <div className="w-0 flex-grow">
+              <div className="w-0 grow">
                 <Link
-                  className="overflow-hidden text-ellipsis whitespace-nowrap text-lg"
+                  className="overflow-hidden text-lg text-ellipsis whitespace-nowrap"
                   to="/songs/$id"
                   params={{ id: song.id }}
                 >
                   {song.title}
                 </Link>
-                <p className="overflow-hidden text-ellipsis whitespace-nowrap text-lg text-gray-400">
+                <p className="overflow-hidden text-lg text-ellipsis whitespace-nowrap text-gray-400">
                   {song.authors}
                 </p>
               </div>
@@ -211,12 +211,12 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
               <IconButton icon={moreIcon} onClick={handleOpenSongMenu(song)} />
             </div>
             {song.comment && (
-              <p className="mt-2 whitespace-pre text-base">{song.comment}</p>
+              <p className="mt-2 text-base whitespace-pre">{song.comment}</p>
             )}
           </div>
         ))}
       </div>
-      <div className="mx-auto mb-8 mt-8 flex flex-col items-center gap-4">
+      <div className="mx-auto mt-8 mb-8 flex flex-col items-center gap-4">
         {event.songs.length === 0 && (
           <p className="text-lg">
             {event.isUpcoming ? 'No songs added yet.' : 'Event has no songs.'}
