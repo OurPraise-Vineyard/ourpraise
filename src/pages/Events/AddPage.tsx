@@ -1,6 +1,5 @@
 import { useState } from 'react'
-
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate } from 'react-router'
 
 import { createEvent } from '~/backend/events'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
@@ -20,10 +19,7 @@ export default function AddEventPage() {
       setSaving(true)
       const id: IDocId = await createEvent(options)
       if (id) {
-        navigate({
-          to: '/events/$id',
-          params: { id }
-        })
+        navigate(`/events/${id}`)
       }
     } catch (err: any) {
       errors.show(err.message)

@@ -29,7 +29,7 @@ export type ICollection = IDoc[]
 export type IDocId = string
 
 export type FetchStatus = 'idle' | 'loading' | 'failed' | 'succeeded'
-export type ILoginStatus = 'loggedIn' | 'loggedOut' | 'undetermined'
+export type ILoginStatus = 'loggedIn' | 'loggedOut'
 
 export interface IUser {
   email: string

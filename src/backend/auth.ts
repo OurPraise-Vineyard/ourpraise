@@ -1,3 +1,6 @@
+/**
+ * Handles auth state. All auth actions are routed to lib/auth
+ */
 import * as Auth from '~/lib/auth'
 import type { ILoginStatus, IUser } from '~/types/backend'
 
@@ -6,28 +9,21 @@ export interface IAuthState {
   status: ILoginStatus
 }
 
-let authState: IAuthState = {
-  user: null,
-  status: 'undetermined'
-}
+let authState: IAuthState | null = null
 
-export function getAuthState(): IAuthState {
-  return authState
-}
-
-export async function initializeUser(): Promise<IAuthState> {
-  try {
-    const user = await Auth.initializeUser()
-
-    authState = {
-      user,
-      status: user ? 'loggedIn' : 'loggedOut'
-    }
-
-    return authState
-  } catch {
+export async function getAuthState(): Promise<IAuthState> {
+  if (authState !== null) {
     return authState
   }
+
+  const user = await Auth.initializeUser()
+
+  authState = {
+    user,
+    status: user ? 'loggedIn' : 'loggedOut'
+  }
+
+  return authState
 }
 
 export async function login(

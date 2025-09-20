@@ -1,35 +1,20 @@
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
+import { NavLink, useLoaderData, useSearchParams } from 'react-router'
 
-import { Link, getRouteApi } from '@tanstack/react-router'
-
-import { fetchSongs } from '~/backend/songs'
 import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SearchSongs from '~/pages/Songs/SearchField'
-import type { RoutePath } from '~/router'
 import type { ISong } from '~/types/models'
 import { search } from '~/utils/fuzzy'
+import { formatLink } from '~/utils/link-formatter'
 
-type SongsSearchParams = {
-  eventId?: string
-  eventTitle?: string
-}
-
-export const validateSearch = (
-  search: Record<string, string>
-): SongsSearchParams => ({
-  eventId: search.eventId as string,
-  eventTitle: search.eventTitle as string
-})
-
-export const loader = async () => fetchSongs()
-
-export default function SongsPage({ routePath }: { routePath: RoutePath }) {
-  const { useLoaderData, useSearch } = getRouteApi(routePath)
+export default function SongsPage() {
+  const [searchParams] = useSearchParams()
   const songs: ISong[] = useLoaderData()
-  const { eventId, eventTitle } = useSearch() as SongsSearchParams
+  const eventId = searchParams.get('eventId')
+  const eventTitle = searchParams.get('eventTitle')
   const [query, setQuery] = useState<string>('')
 
   const [filteredSongs, setFilteredSongs] = useState<ISong[]>([])
@@ -69,13 +54,8 @@ export default function SongsPage({ routePath }: { routePath: RoutePath }) {
         </h2>
 
         {filteredSongs.map(song => (
-          <Link
-            to="/songs/$id"
-            params={{ id: song.id }}
-            search={{
-              eventId,
-              eventTitle
-            }}
+          <NavLink
+            to={formatLink(`/songs/${song.id}`, { eventId, eventTitle })}
             key={song.id}
             className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
           >
@@ -89,7 +69,7 @@ export default function SongsPage({ routePath }: { routePath: RoutePath }) {
                 <span className="text-red-500 italic">Missing authors</span>
               )}
             </p>
-          </Link>
+          </NavLink>
         ))}
       </div>
     </Page>

@@ -1,18 +1,16 @@
 import classNames from 'classnames'
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react'
-
-import type { LinkComponentProps } from '@tanstack/react-router'
-import { Link } from '@tanstack/react-router'
+import { Link } from 'react-router'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon: string
 }
 
-type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> &
-  LinkComponentProps & {
-    icon: string
-    type: 'link'
-  }
+type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+  icon: string
+  type: 'link'
+  to: string
+}
 
 export default function IconButton({
   icon,

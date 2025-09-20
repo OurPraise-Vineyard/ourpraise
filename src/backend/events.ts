@@ -140,7 +140,7 @@ export async function saveEvent(form: IEventForm): Promise<void> {
 }
 
 export async function createEvent(form: IEventForm): Promise<IDocId> {
-  const user = getAuthState().user
+  const user = (await getAuthState()).user
   const location = getLatestLocation()
 
   const doc = await createDocument('events', {

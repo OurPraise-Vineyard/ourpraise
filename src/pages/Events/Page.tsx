@@ -1,20 +1,16 @@
 import type { JSX } from 'react'
+import { Link, useLoaderData } from 'react-router'
 
-import { Link, getRouteApi } from '@tanstack/react-router'
-
-import { fetchRecentEvents } from '~/backend/events'
 import type { IEventsData } from '~/backend/events'
 import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import type { RoutePath } from '~/router'
 import type { IEvent } from '~/types/models'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
     <Link
-      to="/events/$id"
-      params={{ id: event.id }}
+      to={`/events/${event.id}`}
       key={event.id}
       className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
     >
@@ -28,10 +24,8 @@ function renderEventItem(event: IEvent): JSX.Element {
   )
 }
 
-export const loader = () => fetchRecentEvents()
-
-export default function EventsPage({ routePath }: { routePath: RoutePath }) {
-  const { upcoming, past }: IEventsData = getRouteApi(routePath).useLoaderData()
+export default function EventsPage() {
+  const { upcoming, past }: IEventsData = useLoaderData()
 
   return (
     <Page>

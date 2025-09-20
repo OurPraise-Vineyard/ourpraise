@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig(() => {
   return {
@@ -23,9 +22,8 @@ export default defineConfig(() => {
         }
       }
     },
-    plugins: [TanStackRouterVite(), tailwindcss(), react(), viteTsconfigPaths()],
-    manualChunks(id) {
-      console.log(id)
+    plugins: [tailwindcss(), react(), viteTsconfigPaths()],
+    manualChunks(id: string) {
       if (id.includes('node_modules')) {
         return id.toString().split('node_modules/')[1].split('/')[0].toString()
       }

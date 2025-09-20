@@ -1,10 +1,9 @@
 import classNames from 'classnames'
 import { useEffect, useMemo, useState } from 'react'
-
-import { getRouteApi, notFound } from '@tanstack/react-router'
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router'
 
 import moreIcon from '~/assets/more-vertical.svg'
-import { deleteSong, fetchSong } from '~/backend/songs'
+import { deleteSong } from '~/backend/songs'
 import Button from '~/components/Button'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import IconButton from '~/components/IconButton'
@@ -12,34 +11,15 @@ import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
 import AddToEvent from '~/pages/Song/AddToEvent'
-import type { RouteLoader, RoutePath } from '~/router'
 import type { IKey, ISong } from '~/types/models'
 import { getKeyOptions, transposeAndFormatSong } from '~/utils/chords'
+import { formatLink } from '~/utils/link-formatter'
 
-type SongSearchParams = {
-  eventId?: string
-  eventTitle?: string
-}
-
-export const validateSearch = (
-  search: Record<string, string>
-): SongSearchParams => ({
-  eventId: search.eventId as string,
-  eventTitle: search.eventTitle as string
-})
-
-export const loader: RouteLoader = async ({ params }) => {
-  try {
-    return await fetchSong(params.id)
-  } catch {
-    throw notFound()
-  }
-}
-
-export default function SongPage({ routePath }: { routePath: RoutePath }) {
-  const { useLoaderData, useNavigate, useSearch } = getRouteApi(routePath)
+export default function SongPage() {
   const song: ISong = useLoaderData()
-  const { eventId, eventTitle } = useSearch() as SongSearchParams
+  const [searchParams] = useSearchParams()
+  const eventId = searchParams.get('eventId')
+  const eventTitle = searchParams.get('eventTitle')
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
   const [showEventsDialog, setShowEventsDialog] = useState(false)
   const navigate = useNavigate()
@@ -68,10 +48,7 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
       {
         label: 'Edit song',
         onClick() {
-          navigate({
-            to: '/songs/$id/edit',
-            params: { id: song.id }
-          })
+          navigate(`/songs/${song.id}/edit`)
         }
       },
       {
@@ -81,7 +58,7 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
           if (window.confirm('Delete this song?')) {
             try {
               await deleteSong(song.id)
-              navigate({ to: '/songs' })
+              navigate('/songs')
             } catch (err: any) {
               errors.show(err.message)
             }
@@ -126,8 +103,10 @@ export default function SongPage({ routePath }: { routePath: RoutePath }) {
             <Button
               className="h-toolbar"
               type="link"
-              to="/songs"
-              search={{ eventId, eventTitle }}
+              to={formatLink('/songs', {
+                eventId: eventId,
+                eventTitle: eventTitle
+              })}
               variant="primary"
             >
               Add another song

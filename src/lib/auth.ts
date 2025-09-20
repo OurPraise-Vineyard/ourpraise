@@ -4,8 +4,8 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from 'firebase/auth'
-
 import type { User } from 'firebase/auth'
+
 import type { IUser } from '~/types/backend'
 
 import { BackendError } from './firebase'

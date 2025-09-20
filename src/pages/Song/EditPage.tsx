@@ -1,25 +1,14 @@
-import { getRouteApi, notFound } from '@tanstack/react-router'
+import { useLoaderData, useNavigate } from 'react-router'
 
-import { fetchSong } from '~/backend/songs'
 import { saveSong } from '~/backend/songs'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SongForm from '~/components/SongForm'
-import type { RouteLoader, RoutePath } from '~/router'
 import type { ISongForm } from '~/types/forms'
 import type { ISong } from '~/types/models'
 
-export const loader: RouteLoader = async ({ params }) => {
-  try {
-    return await fetchSong(params.id)
-  } catch {
-    throw notFound()
-  }
-}
-
-export default function EditSongPage({ routePath }: { routePath: RoutePath }) {
-  const { useLoaderData, useNavigate } = getRouteApi(routePath)
+export default function EditSongPage() {
   const navigate = useNavigate()
   const song: ISong = useLoaderData()
   const errors = useErrorPopUp()
@@ -30,10 +19,7 @@ export default function EditSongPage({ routePath }: { routePath: RoutePath }) {
         ...options,
         id: song.id
       })
-      navigate({
-        to: '/songs/$id',
-        params: { id: song.id }
-      })
+      navigate(`/songs/${song.id}`)
     } catch (err: any) {
       errors.show(err.message)
     }

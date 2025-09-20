@@ -1,0 +1,416 @@
+{
+	"info": {
+		"_postman_id": "868172d2-d7ae-4a01-a33b-94559387a95f",
+		"name": "API Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34666701"
+	},
+	"item": [
+		{
+			"name": "GET Events",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"ID should be a string\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        pm.expect(event.id).to.exist.and.to.be.a('string');",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Title should be a string\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        pm.expect(event.title).to.exist.and.to.be.a('string')",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Date should be valid\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        const date = new Date(event.date);",
+							"        const formatted = date.toISOString().split('T')[0]",
+							"        pm.expect(event.date).to.equal(formatted);",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Location should be a string\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        pm.expect(event.location).to.exist.and.to.be.a('string');",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Songs should be a number\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        pm.expect(event.songs).to.exist.and.to.be.a('number');",
+							"    }",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/events",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Events for specific location",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"ID should be a string\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        pm.expect(event.id).to.exist.and.to.be.a('string');",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Title should be a string\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        pm.expect(event.title).to.exist.and.to.be.a('string')",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Date should be valid\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        const date = new Date(event.date);",
+							"        const formatted = date.toISOString().split('T')[0]",
+							"        pm.expect(event.date).to.equal(formatted);",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Location should be AAV\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        pm.expect(event.location).to.exist.and.to.equal('aav')",
+							"    }",
+							"})",
+							"",
+							"pm.test(\"Songs should be a number\", function () {",
+							"    for (const event of pm.response.json()) {",
+							"        pm.expect(event.songs).to.exist.and.to.be.a('number');",
+							"    }",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/events?location=aav",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"events"
+					],
+					"query": [
+						{
+							"key": "location",
+							"value": "aav"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Event",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({",
+							"    method: 'GET',",
+							"    url: pm.collectionVariables.get('HOST') + '/events?limit=1'",
+							"}).then(events => {",
+							"    console.log(events.json())",
+							"    pm.collectionVariables.set('eventId', events.json()[0].id)",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const event = pm.response.json()",
+							"",
+							"pm.test(\"Id should be correct\", () => pm.expect(event.id).to.equal(pm.collectionVariables.get('eventId')))",
+							"pm.test(\"Title should be a string\", () => pm.expect(event.title).to.be.a('string'))",
+							"pm.test(\"Date should be valid\", () => pm.expect(event.date).to.equal(new Date(event.date).toISOString().split('T')[0]))",
+							"pm.test(\"Location should be a string\", () => pm.expect(event.location).to.be.a('string'))",
+							"pm.test(\"Songs ID should be a string\", () => {",
+							"    for (const song of event.songs) pm.expect(song.id).to.be.a('string')",
+							"})",
+							"pm.test(\"Songs title should be a string\", () => {",
+							"    for (const song of event.songs) pm.expect(song.title).to.be.a('string')",
+							"})",
+							"pm.test(\"Songs authors should be a string\", () => {",
+							"    for (const song of event.songs) pm.expect(song.authors).to.be.a('string')",
+							"})",
+							"pm.test(\"Songs slides should be contains strings\", () => {",
+							"    for (const song of event.songs) {",
+							"        for (const slide of song.slides) {",
+							"            pm.expect(slide).to.be.a('string')",
+							"        }",
+							"    }",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/event?id={{eventId}}",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"event"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{eventId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Event without id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should fail with 400\", () => pm.expect(pm.response.code).to.equal(400))"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/event",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET non-existing event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should not fail\", () => pm.expect(pm.response.code).to.equal(200))",
+							"pm.test(\"Should return null\", () => pm.expect(pm.response.json()).to.equal(null))"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/event?id=non-existing",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"event"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "non-existing"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const res = pm.response.json()",
+							"",
+							"if (res.hits[0]) {",
+							"    pm.collectionVariables.set(\"songId\", res.hits[0].id)",
+							"}",
+							"",
+							"pm.test(\"Should not fail\", () => pm.expect(pm.response.code).to.equal(200))",
+							"",
+							"pm.test('Should have correct query property', () => pm.expect(res.query).to.equal(\"holy\"))",
+							"",
+							"pm.test(\"Should contain a list of hits\", () => pm.expect(res.hits).to.be.a('array'))",
+							"",
+							"pm.test(\"Hits should contain title\", () => {",
+							"    for (const hit of res.hits) pm.expect(hit.title).to.be.a('string')",
+							"})",
+							"",
+							"pm.test(\"Hits should contain authors\", () => {",
+							"    for (const hit of res.hits) pm.expect(hit.authors).to.be.a('string')",
+							"})",
+							"",
+							"pm.test(\"Hits should contain ID\", () => {",
+							"    for (const hit of res.hits) pm.expect(hit.id).to.be.a('string')",
+							"})",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/search?q=holy",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "holy"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Song",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const song = pm.response.json()",
+							"",
+							"pm.test(\"Songs ID should be a string\", () => {",
+							"    pm.expect(song.id).to.be.a('string')",
+							"})",
+							"pm.test(\"Songs title should be a string\", () => {",
+							"    pm.expect(song.title).to.be.a('string')",
+							"})",
+							"pm.test(\"Songs authors should be a string\", () => {",
+							"    pm.expect(song.authors).to.be.a('string')",
+							"})",
+							"pm.test(\"Songs slides should be contains strings\", () => {",
+							"    for (const slide of song.slides) {",
+							"        pm.expect(slide).to.be.a('string')",
+							"    }",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/song?id={{songId}}",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"song"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{songId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "http://127.0.0.1:5001/ourpraise-fb/europe-west1/api",
+			"type": "string"
+		},
+		{
+			"key": "eventId",
+			"value": ""
+		},
+		{
+			"key": "songId",
+			"value": ""
+		}
+	]
+}

@@ -1,28 +1,13 @@
 import { useEffect } from 'react'
+import { useLoaderData } from 'react-router'
 
-import { getRouteApi, notFound } from '@tanstack/react-router'
-
-import { fetchEvent } from '~/backend/events'
 import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import type { RouteLoader, RoutePath } from '~/router'
 import type { IEvent } from '~/types/models'
 
-export const loader: RouteLoader = async ({ params }) => {
-  try {
-    return await fetchEvent(params.id)
-  } catch {
-    throw notFound()
-  }
-}
-
-export default function PrintEventPage({
-  routePath
-}: {
-  routePath: RoutePath
-}) {
-  const event: IEvent = getRouteApi(routePath).useLoaderData()
+export default function PrintEventPage() {
+  const event: IEvent = useLoaderData()
 
   useEffect(() => {
     const t = setTimeout(() => window.print(), 500)
@@ -33,12 +18,7 @@ export default function PrintEventPage({
     <Page noAnimation>
       <MetaTitle title={event.title} />
       <div className="flex items-center justify-between gap-4 py-4 pb-4 print:hidden">
-        <Button
-          type="link"
-          to="/events/$id"
-          params={{ id: event.id }}
-          className="shrink-0"
-        >
+        <Button type="link" to={`/events/${event.id}`} className="shrink-0">
           Cancel
         </Button>
         <Button

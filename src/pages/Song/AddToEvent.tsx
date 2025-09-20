@@ -32,7 +32,7 @@ export default function AddToEvent({
   transposeKey: IKey
   show: boolean
   onClose: () => void
-  eventId?: IDocId
+  eventId: IDocId | null
   onAdded: () => void
 }) {
   const [fetchStatus, setFetchStatus] = useState<FetchStatus>('idle')
