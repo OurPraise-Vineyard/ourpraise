@@ -1,13 +1,14 @@
+import type { IDocId } from '~/types/backend'
+import type { ISongForm } from '~/types/forms'
+import type { IKey, ISong } from '~/types/models'
+
 import {
   createDocument,
   deleteDocument,
   getCollection,
   getDocument,
   updateDocument
-} from '~/lib/database'
-import type { IDocId } from '~/types/backend'
-import type { ISongForm } from '~/types/forms'
-import type { IKey, ISong } from '~/types/models'
+} from './firebase'
 
 export function fetchSong(songId: IDocId): Promise<ISong> {
   return getDocument(`songs/${songId}`).then(song => ({

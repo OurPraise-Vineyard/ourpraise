@@ -1,12 +1,4 @@
 import { fetchSong } from '~/backend/songs'
-import {
-  createDocument,
-  deleteDocument,
-  getAndUpdateDocument,
-  getCollection,
-  getDocument,
-  updateDocument
-} from '~/lib/database'
 import type { ICollection, IDoc, IDocId } from '~/types/backend'
 import type { IEventForm, IEventSongForm } from '~/types/forms'
 import type { IEvent, IEventSong, ISong } from '~/types/models'
@@ -16,6 +8,14 @@ import { getLatestLocation } from '~/utils/location'
 import pruneObject from '~/utils/pruneObject'
 
 import { getAuthState } from './auth'
+import {
+  createDocument,
+  deleteDocument,
+  getAndUpdateDocument,
+  getCollection,
+  getDocument,
+  updateDocument
+} from './firebase'
 
 export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
 

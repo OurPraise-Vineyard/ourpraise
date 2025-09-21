@@ -1,8 +1,9 @@
 /**
  * Handles auth state. All auth actions are routed to lib/auth
  */
-import * as Auth from '~/lib/auth'
 import type { IAuthState } from '~/types/backend'
+
+import { initializeUser, signIn, signOut } from './firebase'
 
 let authState: IAuthState | null = null
 
@@ -11,7 +12,7 @@ export async function getAuthState(): Promise<IAuthState> {
     return authState
   }
 
-  const user = await Auth.initializeUser()
+  const user = await initializeUser()
 
   authState = {
     user,
@@ -25,7 +26,7 @@ export async function login(
   email: string,
   password: string
 ): Promise<IAuthState> {
-  const user = await Auth.login(email, password)
+  const user = await signIn(email, password)
   authState = {
     user,
     status: 'loggedIn'
@@ -35,7 +36,7 @@ export async function login(
 }
 
 export async function logout(): Promise<IAuthState> {
-  await Auth.logout()
+  await signOut()
   authState = {
     user: null,
     status: 'loggedOut'
