@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs, redirect } from 'react-router'
 
 import { fetchEvent } from '~/backend/events'
-import type { BackendError } from '~/lib/firebase'
+import type { BackendError } from '~/backend/firebase'
 
 export default async function loadEvent({
   params: { id }
