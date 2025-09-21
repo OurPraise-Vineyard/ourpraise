@@ -2,16 +2,13 @@ import classNames from 'classnames'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import {
-  IEventsData,
-  addSongToEvent,
-  fetchUpcomingEvents
-} from '~/backend/events'
+import { addSongToEvent, fetchUpcomingEvents } from '~/backend/events'
+import type { IEventsData } from '~/backend/events'
 import Button from '~/components/Button'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import Modal from '~/components/Modal'
-import { FetchStatus, IDocId } from '~/types/backend'
-import { IKey } from '~/types/models'
+import type { FetchStatus, IDocId } from '~/types/backend'
+import type { IKey } from '~/types/models'
 import { getKeyOptions } from '~/utils/chords'
 
 import { SelectField, TextareaField } from '../../components/FormFields'
@@ -35,7 +32,7 @@ export default function AddToEvent({
   transposeKey: IKey
   show: boolean
   onClose: () => void
-  eventId?: IDocId
+  eventId: IDocId | null
   onAdded: () => void
 }) {
   const [fetchStatus, setFetchStatus] = useState<FetchStatus>('idle')
@@ -90,8 +87,8 @@ export default function AddToEvent({
 
   return (
     <Modal title="Add song to event" onClose={onClose} show={show}>
-      <div className="flex flex-grow flex-col gap-3">
-        <div className="flex-grow">
+      <div className="flex grow flex-col gap-3">
+        <div className="grow">
           <div className="overflow-y-auto">
             {fetchStatus === 'succeeded' &&
               events?.map(event => (

@@ -24,12 +24,9 @@ yarn-error.log*
 
 .firebase
 firebase-debug.log
-.vscode
 
 ui-debug.log
 
 /firestore-import
 
 *.log
-
-*.gen.ts

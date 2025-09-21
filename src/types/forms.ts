@@ -1,5 +1,5 @@
-import { IDocId } from './backend'
-import { IKey } from './models'
+import type { IDocId } from './backend'
+import type { IKey } from './models'
 
 export type ISongForm = {
   id?: IDocId

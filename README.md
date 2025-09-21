@@ -1,4 +1,4 @@
-# OurPraise
+# OurPraise React App
 
 This project contains the source code for OurPraise, a web-based song database made for churches to plan worship during sunday services.
 
@@ -43,5 +43,5 @@ This project uses and depends on:
 - React
 - Tailwind
 - Firebase
-- Tanstack Router
+- React Router
 - Typescript

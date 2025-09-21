@@ -1,4 +1,13 @@
 import { fetchSong } from '~/backend/songs'
+import type { ICollection, IDoc, IDocId } from '~/types/backend'
+import type { IEventForm, IEventSongForm } from '~/types/forms'
+import type { IEvent, IEventSong, ISong } from '~/types/models'
+import { formatKey, transposeAndFormatSong } from '~/utils/chords'
+import { formatDate, getTime, lastMonth, todayTime } from '~/utils/date'
+import { getLatestLocation } from '~/utils/location'
+import pruneObject from '~/utils/pruneObject'
+
+import { getAuthState } from './auth'
 import {
   createDocument,
   deleteDocument,
@@ -6,16 +15,7 @@ import {
   getCollection,
   getDocument,
   updateDocument
-} from '~/lib/database'
-import { ICollection, IDoc, IDocId } from '~/types/backend'
-import { IEventForm, IEventSongForm } from '~/types/forms'
-import { IEvent, IEventSong, ISong } from '~/types/models'
-import { formatKey, transposeAndFormatSong } from '~/utils/chords'
-import { formatDate, getTime, lastMonth, todayTime } from '~/utils/date'
-import { getLatestLocation } from '~/utils/location'
-import pruneObject from '~/utils/pruneObject'
-
-import { getAuthState } from './auth'
+} from './firebase'
 
 export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
 
@@ -140,7 +140,7 @@ export async function saveEvent(form: IEventForm): Promise<void> {
 }
 
 export async function createEvent(form: IEventForm): Promise<IDocId> {
-  const user = getAuthState().user
+  const user = (await getAuthState()).user
   const location = getLatestLocation()
 
   const doc = await createDocument('events', {

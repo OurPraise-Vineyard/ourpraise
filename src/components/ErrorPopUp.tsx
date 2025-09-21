@@ -34,7 +34,7 @@ export default function ErrorPopUpProvider({
   return (
     <>
       <Modal show={show} onClose={close} title="An error occurred">
-        <p className="flex-grow text-lg text-red-500">{message}</p>
+        <p className="grow text-lg text-red-500">{message}</p>
         <Button onClick={close} variant="primary">
           Close
         </Button>

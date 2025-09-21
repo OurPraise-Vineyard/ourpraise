@@ -1,14 +1,13 @@
 import { useState } from 'react'
-
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate } from 'react-router'
 
 import { createEvent } from '~/backend/events'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import EventForm from '~/components/EventForm'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { IDocId } from '~/types/backend'
-import { IEventForm } from '~/types/forms'
+import type { IDocId } from '~/types/backend'
+import type { IEventForm } from '~/types/forms'
 
 export default function AddEventPage() {
   const navigate = useNavigate()
@@ -20,10 +19,7 @@ export default function AddEventPage() {
       setSaving(true)
       const id: IDocId = await createEvent(options)
       if (id) {
-        navigate({
-          to: '/events/$id',
-          params: { id }
-        })
+        navigate(`/events/${id}`)
       }
     } catch (err: any) {
       errors.show(err.message)

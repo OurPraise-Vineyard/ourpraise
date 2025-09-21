@@ -1,6 +1,102 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* === Theme Extensions === */
+@theme {
+  /* Heights */
+  --height-toolbar: 3rem;
+  --height-modal: 600px;
+
+  /* Widths */
+  --width-page: 960px;
+  --width-modal: 500px;
+
+  /* Max Widths */
+  --max-width-modal: 90vw;
+
+  /* Fonts */
+  --font-sans: Abel, sans-serif;
+  --font-mono: "Oxygen Mono", monospace;
+
+  /* Font Sizes */
+  --font-size-title: 1.5rem; /* Same as defaultTheme.fontSize['2xl'][0] */
+}
+
+/* === Keyframes === */
+@keyframes teleportIn {
+  0% {
+    transform: scaleX(0.97) translateY(1.25rem);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleX(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* === Animations === */
+@utility animate-teleportIn {
+  animation: teleportIn 0.2s ease-out 0.2s both;
+}
+
+@utility animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@utility animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* === Utilities === */
+@utility h-toolbar {
+  height: var(--height-toolbar);
+}
+
+@utility h-modal {
+  height: var(--height-modal);
+}
+
+@utility w-page {
+  width: var(--width-page);
+}
+
+@utility w-modal {
+  width: var(--width-modal);
+}
+
+@utility max-w-modal {
+  max-width: var(--max-width-modal);
+}
+
+@utility font-mono {
+  font-family: var(--font-mono);
+}
+
+@utility text-title {
+  font-size: var(--font-size-title);
+}
+
+@utility transition-translate-opacity {
+  transition-property: translate, opacity;
+}
+
 
 body {
   overflow-y: scroll;

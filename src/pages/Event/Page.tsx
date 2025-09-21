@@ -1,11 +1,9 @@
 import { useState } from 'react'
-
-import { Link, getRouteApi, notFound } from '@tanstack/react-router'
+import { Link, useLoaderData, useNavigate } from 'react-router'
 
 import moreIcon from '~/assets/more-vertical.svg'
 import {
   deleteEvent,
-  fetchEvent,
   moveEventSong,
   removeEventSong,
   saveEventSong
@@ -17,20 +15,11 @@ import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
 import EventSongForm from '~/pages/Event/EventSongForm'
-import { RouteLoader, RoutePath } from '~/router'
-import { IEventSongForm } from '~/types/forms'
-import { IEvent, IEventSong } from '~/types/models'
+import type { IEventSongForm } from '~/types/forms'
+import type { IEvent, IEventSong } from '~/types/models'
+import { formatLink } from '~/utils/link-formatter'
 
-export const loader: RouteLoader = async ({ params }) => {
-  try {
-    return await fetchEvent(params.id)
-  } catch {
-    throw notFound()
-  }
-}
-
-export default function EventPage({ routePath }: { routePath: RoutePath }) {
-  const { useLoaderData, useNavigate } = getRouteApi(routePath)
+export default function EventPage() {
   const event: IEvent = useLoaderData()
   const navigate = useNavigate()
   const [selectedSong, setSelectedSong] = useState<IEventSong | null>(null)
@@ -41,10 +30,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
 
   function triggerReload() {
     // This will trigger a reload of the page
-    navigate({
-      to: '/events/$id',
-      params: { id: event.id }
-    })
+    navigate(`/events/${event.id}`)
   }
 
   async function handleSaveEventSong(form: IEventSongForm) {
@@ -65,10 +51,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
       {
         label: 'Edit event',
         onClick() {
-          navigate({
-            to: '/events/$id/edit',
-            params: { id: event.id }
-          })
+          navigate(`/events/${event.id}/edit`)
         }
       },
       {
@@ -78,9 +61,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
           if (window.confirm('Delete this event?')) {
             try {
               await deleteEvent(event.id)
-              navigate({
-                to: '/events'
-              })
+              navigate('/events')
             } catch (err: any) {
               errors.show(err.message)
             }
@@ -162,15 +143,14 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
         />
       )}
       <div className="flex items-start gap-4 border-b border-b-gray-300 py-4">
-        <div className="flex-grow">
+        <div className="grow">
           <h2 className="text-title font-bold">{event.title}</h2>
           <span className="text-lg">{event.formattedDate}</span>
         </div>
         <div className="flex items-center gap-4">
           <Button
             type="link"
-            to="/events/$id/print"
-            params={{ id: event.id }}
+            to={`/events/${event.id}/print`}
             variant="primary"
             disabled={event.songs.length === 0}
           >
@@ -181,7 +161,7 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
       </div>
       {!!event.comment && (
         <>
-          <p className="mb-6 whitespace-pre py-2 text-lg">{event.comment}</p>
+          <p className="mb-6 py-2 text-lg whitespace-pre">{event.comment}</p>
           <p className="mt-4 border-b border-b-gray-300 pb-2 text-lg font-bold">
             Songs:
           </p>
@@ -191,15 +171,14 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
         {event.songs.map(song => (
           <div className="border-b border-b-gray-300 py-8" key={song.id}>
             <div className="flex w-full items-center gap-2">
-              <div className="w-0 flex-grow">
+              <div className="w-0 grow">
                 <Link
-                  className="overflow-hidden text-ellipsis whitespace-nowrap text-lg"
-                  to="/songs/$id"
-                  params={{ id: song.id }}
+                  className="overflow-hidden text-lg text-ellipsis whitespace-nowrap"
+                  to={`/songs/${song.id}`}
                 >
                   {song.title}
                 </Link>
-                <p className="overflow-hidden text-ellipsis whitespace-nowrap text-lg text-gray-400">
+                <p className="overflow-hidden text-lg text-ellipsis whitespace-nowrap text-gray-400">
                   {song.authors}
                 </p>
               </div>
@@ -211,12 +190,12 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
               <IconButton icon={moreIcon} onClick={handleOpenSongMenu(song)} />
             </div>
             {song.comment && (
-              <p className="mt-2 whitespace-pre text-base">{song.comment}</p>
+              <p className="mt-2 text-base whitespace-pre">{song.comment}</p>
             )}
           </div>
         ))}
       </div>
-      <div className="mx-auto mb-8 mt-8 flex flex-col items-center gap-4">
+      <div className="mx-auto mt-8 mb-8 flex flex-col items-center gap-4">
         {event.songs.length === 0 && (
           <p className="text-lg">
             {event.isUpcoming ? 'No songs added yet.' : 'Event has no songs.'}
@@ -225,8 +204,10 @@ export default function EventPage({ routePath }: { routePath: RoutePath }) {
         {event.isUpcoming && (
           <Button
             type="link"
-            to="/songs"
-            search={{ eventId: event.id, eventTitle: event.title }}
+            to={formatLink('/songs', {
+              eventId: event.id,
+              eventTitle: event.title
+            })}
             variant={event.songs.length === 0 ? 'primary' : 'default'}
           >
             {event.songs.length === 0

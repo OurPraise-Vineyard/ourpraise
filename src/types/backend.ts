@@ -1,4 +1,4 @@
-import { WhereFilterOp } from 'firebase/firestore'
+import type { WhereFilterOp } from 'firebase/firestore'
 
 export interface IBackendError {
   message: string
@@ -29,9 +29,14 @@ export type ICollection = IDoc[]
 export type IDocId = string
 
 export type FetchStatus = 'idle' | 'loading' | 'failed' | 'succeeded'
-export type ILoginStatus = 'loggedIn' | 'loggedOut' | 'undetermined'
+export type ILoginStatus = 'loggedIn' | 'loggedOut'
 
 export interface IUser {
   email: string
   displayName: string
+}
+
+export interface IAuthState {
+  user: IUser | null
+  status: ILoginStatus
 }

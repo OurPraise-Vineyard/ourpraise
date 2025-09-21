@@ -1,18 +1,16 @@
-import { Link, getRouteApi } from '@tanstack/react-router'
+import type { JSX } from 'react'
+import { Link, useLoaderData } from 'react-router'
 
-import { fetchRecentEvents } from '~/backend/events'
-import { IEventsData } from '~/backend/events'
+import type { IEventsData } from '~/backend/events'
 import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { RoutePath } from '~/router'
-import { IEvent } from '~/types/models'
+import type { IEvent } from '~/types/models'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
     <Link
-      to="/events/$id"
-      params={{ id: event.id }}
+      to={`/events/${event.id}`}
       key={event.id}
       className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
     >
@@ -26,10 +24,8 @@ function renderEventItem(event: IEvent): JSX.Element {
   )
 }
 
-export const loader = () => fetchRecentEvents()
-
-export default function EventsPage({ routePath }: { routePath: RoutePath }) {
-  const { upcoming, past }: IEventsData = getRouteApi(routePath).useLoaderData()
+export default function EventsPage() {
+  const { upcoming, past }: IEventsData = useLoaderData()
 
   return (
     <Page>
@@ -44,14 +40,14 @@ export default function EventsPage({ routePath }: { routePath: RoutePath }) {
           Add new event
         </Button>
       </div>
-      <h2 className="border-b border-b-gray-300 py-2 text-title font-bold">
+      <h2 className="text-title border-b border-b-gray-300 py-2 font-bold">
         Upcoming events
       </h2>
       {upcoming.map(renderEventItem)}
       {upcoming.length === 0 && (
         <p className="pb-2 text-lg">No upcoming events</p>
       )}
-      <h2 className="mt-5 border-b border-b-gray-300 py-2 text-title font-bold">
+      <h2 className="text-title mt-5 border-b border-b-gray-300 py-2 font-bold">
         Past events
       </h2>
       {past.map(renderEventItem)}

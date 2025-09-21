@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form'
 
 import Button from '~/components/Button'
 import Modal from '~/components/Modal'
-import { IEventSongForm } from '~/types/forms'
-import { IEventSong } from '~/types/models'
+import type { IEventSongForm } from '~/types/forms'
+import type { IEventSong } from '~/types/models'
 import { getKeyOptions } from '~/utils/chords'
 
 import { SelectField, TextareaField } from '../../components/FormFields'
@@ -47,7 +47,7 @@ export default function EventSongForm({
   return (
     <Modal title="Edit song options" onClose={onClose} show={show}>
       <form
-        className="flex flex-grow flex-col gap-4"
+        className="flex grow flex-col gap-4"
         onSubmit={handleSubmit(onSubmit)}
         key={eventSong.id}
       >
@@ -69,7 +69,7 @@ export default function EventSongForm({
           defaultValue={eventSong.transposeKey}
           error={errors.transposeKey && 'Key is required'}
         />
-        <span className="flex-grow" />
+        <span className="grow" />
         <Button variant="primary" type="submit">
           {saving ? 'Saving...' : 'Save song details'}
         </Button>
