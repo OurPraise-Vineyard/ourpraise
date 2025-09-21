@@ -35,3 +35,8 @@ export interface IUser {
   email: string
   displayName: string
 }
+
+export interface IAuthState {
+  user: IUser | null
+  status: ILoginStatus
+}

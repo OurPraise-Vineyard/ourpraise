@@ -16,11 +16,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "lint": "eslint .",
     "build": "vite build",
-    "type-check": "tsc --noEmit",
-    "test": "jest",
-    "deploy": "firebase deploy --only hosting"
+    "deploy": "firebase deploy --only hosting",
+    "check": "eslint . && tsc --noEmit && jest"
   },
   "browserslist": {
     "production": [

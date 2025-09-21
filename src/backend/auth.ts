@@ -2,12 +2,7 @@
  * Handles auth state. All auth actions are routed to lib/auth
  */
 import * as Auth from '~/lib/auth'
-import type { ILoginStatus, IUser } from '~/types/backend'
-
-export interface IAuthState {
-  user: IUser | null
-  status: ILoginStatus
-}
+import type { IAuthState } from '~/types/backend'
 
 let authState: IAuthState | null = null
 

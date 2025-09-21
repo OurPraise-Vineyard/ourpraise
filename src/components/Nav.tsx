@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router'
 
 import logo from '~/assets/logo_light.svg'
-import { type IAuthState, getAuthState, logout } from '~/backend/auth'
+import { getAuthState, logout } from '~/backend/auth'
+import type { IUser } from '~/types/backend'
 import { getLatestLocationLabel } from '~/utils/location'
 
 import { usePopUpMenu } from './PopUpMenu'
@@ -12,14 +13,17 @@ const navLinkStyles =
 const linkActiveStyles = 'border-b-white'
 
 export default function Nav() {
-  const [user, setUser] = useState<IAuthState>()
+  const [user, setUser] = useState<IUser>()
   const menu = usePopUpMenu()
   const location = getLatestLocationLabel()
   const navigate = useNavigate()
 
   useEffect(() => {
     ;(async function () {
-      setUser(await getAuthState())
+      const user = (await getAuthState()).user
+      if (user) {
+        setUser(user)
+      }
     })()
   }, [])
 
