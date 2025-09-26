@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react'
-import * as React from 'react'
 
 import searchIcon from '~/assets/search.svg'
 import { createDebouncer } from '~/utils/debouncer'
 
 const debounce = createDebouncer(200)
 
-interface SearchBarProps {
+type SearchBarProps = {
+  className?: string
   onSearch: (query: string) => void
   inputRef?: React.Ref<HTMLInputElement>
 }
 
-export default function SearchField({ onSearch, inputRef }: SearchBarProps) {
+export default function SearchField({
+  onSearch,
+  inputRef,
+  className
+}: SearchBarProps) {
   const [query, setQuery] = useState('')
 
   useEffect(() => {
@@ -23,17 +27,14 @@ export default function SearchField({ onSearch, inputRef }: SearchBarProps) {
   }
 
   return (
-    <div className="h-toolbar flex w-full items-center rounded-md border px-4 py-2">
-      <div
-        className="mr-2 h-4 w-4 bg-cover bg-center"
-        style={{ backgroundImage: `url("${searchIcon}")` }}
-      />
+    <label className={`input grow ${className}`}>
+      <img className="icon" src={searchIcon} />
       <input
-        className="w-32 grow border-none text-lg focus:outline-none"
+        className="grow"
         placeholder="Search"
         onChange={e => debounceSearch(e.target.value)}
         ref={inputRef}
       />
-    </div>
+    </label>
   )
 }

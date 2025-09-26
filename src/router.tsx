@@ -115,6 +115,7 @@ const router = createBrowserRouter([
               },
               {
                 path: 'add',
+                loader: async () => fetchSongs(),
                 Component: AddEventPage
               }
             ]

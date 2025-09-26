@@ -48,28 +48,41 @@ export default function SongsPage() {
             </Link>
           )}
         </div>
-        <h2 className="text-title mt-2 grow border-b border-b-gray-300 py-4 font-bold">
-          {query ? `Search results for "${query}"` : 'All songs'}
-        </h2>
 
-        {filteredSongs.map(song => (
-          <NavLink
-            to={formatLink(`/songs/${song.id}`, { eventId, eventTitle })}
-            key={song.id}
-            className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
-          >
-            <p className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap">
-              {song.title || (
-                <span className="text-red-500 italic">Missing title</span>
-              )}
-            </p>
-            <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-              {song.authors || (
-                <span className="text-red-500 italic">Missing authors</span>
-              )}
-            </p>
-          </NavLink>
-        ))}
+        <ul className="list mt-4">
+          {query ? (
+            <li className="p-4 pb-2 text-xs tracking-wide opacity-60">
+              Search results for "{query}"
+            </li>
+          ) : (
+            <></>
+          )}
+
+          {filteredSongs.map(song => (
+            <li>
+              <NavLink
+                to={formatLink(`/songs/${song.id}`, { eventId, eventTitle })}
+                key={song.id}
+                className="list-row hover:bg-base-200"
+              >
+                <div className="list-col-grow">
+                  <p className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap">
+                    {song.title || (
+                      <span className="text-red-500 italic">Missing title</span>
+                    )}
+                  </p>
+                  <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                    {song.authors || (
+                      <span className="text-red-500 italic">
+                        Missing authors
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
       </div>
     </Page>
   )

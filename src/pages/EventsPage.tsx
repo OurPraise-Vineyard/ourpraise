@@ -1,4 +1,5 @@
-import type { JSX } from 'react'
+import classNames from 'classnames'
+import { type JSX, useState } from 'react'
 import { Link, useLoaderData } from 'react-router'
 
 import type { IEventsData } from '~/backend/events'
@@ -8,43 +9,68 @@ import type { IEvent } from '~/types/models'
 
 function renderEventItem(event: IEvent): JSX.Element {
   return (
-    <Link
-      to={`/events/${event.id}`}
-      key={event.id}
-      className="flex justify-between gap-4 border-b border-gray-300 p-2 text-lg hover:bg-gray-100"
-    >
-      <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-        {event.title}
-      </p>
-      <p className="min-w-max overflow-hidden text-ellipsis whitespace-nowrap">
-        {event.formattedDate}
-      </p>
-    </Link>
+    <li>
+      <Link
+        to={`/events/${event.id}`}
+        key={event.id}
+        className="list-row hover:bg-base-200"
+      >
+        <p className="list-col-grow overflow-hidden text-ellipsis whitespace-nowrap">
+          {event.title}
+        </p>
+        <p>{event.formattedDate}</p>
+      </Link>
+    </li>
   )
 }
 
 export default function EventsPage() {
-  const { upcoming, past }: IEventsData = useLoaderData()
+  const events: IEventsData = useLoaderData()
+  const [tab, setTab] = useState<'upcoming' | 'past'>('upcoming')
 
   return (
     <Page>
       <MetaTitle title="Events" />
-      <div className="flex justify-end">
-        <Link to="/events/add" className="btn btn-primary">
-          Add new event
-        </Link>
+
+      <div className="flex w-full flex-row items-center gap-2">
+        <div role="tablist" className="tabs tabs-box">
+          <button
+            role="tab"
+            className={classNames({
+              tab: true,
+              'tab-active': tab === 'upcoming'
+            })}
+            onClick={() => setTab('upcoming')}
+          >
+            Upcoming events
+          </button>
+          <a
+            role="tab"
+            className={classNames({
+              tab: true,
+              'tab-active': tab === 'past'
+            })}
+            onClick={() => setTab('past')}
+          >
+            Past events
+          </a>
+        </div>
+
+        <div className="grow" />
+
+        <div className="flex justify-end">
+          <Link to="/events/add" className="btn btn-primary">
+            Add new event
+          </Link>
+        </div>
       </div>
-      <h2 className="text-title border-b border-b-gray-300 py-2 font-bold">
-        Upcoming events
-      </h2>
-      {upcoming.map(renderEventItem)}
-      {upcoming.length === 0 && (
-        <p className="pb-2 text-lg">No upcoming events</p>
-      )}
-      <h2 className="text-title mt-5 border-b border-b-gray-300 py-2 font-bold">
-        Past events
-      </h2>
-      {past.map(renderEventItem)}
+
+      <ul className="list bg-base-100 rounded-box mt-4 shadow-md">
+        {events[tab].map(renderEventItem)}
+        {events[tab].length === 0 && (
+          <p className="pb-2 text-lg">No {tab} events</p>
+        )}
+      </ul>
     </Page>
   )
 }

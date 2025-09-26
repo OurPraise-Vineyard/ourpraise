@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @plugin "daisyui";
-@plugin "@tailwindcss/typography";
 
 /* === Theme Extensions === */
 @theme {
@@ -18,9 +17,6 @@
   /* Fonts */
   --font-sans: Abel, sans-serif;
   --font-mono: 'Oxygen Mono', monospace;
-
-  /* Font Sizes */
-  --font-size-title: 1.5rem; /* Same as defaultTheme.fontSize['2xl'][0] */
 }
 
 /* === Keyframes === */
@@ -91,10 +87,6 @@
   font-family: var(--font-mono);
 }
 
-@utility text-title {
-  font-size: var(--font-size-title);
-}
-
 @utility transition-translate-opacity {
   transition-property: translate, opacity;
 }
@@ -102,8 +94,22 @@
 @utility icon {
   width: 20px;
   height: 20px;
+
+  @media (prefers-color-scheme: dark) {
+    filter: invert(1);
+  }
+}
+
+@utility svg {
+  @media (prefers-color-scheme: dark) {
+    filter: invert(1);
+  }
 }
 
 body {
   overflow-y: scroll;
+}
+
+html {
+  font-size: 18px;
 }

@@ -22,10 +22,7 @@ export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
 export async function fetchRecentEvents(): Promise<IEventsData> {
   const events = await getCollection({
     path: 'events',
-    where: [
-      ['location', '==', getLatestLocation()],
-      ['date', '>=', lastMonth().toISOString()]
-    ],
+    where: [['date', '>=', lastMonth().toISOString()]],
     orderBy: 'date',
     sortDirection: 'desc'
   }).then((events: ICollection): IEvent[] =>
@@ -64,10 +61,7 @@ export async function fetchRecentEvents(): Promise<IEventsData> {
 export async function fetchUpcomingEvents(): Promise<IEvent[]> {
   return await getCollection({
     path: 'events',
-    where: [
-      ['location', '==', getLatestLocation()],
-      ['date', '>=', new Date().toISOString()]
-    ],
+    where: [['date', '>=', new Date().toISOString()]],
     orderBy: 'date',
     sortDirection: 'desc'
   }).then((events: ICollection): IEvent[] =>

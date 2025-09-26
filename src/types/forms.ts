@@ -20,4 +20,12 @@ export type IEventForm = {
   date: string
   id?: IDocId
   comment: string
+  songs: {
+    id: IDocId
+    key: IKey
+    title: string
+    authors: string
+    body: string
+    transposeKey: IKey
+  }[]
 }

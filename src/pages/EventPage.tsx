@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useState } from 'react'
 import { Link, useLoaderData, useNavigate } from 'react-router'
 
@@ -157,25 +158,27 @@ export default function EventPage() {
               <IconButton icon={editIcon} onClick={handleOpenSongMenu(song)} />
             </div>
             {song.comment && (
-              <p className="mt-2 text-base whitespace-pre">{song.comment}</p>
+              <p className="mt-2 whitespace-pre">{song.comment}</p>
             )}
           </div>
         ))}
       </div>
       <div className="mx-auto mt-8 mb-8 flex flex-col items-center gap-4">
         {event.songs.length === 0 && (
-          <p className="text-lg">
+          <p>
             {event.isUpcoming ? 'No songs added yet.' : 'Event has no songs.'}
           </p>
         )}
         {event.isUpcoming && (
           <Link
-            className="btn"
+            className={classNames({
+              btn: true,
+              'btn-primary': event.songs.length === 0
+            })}
             to={formatLink('/songs', {
               eventId: event.id,
               eventTitle: event.title
             })}
-            variant={event.songs.length === 0 ? 'primary' : 'default'}
           >
             {event.songs.length === 0
               ? 'Add songs to this event'
