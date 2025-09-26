@@ -106,6 +106,10 @@
   }
 }
 
+@utility btn {
+  @apply rounded-full;
+}
+
 body {
   overflow-y: scroll;
 }

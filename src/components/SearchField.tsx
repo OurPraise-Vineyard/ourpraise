@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import searchIcon from '~/assets/search.svg'
+import clearIcon from '~/assets/x.svg'
 import { createDebouncer } from '~/utils/debouncer'
 
 const debounce = createDebouncer(200)
@@ -26,6 +27,10 @@ export default function SearchField({
     debounce(() => setQuery(q), !q)
   }
 
+  function handleClear() {
+    setQuery('')
+  }
+
   return (
     <label className={`input grow ${className}`}>
       <img className="icon" src={searchIcon} />
@@ -34,6 +39,12 @@ export default function SearchField({
         placeholder="Search"
         onChange={e => debounceSearch(e.target.value)}
         ref={inputRef}
+      />
+      <img
+        role="button"
+        className="icon cursor-pointer"
+        src={clearIcon}
+        onClick={handleClear}
       />
     </label>
   )

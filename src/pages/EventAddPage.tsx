@@ -75,10 +75,6 @@ export default function AddEventPage() {
         <form className="col-span-3" onSubmit={handleSubmit(onSave)}>
           <div className="col-span-full mb-4 flex flex-row items-center">
             <h2 className="grow text-lg">Add event</h2>
-
-            <button type="submit" className="btn btn-primary">
-              {saving ? 'Saving...' : 'Save'}
-            </button>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -129,44 +125,52 @@ export default function AddEventPage() {
               ))}
             </ul>
           </div>
+
+          <button type="submit" className="btn btn-primary w-full">
+            {saving ? 'Saving...' : 'Save'}
+          </button>
         </form>
 
-        <div className="bg-base-200 col-span-2 p-4 shadow-sm">
-          <p className="mb-2 font-bold">Add songs to event</p>
+        <div className="col-span-2">
+          <div className="bg-base-200 sticky top-4 max-h-screen p-4 shadow-sm">
+            <p className="mb-2 font-bold">Add songs to event</p>
 
-          <SearchField onSearch={setQuery} className="w-full" />
+            <SearchField onSearch={setQuery} className="w-full" />
 
-          <ul className="list mt-4 max-h-screen">
-            {!!query && (
-              <li className="p-4 pb-2 text-xs tracking-wide opacity-60">
-                Search results for "{query}"
-              </li>
-            )}
+            <ul className="list mt-4 max-h-screen">
+              {!!query && (
+                <li className="p-4 pb-2 text-xs tracking-wide opacity-60">
+                  Search results for "{query}"
+                </li>
+              )}
 
-            {filteredSongs.slice(0, 5).map(song => (
-              <li
-                role="button"
-                key={song.id}
-                className="list-row hover:bg-base-300 w-full"
-                onClick={() => handleAddSong(song)}
-              >
-                <div className="list-col-grow max-w-full">
-                  <p className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap">
-                    {song.title || (
-                      <span className="text-red-500 italic">Missing title</span>
-                    )}
-                  </p>
-                  <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                    {song.authors || (
-                      <span className="text-red-500 italic">
-                        Missing authors
-                      </span>
-                    )}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
+              {filteredSongs.slice(0, 5).map(song => (
+                <li
+                  role="button"
+                  key={song.id}
+                  className="list-row hover:bg-base-300 w-full"
+                  onClick={() => handleAddSong(song)}
+                >
+                  <div className="list-col-grow max-w-full">
+                    <p className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap">
+                      {song.title || (
+                        <span className="text-red-500 italic">
+                          Missing title
+                        </span>
+                      )}
+                    </p>
+                    <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                      {song.authors || (
+                        <span className="text-red-500 italic">
+                          Missing authors
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </Page>
