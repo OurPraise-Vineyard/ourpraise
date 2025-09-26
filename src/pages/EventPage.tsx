@@ -1,20 +1,14 @@
 import { useState } from 'react'
 import { Link, useLoaderData, useNavigate } from 'react-router'
 
-import moreIcon from '~/assets/more-vertical.svg'
-import {
-  deleteEvent,
-  moveEventSong,
-  removeEventSong,
-  saveEventSong
-} from '~/backend/events'
-import Button from '~/components/Button'
+import editIcon from '~/assets/edit.svg'
+import { moveEventSong, removeEventSong, saveEventSong } from '~/backend/events'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
+import EventSongForm from '~/components/EventSongForm'
 import IconButton from '~/components/IconButton'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
-import EventSongForm from '~/pages/Event/EventSongForm'
 import type { IEventSongForm } from '~/types/forms'
 import type { IEvent, IEventSong } from '~/types/models'
 import { formatLink } from '~/utils/link-formatter'
@@ -44,31 +38,6 @@ export default function EventPage() {
     } finally {
       setSavingSong(false)
     }
-  }
-
-  const handleOpenEventMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
-    menu.open(e, () => [
-      {
-        label: 'Edit event',
-        onClick() {
-          navigate(`/events/${event.id}/edit`)
-        }
-      },
-      {
-        label: 'Delete event',
-        danger: true,
-        async onClick() {
-          if (window.confirm('Delete this event?')) {
-            try {
-              await deleteEvent(event.id)
-              navigate('/events')
-            } catch (err: any) {
-              errors.show(err.message)
-            }
-          }
-        }
-      }
-    ])
   }
 
   const handleOpenSongMenu =
@@ -148,15 +117,13 @@ export default function EventPage() {
           <span className="text-lg">{event.formattedDate}</span>
         </div>
         <div className="flex items-center gap-4">
-          <Button
-            type="link"
-            to={`/events/${event.id}/print`}
-            variant="primary"
-            disabled={event.songs.length === 0}
-          >
+          <Link className="btn btn-primary" to={`/events/${event.id}/print`}>
             Print
-          </Button>
-          <IconButton icon={moreIcon} onClick={handleOpenEventMenu} />
+          </Link>
+          <Link className="btn" to={`/events/${event.id}/edit`}>
+            <img src={editIcon} className="icon" />
+            Edit event
+          </Link>
         </div>
       </div>
       {!!event.comment && (
@@ -187,7 +154,7 @@ export default function EventPage() {
                   {song.formattedKey}
                 </div>
               )}
-              <IconButton icon={moreIcon} onClick={handleOpenSongMenu(song)} />
+              <IconButton icon={editIcon} onClick={handleOpenSongMenu(song)} />
             </div>
             {song.comment && (
               <p className="mt-2 text-base whitespace-pre">{song.comment}</p>
@@ -202,8 +169,8 @@ export default function EventPage() {
           </p>
         )}
         {event.isUpcoming && (
-          <Button
-            type="link"
+          <Link
+            className="btn"
             to={formatLink('/songs', {
               eventId: event.id,
               eventTitle: event.title
@@ -213,7 +180,7 @@ export default function EventPage() {
             {event.songs.length === 0
               ? 'Add songs to this event'
               : 'Add more songs to this event'}
-          </Button>
+          </Link>
         )}
       </div>
     </Page>

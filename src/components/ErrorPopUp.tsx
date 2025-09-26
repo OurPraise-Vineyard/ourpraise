@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from 'react'
 
-import Button from './Button'
 import Modal from './Modal'
 
 type ErrorPopUpContextType = {
@@ -35,9 +34,9 @@ export default function ErrorPopUpProvider({
     <>
       <Modal show={show} onClose={close} title="An error occurred">
         <p className="grow text-lg text-red-500">{message}</p>
-        <Button onClick={close} variant="primary">
+        <button onClick={close} className="btn btn-primary">
           Close
-        </Button>
+        </button>
       </Modal>
       <ErrorPopUpContext.Provider value={{ show: open }}>
         {children}

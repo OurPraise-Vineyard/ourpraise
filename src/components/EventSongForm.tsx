@@ -1,13 +1,12 @@
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
-import Button from '~/components/Button'
 import Modal from '~/components/Modal'
 import type { IEventSongForm } from '~/types/forms'
 import type { IEventSong } from '~/types/models'
 import { getKeyOptions } from '~/utils/chords'
 
-import { SelectField, TextareaField } from '../../components/FormFields'
+import { SelectField, TextareaField } from './FormFields'
 
 export default function EventSongForm({
   eventSong,
@@ -70,9 +69,9 @@ export default function EventSongForm({
           error={errors.transposeKey && 'Key is required'}
         />
         <span className="grow" />
-        <Button variant="primary" type="submit">
+        <button className="btn btn-primary" type="submit">
           {saving ? 'Saving...' : 'Save song details'}
-        </Button>
+        </button>
       </form>
     </Modal>
   )

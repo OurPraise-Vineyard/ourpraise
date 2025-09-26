@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
-import { useLoaderData } from 'react-router'
+import { Link, useLoaderData } from 'react-router'
 
-import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import type { IEvent } from '~/types/models'
@@ -18,17 +17,15 @@ export default function PrintEventPage() {
     <Page noAnimation>
       <MetaTitle title={event.title} />
       <div className="flex items-center justify-between gap-4 py-4 pb-4 print:hidden">
-        <Button type="link" to={`/events/${event.id}`} className="shrink-0">
+        <Link to={`/events/${event.id}`} className="btn shrink-0">
           Cancel
-        </Button>
-        <Button
-          type="button"
+        </Link>
+        <button
           onClick={() => window.print()}
-          className="shrink-0"
-          variant="primary"
+          className="btn btn-primary shrink-0"
         >
           Print
-        </Button>
+        </button>
       </div>
       <div className="flex items-center gap-4 border-b border-b-gray-300 py-4 pb-2">
         <h2 className="text-title grow overflow-x-hidden font-bold text-ellipsis whitespace-nowrap">

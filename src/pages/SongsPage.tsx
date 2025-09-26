@@ -1,11 +1,10 @@
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
-import { NavLink, useLoaderData, useSearchParams } from 'react-router'
+import { Link, NavLink, useLoaderData, useSearchParams } from 'react-router'
 
-import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import SearchSongs from '~/pages/Songs/SearchField'
+import SearchSongs from '~/components/SearchField'
 import type { ISong } from '~/types/models'
 import { search } from '~/utils/fuzzy'
 import { formatLink } from '~/utils/link-formatter'
@@ -44,9 +43,9 @@ export default function SongsPage() {
         <div className="flex items-center justify-between gap-4">
           <SearchSongs onSearch={setQuery} />
           {!eventId && (
-            <Button type="link" to="/songs/add">
+            <Link className="btn" to="/songs/add">
               Add new song
-            </Button>
+            </Link>
           )}
         </div>
         <h2 className="text-title mt-2 grow border-b border-b-gray-300 py-4 font-bold">

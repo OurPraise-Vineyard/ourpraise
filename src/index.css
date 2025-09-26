@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
 
 /* === Theme Extensions === */
 @theme {
@@ -15,7 +17,7 @@
 
   /* Fonts */
   --font-sans: Abel, sans-serif;
-  --font-mono: "Oxygen Mono", monospace;
+  --font-mono: 'Oxygen Mono', monospace;
 
   /* Font Sizes */
   --font-size-title: 1.5rem; /* Same as defaultTheme.fontSize['2xl'][0] */
@@ -97,6 +99,10 @@
   transition-property: translate, opacity;
 }
 
+@utility icon {
+  width: 20px;
+  height: 20px;
+}
 
 body {
   overflow-y: scroll;

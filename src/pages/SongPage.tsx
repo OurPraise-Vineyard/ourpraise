@@ -1,16 +1,15 @@
 import classNames from 'classnames'
 import { useEffect, useMemo, useState } from 'react'
-import { useLoaderData, useNavigate, useSearchParams } from 'react-router'
+import { Link, useLoaderData, useNavigate, useSearchParams } from 'react-router'
 
 import moreIcon from '~/assets/more-vertical.svg'
 import { deleteSong } from '~/backend/songs'
-import Button from '~/components/Button'
+import AddToEvent from '~/components/AddToEvent'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import IconButton from '~/components/IconButton'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
-import AddToEvent from '~/pages/Song/AddToEvent'
 import type { IKey, ISong } from '~/types/models'
 import { getKeyOptions, transposeAndFormatSong } from '~/utils/chords'
 import { formatLink } from '~/utils/link-formatter'
@@ -100,25 +99,22 @@ export default function SongPage() {
           </div>
           <span className="grow" />
           {added ? (
-            <Button
-              className="h-toolbar"
-              type="link"
+            <Link
+              className="btn btn-primary h-toolbar"
               to={formatLink('/songs', {
                 eventId: eventId,
                 eventTitle: eventTitle
               })}
-              variant="primary"
             >
               Add another song
-            </Button>
+            </Link>
           ) : (
-            <Button
-              className="h-toolbar"
+            <button
+              className="btn btn-primary h-toolbar"
               onClick={() => setShowEventsDialog(true)}
-              variant="primary"
             >
               Add this song to event
-            </Button>
+            </button>
           )}
         </div>
       )}

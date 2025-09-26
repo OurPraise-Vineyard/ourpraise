@@ -4,7 +4,6 @@ import { useNavigate, useSearchParams } from 'react-router'
 
 import logo from '~/assets/logo_light.svg'
 import { login } from '~/backend/auth'
-import Button from '~/components/Button'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import { SelectField, TextField } from '~/components/FormFields'
 import MetaTitle from '~/components/MetaTitle'
@@ -78,9 +77,9 @@ export default function Login() {
           fieldProps={register('password', { required: true })}
           className="bg-white"
         />
-        <Button variant="primary" type="submit" disabled={loading}>
+        <button className="btn btn-primary" type="submit" disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}
-        </Button>
+        </button>
       </form>
     </div>
   )

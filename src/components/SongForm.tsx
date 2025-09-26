@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form'
 
-import Button from '~/components/Button'
 import type { ISongForm } from '~/types/forms'
 import type { ISong } from '~/types/models'
 import { keysOptions } from '~/utils/chords'
@@ -52,9 +51,9 @@ export default function SongForm({
         defaultValue={song?.body}
         error={errors.body && 'Song body is required'}
       />
-      <Button variant="primary" type="submit">
+      <button className="btn btn-primary" type="submit">
         Save
-      </Button>
+      </button>
     </form>
   )
 }

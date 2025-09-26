@@ -2,7 +2,6 @@ import type { JSX } from 'react'
 import { Link, useLoaderData } from 'react-router'
 
 import type { IEventsData } from '~/backend/events'
-import Button from '~/components/Button'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import type { IEvent } from '~/types/models'
@@ -30,15 +29,10 @@ export default function EventsPage() {
   return (
     <Page>
       <MetaTitle title="Events" />
-      <div className="flex items-center justify-end gap-4">
-        <Button
-          type="link"
-          to="/events/add"
-          className="h-toolbar"
-          variant="primary"
-        >
+      <div className="flex justify-end">
+        <Link to="/events/add" className="btn btn-primary">
           Add new event
-        </Button>
+        </Link>
       </div>
       <h2 className="text-title border-b border-b-gray-300 py-2 font-bold">
         Upcoming events

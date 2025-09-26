@@ -4,14 +4,13 @@ import { useForm } from 'react-hook-form'
 
 import { addSongToEvent, fetchUpcomingEvents } from '~/backend/events'
 import type { IEventsData } from '~/backend/events'
-import Button from '~/components/Button'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import Modal from '~/components/Modal'
 import type { FetchStatus, IDocId } from '~/types/backend'
 import type { IKey } from '~/types/models'
 import { getKeyOptions } from '~/utils/chords'
 
-import { SelectField, TextareaField } from '../../components/FormFields'
+import { SelectField, TextareaField } from './FormFields'
 
 type FormState = {
   comment: string
@@ -136,9 +135,9 @@ export default function AddToEvent({
               defaultValue={transposeKey}
               fieldProps={register('key')}
             />
-            <Button type="submit" variant="primary">
+            <button className="btn btn-primary" type="submit">
               {saving ? 'Saving...' : 'Add song'}
-            </Button>
+            </button>
           </form>
         )}
       </div>
