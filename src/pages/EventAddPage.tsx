@@ -1,7 +1,7 @@
 import dateFormat from 'dateformat'
 import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 import { createEvent } from '~/backend/events'
 import AddSongsToEvent from '~/components/AddSongsToEvent'
@@ -64,6 +64,15 @@ export default function AddEventPage() {
   return (
     <Page className="mb-16">
       <MetaTitle title="Add event" />
+
+      <div className="breadcrumbs mb-2 text-sm">
+        <ul>
+          <li>
+            <Link to="/events">Events</Link>
+          </li>
+          <li>Add event</li>
+        </ul>
+      </div>
 
       <div className="grid grid-cols-5 gap-x-16">
         <form className="col-span-3" onSubmit={handleSubmit(onSave)}>

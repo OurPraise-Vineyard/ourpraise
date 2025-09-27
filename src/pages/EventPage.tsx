@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLoaderData, useNavigate } from 'react-router'
+import { Link, NavLink, useLoaderData, useNavigate } from 'react-router'
 
 import editIcon from '~/assets/edit.svg'
 import { moveEventSong, removeEventSong, saveEventSong } from '~/backend/events'
@@ -110,6 +110,16 @@ export default function EventPage() {
           saving={savingSong}
         />
       )}
+
+      <div className="breadcrumbs text-sm">
+        <ul>
+          <li>
+            <NavLink to="/events">Events</NavLink>
+          </li>
+          <li>{event.title}</li>
+        </ul>
+      </div>
+
       <div className="flex items-start gap-4 border-b border-b-gray-300 py-4">
         <div className="grow">
           <h2 className="text-lg font-bold">{event.title}</h2>

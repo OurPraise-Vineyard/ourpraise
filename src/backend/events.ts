@@ -17,10 +17,9 @@ import {
   updateDocument
 } from './firebase'
 
-export type IEventsData = { upcoming: IEvent[]; past: IEvent[] }
-
-export async function fetchRecentEvents(): Promise<IEventsData> {
-  const events = await getCollection({
+export async function fetchRecentEvents(): Promise<IEvent[]> {
+  const today = todayTime()
+  return await getCollection({
     path: 'events',
     where: [['date', '>=', lastMonth().toISOString()]],
     orderBy: 'date',
@@ -36,28 +35,12 @@ export async function fetchRecentEvents(): Promise<IEventsData> {
       location: event.location,
       songs: [],
       formattedDate: formatDate(event.date),
-      isUpcoming: getTime(event.date) >= todayTime()
+      isUpcoming: getTime(event.date) >= today
     }))
   )
-
-  const upcoming: IEvent[] = []
-  const past: IEvent[] = []
-  const today = todayTime()
-
-  for (const ev of events) {
-    if (getTime(ev.date) >= today) {
-      upcoming.push(ev)
-    } else if (past.length < 8) {
-      past.push(ev)
-    }
-  }
-
-  return {
-    upcoming,
-    past
-  }
 }
 
+/* Delete */
 export async function fetchUpcomingEvents(): Promise<IEvent[]> {
   return await getCollection({
     path: 'events',
@@ -66,7 +49,7 @@ export async function fetchUpcomingEvents(): Promise<IEvent[]> {
     sortDirection: 'desc'
   }).then((events: ICollection): IEvent[] =>
     events
-      .filter(event => event.location === getLatestLocation())
+      // .filter(event => event.location === getLatestLocation())
       .map(event => ({
         comment: event.comment,
         createdAt: event.createdAt,

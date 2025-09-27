@@ -1,6 +1,12 @@
 import classNames from 'classnames'
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useLoaderData, useNavigate, useSearchParams } from 'react-router'
+import {
+  Link,
+  NavLink,
+  useLoaderData,
+  useNavigate,
+  useSearchParams
+} from 'react-router'
 
 import moreIcon from '~/assets/more-vertical.svg'
 import { deleteSong } from '~/backend/songs'
@@ -72,7 +78,7 @@ export default function SongPage() {
   }
 
   return (
-    <Page className="px-0 pt-0 sm:px-5">
+    <Page>
       <MetaTitle title={song.title} />
       <AddToEvent
         show={showEventsDialog}
@@ -83,6 +89,16 @@ export default function SongPage() {
         eventId={eventId}
         onAdded={() => setAdded(true)}
       />
+
+      <div className="breadcrumbs text-sm">
+        <ul>
+          <li>
+            <NavLink to="/songs">Songs</NavLink>
+          </li>
+          <li>{song.title}</li>
+        </ul>
+      </div>
+
       {!!eventId && (
         <div
           className={classNames(
