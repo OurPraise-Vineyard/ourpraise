@@ -36,13 +36,11 @@ export default function Nav() {
   return (
     <nav className="navbar bg-base-100 animate-fadeIn sticky top-0 z-10 px-4 shadow-sm print:hidden">
       <div className="flex-1">
-        <NavLink to="/events" className="btn btn-ghost">
-          <img
-            src={logo}
-            alt="OurPraise Logo"
-            className="svg col-start-1 mb-1 h-10"
-          />
-        </NavLink>
+        <img
+          src={logo}
+          alt="OurPraise Logo"
+          className="svg col-start-1 mb-1 h-10"
+        />
       </div>
       <ul className="menu menu-horizontal px-1">
         <li>

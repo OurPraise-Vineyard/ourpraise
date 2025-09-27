@@ -2,6 +2,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
 import type { ISong } from '~/types/models'
+import { formatKey } from '~/utils/chords'
 
 export default function SortableSongListItem({ song }: { song: ISong }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -31,6 +32,11 @@ export default function SortableSongListItem({ song }: { song: ISong }) {
             <span className="text-red-500 italic">Missing authors</span>
           )}
         </p>
+      </div>
+      <div className="flex flex-row items-center justify-end">
+        <div className="badge badge-soft badge-accent">
+          {formatKey(song.key)}
+        </div>
       </div>
     </li>
   )
