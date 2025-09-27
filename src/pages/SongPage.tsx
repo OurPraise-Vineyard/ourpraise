@@ -1,16 +1,8 @@
-import classNames from 'classnames'
 import { useEffect, useMemo, useState } from 'react'
-import {
-  Link,
-  NavLink,
-  useLoaderData,
-  useNavigate,
-  useSearchParams
-} from 'react-router'
+import { NavLink, useLoaderData, useNavigate } from 'react-router'
 
 import moreIcon from '~/assets/more-vertical.svg'
 import { deleteSong } from '~/backend/songs'
-import AddToEvent from '~/components/AddToEvent'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import IconButton from '~/components/IconButton'
 import MetaTitle from '~/components/MetaTitle'
@@ -18,19 +10,13 @@ import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
 import type { IKey, ISong } from '~/types/models'
 import { getKeyOptions, transposeAndFormatSong } from '~/utils/chords'
-import { formatLink } from '~/utils/link-formatter'
 
 export default function SongPage() {
   const song: ISong = useLoaderData()
-  const [searchParams] = useSearchParams()
-  const eventId = searchParams.get('eventId')
-  const eventTitle = searchParams.get('eventTitle')
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
-  const [showEventsDialog, setShowEventsDialog] = useState(false)
   const navigate = useNavigate()
   const menu = usePopUpMenu()
   const keysOptions = useMemo(() => getKeyOptions(song.key), [song.key])
-  const [added, setAdded] = useState(false)
   const errors = useErrorPopUp()
 
   const [formattedBody, setFormattedBody] = useState<string[]>([])
@@ -69,10 +55,6 @@ export default function SongPage() {
             }
           }
         }
-      },
-      {
-        label: 'Add to event',
-        onClick: () => setShowEventsDialog(true)
       }
     ])
   }
@@ -80,15 +62,6 @@ export default function SongPage() {
   return (
     <Page>
       <MetaTitle title={song.title} />
-      <AddToEvent
-        show={showEventsDialog}
-        onClose={() => setShowEventsDialog(false)}
-        songId={song.id}
-        transposeKey={transposeKey}
-        songKey={song.key}
-        eventId={eventId}
-        onAdded={() => setAdded(true)}
-      />
 
       <div className="breadcrumbs text-sm">
         <ul>
@@ -99,41 +72,6 @@ export default function SongPage() {
         </ul>
       </div>
 
-      {!!eventId && (
-        <div
-          className={classNames(
-            'top-4 mb-3 flex w-full flex-col items-center gap-2 border-b p-5 text-lg sm:sticky sm:mt-8 sm:flex-row sm:rounded-full sm:border sm:shadow-md',
-            added && 'border-green-200 bg-green-50',
-            !added && 'border-slate-200 bg-slate-50'
-          )}
-        >
-          <div>
-            <span className="mr-1">
-              {added ? 'Song added to' : 'Adding songs to'}
-            </span>
-            <span className="font-bold">{eventTitle}</span>
-          </div>
-          <span className="grow" />
-          {added ? (
-            <Link
-              className="btn btn-primary h-toolbar"
-              to={formatLink('/songs', {
-                eventId: eventId,
-                eventTitle: eventTitle
-              })}
-            >
-              Add another song
-            </Link>
-          ) : (
-            <button
-              className="btn btn-primary h-toolbar"
-              onClick={() => setShowEventsDialog(true)}
-            >
-              Add this song to event
-            </button>
-          )}
-        </div>
-      )}
       <div className="mt-9 mb-4 flex items-start gap-3 px-5 sm:px-0">
         <div className="w-1/2">
           <h2 className="text-title font-bold">{song.title}</h2>

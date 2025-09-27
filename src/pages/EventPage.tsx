@@ -1,115 +1,17 @@
-import { useState } from 'react'
-import { Link, NavLink, useLoaderData, useNavigate } from 'react-router'
+import { Link, NavLink, useLoaderData } from 'react-router'
 
 import editIcon from '~/assets/edit.svg'
-import { moveEventSong, removeEventSong, saveEventSong } from '~/backend/events'
-import { useErrorPopUp } from '~/components/ErrorPopUp'
-import EventSongForm from '~/components/EventSongForm'
-import IconButton from '~/components/IconButton'
+import printIcon from '~/assets/printer.svg'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { usePopUpMenu } from '~/components/PopUpMenu'
-import type { IEventSongForm } from '~/types/forms'
-import type { IEvent, IEventSong } from '~/types/models'
+import type { IEvent } from '~/types/models'
 
 export default function EventPage() {
   const event: IEvent = useLoaderData()
-  const navigate = useNavigate()
-  const [selectedSong, setSelectedSong] = useState<IEventSong | null>(null)
-  const [editSong, setEditSong] = useState<boolean>(false)
-  const [savingSong, setSavingSong] = useState<boolean>(false)
-  const menu = usePopUpMenu()
-  const errors = useErrorPopUp()
-
-  function triggerReload() {
-    // This will trigger a reload of the page
-    navigate(`/events/${event.id}`)
-  }
-
-  async function handleSaveEventSong(form: IEventSongForm) {
-    try {
-      setSavingSong(true)
-      await saveEventSong(event.id, form)
-      setEditSong(false)
-      triggerReload()
-    } catch (err: any) {
-      errors.show(err.message)
-    } finally {
-      setSavingSong(false)
-    }
-  }
-
-  const handleOpenSongMenu =
-    (selectedSong: IEventSong) => (e: React.MouseEvent<HTMLButtonElement>) => {
-      setSelectedSong(selectedSong)
-      menu.open(e, () => [
-        {
-          label: 'Move up',
-          async onClick() {
-            if (selectedSong) {
-              try {
-                await moveEventSong(event.id, selectedSong.id, -1)
-                triggerReload()
-              } catch (err: any) {
-                errors.show(err.message)
-              }
-            }
-          }
-        },
-        {
-          label: 'Move down',
-          async onClick() {
-            if (selectedSong) {
-              try {
-                await moveEventSong(event.id, selectedSong.id, 1)
-                triggerReload()
-              } catch (err: any) {
-                errors.show(err.message)
-              }
-            }
-          }
-        },
-        {
-          label: 'Edit options',
-          onClick() {
-            setEditSong(true)
-          }
-        },
-        {
-          label: 'Remove song',
-          danger: true,
-          async onClick() {
-            if (selectedSong) {
-              if (
-                window.confirm(
-                  `Remove "${selectedSong.title}" from this event?`
-                )
-              ) {
-                try {
-                  await removeEventSong(event.id, selectedSong.id)
-                  triggerReload()
-                } catch (err: any) {
-                  errors.show(err.message)
-                }
-              }
-            }
-          }
-        }
-      ])
-    }
 
   return (
     <Page>
       <MetaTitle title={event.title} />
-      {selectedSong && (
-        <EventSongForm
-          eventSong={selectedSong}
-          onClose={() => setEditSong(false)}
-          show={editSong}
-          onSubmit={handleSaveEventSong}
-          saving={savingSong}
-        />
-      )}
 
       <div className="breadcrumbs text-sm">
         <ul>
@@ -127,6 +29,7 @@ export default function EventPage() {
         </div>
         <div className="flex items-center gap-4">
           <Link className="btn btn-primary" to={`/events/${event.id}/print`}>
+            <img src={printIcon} className="icon" />
             Print
           </Link>
           <Link className="btn" to={`/events/${event.id}/edit`}>
@@ -163,7 +66,6 @@ export default function EventPage() {
                   {song.formattedKey}
                 </div>
               )}
-              <IconButton icon={editIcon} onClick={handleOpenSongMenu(song)} />
             </div>
             {song.comment && (
               <p className="mt-2 whitespace-pre">{song.comment}</p>
