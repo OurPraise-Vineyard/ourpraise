@@ -1,10 +1,5 @@
-import { useEffect, useState } from 'react'
-
 import searchIcon from '~/assets/search.svg'
-import clearIcon from '~/assets/x.svg'
-import { createDebouncer } from '~/utils/debouncer'
-
-const debounce = createDebouncer(200)
+import useDebounced from '~/hooks/useDebounced'
 
 type SearchBarProps = {
   className?: string
@@ -17,19 +12,7 @@ export default function SearchField({
   inputRef,
   className
 }: SearchBarProps) {
-  const [query, setQuery] = useState('')
-
-  useEffect(() => {
-    onSearch(query)
-  }, [query, onSearch])
-
-  function debounceSearch(q: string) {
-    debounce(() => setQuery(q), !q)
-  }
-
-  function handleClear() {
-    setQuery('')
-  }
+  const [_, setQuery] = useDebounced<string>('', onSearch)
 
   return (
     <label className={`input grow ${className}`}>
@@ -37,14 +20,8 @@ export default function SearchField({
       <input
         className="grow"
         placeholder="Search"
-        onChange={e => debounceSearch(e.target.value)}
+        onChange={e => setQuery(e.target.value)}
         ref={inputRef}
-      />
-      <img
-        role="button"
-        className="icon cursor-pointer"
-        src={clearIcon}
-        onClick={handleClear}
       />
     </label>
   )

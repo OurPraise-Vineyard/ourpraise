@@ -1,25 +1,23 @@
 import dateFormat from 'dateformat'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
-import { useLoaderData, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 
 import { createEvent } from '~/backend/events'
+import AddSongsToEvent from '~/components/AddSongsToEvent'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import SearchField from '~/components/SearchField'
 import SortableSongList from '~/components/SortableSongList'
 import type { IDocId } from '~/types/backend'
 import type { IEventForm } from '~/types/forms'
 import type { ISong } from '~/types/models'
 import { nextWeekday } from '~/utils/date'
-import { search } from '~/utils/fuzzy'
 
 const defaultDate = dateFormat(nextWeekday(7), 'yyyy-mm-dd')
 
 export default function AddEventPage() {
   const navigate = useNavigate()
-  const songs: ISong[] = useLoaderData()
   const [saving, setSaving] = useState<boolean>(false)
   const errorPopUp = useErrorPopUp()
   const {
@@ -34,18 +32,6 @@ export default function AddEventPage() {
       name: 'songs'
     }
   )
-
-  const [query, setQuery] = useState<string>('')
-
-  const [filteredSongs, setFilteredSongs] = useState<ISong[]>([])
-
-  useEffect(() => {
-    if (!query) {
-      setFilteredSongs([])
-    } else {
-      setFilteredSongs(search(query, songs, ['title', 'authors', 'body']))
-    }
-  }, [songs, query])
 
   function handleAddSong(song: ISong) {
     append({
@@ -108,45 +94,7 @@ export default function AddEventPage() {
         </form>
 
         <div className="col-span-2">
-          <div className="bg-base-200 max-h-page sticky top-20 overflow-x-hidden overflow-y-auto p-4 shadow-sm">
-            <p className="mb-2 font-bold">Add songs to event</p>
-
-            <SearchField onSearch={setQuery} className="w-full" />
-
-            <ul className="list mt-4">
-              {!!query && (
-                <li className="p-4 pb-2 text-xs tracking-wide opacity-60">
-                  Search results for "{query}"
-                </li>
-              )}
-
-              {filteredSongs.slice(0, 5).map(song => (
-                <li
-                  role="button"
-                  key={song.id}
-                  className="list-row hover:bg-base-300 w-full"
-                  onClick={() => handleAddSong(song)}
-                >
-                  <div>
-                    <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                      {song.title || (
-                        <span className="text-red-500 italic">
-                          Missing title
-                        </span>
-                      )}
-                    </p>
-                    <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                      {song.authors || (
-                        <span className="text-red-500 italic">
-                          Missing authors
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <AddSongsToEvent onAdd={handleAddSong} />
         </div>
       </div>
     </Page>
