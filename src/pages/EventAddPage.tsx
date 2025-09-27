@@ -26,16 +26,23 @@ export default function AddEventPage() {
     handleSubmit,
     formState: { errors }
   } = useForm<IEventForm>()
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control,
-      name: 'songs'
-    }
-  )
+  const {
+    fields: addedSongs,
+    append,
+    prepend,
+    remove,
+    swap,
+    move,
+    insert
+  } = useFieldArray({
+    control,
+    name: 'songs'
+  })
 
   function handleAddSong(song: ISong) {
     append({
       ...song,
+      dbId: song.id,
       transposeKey: song.key
     })
   }
@@ -83,9 +90,12 @@ export default function AddEventPage() {
               {...register('comment')}
             />
 
-            {fields.length > 0 && <p className="text-sm">Songs</p>}
+            {addedSongs.length > 0 && <p className="text-sm">Songs</p>}
 
-            <SortableSongList items={fields} onSwap={(a, b) => move(a, b)} />
+            <SortableSongList
+              items={addedSongs}
+              onSwap={(a, b) => move(a, b)}
+            />
           </div>
 
           <button type="submit" className="btn btn-primary w-full">
@@ -94,7 +104,7 @@ export default function AddEventPage() {
         </form>
 
         <div className="col-span-2">
-          <AddSongsToEvent onAdd={handleAddSong} />
+          <AddSongsToEvent onAdd={handleAddSong} addedSongs={addedSongs} />
         </div>
       </div>
     </Page>

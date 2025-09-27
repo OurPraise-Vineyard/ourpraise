@@ -4,12 +4,15 @@ import searchIcon from '~/assets/search.svg'
 import clearIcon from '~/assets/x.svg'
 import { fetchSongs } from '~/backend/songs'
 import useDebounced from '~/hooks/useDebounced'
+import type { IEventFormSong } from '~/types/forms'
 import type { ISong } from '~/types/models'
 import { search } from '~/utils/fuzzy'
 
 export default function AddSongsToEvent({
-  onAdd
+  onAdd,
+  addedSongs
 }: {
+  addedSongs: IEventFormSong[]
   onAdd: (song: ISong) => void
 }) {
   const [loading, setLoading] = useState(true)
@@ -23,24 +26,24 @@ export default function AddSongsToEvent({
     if (!query) {
       setFilteredSongs([])
     } else {
-      setFilteredSongs(search(query, songs, ['title', 'authors', 'body']))
+      setFilteredSongs(
+        search(
+          query,
+          songs.filter(
+            song => !addedSongs.find(({ dbId }) => song.id === dbId)
+          ),
+          ['title', 'authors', 'body']
+        )
+      )
     }
-  }, [songs, query])
+  }, [songs.length, query, addedSongs.length])
 
   useEffect(() => {
     fetchSongs().then(songs => {
       setLoading(false)
-      setSongs(songs)
+      setSongs(songs.map(song => ({ ...song, added: false })))
     })
   }, [])
-
-  useEffect(() => {
-    if (!query) {
-      setFilteredSongs([])
-    } else {
-      setFilteredSongs(search(query, songs, ['title', 'authors', 'body']))
-    }
-  }, [songs, query])
 
   function handleClear() {
     setQuery('')
@@ -82,7 +85,7 @@ export default function AddSongsToEvent({
           </li>
         )}
 
-        {filteredSongs.slice(0, 5).map(song => (
+        {filteredSongs.map(song => (
           <li
             role="button"
             key={song.id}
