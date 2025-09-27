@@ -8,10 +8,6 @@ import type { IUser } from '~/types/backend'
 
 import { usePopUpMenu } from './PopUpMenu'
 
-const navLinkStyles =
-  'border-b text-white hover:border-b-white border-b-transparent'
-const linkActiveStyles = 'border-b-white'
-
 export default function Nav() {
   const [user, setUser] = useState<IUser>()
   const menu = usePopUpMenu()
@@ -38,7 +34,7 @@ export default function Nav() {
     ])
 
   return (
-    <nav className="navbar bg-base-100 animate-fadeIn z-10 px-4 shadow-sm print:hidden">
+    <nav className="navbar bg-base-100 animate-fadeIn sticky top-0 z-10 px-4 shadow-sm print:hidden">
       <div className="flex-1">
         <NavLink to="/events" className="btn btn-ghost">
           <img

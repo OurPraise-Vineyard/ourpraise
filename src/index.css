@@ -110,6 +110,10 @@
   @apply rounded-full;
 }
 
+@utility max-h-page {
+  max-height: calc(100vh - 8rem);
+}
+
 body {
   overflow-y: scroll;
 }
