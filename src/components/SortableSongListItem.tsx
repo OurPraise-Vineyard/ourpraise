@@ -21,7 +21,12 @@ export default function SortableSongListItem({ song }: { song: ISong }) {
       {...attributes}
       {...listeners}
     >
-      <div>
+      <div
+        onClick={event => {
+          console.log('mouse down')
+          event.stopPropagation()
+        }}
+      >
         <p className="overflow-hidden text-ellipsis whitespace-nowrap">
           {song.title || (
             <span className="text-red-500 italic">Missing title</span>
@@ -32,6 +37,10 @@ export default function SortableSongListItem({ song }: { song: ISong }) {
             <span className="text-red-500 italic">Missing authors</span>
           )}
         </p>
+
+        <button className="btn" type="button" onClick={console.log}>
+          Test
+        </button>
       </div>
       <div className="flex flex-row items-center justify-end">
         <div className="badge badge-soft badge-accent text-nowrap break-keep">
