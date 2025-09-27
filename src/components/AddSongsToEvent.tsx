@@ -6,6 +6,7 @@ import { fetchSongs } from '~/backend/songs'
 import useDebounced from '~/hooks/useDebounced'
 import type { IEventFormSong } from '~/types/forms'
 import type { ISong } from '~/types/models'
+import { formatKey } from '~/utils/chords'
 import { search } from '~/utils/fuzzy'
 
 export default function AddSongsToEvent({
@@ -103,6 +104,11 @@ export default function AddSongsToEvent({
                   <span className="text-red-500 italic">Missing authors</span>
                 )}
               </p>
+            </div>
+            <div className="flex flex-row items-center justify-end">
+              <div className="badge badge-soft badge-accent text-nowrap break-keep">
+                {formatKey(song.key)}
+              </div>
             </div>
           </li>
         ))}

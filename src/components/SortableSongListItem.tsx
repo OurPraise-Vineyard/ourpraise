@@ -34,7 +34,7 @@ export default function SortableSongListItem({ song }: { song: ISong }) {
         </p>
       </div>
       <div className="flex flex-row items-center justify-end">
-        <div className="badge badge-soft badge-accent">
+        <div className="badge badge-soft badge-accent text-nowrap break-keep">
           {formatKey(song.key)}
         </div>
       </div>
