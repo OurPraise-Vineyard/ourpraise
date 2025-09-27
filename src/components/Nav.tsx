@@ -42,14 +42,6 @@ export default function Nav() {
           className="svg col-start-1 mb-1 h-10"
         />
       </div>
-      <ul className="menu menu-horizontal px-1">
-        <li>
-          <NavLink to="/events">Events</NavLink>
-        </li>
-        <li>
-          <NavLink to="/songs">Songs</NavLink>
-        </li>
-      </ul>
       <div onClick={openMenu} className="cursor-pointer text-right">
         <p className="text-lg text-white"></p>
         {/*<p className="text-md text-gray-400">{location}</p>*/}

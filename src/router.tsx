@@ -12,6 +12,7 @@ import EditEventPage from './pages/EventEditPage'
 import EventPage from './pages/EventPage'
 import PrintEventPage from './pages/EventPrintPage'
 import EventsPage from './pages/EventsPage'
+import HomePage from './pages/HomePage'
 import Login from './pages/LoginPage'
 import NotFoundPage from './pages/NotFound'
 import AddSongPage from './pages/SongAddPage'
@@ -57,71 +58,67 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: 'songs',
+            path: 'songs/:id',
             children: [
               {
                 index: true,
-                loader: async () => fetchSongs(),
-                Component: SongsPage
+                loader: loadSong,
+                Component: SongPage
               },
               {
-                path: ':id',
-                children: [
-                  {
-                    index: true,
-                    loader: loadSong,
-                    Component: SongPage
-                  },
-                  {
-                    path: 'edit',
-                    loader: loadSong,
-                    Component: EditSongPage
-                  }
-                ]
-              },
-              {
-                path: 'add',
-                Component: AddSongPage
+                path: 'edit',
+                loader: loadSong,
+                Component: EditSongPage
               }
             ]
           },
           {
-            path: 'events',
+            path: 'songs/add',
+            Component: AddSongPage
+          },
+          {
+            path: 'events/:id',
             children: [
               {
                 index: true,
-                loader: () => fetchRecentEvents(),
-                Component: EventsPage
+                loader: loadEvent,
+                Component: EventPage
               },
               {
-                path: ':id',
-                children: [
-                  {
-                    index: true,
-                    loader: loadEvent,
-                    Component: EventPage
-                  },
-                  {
-                    path: 'edit',
-                    loader: loadEvent,
-                    Component: EditEventPage
-                  },
-                  {
-                    path: 'print',
-                    loader: loadEvent,
-                    Component: PrintEventPage
-                  }
-                ]
+                path: 'edit',
+                loader: loadEvent,
+                Component: EditEventPage
               },
               {
-                path: 'add',
-                Component: AddEventPage
+                path: 'print',
+                loader: loadEvent,
+                Component: PrintEventPage
               }
             ]
+          },
+          {
+            path: 'events/add',
+            Component: AddEventPage
           },
           {
             path: 'not-found',
             Component: NotFoundPage
+          },
+          {
+            path: '/',
+            Component: HomePage,
+            children: [
+              {
+                path: 'events',
+                loader: () => fetchRecentEvents(),
+                Component: EventsPage
+              },
+              {
+                path: 'songs',
+                loader: async () => fetchSongs(),
+                Component: SongsPage
+              }
+            ]
           },
           {
             path: '*',
