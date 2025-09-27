@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import { useState } from 'react'
 import { Link, useLoaderData, useNavigate } from 'react-router'
 
@@ -12,7 +11,6 @@ import Page from '~/components/Page'
 import { usePopUpMenu } from '~/components/PopUpMenu'
 import type { IEventSongForm } from '~/types/forms'
 import type { IEvent, IEventSong } from '~/types/models'
-import { formatLink } from '~/utils/link-formatter'
 
 export default function EventPage() {
   const event: IEvent = useLoaderData()
@@ -114,8 +112,8 @@ export default function EventPage() {
       )}
       <div className="flex items-start gap-4 border-b border-b-gray-300 py-4">
         <div className="grow">
-          <h2 className="text-title font-bold">{event.title}</h2>
-          <span className="text-lg">{event.formattedDate}</span>
+          <h2 className="text-lg font-bold">{event.title}</h2>
+          <p>{event.formattedDate}</p>
         </div>
         <div className="flex items-center gap-4">
           <Link className="btn btn-primary" to={`/events/${event.id}/print`}>
@@ -163,27 +161,13 @@ export default function EventPage() {
           </div>
         ))}
       </div>
-      <div className="mx-auto mt-8 mb-8 flex flex-col items-center gap-4">
+      <div className="my-8">
         {event.songs.length === 0 && (
           <p>
-            {event.isUpcoming ? 'No songs added yet.' : 'Event has no songs.'}
+            {event.isUpcoming
+              ? 'No songs added yet. Edit event to add some.'
+              : 'Event has no songs.'}
           </p>
-        )}
-        {event.isUpcoming && (
-          <Link
-            className={classNames({
-              btn: true,
-              'btn-primary': event.songs.length === 0
-            })}
-            to={formatLink('/songs', {
-              eventId: event.id,
-              eventTitle: event.title
-            })}
-          >
-            {event.songs.length === 0
-              ? 'Add songs to this event'
-              : 'Add more songs to this event'}
-          </Link>
         )}
       </div>
     </Page>
