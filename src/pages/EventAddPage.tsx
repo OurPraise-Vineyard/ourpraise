@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 
+import checkIcon from '~/assets/check.svg'
+import moveIcon from '~/assets/move.svg'
 import { createEvent } from '~/backend/events'
 import AddSongsToEvent from '~/components/AddSongsToEvent'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
@@ -19,6 +21,7 @@ const defaultDate = dateFormat(nextWeekday(7), 'yyyy-mm-dd')
 export default function AddEventPage() {
   const navigate = useNavigate()
   const [saving, setSaving] = useState<boolean>(false)
+  const [reordering, setReordering] = useState<boolean>(false)
   const errorPopUp = useErrorPopUp()
   const {
     control,
@@ -29,11 +32,8 @@ export default function AddEventPage() {
   const {
     fields: addedSongs,
     append,
-    prepend,
     remove,
-    swap,
-    move,
-    insert
+    move
   } = useFieldArray({
     control,
     name: 'songs'
@@ -58,6 +58,12 @@ export default function AddEventPage() {
       errorPopUp.show(err.message)
     } finally {
       setSaving(false)
+    }
+  }
+
+  const onRemoveSong = (index: number) => {
+    if (window.confirm('Remove song from event?')) {
+      remove(index)
     }
   }
 
@@ -99,15 +105,46 @@ export default function AddEventPage() {
               {...register('comment')}
             />
 
-            {addedSongs.length > 0 && <p className="text-sm">Songs</p>}
+            {addedSongs.length > 0 && (
+              <div className="rounded-sm p-4 shadow-sm">
+                <div className="mb-2 flex items-center justify-between">
+                  <p className="text-sm font-bold">Songs</p>
+                  {reordering ? (
+                    <button
+                      type="button"
+                      className="btn btn-success"
+                      onClick={() => setReordering(false)}
+                    >
+                      <img src={checkIcon} className="icon" />
+                      Done
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-ghost"
+                      onClick={() => setReordering(true)}
+                    >
+                      <img src={moveIcon} className="icon" />
+                      Reorder
+                    </button>
+                  )}
+                </div>
 
-            <SortableSongList
-              items={addedSongs}
-              onSwap={(a, b) => move(a, b)}
-            />
+                <SortableSongList
+                  items={addedSongs}
+                  onSwap={(a, b) => move(a, b)}
+                  onRemove={onRemoveSong}
+                  isSortable={reordering}
+                />
+              </div>
+            )}
           </div>
 
-          <button type="submit" className="btn btn-primary w-full">
+          <button
+            type="submit"
+            className="btn btn-primary w-full"
+            disabled={reordering}
+          >
             {saving ? 'Saving...' : 'Save'}
           </button>
         </form>

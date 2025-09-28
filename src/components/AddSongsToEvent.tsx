@@ -54,7 +54,7 @@ export default function AddSongsToEvent({
   }
 
   return (
-    <div className="bg-base-200 max-h-page sticky top-20 overflow-x-hidden overflow-y-auto p-4 shadow-sm">
+    <div className="bg-base-200 max-h-page sticky top-20 overflow-x-hidden overflow-y-auto rounded-sm p-4 shadow-sm">
       <p className="mb-2 font-bold">Add songs to event</p>
 
       <label className="input w-full grow">
