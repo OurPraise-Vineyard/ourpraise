@@ -16,16 +16,6 @@ export type ISearchHit = {
   objectID: IDocId
 }
 
-export type IDoc = {
-  id: IDocId
-  [key: string]: any
-}
-
-export type IDocCreate = Omit<IDoc, 'id'>
-export type IDocUpdate = Omit<IDoc, 'id'>
-
-export type ICollection = IDoc[]
-
 export type IDocId = string
 
 export type FetchStatus = 'idle' | 'loading' | 'failed' | 'succeeded'

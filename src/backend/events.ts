@@ -1,17 +1,15 @@
 import { fetchSong } from '~/backend/songs'
-import type { ICollection, IDoc, IDocId } from '~/types/backend'
-import type { IEventForm, IEventSongForm } from '~/types/forms'
+import type { IDocId } from '~/types/backend'
 import type { IEvent, IEventSong, ISong } from '~/types/models'
+import type { IEventSchema, IEventSongSchema } from '~/types/schemas'
 import { formatKey, transposeAndFormatSong } from '~/utils/chords'
 import { formatDate, getTime, lastMonth, todayTime } from '~/utils/date'
 import { getLatestLocation } from '~/utils/location'
-import pruneObject from '~/utils/pruneObject'
 
 import { getAuthState } from './auth'
 import {
   createDocument,
   deleteDocument,
-  getAndUpdateDocument,
   getCollection,
   getDocument,
   updateDocument
@@ -19,121 +17,110 @@ import {
 
 export async function fetchRecentEvents(): Promise<IEvent[]> {
   const today = todayTime()
-  return await getCollection({
+  return await getCollection<IEventSchema>({
     path: 'events',
     where: [['date', '>=', lastMonth().toISOString()]],
     orderBy: 'date',
     sortDirection: 'desc'
-  }).then((events: ICollection): IEvent[] =>
-    events.map(event => ({
-      comment: event.comment,
-      createdAt: event.createdAt,
-      date: event.date,
-      id: event.id,
-      owner: event.owner,
-      title: event.title,
-      location: event.location,
-      songs: [],
-      formattedDate: formatDate(event.date),
-      isUpcoming: getTime(event.date) >= today
-    }))
-  )
-}
-
-/* Delete */
-export async function fetchUpcomingEvents(): Promise<IEvent[]> {
-  return await getCollection({
-    path: 'events',
-    where: [['date', '>=', new Date().toISOString()]],
-    orderBy: 'date',
-    sortDirection: 'desc'
-  }).then((events: ICollection): IEvent[] =>
-    events
-      // .filter(event => event.location === getLatestLocation())
-      .map(event => ({
-        comment: event.comment,
-        createdAt: event.createdAt,
-        date: event.date,
-        id: event.id,
-        owner: event.owner,
-        title: event.title,
-        location: event.location,
-        songs: [],
-        formattedDate: formatDate(event.date),
-        isUpcoming: getTime(event.date) >= todayTime()
-      }))
+  }).then((events: IEventSchema[]): IEvent[] =>
+    events.map(
+      event =>
+        ({
+          comment: event.comment,
+          updatedAt: event.updatedAt,
+          date: event.date,
+          id: event.id,
+          owner: event.owner,
+          title: event.title,
+          location: event.location,
+          formattedDate: formatDate(event.date),
+          isUpcoming: getTime(event.date) >= today
+        }) as IEvent
+    )
   )
 }
 
 export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
-  const eventDoc = await getDocument(`events/${eventId}`)
+  const eventDoc = await getDocument<IEventSchema>(`events/${eventId}`)
 
   const songs: IEventSong[] = await Promise.all(
-    eventDoc.songs.map(async (eventSong: IDoc): Promise<IEventSong> => {
-      const song: ISong = await fetchSong(eventSong.id)
+    eventDoc.songs.map(
+      async (eventSong: IEventSongSchema): Promise<IEventSong> => {
+        const song: ISong = await fetchSong(eventSong.id)
 
-      const songKey = eventSong.transposeKey || song.key
-      const body = transposeAndFormatSong({
-        body: song.body,
-        fromKey: song.key,
-        toKey: songKey
-      })
+        const songKey = eventSong.transposeKey || song.key
+        const body = transposeAndFormatSong({
+          body: song.body,
+          fromKey: song.key,
+          toKey: songKey
+        })
 
-      return {
-        id: eventSong.id,
-        comment: eventSong.comment,
-        title: song.title,
-        authors: song.authors,
-        body,
-        key: song.key,
-        transposeKey: songKey,
-        formattedKey: formatKey(songKey)
+        return {
+          id: eventSong.id,
+          title: song.title,
+          authors: song.authors,
+          body,
+          key: song.key,
+          transposeKey: songKey,
+          formattedKey: formatKey(songKey)
+        }
       }
-    })
+    )
   )
 
   return {
     comment: eventDoc.comment,
-    createdAt: eventDoc.createdAt,
     date: eventDoc.date,
     id: eventDoc.id,
     owner: eventDoc.owner,
     title: eventDoc.title,
     location: eventDoc.location,
-    songs,
-    formattedDate: formatDate(eventDoc.date),
-    isUpcoming: getTime(eventDoc.date) >= todayTime()
+    songs
   }
 }
 
-export async function saveEvent(form: IEventForm): Promise<void> {
+export async function saveEvent(form: IEvent): Promise<void> {
   if (form.id) {
-    await updateDocument(`events/${form.id}`, {
+    await updateDocument<IEventSchema>(`events/${form.id}`, {
+      updatedAt: new Date().toISOString(),
+      owner: form.owner,
       title: form.title,
       date: form.date,
-      comment: form.comment
+      comment: form.comment,
+      location: form.location || '',
+      songs: form.songs
+        ? form.songs.map(
+            song =>
+              ({
+                id: song.id,
+                transposeKey: song.transposeKey
+              }) as IEventSong
+          )
+        : []
     })
   }
 }
 
-export async function createEvent(form: IEventForm): Promise<IDocId> {
+export async function createEvent(form: IEvent): Promise<IDocId> {
   const user = (await getAuthState()).user
   const location = getLatestLocation()
 
-  const doc = await createDocument('events', {
+  const doc = await createDocument<IEventSchema>('events', {
     title: form.title,
     date: form.date,
     location,
     comment: form.comment,
-    songs: form.songs.map(
-      song =>
-        ({
-          id: song.dbId,
-          transposeKey: song.transposeKey
-        }) as IEventSong
-    ),
-    owner: user?.email,
-    createdAt: new Date().toISOString()
+    songs: form.songs
+      ? form.songs.map(
+          song =>
+            ({
+              id: song.id,
+              transposeKey: song.transposeKey
+            }) as IEventSong
+        )
+      : [],
+    owner: user?.email || '',
+    updatedAt: new Date().toISOString()
   })
 
   return doc.id
@@ -141,98 +128,4 @@ export async function createEvent(form: IEventForm): Promise<IDocId> {
 
 export async function deleteEvent(id: IDocId) {
   await deleteDocument(`events/${id}`)
-}
-
-export async function addSongToEvent(
-  eventId: IDocId,
-  songOptions: IEventSongForm
-) {
-  await getAndUpdateDocument(
-    `events/${eventId}`,
-    (data: IDoc) => {
-      const songs = (data as IEvent).songs
-      if (songs.find(song => song.id === songOptions.id)) {
-        throw new Error('Song already added.')
-      }
-      return {
-        songs: [
-          ...songs,
-          {
-            id: songOptions.id,
-            transposeKey: songOptions.transposeKey,
-            comment: songOptions.comment
-          }
-        ]
-      }
-    },
-    {
-      merge: true
-    }
-  )
-}
-
-export async function saveEventSong(eventId: IDocId, form: IEventSongForm) {
-  const eventSong = pruneObject({
-    transposeKey: form.transposeKey,
-    comment: form.comment,
-    id: form.id
-  })
-
-  await getAndUpdateDocument(
-    `events/${eventId}`,
-    (data: IDoc) => {
-      return {
-        songs: (data as IEvent).songs.map(song => {
-          if (song.id === eventSong.id) {
-            return {
-              ...song,
-              ...eventSong
-            }
-          }
-          return song
-        })
-      }
-    },
-    {
-      merge: true
-    }
-  )
-}
-
-export async function removeEventSong(eventId: IDocId, removeId: IDocId) {
-  await getAndUpdateDocument(
-    `events/${eventId}`,
-    (data: IDoc) => ({
-      songs: (data as IEvent).songs.filter(song => song.id !== removeId)
-    }),
-    {
-      merge: true
-    }
-  )
-}
-
-export async function moveEventSong(
-  eventId: IDocId,
-  moveId: IDocId,
-  steps: number
-) {
-  if (steps !== 0) {
-    await getAndUpdateDocument(
-      `events/${eventId}`,
-      (data: IDoc) => {
-        const songs = (data as IEvent).songs
-        const index = songs.findIndex(song => song.id === moveId)
-        if (index + steps >= 0 && index + steps <= songs.length - 1) {
-          const moveSong = songs.splice(index, 1)[0]
-          songs.splice(index + steps, 0, moveSong)
-          return {
-            songs
-          }
-        }
-      },
-      {
-        merge: true
-      }
-    )
-  }
 }

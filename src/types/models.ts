@@ -3,25 +3,20 @@ import type { IDocId } from './backend'
 export interface IEventSong {
   id: IDocId
   transposeKey: IKey
-  comment: string
-  body: Array<string>
+  body: string
   title: string
   authors: string
   key: IKey
-  formattedKey: string
 }
 
 export interface IEvent {
   title: string
   date: string
   location?: string
-  songs: Array<IEventSong>
+  songs?: IEventSong[]
   id: IDocId
   comment: string
-  createdAt: string
   owner: string
-  formattedDate: string
-  isUpcoming: boolean
 }
 
 export interface ISong {

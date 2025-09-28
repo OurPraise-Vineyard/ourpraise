@@ -21,20 +21,11 @@ import {
   getFirestore,
   orderBy,
   query,
-  runTransaction,
   setDoc,
   where
 } from 'firebase/firestore'
 
-import type {
-  IBackendError,
-  ICollection,
-  ICollectionQuery,
-  IDoc,
-  IDocCreate,
-  IDocUpdate,
-  IUser
-} from '~/types/backend'
+import type { IBackendError, ICollectionQuery, IUser } from '~/types/backend'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -140,23 +131,12 @@ export async function initializeUser(): Promise<IUser | null> {
 
 // Database
 
-function mapDocId(doc: DocumentData): IDoc {
-  return {
-    ...doc.data(),
-    id: doc.id
-  }
-}
-
-function mapDocsId(snap: QuerySnapshot<DocumentData>): ICollection {
-  return snap.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-}
-
-export async function getCollection({
+export async function getCollection<T>({
   path: collectionPath,
   where: whereFields,
   orderBy: orderByField,
   sortDirection = 'asc'
-}: ICollectionQuery): Promise<ICollection> {
+}: ICollectionQuery): Promise<T[]> {
   try {
     const filters: QueryConstraint[] = []
 
@@ -172,13 +152,16 @@ export async function getCollection({
 
     return getDocs(
       query(collection(getFirestore(), collectionPath), ...filters)
-    ).then(docs => mapDocsId(docs))
+    ).then(
+      (snap: QuerySnapshot<DocumentData>) =>
+        snap.docs.map(doc => ({ ...doc.data(), id: doc.id })) as T[]
+    )
   } catch (err) {
     throw new BackendError(err as Error)
   }
 }
 
-export async function getDocument(path: string): Promise<IDoc> {
+export async function getDocument<T>(path: string): Promise<T> {
   let result
   try {
     result = await getDoc(doc(getFirestore(), path))
@@ -187,13 +170,16 @@ export async function getDocument(path: string): Promise<IDoc> {
   }
 
   if (result.exists()) {
-    return mapDocId(result)
+    return {
+      ...result.data(),
+      id: result.id
+    } as T
   }
 
   throw new BackendError(new Error(`Document "${path}" does not exist.`))
 }
 
-export async function createDocument(path: string, value: IDocCreate) {
+export async function createDocument<T>(path: string, value: Omit<T, 'id'>) {
   try {
     return addDoc(collection(getFirestore(), path), value)
   } catch (err) {
@@ -201,9 +187,9 @@ export async function createDocument(path: string, value: IDocCreate) {
   }
 }
 
-export async function updateDocument(
+export async function updateDocument<T>(
   path: string,
-  value: IDocUpdate
+  value: Omit<T, 'id'>
 ): Promise<void> {
   try {
     return setDoc(doc(getFirestore(), path), value, { merge: true })
@@ -215,34 +201,6 @@ export async function updateDocument(
 export async function deleteDocument(path: string) {
   try {
     return deleteDoc(doc(getFirestore(), path))
-  } catch (err) {
-    throw new BackendError(err as Error)
-  }
-}
-
-export async function getAndUpdateDocument(
-  path: string,
-  updater: (data: IDoc) => unknown,
-  options?: { merge?: boolean }
-): Promise<void> {
-  try {
-    await runTransaction(getFirestore(), async transaction => {
-      const docRef = doc(getFirestore(), path)
-      const docData = await transaction.get(docRef)
-      if (!docData.exists()) {
-        throw new BackendError(new Error(`Document "${path}" not found`))
-      }
-      const oldData = mapDocId(docData)
-      const newData = updater(oldData) as Partial<unknown>
-
-      if (newData) {
-        if (options) {
-          transaction.set(docRef, newData, options)
-        } else {
-          transaction.set(docRef, newData)
-        }
-      }
-    })
   } catch (err) {
     throw new BackendError(err as Error)
   }

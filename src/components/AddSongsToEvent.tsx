@@ -4,7 +4,7 @@ import searchIcon from '~/assets/search.svg'
 import clearIcon from '~/assets/x.svg'
 import { fetchSongs } from '~/backend/songs'
 import useDebounced from '~/hooks/useDebounced'
-import type { IEventFormSong } from '~/types/forms'
+import type { IEventSong } from '~/types/models'
 import type { ISong } from '~/types/models'
 import { formatKey } from '~/utils/chords'
 import { search } from '~/utils/fuzzy'
@@ -13,7 +13,7 @@ export default function AddSongsToEvent({
   onAdd,
   addedSongs
 }: {
-  addedSongs: IEventFormSong[]
+  addedSongs: IEventSong[]
   onAdd: (song: ISong) => void
 }) {
   const [loading, setLoading] = useState(true)
@@ -30,9 +30,7 @@ export default function AddSongsToEvent({
       setFilteredSongs(
         search(
           query,
-          songs.filter(
-            song => !addedSongs.find(({ dbId }) => song.id === dbId)
-          ),
+          songs.filter(song => !addedSongs.find(({ id }) => song.id === id)),
           ['title', 'authors', 'body']
         )
       )

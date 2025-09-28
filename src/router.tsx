@@ -7,8 +7,7 @@ import Nav from './components/Nav'
 import loadEvent from './loaders/loadEvent'
 import loadSong from './loaders/loadSong'
 import { ErrorBoundary } from './pages/ErrorBoundary'
-import AddEventPage from './pages/EventAddPage'
-import EditEventPage from './pages/EventEditPage'
+import EventFormPage from './pages/EventFormPage'
 import EventPage from './pages/EventPage'
 import PrintEventPage from './pages/EventPrintPage'
 import EventsPage from './pages/EventsPage'
@@ -87,7 +86,7 @@ const router = createBrowserRouter([
               {
                 path: 'edit',
                 loader: loadEvent,
-                Component: EditEventPage
+                Component: EventFormPage
               },
               {
                 path: 'print',
@@ -98,7 +97,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'events/add',
-            Component: AddEventPage
+            Component: EventFormPage
           },
           {
             path: 'not-found',

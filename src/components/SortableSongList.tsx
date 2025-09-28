@@ -1,9 +1,5 @@
 import { useMemo } from 'react'
-import {
-  type FieldValues,
-  type UseFormRegister,
-  useForm
-} from 'react-hook-form'
+import { type UseFormRegister } from 'react-hook-form'
 
 import {
   DndContext,
@@ -24,23 +20,23 @@ import { CSS } from '@dnd-kit/utilities'
 
 import moveIcon from '~/assets/move.svg'
 import removeIcon from '~/assets/x.svg'
-import type { IEventFormSong } from '~/types/forms'
+import type { IEvent, IEventSong } from '~/types/models'
 import { getKeyOptions } from '~/utils/chords'
 
 type SortableListProps = {
-  items: IEventFormSong[]
+  items: IEventSong[]
   onSwap: (indexA: number, indexB: number) => void
   onRemove: (index: number) => void
   isSortable: boolean
-  register: UseFormRegister<FieldValues>
+  register: UseFormRegister<IEvent>
 }
 
 type SortableListItemProps = {
-  song: IEventFormSong
+  song: IEventSong
   index: number
   onRemove: (index: number) => void
   isSortable: boolean
-  register: UseFormRegister<FieldValues>
+  register: UseFormRegister<IEvent>
 }
 
 export default function SortableSongList({
