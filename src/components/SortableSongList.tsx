@@ -1,6 +1,9 @@
-import classNames from 'classnames'
 import { useMemo } from 'react'
-import { useForm } from 'react-hook-form'
+import {
+  type FieldValues,
+  type UseFormRegister,
+  useForm
+} from 'react-hook-form'
 
 import {
   DndContext,
@@ -29,6 +32,7 @@ type SortableListProps = {
   onSwap: (indexA: number, indexB: number) => void
   onRemove: (index: number) => void
   isSortable: boolean
+  register: UseFormRegister<FieldValues>
 }
 
 type SortableListItemProps = {
@@ -36,13 +40,15 @@ type SortableListItemProps = {
   index: number
   onRemove: (index: number) => void
   isSortable: boolean
+  register: UseFormRegister<FieldValues>
 }
 
 export default function SortableSongList({
   items,
   onSwap,
   onRemove,
-  isSortable
+  isSortable,
+  register
 }: SortableListProps) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -79,6 +85,7 @@ export default function SortableSongList({
               index={index}
               onRemove={onRemove}
               isSortable={isSortable}
+              register={register}
             />
           ))}
         </ul>
@@ -91,12 +98,12 @@ function SortableSongListItem({
   song,
   index,
   onRemove,
-  isSortable
+  isSortable,
+  register
 }: SortableListItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: song.id })
   const keysOptions = useMemo(() => getKeyOptions(song.key), [song.key])
-  const { register } = useForm()
 
   const style = {
     transform: CSS.Transform.toString(transform),

@@ -67,6 +67,8 @@ export default function AddEventPage() {
     }
   }
 
+  console.log(control._formValues)
+
   return (
     <Page className="mb-16">
       <MetaTitle title="Add event" />
@@ -135,6 +137,7 @@ export default function AddEventPage() {
                   onSwap={(a, b) => move(a, b)}
                   onRemove={onRemoveSong}
                   isSortable={reordering}
+                  register={register}
                 />
               </div>
             )}

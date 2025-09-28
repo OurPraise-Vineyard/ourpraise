@@ -125,7 +125,13 @@ export async function createEvent(form: IEventForm): Promise<IDocId> {
     date: form.date,
     location,
     comment: form.comment,
-    songs: [],
+    songs: form.songs.map(
+      song =>
+        ({
+          id: song.dbId,
+          transposeKey: song.transposeKey
+        }) as IEventSong
+    ),
     owner: user?.email,
     createdAt: new Date().toISOString()
   })
