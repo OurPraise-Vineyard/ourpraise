@@ -42,7 +42,9 @@ initializeApp(firebaseConfig)
 
 if (window.location.hostname === 'localhost') {
   connectFirestoreEmulator(getFirestore(), 'localhost', 8080)
-  connectAuthEmulator(getAuth(), 'http://localhost:9099')
+  connectAuthEmulator(getAuth(), 'http://localhost:9099', {
+    disableWarnings: true
+  })
 }
 
 const firebaseErrors = {

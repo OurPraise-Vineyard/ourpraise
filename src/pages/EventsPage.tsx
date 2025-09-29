@@ -1,10 +1,11 @@
 import { Link, useLoaderData, useSearchParams } from 'react-router'
 
-import MetaTitle from '~/components/MetaTitle'
+import useDocumentTitle from '~/hooks/useDocumentTitle'
 import useFilteredItems from '~/hooks/useFilteredItems'
 import type { IEvent } from '~/types/models'
 
 export default function EventsPage() {
+  useDocumentTitle('Events')
   const [searchParams] = useSearchParams()
   const query = searchParams.get('q') || ''
   const events: IEvent[] = useFilteredItems(useLoaderData(), query, [
@@ -14,8 +15,6 @@ export default function EventsPage() {
 
   return (
     <>
-      <MetaTitle title="Events" />
-
       <ul className="list bg-base-100 rounded-box mt-4 shadow-md">
         {query ? (
           <li className="p-4 pb-2 text-xs tracking-wide opacity-60">

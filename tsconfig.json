@@ -22,7 +22,7 @@
     "declaration": true,
     "declarationMap": true,
     "noImplicitOverride": true,
-    "types": ["jest", "node", "react", "react-dom"]
+    "types": ["jest", "react", "react-dom"]
   },
   "extends": "@tsconfig/vite-react/tsconfig.json",
   "include": ["./src"],

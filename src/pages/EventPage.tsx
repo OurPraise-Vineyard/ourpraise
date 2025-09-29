@@ -2,17 +2,16 @@ import { Link, NavLink, useLoaderData } from 'react-router'
 
 import editIcon from '~/assets/edit.svg'
 import printIcon from '~/assets/printer.svg'
-import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
+import useDocumentTitle from '~/hooks/useDocumentTitle'
 import type { IEvent } from '~/types/models'
 
 export default function EventPage() {
   const event: IEvent = useLoaderData()
+  useDocumentTitle(event.title)
 
   return (
     <Page>
-      <MetaTitle title={event.title} />
-
       <div className="breadcrumbs text-sm">
         <ul>
           <li>

@@ -2,13 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, useLoaderData } from 'react-router'
 
 import editIcon from '~/assets/edit.svg'
-import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
+import useDocumentTitle from '~/hooks/useDocumentTitle'
 import type { IKey, ISong } from '~/types/models'
 import { getKeyOptions, transposeAndFormatSong } from '~/utils/chords'
 
 export default function SongPage() {
   const song: ISong = useLoaderData()
+  useDocumentTitle(song.title)
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
   const keysOptions = useMemo(() => getKeyOptions(song.key), [song.key])
 
@@ -29,8 +30,6 @@ export default function SongPage() {
 
   return (
     <Page>
-      <MetaTitle title={song.title} />
-
       <div className="breadcrumbs text-sm">
         <ul>
           <li>

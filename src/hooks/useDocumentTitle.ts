@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-export default function MetaTitle({ title }: { title: string }) {
+export default function useDocumentTitle(title: string) {
   useEffect(() => {
     if (title) {
       document.title = `${title} - OurPraise`
@@ -8,6 +8,4 @@ export default function MetaTitle({ title }: { title: string }) {
       document.title = 'OurPraise'
     }
   }, [title])
-
-  return null
 }

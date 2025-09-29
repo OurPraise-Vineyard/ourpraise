@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 
 import logo from '~/assets/logo_dark.svg'
 import userIcon from '~/assets/user.svg'
 import { getAuthState, logout } from '~/backend/auth'
 import type { IUser } from '~/types/backend'
 
-import { usePopUpMenu } from './PopUpMenu'
-
 export default function Nav() {
   const [user, setUser] = useState<IUser>()
-  const menu = usePopUpMenu()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -22,16 +19,10 @@ export default function Nav() {
     })()
   }, [])
 
-  const openMenu = (e: React.MouseEvent<HTMLDivElement>) =>
-    menu.open(e, () => [
-      {
-        label: 'Sign out',
-        onClick: async () => {
-          await logout()
-          navigate('/login')
-        }
-      }
-    ])
+  async function handleLogout() {
+    await logout()
+    navigate('/login')
+  }
 
   return (
     <nav className="navbar bg-base-100 animate-fadeIn sticky top-0 z-10 px-4 shadow-sm print:hidden">
@@ -41,10 +32,6 @@ export default function Nav() {
           alt="OurPraise Logo"
           className="svg col-start-1 mb-1 h-10"
         />
-      </div>
-      <div onClick={openMenu} className="cursor-pointer text-right">
-        <p className="text-lg text-white"></p>
-        {/*<p className="text-md text-gray-400">{location}</p>*/}
       </div>
 
       <div className="dropdown dropdown-end">
@@ -68,7 +55,7 @@ export default function Nav() {
             <a>Profile</a>
           </li>
           <li>
-            <a>Logout</a>
+            <button onClick={handleLogout}>Logout</button>
           </li>
         </ul>
       </div>

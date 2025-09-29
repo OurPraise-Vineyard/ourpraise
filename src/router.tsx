@@ -14,8 +14,7 @@ import EventsPage from './pages/EventsPage'
 import HomePage from './pages/HomePage'
 import Login from './pages/LoginPage'
 import NotFoundPage from './pages/NotFound'
-import AddSongPage from './pages/SongAddPage'
-import EditSongPage from './pages/SongEditPage'
+import SongFormPage from './pages/SongFormPage'
 import SongPage from './pages/SongPage'
 import SongsPage from './pages/SongsPage'
 
@@ -67,13 +66,13 @@ const router = createBrowserRouter([
               {
                 path: 'edit',
                 loader: loadSong,
-                Component: EditSongPage
+                Component: SongFormPage
               }
             ]
           },
           {
             path: 'songs/add',
-            Component: AddSongPage
+            Component: SongFormPage
           },
           {
             path: 'events/:id',

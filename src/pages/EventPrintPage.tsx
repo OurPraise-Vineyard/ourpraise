@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { Link, useLoaderData } from 'react-router'
 
-import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
+import useDocumentTitle from '~/hooks/useDocumentTitle'
 import type { IEvent } from '~/types/models'
 
 export default function PrintEventPage() {
   const event: IEvent = useLoaderData()
+  useDocumentTitle(event.title)
 
   useEffect(() => {
     const t = setTimeout(() => window.print(), 500)
@@ -15,7 +16,6 @@ export default function PrintEventPage() {
 
   return (
     <Page noAnimation>
-      <MetaTitle title={event.title} />
       <div className="flex items-center justify-between gap-4 py-4 pb-4 print:hidden">
         <Link to={`/events/${event.id}`} className="btn shrink-0">
           Cancel

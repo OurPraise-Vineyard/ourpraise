@@ -5,12 +5,8 @@ import { useNavigate, useSearchParams } from 'react-router'
 import logo from '~/assets/logo_light.svg'
 import { login } from '~/backend/auth'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
-import MetaTitle from '~/components/MetaTitle'
-import {
-  type LocationValue,
-  getLatestLocation,
-  setLocation
-} from '~/utils/location'
+import useDocumentTitle from '~/hooks/useDocumentTitle'
+import { type LocationValue, setLocation } from '~/utils/location'
 
 type LoginForm = {
   email: string
@@ -19,6 +15,7 @@ type LoginForm = {
 }
 
 export default function Login() {
+  useDocumentTitle('Login')
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
@@ -45,7 +42,6 @@ export default function Login() {
 
   return (
     <div className="absolute top-0 right-0 bottom-0 left-0 bg-black">
-      <MetaTitle title="Login" />
       <img
         src={logo}
         alt="OurPraise Logo"

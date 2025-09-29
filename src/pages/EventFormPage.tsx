@@ -1,16 +1,16 @@
 import dateFormat from 'dateformat'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Link, useLoaderData, useNavigate } from 'react-router'
 
 import checkIcon from '~/assets/check.svg'
 import moveIcon from '~/assets/move.svg'
-import { createEvent, saveEvent } from '~/backend/events'
+import { createEvent, deleteEvent, saveEvent } from '~/backend/events'
 import AddSongsToEvent from '~/components/AddSongsToEvent'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
-import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
 import SortableSongList from '~/components/SortableSongList'
+import useDocumentTitle from '~/hooks/useDocumentTitle'
 import type { IDocId } from '~/types/backend'
 import type { IEvent, ISong } from '~/types/models'
 import { nextWeekday } from '~/utils/date'
@@ -46,7 +46,7 @@ export default function EventFormPage() {
   const isEdit = !!event
   const title = isEdit ? `Edit ${event.title || 'event'}` : 'Add event'
 
-  useEffect(() => {})
+  useDocumentTitle(title)
 
   function handleAddSong(song: ISong) {
     append({
@@ -75,29 +75,16 @@ export default function EventFormPage() {
     }
   }
 
-  // From old form:
-  // const onSave = async (data: IEventForm) => {
-  //   try {
-  //     setSaving(true)
-  //     await saveEvent({ ...data, id: event.id })
-  //     navigate(`/events/${event.id}`)
-  //   } catch (err: any) {
-  //     errorPopUp.show(err.message)
-  //   } finally {
-  //     setSaving(false)
-  //   }
-  // }
-
-  // const onDelete = async () => {
-  //   if (window.confirm('Delete this event?')) {
-  //     try {
-  //       await deleteEvent(event.id)
-  //       navigate('/events')
-  //     } catch (err: any) {
-  //       errorPopUp.show(err.message)
-  //     }
-  //   }
-  // }
+  const onDelete = async () => {
+    if (window.confirm(`Delete event ${event.title}?`)) {
+      try {
+        await deleteEvent(event.id)
+        navigate('/events')
+      } catch (err: any) {
+        errorPopUp.show(err.message)
+      }
+    }
+  }
 
   const onRemoveSong = (index: number) => {
     if (window.confirm('Remove song from event?')) {
@@ -107,8 +94,6 @@ export default function EventFormPage() {
 
   return (
     <Page className="mb-16">
-      <MetaTitle title={title} />
-
       <div className="breadcrumbs mb-2 text-sm">
         <ul>
           <li>
@@ -128,12 +113,15 @@ export default function EventFormPage() {
       </div>
 
       <div className="grid grid-cols-5 gap-x-16">
-        <form className="col-span-3" onSubmit={handleSubmit(onSave)}>
-          <div className="col-span-full mb-4 flex flex-row items-center">
+        <form
+          className="col-span-3 flex flex-col gap-4"
+          onSubmit={handleSubmit(onSave)}
+        >
+          <div className="col-span-full flex flex-row items-center">
             <h2 className="grow text-lg">{title}</h2>
           </div>
 
-          <div className="my-4 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <input
               className="input w-full"
               placeholder="Title"
@@ -195,6 +183,16 @@ export default function EventFormPage() {
           >
             {saving ? 'Saving...' : 'Save'}
           </button>
+
+          {isEdit && (
+            <button
+              type="button"
+              className="btn btn-soft btn-error w-full"
+              onClick={onDelete}
+            >
+              Delete event
+            </button>
+          )}
         </form>
 
         <div className="col-span-2">

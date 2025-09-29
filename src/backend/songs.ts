@@ -1,5 +1,4 @@
 import type { IDocId } from '~/types/backend'
-import type { ISongForm } from '~/types/forms'
 import type { ISong } from '~/types/models'
 import type { ISongSchema } from '~/types/schemas'
 
@@ -37,7 +36,7 @@ export async function fetchSongs(): Promise<ISong[]> {
   )
 }
 
-export async function saveSong(form: ISongForm): Promise<void> {
+export async function saveSong(form: ISong): Promise<void> {
   await updateDocument<ISongSchema>(`songs/${form.id}`, {
     title: form.title,
     authors: form.authors,
@@ -47,7 +46,7 @@ export async function saveSong(form: ISongForm): Promise<void> {
   })
 }
 
-export async function createSong(form: ISongForm): Promise<IDocId> {
+export async function createSong(form: ISong): Promise<IDocId> {
   const doc = await createDocument<ISongSchema>('songs', {
     title: form.title,
     authors: form.authors,

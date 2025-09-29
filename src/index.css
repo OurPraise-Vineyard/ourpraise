@@ -40,15 +40,6 @@
   }
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 /* === Animations === */
 @utility animate-teleportIn {
   animation: teleportIn 0.2s ease-out 0.2s both;
@@ -56,10 +47,6 @@
 
 @utility animate-fadeIn {
   animation: fadeIn 0.5s ease-in-out forwards;
-}
-
-@utility animate-spin {
-  animation: spin 1s linear infinite;
 }
 
 /* === Utilities === */
@@ -111,7 +98,7 @@
 }
 
 @utility max-h-page {
-  max-height: calc(100vh - 12rem);
+  max-height: calc(100vh - 16rem);
 }
 
 body {

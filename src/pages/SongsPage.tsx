@@ -1,10 +1,11 @@
 import { Link, useLoaderData, useSearchParams } from 'react-router'
 
-import MetaTitle from '~/components/MetaTitle'
+import useDocumentTitle from '~/hooks/useDocumentTitle'
 import useFilteredItems from '~/hooks/useFilteredItems'
 import type { ISong } from '~/types/models'
 
 export default function SongsPage() {
+  useDocumentTitle('Songs')
   const [searchParams] = useSearchParams()
   const query = searchParams.get('q') || ''
   const songs: ISong[] = useFilteredItems(useLoaderData(), query, [
@@ -15,8 +16,6 @@ export default function SongsPage() {
 
   return (
     <>
-      <MetaTitle title="Songs" />
-
       <ul className="list bg-base-100 rounded-box mt-4 shadow-md">
         {query ? (
           <li className="p-4 pb-2 text-xs tracking-wide opacity-60">
