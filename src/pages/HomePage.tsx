@@ -54,7 +54,7 @@ export default function HomePage() {
                 <img src={plusIcon} className="icon" />
                 Create
               </summary>
-              <ul className="bg-base-100 z-10 rounded-t-none p-2">
+              <ul className="bg-base-200 z-10 rounded-t-none p-2">
                 <li>
                   <Link className="text-nowrap" to="/events/add">
                     New event

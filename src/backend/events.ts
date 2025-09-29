@@ -22,46 +22,7 @@ import {
 } from './firebase'
 
 const cache = new DatabaseCache<IEventSchema>()
-const eventCollectionKey = 'events'
 const recentEventsCollectionKey = 'recentEvents'
-
-export async function fetchEvents(): Promise<IEvent[]> {
-  const cached = cache.getCollection(eventCollectionKey)
-  const today = todayTime()
-  const mapper = (events: IEventSchema[]): IEvent[] =>
-    events.map(
-      event =>
-        ({
-          comment: event.comment,
-          updatedAt: event.updatedAt,
-          date: event.date,
-          id: event.id,
-          owner: event.owner,
-          title: event.title,
-          location: event.location,
-          formattedDate: formatDate(event.date),
-          isUpcoming: getTime(event.date) >= today
-        }) as IEvent
-    )
-
-  if (cached.length > 0) {
-    return mapper(cached)
-  }
-
-  const collection = await getCollection<IEventSchema>({
-    path: 'events',
-    orderBy: 'date',
-    sortDirection: 'desc'
-  })
-
-  cache.setCollection(
-    eventCollectionKey,
-    collection.map(item => item.id)
-  )
-  collection.forEach(item => cache.setDocument(item.id, item))
-
-  return mapper(collection)
-}
 
 export async function fetchRecentEvents(): Promise<IEvent[]> {
   const cached = cache.getCollection(recentEventsCollectionKey)
@@ -103,49 +64,23 @@ export async function fetchRecentEvents(): Promise<IEvent[]> {
 }
 
 export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
-  const cached = cache.getDocument(eventId)
-  if (cached) {
-    const songs: IEventSong[] = await Promise.all(
-      cached.songs.map(
-        async (eventSong: IEventSongSchema): Promise<IEventSong> => {
-          const song: ISong = await fetchSong(eventSong.id)
+  let event = cache.getDocument(eventId)
 
-          const songKey = eventSong.transposeKey || song.key
-          const body = transposeAndFormatSong({
-            body: song.body,
-            fromKey: song.key,
-            toKey: songKey
-          })
-
-          return {
-            id: eventSong.id,
-            title: song.title,
-            authors: song.authors,
-            body,
-            key: song.key,
-            transposeKey: songKey
-          }
-        }
-      )
-    )
-
-    return {
-      comment: cached.comment,
-      date: cached.date,
-      id: cached.id,
-      owner: cached.owner,
-      title: cached.title,
-      location: cached.location,
-      songs
-    }
+  if (!event) {
+    event = await getDocument<IEventSchema>(`events/${eventId}`)
+    cache.setDocument(event.id, event)
   }
 
-  const eventDoc = await getDocument<IEventSchema>(`events/${eventId}`)
-
   const songs: IEventSong[] = await Promise.all(
-    eventDoc.songs.map(
-      async (eventSong: IEventSongSchema): Promise<IEventSong> => {
-        const song: ISong = await fetchSong(eventSong.id)
+    event.songs.map(
+      async (eventSong: IEventSongSchema): Promise<IEventSong | null> => {
+        let song: ISong
+
+        try {
+          song = await fetchSong(eventSong.id)
+        } catch {
+          return null
+        }
 
         const songKey = eventSong.transposeKey || song.key
         const body = transposeAndFormatSong({
@@ -164,15 +99,15 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
         }
       }
     )
-  )
+  ).then(songs => songs.filter(Boolean) as IEventSong[])
 
   return {
-    comment: eventDoc.comment,
-    date: eventDoc.date,
-    id: eventDoc.id,
-    owner: eventDoc.owner,
-    title: eventDoc.title,
-    location: eventDoc.location,
+    comment: event.comment,
+    date: event.date,
+    id: event.id,
+    owner: event.owner,
+    title: event.title,
+    location: event.location,
     songs
   }
 }
@@ -226,7 +161,6 @@ export async function createEvent(form: IEvent): Promise<IDocId> {
   const doc = await createDocument<IEventSchema>('events', event)
 
   cache.setDocument(doc.id, { ...event, id: doc.id })
-  cache.deleteCollection(eventCollectionKey)
   cache.deleteCollection(recentEventsCollectionKey)
 
   return doc.id
