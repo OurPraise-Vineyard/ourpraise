@@ -1,4 +1,4 @@
-import { createContext, createRef, useContext, useState } from 'react'
+import { createContext, useContext, useRef, useState } from 'react'
 
 import alertIcon from '~/assets/alert-circle.svg'
 
@@ -19,7 +19,7 @@ export default function ErrorPopUpProvider({
 }) {
   const [show, setShow] = useState(false)
   const [message, setMessage] = useState('')
-  const timeout = createRef<number>()
+  const timeout = useRef<number>(0)
 
   const open = (message: string | Error) => {
     if (message instanceof Error) {

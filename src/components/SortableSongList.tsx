@@ -114,12 +114,7 @@ function SortableSongListItem({
       {...attributes}
       {...(isSortable ? listeners : [])}
     >
-      <div
-        onClick={event => {
-          console.log('mouse down')
-          event.stopPropagation()
-        }}
-      >
+      <div>
         <p className="overflow-hidden font-bold text-ellipsis whitespace-nowrap">
           {song.title || (
             <span className="text-red-500 italic">Missing title</span>

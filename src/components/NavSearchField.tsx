@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { createRef, useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router'
 
 import searchIcon from '~/assets/search.svg'
@@ -11,7 +11,7 @@ type SearchBarProps = {
 }
 
 export default function NavSearchField({ className }: SearchBarProps) {
-  const inputRef = createRef<HTMLInputElement>()
+  const inputRef = useRef<HTMLInputElement | null>(null)
   const [searchParams, setSearchParams] = useSearchParams()
 
   const handleSearch = useCallback(

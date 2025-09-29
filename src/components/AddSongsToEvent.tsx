@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import searchIcon from '~/assets/search.svg'
 import clearIcon from '~/assets/x.svg'
@@ -18,7 +18,7 @@ export default function AddSongsToEvent({
   const [loading, setLoading] = useState(true)
   const [songs, setSongs] = useState<ISong[]>([])
 
-  const inputRef = createRef<HTMLInputElement>()
+  const inputRef = useRef<HTMLInputElement | null>(null)
   const [query, setQuery] = useDebounced<string>('')
   const [filteredSongs, setFilteredSongs] = useState<ISong[]>([])
 
