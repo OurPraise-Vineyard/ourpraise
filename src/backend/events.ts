@@ -77,7 +77,8 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
 
         try {
           song = await fetchSong(eventSong.id)
-        } catch {
+        } catch (error) {
+          console.error(`Failed to load song with id ${eventSong.id}:`, error)
           return null
         }
 

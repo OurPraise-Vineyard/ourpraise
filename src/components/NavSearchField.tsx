@@ -31,8 +31,10 @@ export default function NavSearchField({ className }: SearchBarProps) {
     if (inputRef.current) {
       const initialQuery = getQueryParam()
 
-      inputRef.current.value = initialQuery
-      setQuery(initialQuery)
+      if (initialQuery) {
+        inputRef.current.value = initialQuery
+        setQuery(initialQuery)
+      }
     }
   }, [inputRef.current])
 
