@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useLoaderData, useNavigate } from 'react-router'
 
+import backIcon from '~/assets/arrow-left.svg'
 import saveIcon from '~/assets/save.svg'
 import { createSong, deleteSong, saveSong } from '~/backend/songs'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
@@ -81,9 +82,17 @@ export default function AddSongPage() {
         </ul>
       </div>
 
-      <form onSubmit={handleSubmit(onSave)}>
-        <div className="mb-4 flex items-center gap-2">
-          <h2 className="mt-4 grow text-lg font-bold">{title}</h2>
+      <form onSubmit={handleSubmit(onSave)} className="mt-4">
+        <div className="mb-4 flex items-center gap-4">
+          <Link
+            to={isEdit ? `/songs/${song.id}` : '/songs'}
+            className="btn btn-ghost shrink-0"
+          >
+            <img src={backIcon} className="icon" />
+            Cancel
+          </Link>
+
+          <h2 className="grow text-lg">{title}</h2>
 
           {isEdit && (
             <button
@@ -144,7 +153,6 @@ export default function AddSongPage() {
               <legend className="fieldset-legend">Lyrics and chords</legend>
               <textarea
                 className="textarea min-h-96 w-full overflow-auto font-mono text-sm whitespace-pre"
-                placeholder="Body"
                 {...register('body', { required: true })}
               />
               {errors.body && <p className="label">Song body is required</p>}

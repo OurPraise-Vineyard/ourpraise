@@ -25,7 +25,7 @@ export default function Nav() {
   }
 
   return (
-    <nav className="navbar bg-base-100 animate-fadeIn sticky top-0 z-10 px-4 shadow-sm print:hidden">
+    <nav className="navbar bg-base-100 sticky top-0 z-10 px-4 shadow-sm print:hidden">
       <div className="flex-1">
         <img
           src={logo}
