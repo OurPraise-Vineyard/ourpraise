@@ -25,7 +25,7 @@ import {
   where
 } from 'firebase/firestore'
 
-import type { IBackendError, ICollectionQuery, IUser } from '~/types'
+import { type IBackendError, type ICollectionQuery, type IUser } from '~/types'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

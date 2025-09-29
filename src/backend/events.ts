@@ -1,3 +1,4 @@
+import { eventCache as cache } from '~/backend/cache'
 import { fetchSong } from '~/backend/songs'
 import type {
   IDocId,
@@ -20,14 +21,12 @@ import {
   updateDocument
 } from './firebase'
 
+const recentEventsCollectionKey = 'recentEvents'
+
 export async function fetchRecentEvents(): Promise<IEvent[]> {
+  const cached = cache.getCollection(recentEventsCollectionKey)
   const today = todayTime()
-  return await getCollection<IEventSchema>({
-    path: 'events',
-    where: [['date', '>=', lastMonth().toISOString()]],
-    orderBy: 'date',
-    sortDirection: 'desc'
-  }).then((events: IEventSchema[]): IEvent[] =>
+  const mapper = (events: IEventSchema[]): IEvent[] =>
     events.map(
       event =>
         ({
@@ -42,16 +41,46 @@ export async function fetchRecentEvents(): Promise<IEvent[]> {
           isUpcoming: getTime(event.date) >= today
         }) as IEvent
     )
+
+  if (cached.length > 0) {
+    return mapper(cached)
+  }
+
+  const collection = await getCollection<IEventSchema>({
+    path: 'events',
+    where: [['date', '>=', lastMonth().toISOString()]],
+    orderBy: 'date',
+    sortDirection: 'desc'
+  })
+
+  cache.setCollection(
+    recentEventsCollectionKey,
+    collection.map(item => item.id)
   )
+  collection.forEach(item => cache.setDocument(item.id, item))
+
+  return mapper(collection)
 }
 
 export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
-  const eventDoc = await getDocument<IEventSchema>(`events/${eventId}`)
+  let event = cache.getDocument(eventId)
+
+  if (!event) {
+    event = await getDocument<IEventSchema>(`events/${eventId}`)
+    cache.setDocument(event.id, event)
+  }
 
   const songs: IEventSong[] = await Promise.all(
-    eventDoc.songs.map(
-      async (eventSong: IEventSongSchema): Promise<IEventSong> => {
-        const song: ISong = await fetchSong(eventSong.id)
+    event.songs.map(
+      async (eventSong: IEventSongSchema): Promise<IEventSong | null> => {
+        let song: ISong
+
+        try {
+          song = await fetchSong(eventSong.id)
+        } catch (error) {
+          console.error(`Failed to load song with id ${eventSong.id}:`, error)
+          return null
+        }
 
         const songKey = eventSong.transposeKey || song.key
         const body = transposeAndFormatSong({
@@ -70,22 +99,22 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
         }
       }
     )
-  )
+  ).then(songs => songs.filter(Boolean) as IEventSong[])
 
   return {
-    comment: eventDoc.comment,
-    date: eventDoc.date,
-    id: eventDoc.id,
-    owner: eventDoc.owner,
-    title: eventDoc.title,
-    location: eventDoc.location,
+    comment: event.comment,
+    date: event.date,
+    id: event.id,
+    owner: event.owner,
+    title: event.title,
+    location: event.location,
     songs
   }
 }
 
 export async function saveEvent(form: IEvent): Promise<void> {
   if (form.id) {
-    await updateDocument<IEventSchema>(`events/${form.id}`, {
+    const options = {
       updatedAt: new Date().toISOString(),
       owner: form.owner,
       title: form.title,
@@ -101,15 +130,17 @@ export async function saveEvent(form: IEvent): Promise<void> {
               }) as IEventSong
           )
         : []
-    })
+    }
+    await updateDocument<IEventSchema>(`events/${form.id}`, options)
+
+    cache.setDocument(form.id, { id: form.id, ...options })
   }
 }
 
 export async function createEvent(form: IEvent): Promise<IDocId> {
   const user = (await getAuthState()).user
   const location = getLatestLocation()
-
-  const doc = await createDocument<IEventSchema>('events', {
+  const event = {
     title: form.title,
     date: form.date,
     location,
@@ -125,11 +156,17 @@ export async function createEvent(form: IEvent): Promise<IDocId> {
       : [],
     owner: user?.email || '',
     updatedAt: new Date().toISOString()
-  })
+  }
+
+  const doc = await createDocument<IEventSchema>('events', event)
+
+  cache.setDocument(doc.id, { ...event, id: doc.id })
+  cache.deleteCollection(recentEventsCollectionKey)
 
   return doc.id
 }
 
 export async function deleteEvent(id: IDocId) {
   await deleteDocument(`events/${id}`)
+  cache.deleteDocument(id)
 }

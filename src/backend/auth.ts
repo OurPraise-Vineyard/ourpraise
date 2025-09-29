@@ -3,6 +3,7 @@
  */
 import type { IAuthState } from '~/types'
 
+import { clearCache } from './cache'
 import { initializeUser, signIn, signOut } from './firebase'
 
 let authState: IAuthState | null = null
@@ -41,6 +42,8 @@ export async function logout(): Promise<IAuthState> {
     user: null,
     status: 'loggedOut'
   }
+
+  clearCache()
 
   return authState
 }

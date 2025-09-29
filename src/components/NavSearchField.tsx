@@ -14,9 +14,13 @@ export default function NavSearchField({ className }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [searchParams, setSearchParams] = useSearchParams()
 
+  const getQueryParam = () => searchParams.get('q') || ''
+
   const handleSearch = useCallback(
     function handleSearch(query: string) {
-      setSearchParams({ q: query })
+      if (query !== getQueryParam()) {
+        setSearchParams({ q: query })
+      }
     },
     [setSearchParams]
   )
@@ -25,7 +29,7 @@ export default function NavSearchField({ className }: SearchBarProps) {
 
   useEffect(() => {
     if (inputRef.current) {
-      const initialQuery = searchParams.get('q')
+      const initialQuery = getQueryParam()
 
       if (initialQuery) {
         inputRef.current.value = initialQuery
