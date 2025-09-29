@@ -46,6 +46,11 @@ const router = createBrowserRouter([
         Component: Login
       },
       {
+        path: 'events/:id/print',
+        loader: loadEvent,
+        Component: PrintEventPage
+      },
+      {
         element: (
           <>
             <Nav />
@@ -86,11 +91,6 @@ const router = createBrowserRouter([
                 path: 'edit',
                 loader: loadEvent,
                 Component: EventFormPage
-              },
-              {
-                path: 'print',
-                loader: loadEvent,
-                Component: PrintEventPage
               }
             ]
           },

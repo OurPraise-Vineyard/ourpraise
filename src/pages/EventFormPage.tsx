@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Link, useLoaderData, useNavigate } from 'react-router'
 
+import backIcon from '~/assets/arrow-left.svg'
 import checkIcon from '~/assets/check.svg'
 import moveIcon from '~/assets/move.svg'
 import saveIcon from '~/assets/save.svg'
@@ -27,8 +28,8 @@ export default function EventFormPage() {
   const {
     control,
     register,
-    handleSubmit
-    // formState: { errors }
+    handleSubmit,
+    formState: { errors }
   } = useForm<IEvent>({
     values: event
   })
@@ -94,7 +95,7 @@ export default function EventFormPage() {
 
   return (
     <Page className="mb-16">
-      <div className="breadcrumbs mb-2 text-sm">
+      <div className="breadcrumbs text-sm">
         <ul>
           <li>
             <Link to="/events">Events</Link>
@@ -112,94 +113,106 @@ export default function EventFormPage() {
         </ul>
       </div>
 
-      <div className="grid grid-cols-5 gap-x-16">
-        <form
-          className="col-span-3 flex flex-col gap-4"
-          onSubmit={handleSubmit(onSave)}
-        >
-          <div className="col-span-full flex flex-row items-center">
-            <h2 className="grow text-lg">{title}</h2>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <input
-              className="input w-full"
-              placeholder="Title"
-              {...register('title', { required: true })}
-            />
-            <input
-              type="date"
-              placeholder="Date"
-              className="input w-full"
-              defaultValue={defaultDate}
-              {...register('date', { required: true })}
-            />
-            <textarea
-              className="textarea w-full"
-              placeholder="Set comments"
-              {...register('comment')}
-            />
-
-            {addedSongs.length > 0 && (
-              <div className="rounded-sm p-4 shadow-sm">
-                <div className="mb-2 flex items-center justify-between">
-                  <p className="text-sm font-bold">Songs</p>
-                  {reordering ? (
-                    <button
-                      type="button"
-                      className="btn btn-success"
-                      onClick={() => setReordering(false)}
-                    >
-                      <img src={checkIcon} className="icon" />
-                      Done
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="btn btn-ghost"
-                      onClick={() => setReordering(true)}
-                    >
-                      <img src={moveIcon} className="icon" />
-                      Reorder
-                    </button>
-                  )}
-                </div>
-
-                <SortableSongList
-                  items={addedSongs}
-                  onSwap={(a, b) => move(a, b)}
-                  onRemove={onRemoveSong}
-                  isSortable={reordering}
-                  register={register}
-                />
-              </div>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            className="btn btn-primary w-full"
-            disabled={reordering}
+      <form onSubmit={handleSubmit(onSave)} className="mt-4">
+        <div className="mb-4 flex items-center gap-4">
+          <Link
+            to={isEdit ? `/events/${event.id}` : '/events'}
+            className="btn btn-ghost shrink-0"
           >
-            <img src={saveIcon} className="icon" />
-            {saving ? 'Saving...' : 'Save'}
-          </button>
+            <img src={backIcon} className="icon" />
+            Cancel
+          </Link>
+
+          <h2 className="grow text-lg">{title}</h2>
 
           {isEdit && (
             <button
               type="button"
-              className="btn btn-soft btn-error w-full"
+              className="btn btn-soft btn-error"
               onClick={onDelete}
             >
               Delete event
             </button>
           )}
-        </form>
 
-        <div className="col-span-2">
-          <AddSongsToEvent onAdd={handleAddSong} addedSongs={addedSongs} />
+          <button className="btn btn-primary" type="submit">
+            <img src={saveIcon} className="icon" />
+            {saving ? 'Saving...' : 'Save'}
+          </button>
         </div>
-      </div>
+
+        <div className="grid grid-cols-5 gap-x-16">
+          <div className="col-span-3 flex flex-col gap-4">
+            <div className="flex flex-col gap-4">
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Title</legend>
+                <input
+                  className="input w-full"
+                  {...register('title', { required: true })}
+                />
+                {errors.title && <p className="label">Title is required</p>}
+              </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Date</legend>
+                <input
+                  type="date"
+                  placeholder="Date"
+                  className="input w-full"
+                  defaultValue={defaultDate}
+                  {...register('date', { required: true })}
+                />
+                {errors.date && <p className="label">Date is required</p>}
+              </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Comments</legend>
+                <textarea
+                  className="textarea w-full"
+                  {...register('comment')}
+                />
+              </fieldset>
+
+              {addedSongs.length > 0 && (
+                <div className="rounded-sm p-4 shadow-sm">
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="text-sm font-bold">Songs</p>
+                    {reordering ? (
+                      <button
+                        type="button"
+                        className="btn btn-success"
+                        onClick={() => setReordering(false)}
+                      >
+                        <img src={checkIcon} className="icon" />
+                        Done
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn btn-ghost"
+                        onClick={() => setReordering(true)}
+                      >
+                        <img src={moveIcon} className="icon" />
+                        Reorder
+                      </button>
+                    )}
+                  </div>
+
+                  <SortableSongList
+                    items={addedSongs}
+                    onSwap={(a, b) => move(a, b)}
+                    onRemove={onRemoveSong}
+                    isSortable={reordering}
+                    register={register}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="col-span-2">
+            <AddSongsToEvent onAdd={handleAddSong} addedSongs={addedSongs} />
+          </div>
+        </div>
+      </form>
     </Page>
   )
 }

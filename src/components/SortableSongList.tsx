@@ -132,7 +132,7 @@ function SortableSongListItem({
         </p>
 
         <select
-          className="select mt-2"
+          className="select mt-2 w-36"
           defaultValue={song.transposeKey}
           disabled={isSortable}
           {...register(`songs.${index}.transposeKey`)}

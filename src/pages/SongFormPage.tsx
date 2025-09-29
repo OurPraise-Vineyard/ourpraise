@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useLoaderData, useNavigate } from 'react-router'
 
+import saveIcon from '~/assets/save.svg'
 import { createSong, deleteSong, saveSong } from '~/backend/songs'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import Page from '~/components/Page'
@@ -15,6 +17,7 @@ export default function AddSongPage() {
   const isEdit = !!song
   const title = isEdit ? `Edit ${song.title || 'song'}` : 'Add song'
   useDocumentTitle(title)
+  const [saving, setSaving] = useState<boolean>(false)
 
   const {
     register,
@@ -26,6 +29,8 @@ export default function AddSongPage() {
 
   const onSave = async (form: ISong) => {
     try {
+      setSaving(true)
+
       if (isEdit) {
         await saveSong({
           ...form,
@@ -40,6 +45,8 @@ export default function AddSongPage() {
       }
     } catch (err: any) {
       errorPopUp.show(err.message)
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -76,7 +83,7 @@ export default function AddSongPage() {
 
       <form onSubmit={handleSubmit(onSave)}>
         <div className="mb-4 flex items-center gap-2">
-          <h2 className="text-title mt-4 grow font-bold">{title}</h2>
+          <h2 className="mt-4 grow text-lg font-bold">{title}</h2>
 
           {isEdit && (
             <button
@@ -89,17 +96,13 @@ export default function AddSongPage() {
           )}
 
           <button className="btn btn-primary" type="submit">
-            Save
+            <img src={saveIcon} className="icon" />
+            {saving ? 'Saving...' : 'Save'}
           </button>
         </div>
 
         <div className="grid grid-cols-7 gap-x-16">
           <div className="col-span-2 flex flex-col gap-4">
-            <input
-              className="hidden"
-              defaultValue={song?.id}
-              {...register('id')}
-            />
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Title</legend>
               <input

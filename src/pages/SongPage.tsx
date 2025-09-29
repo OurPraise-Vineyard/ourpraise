@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, NavLink, useLoaderData } from 'react-router'
+import { Link, NavLink, useLoaderData, useSearchParams } from 'react-router'
 
 import editIcon from '~/assets/edit.svg'
 import Page from '~/components/Page'
@@ -9,8 +9,11 @@ import { getKeyOptions, transposeAndFormatSong } from '~/utils/chords'
 
 export default function SongPage() {
   const song: ISong = useLoaderData()
+  const [searchParams] = useSearchParams()
   useDocumentTitle(song.title)
-  const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
+  const [transposeKey, setTransposeKey] = useState<IKey>(
+    (searchParams.get('transpose') as IKey) || song.key
+  )
   const keysOptions = useMemo(() => getKeyOptions(song.key), [song.key])
 
   const [formattedBody, setFormattedBody] = useState<string>('')

@@ -10,6 +10,7 @@ import useDocumentTitle from '~/hooks/useDocumentTitle'
 import type { IEvent } from '~/types'
 import { formatKey } from '~/utils/chords'
 import { formatDate, getTime, todayTime } from '~/utils/date'
+import { formatLink } from '~/utils/link-formatter'
 
 export default function EventPage() {
   const event: IEvent = useLoaderData()
@@ -51,7 +52,7 @@ export default function EventPage() {
       {!!event.comment && (
         <div className="my-6 flex gap-6 rounded-sm px-6 py-4 shadow-sm">
           <img src={commentIcon} className="icon my-1" />
-          <p className="whitespace-pre">{event.comment}</p>
+          <p className="text-sm whitespace-pre">{event.comment}</p>
         </div>
       )}
 
@@ -84,10 +85,12 @@ export default function EventPage() {
             </div>
             <div className="flex flex-row items-center justify-end gap-4">
               <div className="badge badge-soft badge-accent text-nowrap break-keep">
-                {formatKey(song.key)}
+                {formatKey(song.transposeKey)}
               </div>
               <Link
-                to={`/songs/${song.id}`}
+                to={formatLink(`/songs/${song.id}`, {
+                  transpose: song.transposeKey
+                })}
                 target="_blank"
                 className="btn btn-ghost btn-circle"
               >
