@@ -51,9 +51,9 @@ export default function Nav() {
           <p className="menu-title">
             Logged in as: {user ? user.displayName || user.email : ''}
           </p>
-          <li>
+          {/*<li>
             <a>Profile</a>
-          </li>
+          </li>*/}
           <li>
             <button onClick={handleLogout}>Logout</button>
           </li>
