@@ -7,17 +7,16 @@ import Nav from './components/Nav'
 import loadEvent from './loaders/loadEvent'
 import loadSong from './loaders/loadSong'
 import { ErrorBoundary } from './pages/ErrorBoundary'
-import EditEventPage from './pages/Event/EditPage'
-import EventPage from './pages/Event/Page'
-import PrintEventPage from './pages/Event/PrintPage'
-import AddEventPage from './pages/Events/AddPage'
-import EventsPage from './pages/Events/Page'
+import EventFormPage from './pages/EventFormPage'
+import EventPage from './pages/EventPage'
+import PrintEventPage from './pages/EventPrintPage'
+import EventsPage from './pages/EventsPage'
+import HomePage from './pages/HomePage'
 import Login from './pages/LoginPage'
 import NotFoundPage from './pages/NotFound'
-import EditSongPage from './pages/Song/EditPage'
-import SongPage from './pages/Song/Page'
-import AddSongPage from './pages/Songs/AddPage'
-import SongsPage from './pages/Songs/Page'
+import SongFormPage from './pages/SongFormPage'
+import SongPage from './pages/SongPage'
+import SongsPage from './pages/SongsPage'
 
 const router = createBrowserRouter([
   {
@@ -47,6 +46,11 @@ const router = createBrowserRouter([
         Component: Login
       },
       {
+        path: 'events/:id/print',
+        loader: loadEvent,
+        Component: PrintEventPage
+      },
+      {
         element: (
           <>
             <Nav />
@@ -57,71 +61,62 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: 'songs',
+            path: 'songs/:id',
             children: [
               {
                 index: true,
-                loader: async () => fetchSongs(),
-                Component: SongsPage
+                loader: loadSong,
+                Component: SongPage
               },
               {
-                path: ':id',
-                children: [
-                  {
-                    index: true,
-                    loader: loadSong,
-                    Component: SongPage
-                  },
-                  {
-                    path: 'edit',
-                    loader: loadSong,
-                    Component: EditSongPage
-                  }
-                ]
-              },
-              {
-                path: 'add',
-                Component: AddSongPage
+                path: 'edit',
+                loader: loadSong,
+                Component: SongFormPage
               }
             ]
           },
           {
-            path: 'events',
+            path: 'songs/add',
+            Component: SongFormPage
+          },
+          {
+            path: 'events/:id',
             children: [
               {
                 index: true,
-                loader: () => fetchRecentEvents(),
-                Component: EventsPage
+                loader: loadEvent,
+                Component: EventPage
               },
               {
-                path: ':id',
-                children: [
-                  {
-                    index: true,
-                    loader: loadEvent,
-                    Component: EventPage
-                  },
-                  {
-                    path: 'edit',
-                    loader: loadEvent,
-                    Component: EditEventPage
-                  },
-                  {
-                    path: 'print',
-                    loader: loadEvent,
-                    Component: PrintEventPage
-                  }
-                ]
-              },
-              {
-                path: 'add',
-                Component: AddEventPage
+                path: 'edit',
+                loader: loadEvent,
+                Component: EventFormPage
               }
             ]
+          },
+          {
+            path: 'events/add',
+            Component: EventFormPage
           },
           {
             path: 'not-found',
             Component: NotFoundPage
+          },
+          {
+            path: '/',
+            Component: HomePage,
+            children: [
+              {
+                path: 'events',
+                loader: () => fetchRecentEvents(),
+                Component: EventsPage
+              },
+              {
+                path: 'songs',
+                loader: async () => fetchSongs(),
+                Component: SongsPage
+              }
+            ]
           },
           {
             path: '*',

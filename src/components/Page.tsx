@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 export default function Page({
   children,
-  noAnimation = false,
+  noAnimation = true,
   className
 }: {
   noAnimation?: boolean
@@ -12,7 +12,7 @@ export default function Page({
   return (
     <div
       className={classNames(
-        'mx-auto w-full max-w-full p-5 lg:w-page',
+        'lg:w-page mx-auto w-full max-w-full p-5',
         !noAnimation && 'animate-fadeIn',
         className
       )}

@@ -1,6 +1,6 @@
 import { Transposer } from 'chord-transposer'
 
-import type { IKey } from '~/types/models'
+import type { IKey } from '~/types'
 
 const keys: IKey[][] = [
   ['C'],
@@ -150,12 +150,11 @@ export function transposeAndFormatSong({
   fromKey?: IKey
   toKey?: IKey
   showChords?: boolean
-}): string[] {
+}): string {
   if (showChords && fromKey && toKey) {
     return transposeSong(body, fromKey, toKey)
       .replace(/^\/\//gm, '  ')
       .replace(/\n\s+?\n/g, '\n\n')
-      .split('\n\n')
   } else {
     return body
       .split('\n')
@@ -164,7 +163,6 @@ export function transposeAndFormatSong({
       .join('\n')
       .replace(/^\n+/g, '')
       .replace(/\n{3,}/g, '\n\n')
-      .split('\n\n')
   }
 }
 

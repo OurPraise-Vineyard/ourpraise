@@ -5,7 +5,6 @@ import { RouterProvider } from 'react-router'
 import router from '~/router'
 
 import ErrorPopUpProvider from './components/ErrorPopUp'
-import PopUpMenuProvider from './components/PopUpMenu'
 import './index.css'
 
 // Render the app
@@ -14,11 +13,9 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <PopUpMenuProvider>
-        <ErrorPopUpProvider>
-          <RouterProvider router={router} />
-        </ErrorPopUpProvider>
-      </PopUpMenuProvider>
+      <ErrorPopUpProvider>
+        <RouterProvider router={router} />
+      </ErrorPopUpProvider>
     </StrictMode>
   )
 }

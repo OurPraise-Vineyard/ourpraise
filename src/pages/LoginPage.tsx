@@ -4,16 +4,9 @@ import { useNavigate, useSearchParams } from 'react-router'
 
 import logo from '~/assets/logo_light.svg'
 import { login } from '~/backend/auth'
-import Button from '~/components/Button'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
-import { SelectField, TextField } from '~/components/FormFields'
-import MetaTitle from '~/components/MetaTitle'
-import {
-  type LocationValue,
-  getLatestLocation,
-  locations,
-  setLocation
-} from '~/utils/location'
+import useDocumentTitle from '~/hooks/useDocumentTitle'
+import { type LocationValue, setLocation } from '~/utils/location'
 
 type LoginForm = {
   email: string
@@ -22,12 +15,12 @@ type LoginForm = {
 }
 
 export default function Login() {
+  useDocumentTitle('Login')
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
   const { register, handleSubmit } = useForm<LoginForm>()
   const [loading, setLoading] = useState(false)
-  const location = getLatestLocation()
   const errors = useErrorPopUp()
 
   const onSubmit = async ({ email, password, location }: LoginForm) => {
@@ -48,39 +41,32 @@ export default function Login() {
   }
 
   return (
-    <div className="absolute top-0 left-0 h-screen w-screen bg-black">
-      <MetaTitle title="Login" />
+    <div className="absolute top-0 right-0 bottom-0 left-0 bg-black">
       <img
         src={logo}
         alt="OurPraise Logo"
-        className="mx-auto my-9 block h-16"
+        className="svg mx-auto my-9 block h-16"
       />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="animate-teleportIn relative mx-auto mt-32 flex w-96 max-w-full grow flex-col gap-4 p-5"
       >
-        <SelectField
-          title="Church Location"
-          options={locations}
-          fieldProps={register('location', { required: true })}
-          defaultValue={location}
-          className="bg-white"
-        />
-        <TextField
+        <input
           autoFocus
-          title="Email"
-          fieldProps={register('email', { required: true })}
-          className="bg-white"
+          placeholder="Email"
+          {...register('email', { required: true })}
+          className="input w-full"
         />
-        <TextField
+        <input
           type="password"
-          title="Password"
-          fieldProps={register('password', { required: true })}
-          className="bg-white"
+          placeholder="Password"
+          required
+          {...register('password', { required: true })}
+          className="input w-full"
         />
-        <Button variant="primary" type="submit" disabled={loading}>
+        <button className="btn btn-primary" type="submit" disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}
-        </Button>
+        </button>
       </form>
     </div>
   )

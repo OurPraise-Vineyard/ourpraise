@@ -1,34 +1,34 @@
-import dateFormat, { i18n } from 'dateformat'
+import dateFormat from 'dateformat'
 
-i18n.monthNames = [
-  'jan',
-  'feb',
-  'mar',
-  'apr',
-  'may',
-  'jun',
-  'jul',
-  'aug',
-  'sep',
-  'okt',
-  'nov',
-  'dec',
-  'januar',
-  'februar',
-  'marts',
-  'april',
-  'maj',
-  'juni',
-  'juli',
-  'august',
-  'september',
-  'oktober',
-  'november',
-  'december'
-]
+// i18n.monthNames = [
+//   'jan',
+//   'feb',
+//   'mar',
+//   'apr',
+//   'may',
+//   'jun',
+//   'jul',
+//   'aug',
+//   'sep',
+//   'okt',
+//   'nov',
+//   'dec',
+//   'januar',
+//   'februar',
+//   'marts',
+//   'april',
+//   'maj',
+//   'juni',
+//   'juli',
+//   'august',
+//   'september',
+//   'oktober',
+//   'november',
+//   'december'
+// ]
 
 export function formatDate(date: string | Date): string {
-  return dateFormat(date, 'd. mmmm yyyy')
+  return dateFormat(date, 'fullDate')
 }
 
 export function getTime(date: string | Date): number {

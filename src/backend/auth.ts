@@ -1,7 +1,7 @@
 /**
  * Handles auth state. All auth actions are routed to lib/auth
  */
-import type { IAuthState } from '~/types/backend'
+import type { IAuthState } from '~/types'
 
 import { initializeUser, signIn, signOut } from './firebase'
 

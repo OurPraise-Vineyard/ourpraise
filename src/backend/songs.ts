@@ -1,6 +1,4 @@
-import type { IDocId } from '~/types/backend'
-import type { ISongForm } from '~/types/forms'
-import type { IKey, ISong } from '~/types/models'
+import type { IDocId, ISong, ISongSchema } from '~/types'
 
 import {
   createDocument,
@@ -10,48 +8,49 @@ import {
   updateDocument
 } from './firebase'
 
-export function fetchSong(songId: IDocId): Promise<ISong> {
-  return getDocument(`songs/${songId}`).then(song => ({
-    authors: song.authors as string,
-    body: song.body as string,
-    id: song.id as string,
-    key: song.key as IKey,
-    title: song.title as string
+export async function fetchSong(songId: IDocId): Promise<ISong> {
+  return getDocument<ISongSchema>(`songs/${songId}`).then(song => ({
+    authors: song.authors,
+    body: song.body,
+    id: song.id,
+    key: song.key,
+    title: song.title
   }))
 }
 
-export function fetchSongs(): Promise<ISong[]> {
-  return getCollection({
+export async function fetchSongs(): Promise<ISong[]> {
+  return getCollection<ISongSchema>({
     path: 'songs',
     orderBy: 'title',
     sortDirection: 'asc'
   }).then(songs =>
     songs.map(song => ({
-      authors: song.authors as string,
-      body: song.body as string,
-      id: song.id as string,
-      key: song.key as IKey,
-      title: song.title as string
+      authors: song.authors,
+      body: song.body,
+      id: song.id,
+      key: song.key,
+      title: song.title
     }))
   )
 }
 
-export async function saveSong(form: ISongForm): Promise<void> {
-  await updateDocument(`songs/${form.id}`, {
-    title: form.title,
-    authors: form.authors,
-    body: form.body,
-    key: form.key
-  })
-}
-
-export async function createSong(form: ISongForm): Promise<IDocId> {
-  const doc = await createDocument('songs', {
+export async function saveSong(form: ISong): Promise<void> {
+  await updateDocument<ISongSchema>(`songs/${form.id}`, {
     title: form.title,
     authors: form.authors,
     body: form.body,
     key: form.key,
-    createdAt: new Date().toISOString()
+    updatedAt: new Date().toISOString()
+  })
+}
+
+export async function createSong(form: ISong): Promise<IDocId> {
+  const doc = await createDocument<ISongSchema>('songs', {
+    title: form.title,
+    authors: form.authors,
+    body: form.body,
+    key: form.key,
+    updatedAt: new Date().toISOString()
   })
 
   return doc.id

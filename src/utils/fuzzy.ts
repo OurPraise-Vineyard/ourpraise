@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js'
 
-export function search(query: string, data: any[], keys: string[]): any[] {
+export function search<T>(query: string, data: T[], keys: string[]): any[] {
   const fuse = new Fuse(data, {
     keys,
     shouldSort: true,

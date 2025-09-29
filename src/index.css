@@ -1,4 +1,5 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@plugin "daisyui";
 
 /* === Theme Extensions === */
 @theme {
@@ -15,10 +16,7 @@
 
   /* Fonts */
   --font-sans: Abel, sans-serif;
-  --font-mono: "Oxygen Mono", monospace;
-
-  /* Font Sizes */
-  --font-size-title: 1.5rem; /* Same as defaultTheme.fontSize['2xl'][0] */
+  --font-mono: 'Oxygen Mono', monospace;
 }
 
 /* === Keyframes === */
@@ -42,15 +40,6 @@
   }
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 /* === Animations === */
 @utility animate-teleportIn {
   animation: teleportIn 0.2s ease-out 0.2s both;
@@ -58,10 +47,6 @@
 
 @utility animate-fadeIn {
   animation: fadeIn 0.5s ease-in-out forwards;
-}
-
-@utility animate-spin {
-  animation: spin 1s linear infinite;
 }
 
 /* === Utilities === */
@@ -89,15 +74,37 @@
   font-family: var(--font-mono);
 }
 
-@utility text-title {
-  font-size: var(--font-size-title);
-}
-
 @utility transition-translate-opacity {
   transition-property: translate, opacity;
 }
 
+@utility icon {
+  width: 20px;
+  height: 20px;
+
+  @media (prefers-color-scheme: dark) {
+    filter: invert(1);
+  }
+}
+
+@utility svg {
+  @media (prefers-color-scheme: dark) {
+    filter: invert(1);
+  }
+}
+
+@utility btn {
+  @apply rounded-full;
+}
+
+@utility max-h-page {
+  max-height: calc(100vh - 16rem);
+}
 
 body {
   overflow-y: scroll;
+}
+
+html {
+  font-size: 18px;
 }
