@@ -1,7 +1,9 @@
 import { useMemo } from 'react'
-import { Link, NavLink, useLoaderData } from 'react-router'
+import { Link, useLoaderData } from 'react-router'
 
 import editIcon from '~/assets/edit.svg'
+import linkIcon from '~/assets/external-link.svg'
+import commentIcon from '~/assets/message-square.svg'
 import musicIcon from '~/assets/music.svg'
 import Page from '~/components/Page'
 import useDocumentTitle from '~/hooks/useDocumentTitle'
@@ -23,13 +25,13 @@ export default function EventPage() {
       <div className="breadcrumbs text-sm">
         <ul>
           <li>
-            <NavLink to="/events">Events</NavLink>
+            <Link to="/events">Events</Link>
           </li>
           <li>{event.title}</li>
         </ul>
       </div>
 
-      <div className="flex items-start gap-4 border-b border-b-gray-300 py-4">
+      <div className="my-4 flex items-start gap-4">
         <div className="grow">
           <h2 className="text-lg font-bold">{event.title}</h2>
           <p>{formattedDate}</p>
@@ -45,37 +47,15 @@ export default function EventPage() {
           </Link>
         </div>
       </div>
+
       {!!event.comment && (
-        <>
-          <p className="mb-6 py-2 text-lg whitespace-pre">{event.comment}</p>
-          <p className="mt-4 border-b border-b-gray-300 pb-2 text-lg font-bold">
-            Songs:
-          </p>
-        </>
+        <div className="my-6 flex gap-6 rounded-sm px-6 py-4 shadow-sm">
+          <img src={commentIcon} className="icon my-1" />
+          <p className="whitespace-pre">{event.comment}</p>
+        </div>
       )}
-      <div>
-        {event.songs?.map(song => (
-          <div className="border-b border-b-gray-300 py-8" key={song.id}>
-            <div className="flex w-full items-center gap-2">
-              <div className="w-0 grow">
-                <Link
-                  className="overflow-hidden text-lg text-ellipsis whitespace-nowrap"
-                  to={`/songs/${song.id}`}
-                >
-                  {song.title}
-                </Link>
-                <p className="overflow-hidden text-lg text-ellipsis whitespace-nowrap text-gray-400">
-                  {song.authors}
-                </p>
-              </div>
-              <div className="rounded-full bg-gray-100 px-3 py-2">
-                {formatKey(song.transposeKey)}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="my-8">
+
+      <div className="my-6">
         {event.songs?.length === 0 && (
           <p>
             {isUpcoming
@@ -84,6 +64,39 @@ export default function EventPage() {
           </p>
         )}
       </div>
+
+      <ul className="list my-6 rounded-sm p-2 shadow-sm">
+        <li className="p-4 pb-2 text-xs tracking-wide opacity-60">Songs</li>
+
+        {event.songs?.map(song => (
+          <li key={song.id} className="list-row hover:bg-base-300 w-full">
+            <div>
+              <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                {song.title || (
+                  <span className="text-red-500 italic">Missing title</span>
+                )}
+              </p>
+              <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                {song.authors || (
+                  <span className="text-red-500 italic">Missing authors</span>
+                )}
+              </p>
+            </div>
+            <div className="flex flex-row items-center justify-end gap-4">
+              <div className="badge badge-soft badge-accent text-nowrap break-keep">
+                {formatKey(song.key)}
+              </div>
+              <Link
+                to={`/songs/${song.id}`}
+                target="_blank"
+                className="btn btn-ghost btn-circle"
+              >
+                <img src={linkIcon} className="icon" />
+              </Link>
+            </div>
+          </li>
+        ))}
+      </ul>
     </Page>
   )
 }
