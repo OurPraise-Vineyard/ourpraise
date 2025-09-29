@@ -1,23 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
-import { NavLink, useLoaderData, useNavigate } from 'react-router'
+import { Link, NavLink, useLoaderData } from 'react-router'
 
-import moreIcon from '~/assets/more-vertical.svg'
-import { deleteSong } from '~/backend/songs'
-import { useErrorPopUp } from '~/components/ErrorPopUp'
-import IconButton from '~/components/IconButton'
+import editIcon from '~/assets/edit.svg'
 import MetaTitle from '~/components/MetaTitle'
 import Page from '~/components/Page'
-import { usePopUpMenu } from '~/components/PopUpMenu'
 import type { IKey, ISong } from '~/types/models'
 import { getKeyOptions, transposeAndFormatSong } from '~/utils/chords'
 
 export default function SongPage() {
   const song: ISong = useLoaderData()
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
-  const navigate = useNavigate()
-  const menu = usePopUpMenu()
   const keysOptions = useMemo(() => getKeyOptions(song.key), [song.key])
-  const errors = useErrorPopUp()
 
   const [formattedBody, setFormattedBody] = useState<string[]>([])
 
@@ -33,31 +26,6 @@ export default function SongPage() {
       )
     }
   }, [song, transposeKey])
-
-  function handleOpenMenu(e: React.MouseEvent<HTMLButtonElement>) {
-    return menu.open(e, () => [
-      {
-        label: 'Edit song',
-        onClick() {
-          navigate(`/songs/${song.id}/edit`)
-        }
-      },
-      {
-        label: 'Delete song',
-        danger: true,
-        async onClick() {
-          if (window.confirm('Delete this song?')) {
-            try {
-              await deleteSong(song.id)
-              navigate('/songs')
-            } catch (err: any) {
-              errors.show(err.message)
-            }
-          }
-        }
-      }
-    ])
-  }
 
   return (
     <Page>
@@ -80,7 +48,7 @@ export default function SongPage() {
         <span className="grow" />
         <div className="flex items-center gap-3">
           <select
-            className="cursor-pointer appearance-none rounded-full border border-slate-200 bg-slate-100 px-2.5 py-2.5 text-center text-lg transition-colors duration-200 ease-out hover:bg-slate-200 focus:outline-0 sm:px-5"
+            className="select"
             value={transposeKey || ''}
             onChange={e => setTransposeKey(e.target.value as IKey)}
           >
@@ -90,7 +58,10 @@ export default function SongPage() {
               </option>
             ))}
           </select>
-          <IconButton icon={moreIcon} onClick={handleOpenMenu} />
+          <Link to={`/songs/${song.id}/edit`} className="btn">
+            <img src={editIcon} className="icon" />
+            Edit
+          </Link>
         </div>
       </div>
       <div className="overflow-x-auto px-5 pb-5 sm:px-0">
