@@ -4,7 +4,7 @@ import { Link, NavLink, useLoaderData } from 'react-router'
 import editIcon from '~/assets/edit.svg'
 import Page from '~/components/Page'
 import useDocumentTitle from '~/hooks/useDocumentTitle'
-import type { IKey, ISong } from '~/types/models'
+import type { IKey, ISong } from '~/types'
 import { getKeyOptions, transposeAndFormatSong } from '~/utils/chords'
 
 export default function SongPage() {
@@ -13,7 +13,7 @@ export default function SongPage() {
   const [transposeKey, setTransposeKey] = useState<IKey>(song.key)
   const keysOptions = useMemo(() => getKeyOptions(song.key), [song.key])
 
-  const [formattedBody, setFormattedBody] = useState<string[]>([])
+  const [formattedBody, setFormattedBody] = useState<string>('')
 
   useEffect(() => {
     if (song) {
@@ -64,11 +64,7 @@ export default function SongPage() {
         </div>
       </div>
       <div className="overflow-x-auto px-5 pb-5 sm:px-0">
-        {formattedBody.map((formattedBody, i) => (
-          <p key={i} className="my-5 font-mono text-sm whitespace-pre">
-            {formattedBody}
-          </p>
-        ))}
+        <p className="my-5 font-mono text-sm whitespace-pre">{formattedBody}</p>
       </div>
     </Page>
   )

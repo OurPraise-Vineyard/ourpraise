@@ -5,8 +5,7 @@ import { createSong, deleteSong, saveSong } from '~/backend/songs'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import Page from '~/components/Page'
 import useDocumentTitle from '~/hooks/useDocumentTitle'
-import type { IDocId } from '~/types/backend'
-import type { ISong } from '~/types/models'
+import type { IDocId, ISong } from '~/types'
 import { keysOptions } from '~/utils/chords'
 
 export default function AddSongPage() {

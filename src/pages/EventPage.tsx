@@ -1,14 +1,22 @@
+import { useMemo } from 'react'
 import { Link, NavLink, useLoaderData } from 'react-router'
 
 import editIcon from '~/assets/edit.svg'
-import printIcon from '~/assets/printer.svg'
+import musicIcon from '~/assets/music.svg'
 import Page from '~/components/Page'
 import useDocumentTitle from '~/hooks/useDocumentTitle'
-import type { IEvent } from '~/types/models'
+import type { IEvent } from '~/types'
+import { formatKey } from '~/utils/chords'
+import { formatDate, getTime, todayTime } from '~/utils/date'
 
 export default function EventPage() {
   const event: IEvent = useLoaderData()
   useDocumentTitle(event.title)
+  const formattedDate = useMemo(() => formatDate(event.date), [event.date])
+  const isUpcoming = useMemo(
+    () => getTime(event.date) >= todayTime(),
+    [event.date]
+  )
 
   return (
     <Page>
@@ -24,12 +32,12 @@ export default function EventPage() {
       <div className="flex items-start gap-4 border-b border-b-gray-300 py-4">
         <div className="grow">
           <h2 className="text-lg font-bold">{event.title}</h2>
-          <p>{event.formattedDate}</p>
+          <p>{formattedDate}</p>
         </div>
         <div className="flex items-center gap-4">
           <Link className="btn btn-primary" to={`/events/${event.id}/print`}>
-            <img src={printIcon} className="icon" />
-            Print
+            <img src={musicIcon} className="icon" />
+            Play set/Print
           </Link>
           <Link className="btn" to={`/events/${event.id}/edit`}>
             <img src={editIcon} className="icon" />
@@ -46,7 +54,7 @@ export default function EventPage() {
         </>
       )}
       <div>
-        {event.songs.map(song => (
+        {event.songs?.map(song => (
           <div className="border-b border-b-gray-300 py-8" key={song.id}>
             <div className="flex w-full items-center gap-2">
               <div className="w-0 grow">
@@ -60,22 +68,17 @@ export default function EventPage() {
                   {song.authors}
                 </p>
               </div>
-              {song.formattedKey && (
-                <div className="rounded-full bg-gray-100 px-3 py-2">
-                  {song.formattedKey}
-                </div>
-              )}
+              <div className="rounded-full bg-gray-100 px-3 py-2">
+                {formatKey(song.transposeKey)}
+              </div>
             </div>
-            {song.comment && (
-              <p className="mt-2 whitespace-pre">{song.comment}</p>
-            )}
           </div>
         ))}
       </div>
       <div className="my-8">
-        {event.songs.length === 0 && (
+        {event.songs?.length === 0 && (
           <p>
-            {event.isUpcoming
+            {isUpcoming
               ? 'No songs added yet. Edit event to add some.'
               : 'Event has no songs.'}
           </p>

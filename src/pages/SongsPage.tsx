@@ -2,7 +2,7 @@ import { Link, useLoaderData, useSearchParams } from 'react-router'
 
 import useDocumentTitle from '~/hooks/useDocumentTitle'
 import useFilteredItems from '~/hooks/useFilteredItems'
-import type { ISong } from '~/types/models'
+import type { ISong } from '~/types'
 
 export default function SongsPage() {
   useDocumentTitle('Songs')

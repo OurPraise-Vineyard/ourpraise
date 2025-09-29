@@ -7,6 +7,7 @@ import {
   useSearchParams
 } from 'react-router'
 
+import plusIcon from '~/assets/plus.svg'
 import NavSearchField from '~/components/NavSearchField'
 import Page from '~/components/Page'
 import { formatLink } from '~/utils/link-formatter'
@@ -49,7 +50,10 @@ export default function HomePage() {
           </li>
           <li>
             <details>
-              <summary className="btn btn-primary">Create</summary>
+              <summary className="btn btn-primary">
+                <img src={plusIcon} className="icon" />
+                Create
+              </summary>
               <ul className="bg-base-100 z-10 rounded-t-none p-2">
                 <li>
                   <Link className="text-nowrap" to="/events/add">

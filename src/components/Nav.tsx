@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import logo from '~/assets/logo_dark.svg'
 import userIcon from '~/assets/user.svg'
 import { getAuthState, logout } from '~/backend/auth'
-import type { IUser } from '~/types/backend'
+import type { IUser } from '~/types'
 
 export default function Nav() {
   const [user, setUser] = useState<IUser>()

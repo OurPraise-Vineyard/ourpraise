@@ -20,7 +20,7 @@ import { CSS } from '@dnd-kit/utilities'
 
 import moveIcon from '~/assets/move.svg'
 import removeIcon from '~/assets/x.svg'
-import type { IEvent, IEventSong } from '~/types/models'
+import type { IEvent, IEventSong } from '~/types'
 import { getKeyOptions } from '~/utils/chords'
 
 type SortableListProps = {

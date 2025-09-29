@@ -1,6 +1,4 @@
-import type { IDocId } from '~/types/backend'
-import type { ISong } from '~/types/models'
-import type { ISongSchema } from '~/types/schemas'
+import type { IDocId, ISong, ISongSchema } from '~/types'
 
 import {
   createDocument,

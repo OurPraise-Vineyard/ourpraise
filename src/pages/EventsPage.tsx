@@ -2,7 +2,8 @@ import { Link, useLoaderData, useSearchParams } from 'react-router'
 
 import useDocumentTitle from '~/hooks/useDocumentTitle'
 import useFilteredItems from '~/hooks/useFilteredItems'
-import type { IEvent } from '~/types/models'
+import type { IEvent } from '~/types'
+import { formatDate } from '~/utils/date'
 
 export default function EventsPage() {
   useDocumentTitle('Events')
@@ -10,7 +11,7 @@ export default function EventsPage() {
   const query = searchParams.get('q') || ''
   const events: IEvent[] = useFilteredItems(useLoaderData(), query, [
     'title',
-    'formattedDate'
+    'date'
   ])
 
   return (
@@ -33,7 +34,7 @@ export default function EventsPage() {
               <p className="list-col-grow overflow-hidden text-ellipsis whitespace-nowrap">
                 {event.title}
               </p>
-              <p>{event.formattedDate}</p>
+              <p>{formatDate(event.date)}</p>
             </Link>
           </li>
         ))}

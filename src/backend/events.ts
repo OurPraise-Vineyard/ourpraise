@@ -1,8 +1,13 @@
 import { fetchSong } from '~/backend/songs'
-import type { IDocId } from '~/types/backend'
-import type { IEvent, IEventSong, ISong } from '~/types/models'
-import type { IEventSchema, IEventSongSchema } from '~/types/schemas'
-import { formatKey, transposeAndFormatSong } from '~/utils/chords'
+import type {
+  IDocId,
+  IEvent,
+  IEventSchema,
+  IEventSong,
+  IEventSongSchema,
+  ISong
+} from '~/types'
+import { transposeAndFormatSong } from '~/utils/chords'
 import { formatDate, getTime, lastMonth, todayTime } from '~/utils/date'
 import { getLatestLocation } from '~/utils/location'
 
@@ -61,8 +66,7 @@ export async function fetchEvent(eventId: IDocId): Promise<IEvent> {
           authors: song.authors,
           body,
           key: song.key,
-          transposeKey: songKey,
-          formattedKey: formatKey(songKey)
+          transposeKey: songKey
         }
       }
     )

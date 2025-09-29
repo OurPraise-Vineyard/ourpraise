@@ -5,14 +5,14 @@ import { Link, useLoaderData, useNavigate } from 'react-router'
 
 import checkIcon from '~/assets/check.svg'
 import moveIcon from '~/assets/move.svg'
+import saveIcon from '~/assets/save.svg'
 import { createEvent, deleteEvent, saveEvent } from '~/backend/events'
 import AddSongsToEvent from '~/components/AddSongsToEvent'
 import { useErrorPopUp } from '~/components/ErrorPopUp'
 import Page from '~/components/Page'
 import SortableSongList from '~/components/SortableSongList'
 import useDocumentTitle from '~/hooks/useDocumentTitle'
-import type { IDocId } from '~/types/backend'
-import type { IEvent, ISong } from '~/types/models'
+import type { IDocId, IEvent, ISong } from '~/types'
 import { nextWeekday } from '~/utils/date'
 
 const defaultDate = dateFormat(nextWeekday(7), 'yyyy-mm-dd')
@@ -181,6 +181,7 @@ export default function EventFormPage() {
             className="btn btn-primary w-full"
             disabled={reordering}
           >
+            <img src={saveIcon} className="icon" />
             {saving ? 'Saving...' : 'Save'}
           </button>
 
