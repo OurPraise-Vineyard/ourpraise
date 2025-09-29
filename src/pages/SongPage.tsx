@@ -44,8 +44,8 @@ export default function SongPage() {
 
       <div className="mt-9 mb-4 flex items-start gap-3 px-5 sm:px-0">
         <div className="w-1/2">
-          <h2 className="text-title font-bold">{song.title}</h2>
-          <p className="text-lg">{song.authors}</p>
+          <h2 className="text-lg font-bold">{song.title}</h2>
+          <p>{song.authors}</p>
         </div>
         <span className="grow" />
         <div className="flex items-center gap-3">
