@@ -1,3 +1,4 @@
+import { eventCache as cache } from '~/backend/cache'
 import { fetchSong } from '~/backend/songs'
 import type {
   IDocId,
@@ -7,7 +8,6 @@ import type {
   IEventSongSchema,
   ISong
 } from '~/types'
-import { DatabaseCache } from '~/utils/cache'
 import { transposeAndFormatSong } from '~/utils/chords'
 import { formatDate, getTime, lastMonth, todayTime } from '~/utils/date'
 import { getLatestLocation } from '~/utils/location'
@@ -21,7 +21,6 @@ import {
   updateDocument
 } from './firebase'
 
-const cache = new DatabaseCache<IEventSchema>()
 const recentEventsCollectionKey = 'recentEvents'
 
 export async function fetchRecentEvents(): Promise<IEvent[]> {

@@ -1,4 +1,4 @@
-export class DatabaseCache<T> {
+export default class DatabaseCache<T> {
   _cache: {
     collections: Map<string, string[]>
     documents: Map<string, T>
@@ -41,5 +41,10 @@ export class DatabaseCache<T> {
 
   getDocument(key: string) {
     return this._cache.documents.get(key)
+  }
+
+  clear() {
+    this._cache.collections.clear()
+    this._cache.documents.clear()
   }
 }

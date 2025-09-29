@@ -1,5 +1,5 @@
+import { songCache as cache } from '~/backend/cache'
 import type { IDocId, ISong, ISongSchema } from '~/types'
-import { DatabaseCache } from '~/utils/cache'
 
 import {
   createDocument,
@@ -8,8 +8,6 @@ import {
   getDocument,
   updateDocument
 } from './firebase'
-
-const cache = new DatabaseCache<ISongSchema>()
 
 export async function fetchSong(songId: IDocId): Promise<ISong> {
   const mapper = (song: ISongSchema): ISong => ({
