@@ -16,6 +16,16 @@ export default function EventsPage() {
 
   return (
     <>
+      {events.length === 0 && (
+        <p className="mx-2 my-4">
+          No events found.{' '}
+          <Link to="/events/add" className="link">
+            Create a new event
+          </Link>{' '}
+          and it will appear here.
+        </p>
+      )}
+
       <ul className="list bg-base-100 rounded-box mt-4 shadow-md">
         {query ? (
           <li className="p-4 pb-2 text-xs tracking-wide opacity-60">
@@ -38,7 +48,6 @@ export default function EventsPage() {
             </Link>
           </li>
         ))}
-        {events.length === 0 && <p className="">No events</p>}
       </ul>
     </>
   )

@@ -59,47 +59,57 @@ export default function EventPage() {
       <div className="my-6">
         {event.songs?.length === 0 && (
           <p>
-            {isUpcoming
-              ? 'No songs added yet. Edit event to add some.'
-              : 'Event has no songs.'}
+            {isUpcoming ? (
+              <>
+                No songs added yet.{' '}
+                <Link to={`/events/${event.id}/edit`} className="link">
+                  Edit event
+                </Link>{' '}
+                to add some
+              </>
+            ) : (
+              'Event has no songs.'
+            )}
           </p>
         )}
       </div>
 
-      <ul className="list my-6 rounded-sm p-2 shadow-sm">
-        <li className="p-4 pb-2 text-xs tracking-wide opacity-60">Songs</li>
+      {!!event.songs?.length && (
+        <ul className="list my-6 rounded-sm p-2 shadow-sm">
+          <li className="p-4 pb-2 text-xs tracking-wide opacity-60">Songs</li>
 
-        {event.songs?.map(song => (
-          <li key={song.id} className="list-row hover:bg-base-300 w-full">
-            <div>
-              <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                {song.title || (
-                  <span className="text-red-500 italic">Missing title</span>
-                )}
-              </p>
-              <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                {song.authors || (
-                  <span className="text-red-500 italic">Missing authors</span>
-                )}
-              </p>
-            </div>
-            <div className="flex flex-row items-center justify-end gap-4">
-              <div className="badge badge-soft badge-accent text-nowrap break-keep">
-                {formatKey(song.transposeKey)}
+          {event.songs?.map(song => (
+            <li key={song.id} className="list-row hover:bg-base-300 w-full">
+              <div>
+                <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                  {song.title || (
+                    <span className="text-red-500 italic">Missing title</span>
+                  )}
+                </p>
+                <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                  {song.authors || (
+                    <span className="text-red-500 italic">Missing authors</span>
+                  )}
+                </p>
               </div>
-              <Link
-                to={formatLink(`/songs/${song.id}`, {
-                  transpose: song.transposeKey
-                })}
-                target="_blank"
-                className="btn btn-ghost btn-circle"
-              >
-                <img src={linkIcon} className="icon" />
-              </Link>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div className="flex flex-row items-center justify-end gap-4">
+                <div className="badge badge-soft badge-accent text-nowrap break-keep">
+                  {formatKey(song.transposeKey)}
+                </div>
+                <Link
+                  to={formatLink(`/songs/${song.id}`, {
+                    transpose: song.transposeKey
+                  })}
+                  target="_blank"
+                  className="btn btn-ghost btn-circle"
+                >
+                  <img src={linkIcon} className="icon" />
+                </Link>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </Page>
   )
 }
