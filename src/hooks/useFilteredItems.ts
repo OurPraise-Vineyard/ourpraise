@@ -7,7 +7,7 @@ export default function useFilteredItems<T>(
   query: string | null,
   searchableFields: string[]
 ) {
-  const [filtered, setFiltered] = useState<T[]>([])
+  const [filtered, setFiltered] = useState<T[]>(items)
 
   useEffect(() => {
     if (!query) {
